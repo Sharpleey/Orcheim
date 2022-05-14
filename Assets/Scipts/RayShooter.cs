@@ -34,12 +34,16 @@ public class RayShooter: MonoBehaviour
             _arrow.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
             _arrow.transform.rotation = transform.rotation;
 
-            Rigidbody body = _arrow.GetComponent<Collider>().attachedRigidbody;
+            // Transform arrowHead = _arrow.transform.Find("arrowGeoGrp/arrowHead");
+
+
+            Rigidbody body = _arrow.GetComponent<Rigidbody>();
 
             if (body != null)
             {
                 // Назначаем физическому телу скорость.
-                body.velocity = transform.forward * shotForce;
+                // body.velocity = transform.forward * shotForce;
+                body.AddRelativeForce((transform.forward) * shotForce, ForceMode.Impulse);
             }
             // StartCoroutine(Shot());
 

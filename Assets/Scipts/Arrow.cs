@@ -5,28 +5,27 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
 	[SerializeField] private int damage = 1;
+	// [SerializeField] private Transform pointTrigger;
 
 	private Rigidbody rg;
-
+	
 	private void Start() 
 	{
-		// rg = this.gameObject.GetComponent<Rigidbody>();
-		StartCoroutine(DeleteArrow());
+		rg = this.gameObject.GetComponent<Rigidbody>();
+		// StartCoroutine(DeleteArrow());
 	}
 
-    void FixedUpdate() 
-    {
-		// transform.Translate(0, 0, speed * Time.deltaTime);
-	}
+	// void OnTriggerEnter(Collider other) 
+	// {
+	// 	if (rg != null)
+	// 	{
+	// 		// rg.isKinematic = true;
+	// 		StartCoroutine(DeleteArrow());
+	// 	}
 
-	void OnTriggerEnter(Collider other) 
-	{
-		if (rg != null)
-		{
-			// rg.isKinematic = true;
-			StartCoroutine(DeleteArrow());
-		}
-
+	// }
+	private void FixedUpdate() {
+		transform.LookAt(transform.position + rg.velocity);
 	}
 
 	private IEnumerator DeleteArrow()
@@ -36,5 +35,10 @@ public class Arrow : MonoBehaviour
 
         // Удаляем объект со сцены и очищаем память
         Destroy(this.gameObject);
+    }
+
+	void OnTriggerEnter(Collider other)
+    {
+        rg.isKinematic = true;
     }
 }
