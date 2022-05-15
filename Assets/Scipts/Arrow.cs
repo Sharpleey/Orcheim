@@ -16,6 +16,7 @@ public class Arrow : MonoBehaviour
 	private void FixedUpdate() 
 	{
 		transform.LookAt(transform.position + rg.velocity);
+		Debug.Log(rg.velocity);
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -32,4 +33,9 @@ public class Arrow : MonoBehaviour
         // Удаляем объект со сцены и очищаем память
         Destroy(this.gameObject);
     }
+
+	// private void OnCollisionEnter(Collision other) {
+	// 	rg.isKinematic = true;
+	// 	StartCoroutine(DeleteArrow());
+	// }
 }
