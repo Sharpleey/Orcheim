@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,12 +17,12 @@ using UnityEditor;
 public class PlayerCharacter2 : MonoBehaviour
 {
     //Urg that's ugly, maybe find a better way
-    public static PlayerCharacter2 Instance { get; protected set; }
+    // public static PlayerCharacter2 Instance { get; protected set; }
 
-    public Camera MainCamera;
+    [SerializeField] private Camera _mainCamera;
     // public Camera WeaponCamera;
     
-    public Transform CameraPosition;
+    // public Transform CameraPosition;
     // public Transform WeaponPosition;
     
     // public Weapon[] startingWeapons;
@@ -30,54 +31,63 @@ public class PlayerCharacter2 : MonoBehaviour
     // public AmmoInventoryEntry[] startingAmmo;
 
     [Header("Control Settings")]
-    public float MouseSensitivity = 100.0f;
-    public float PlayerSpeed = 5.0f;
-    public float RunningSpeed = 7.0f;
-    public float JumpSpeed = 5.0f;
+    [SerializeField] private float _horizontalMouseSensitivity = 5.0f;
+    [SerializeField] private float _verticalMouseSensitivity = 5.0f;
+    [SerializeField] private float _playerSpeed = 5.0f;
+    [SerializeField] private float _runningSpeed = 7.0f;
+    [SerializeField] private float _jumpSpeed = 5.0f;
 
     // [Header("Audio")]
     // public RandomPlayer FootstepPlayer;
     // public AudioClip JumpingAudioCLip;
     // public AudioClip LandingAudioClip;
+  
+    [Header("Other")]
+    public TextMeshProUGUI infoText;
     
-    float m_VerticalSpeed = 0.0f;
-    bool m_IsPaused = false;
-    int m_CurrentWeapon;
+    private float _verticalSpeed = 0.0f;
+
+    private float _verticalAngle;
+    private float _horizontalAngle;
+
+    private bool _isPaused = false; //??? Надо понять для чего оно
+    // int m_CurrentWeapon;
     
-    float m_VerticalAngle, m_HorizontalAngle;
     public float Speed { get; private set; } = 0.0f;
 
     public bool LockControl { get; set; }
     public bool CanPause { get; set; } = true;
 
-    public bool Grounded => m_Grounded;
+    // public bool isGrounded => _isGrounded; //??? Надо ли это нам вообще  (свойства только для чтения)(член, воплощающий выражение)
 
-    CharacterController m_CharacterController;
+    private bool _isGrounded;
+    private float _groundedTimer;
+    private float _speedAtJump = 0.0f;
 
-    bool m_Grounded;
-    float m_GroundedTimer;
-    float m_SpeedAtJump = 0.0f;
+    private CharacterController _characterController;
 
     // List<Weapon> m_Weapons = new List<Weapon>();
     // Dictionary<int, int> m_AmmoInventory = new Dictionary<int, int>();
 
     void Awake()
     {
-        Instance = this;
+        // Instance = this;
     }
     
     void Start()
-    {
+    {   
+        // Блокируем курсор и делаем его невидимым 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        m_IsPaused = false;
-        m_Grounded = true;
+        _isPaused = false;
+        _isGrounded = true;
         
-        MainCamera.transform.SetParent(CameraPosition, false);
-        MainCamera.transform.localPosition = Vector3.zero;
-        MainCamera.transform.localRotation = Quaternion.identity;
-        m_CharacterController = GetComponent<CharacterController>();
+        // _mainCamera.transform.SetParent(CameraPosition, false);
+        // _mainCamera.transform.localPosition = Vector3.zero;
+        // _mainCamera.transform.localRotation = Quaternion.identity;
+
+        _characterController = GetComponent<CharacterController>();
 
         // for (int i = 0; i < startingWeapons.Length; ++i)
         // {
@@ -97,12 +107,14 @@ public class PlayerCharacter2 : MonoBehaviour
         //     m_AmmoInventory[startingAmmo[i].ammoType] = startingAmmo[i].amount;
         // }
 
-        m_VerticalAngle = 0.0f;
-        m_HorizontalAngle = transform.localEulerAngles.y;
+        // Задаем начальные значение поворота персонажа 
+        _verticalAngle = 0.0f;
+        _horizontalAngle = transform.localEulerAngles.y;
     }
 
     void Update()
     {
+        infoText.text = _verticalAngle.ToString();
         // if (CanPause && Input.GetButtonDown("Menu"))
         // {
         //     PauseMenu.Instance.Display();
@@ -110,85 +122,93 @@ public class PlayerCharacter2 : MonoBehaviour
         
         // FullscreenMap.Instance.gameObject.SetActive(Input.GetButton("Map"));
 
-        bool wasGrounded = m_Grounded;
+        bool wasGrounded = _isGrounded;
         bool loosedGrounding = false;
         
         //we define our own grounded and not use the Character controller one as the character controller can flicker
         //between grounded/not grounded on small step and the like. So we actually make the controller "not grounded" only
         //if the character controller reported not being grounded for at least .5 second;
-        if (!m_CharacterController.isGrounded)
+        if (!_characterController.isGrounded)
         {
-            if (m_Grounded)
+            if (_isGrounded)
             {
-                m_GroundedTimer += Time.deltaTime;
-                if (m_GroundedTimer >= 0.5f)
+                _groundedTimer += Time.deltaTime;
+                if (_groundedTimer >= 0.5f)
                 {
                     loosedGrounding = true;
-                    m_Grounded = false;
+                    _isGrounded = false;
                 }
             }
         }
         else
         {
-            m_GroundedTimer = 0.0f;
-            m_Grounded = true;
+            _groundedTimer = 0.0f;
+            _isGrounded = true;
         }
 
         Speed = 0;
         Vector3 move = Vector3.zero;
-        if (!m_IsPaused && !LockControl)
+
+        if (!_isPaused && !LockControl)
         {
-            // Jump (we do it first as 
-            if (m_Grounded && Input.GetButtonDown("Jump"))
+            // Прыжок
+            if (_isGrounded && Input.GetButtonDown("Jump"))
             {
-                m_VerticalSpeed = JumpSpeed;
-                m_Grounded = false;
+                _verticalSpeed = _jumpSpeed;
+                _isGrounded = false;
                 loosedGrounding = true;
                 // FootstepPlayer.PlayClip(JumpingAudioCLip, 0.8f,1.1f);
             }
             
             bool running = Input.GetButton("Run");
-            float actualSpeed = running ? RunningSpeed : PlayerSpeed;
+            float actualSpeed = running ? _runningSpeed : _playerSpeed;
 
             if (loosedGrounding)
             {
-                m_SpeedAtJump = actualSpeed;
+                _speedAtJump = actualSpeed;
             }
 
-            // Move around with WASD
+            // Перемещение персонажа WASD
             move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
             if (move.sqrMagnitude > 1.0f)
                 move.Normalize();
 
-            float usedSpeed = m_Grounded ? actualSpeed : m_SpeedAtJump;
+            float usedSpeed = _isGrounded ? actualSpeed : _speedAtJump;
             
             move = move * usedSpeed * Time.deltaTime;
             
             move = transform.TransformDirection(move);
-            m_CharacterController.Move(move);
+            _characterController.Move(move);
             
-            // Turn player
-            float turnPlayer =  Input.GetAxis("Mouse X") * MouseSensitivity;
-            m_HorizontalAngle = m_HorizontalAngle + turnPlayer;
-
-            if (m_HorizontalAngle > 360) m_HorizontalAngle -= 360.0f;
-            if (m_HorizontalAngle < 0) m_HorizontalAngle += 360.0f;
+            // Поворот персонажа налево/направо
+            // --------------------------------------------------------------------
+            float turnPlayer =  Input.GetAxis("Mouse X") * _horizontalMouseSensitivity;
+            _horizontalAngle += turnPlayer;
+            
+            // Делаем значение поворота персонажа в предлах от 0 до 360 градусов
+            if (_horizontalAngle > 360) 
+                _horizontalAngle -= 360.0f;
+            if (_horizontalAngle < 0) 
+                _horizontalAngle += 360.0f;
             
             Vector3 currentAngles = transform.localEulerAngles;
-            currentAngles.y = m_HorizontalAngle;
+            currentAngles.y = _horizontalAngle;
             transform.localEulerAngles = currentAngles;
+            // --------------------------------------------------------------------
 
-            // Camera look up/down
+            // Поворот камеры вверх/вниз
+            // --------------------------------------------------------------------
             var turnCam = -Input.GetAxis("Mouse Y");
-            turnCam = turnCam * MouseSensitivity;
-            m_VerticalAngle = Mathf.Clamp(turnCam + m_VerticalAngle, -89.0f, 89.0f);
-            currentAngles = CameraPosition.transform.localEulerAngles;
-            currentAngles.x = m_VerticalAngle;
-            CameraPosition.transform.localEulerAngles = currentAngles;
+            turnCam = turnCam * _verticalMouseSensitivity;
+            _verticalAngle = Mathf.Clamp(turnCam + _verticalAngle, -89.0f, 89.0f);
+            currentAngles = _mainCamera.transform.localEulerAngles;
+            currentAngles.x = _verticalAngle;
+            _mainCamera.transform.localEulerAngles = currentAngles;
+            // --------------------------------------------------------------------
   
             // m_Weapons[m_CurrentWeapon].triggerDown = Input.GetMouseButton(0);
 
-            Speed = move.magnitude / (PlayerSpeed * Time.deltaTime);
+            Speed = move.magnitude / (_playerSpeed * Time.deltaTime);
 
             // if (Input.GetButton("Reload"))
             //     m_Weapons[m_CurrentWeapon].Reload();
@@ -222,24 +242,26 @@ public class PlayerCharacter2 : MonoBehaviour
             // }
         }
 
-        // Fall down / gravity
-        m_VerticalSpeed = m_VerticalSpeed - 10.0f * Time.deltaTime;
-        if (m_VerticalSpeed < -10.0f)
-            m_VerticalSpeed = -10.0f; // max fall speed
-        var verticalMove = new Vector3(0, m_VerticalSpeed * Time.deltaTime, 0);
-        var flag = m_CharacterController.Move(verticalMove);
-        if ((flag & CollisionFlags.Below) != 0)
-            m_VerticalSpeed = 0;
+        // Падение/гравитация
+        // --------------------------------------------------------------------
+        _verticalSpeed -= 10.0f * Time.deltaTime;
+        // if (_verticalSpeed < -10.0f)
+        //     _verticalSpeed = -10.0f; // max fall speed
+        var verticalMove = new Vector3(0, _verticalSpeed * Time.deltaTime, 0);
+        var flag = _characterController.Move(verticalMove);
+                if ((flag & CollisionFlags.Below) != 0)
+            _verticalSpeed = 0;
 
-        if (!wasGrounded && m_Grounded)
+        if (!wasGrounded && _isGrounded)
         {
             // FootstepPlayer.PlayClip(LandingAudioClip, 0.8f,1.1f);
         }
+        // --------------------------------------------------------------------
     }
 
     public void DisplayCursor(bool display)
     {
-        m_IsPaused = display;
+        _isPaused = display;
         Cursor.lockState = display ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = display;
     }
