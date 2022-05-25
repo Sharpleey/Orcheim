@@ -5,27 +5,27 @@ using UnityEngine.EventSystems;
 
 public class RayShooter: MonoBehaviour
 {   
-    [SerializeField] private AudioSource soundSource;
-    [SerializeField] private AudioClip hitWallSound;
-    [SerializeField] private AudioClip hitEnemySound;
+    [SerializeField] private AudioSource _soundSource;
+    [SerializeField] private AudioClip _hitWallSound;
+    [SerializeField] private AudioClip _hitEnemySound;
 
-    [SerializeField] private GameObject arrowPrefab; // Префаб для стрелы
-    [SerializeField] private GameObject bow;
-    [SerializeField] private float shotForce; // Сила выстрела
-    [SerializeField] private float timeReload; // Время
+    [SerializeField] private GameObject _arrowPrefab; // Префаб для стрелы
+    [SerializeField] private GameObject _bow;
+    [SerializeField] private float _shotForce = 8; // Сила выстрела
+    [SerializeField] private float _timeReload = 0.5f; // Время
 
-    [SerializeField] private Transform arrowSpawn;
+    [SerializeField] private Transform _arrowSpawn;
 
-    private Camera camera;
-    private GameObject arrow;
+    private Camera _camera;
+    private GameObject _arrow;
 
-    private bool _arrowInBowstring = false;
-    private bool _reload = false;
+    private bool _isArrowInBowstring = false;
+    private bool _isReload = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        camera = GetComponent<Camera>();
+        _camera = GetComponent<Camera>();
 
         // Cursor.lockState = CursorLockMode.Locked; 
         // Cursor.visible = false; 
@@ -34,67 +34,74 @@ public class RayShooter: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_arrowInBowstring && !_reload)
+        if (!_isArrowInBowstring && !_isReload)
         {
-            arrow = Instantiate(arrowPrefab) as GameObject;
-            arrow.transform.parent = bow.transform;
+            _arrow = Instantiate(_arrowPrefab) as GameObject;
 
-            arrow.transform.position = arrowSpawn.position;
-            arrow.transform.rotation = arrowSpawn.rotation;
+            _arrow.transform.parent = _bow.transform;
 
-            Rigidbody arrowRb = arrow.GetComponent<Rigidbody>();
+            _arrow.transform.position = _arrowSpawn.position;
+            _arrow.transform.rotation = _arrowSpawn.rotation;
+
+            Rigidbody arrowRb = _arrow.GetComponent<Rigidbody>();
             arrowRb.isKinematic = true;
 
-            _arrowInBowstring = true;
+            _isArrowInBowstring = true;
         }
 
-        // Ray rayShot = new Ray (arrow.transform.position, camera.transform.forward * 100);
-        // Debug.DrawRay(bow.transform.position, camera.transform.forward * 100, Color.yellow);
+        // Ray rayShot = new Ray (_arrow.transform.position, _camera.transform.forward * 100);
+        // Debug.DrawRay(_bow.transform.position, _camera.transform.forward * 100, Color.yellow);
 
 
         // Нажатие на ЛКМ
-        if (Input.GetMouseButtonDown(0) && _arrowInBowstring && !_reload) // Проверяем, что GUI не используется.
+        if (Input.GetMouseButtonDown(0) && _isArrowInBowstring && !_isReload) // Проверяем, что GUI не используется.
         {   
-            arrow.transform.parent = null;
+            _arrow.transform.parent = null;
 
-            Rigidbody arrowRb = arrow.GetComponent<Rigidbody>();
+            Rigidbody arrowRb = _arrow.GetComponent<Rigidbody>();
             
             if (arrowRb != null)
             {
                 arrowRb.isKinematic = false;
                 // Назначаем физическому телу скорость.
-                arrowRb.AddForce((arrow.transform.forward) * shotForce, ForceMode.Impulse);
+                arrowRb.AddForce((_arrow.transform.forward) * _shotForce, ForceMode.Impulse);
             }
             
-            _arrowInBowstring = false;
+            _isArrowInBowstring = false;
+
+            Arrow arrow = _arrow.GetComponent<Arrow>();
+            if (arrow)
+            {
+                arrow.isArrowInBowstring = false;
+            }
 
             StartCoroutine(Reload());
 
 
             // // Создаем стрелу
-            // GameObject arrow = Instantiate(arrowPrefab) as GameObject;
+            // GameObject _arrow = Instantiate(_arrowPrefab) as GameObject;
             // // Указываем для нее коррдинаты и поворот
-            // arrow.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
-            // arrow.transform.rotation = transform.rotation;
+            // _arrow.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
+            // _arrow.transform.rotation = transform.rotation;
 
-            // // Transform arrowHead = arrow.transform.Find("arrowGeoGrp/arrowHead");
+            // // Transform arrowHead = _arrow.transform.Find("arrowGeoGrp/arrowHead");
 
 
-            // Rigidbody body = arrow.GetComponent<Rigidbody>();
+            // Rigidbody body = _arrow.GetComponent<Rigidbody>();
 
             // if (body != null)
             // {
             //     // Назначаем физическому телу скорость.
-            //     // body.velocity = transform.forward * shotForce;
-            //     body.AddRelativeForce((transform.forward) * shotForce, ForceMode.Impulse);
+            //     // body.velocity = transform.forward * _shotForce;
+            //     body.AddRelativeForce((transform.forward) * _shotForce, ForceMode.Impulse);
             // }
             // StartCoroutine(Shot());
 
 
             // Получаем координаты середины экрана
-            // Vector3 point = new Vector3(camera.pixelWidth/2, camera.pixelHeight/2, 0);
+            // Vector3 point = new Vector3(_camera.pixelWidth/2, _camera.pixelHeight/2, 0);
             // Создаем луч
-            // Ray ray = camera.ScreenPointToRay(point);
+            // Ray ray = _camera.ScreenPointToRay(point);
             // Содержит информацию о пересечении объекта
             // RaycastHit hit;
             // if (Physics.Raycast(ray, out hit))
@@ -106,7 +113,7 @@ public class RayShooter: MonoBehaviour
             //     // if (target != null) 
             //     // { 
             //     //     target.ReactToHit();
-            //     //     soundSource.PlayOneShot(hitEnemySound);
+            //     //     _soundSource.PlayOneShot(_hitEnemySound);
 
             //     //     // Рассылка сообщений на реакцию попадания
             //     //     Messenger.Broadcast(GameEvent.ENEMY_HIT);
@@ -115,7 +122,7 @@ public class RayShooter: MonoBehaviour
             //     // { 
             //     //     // Запускаем сопрограмму
             //     //     StartCoroutine(SphereIndicator(hit.point));
-            //     //     soundSource.PlayOneShot(hitWallSound); 
+            //     //     _soundSource.PlayOneShot(_hitWallSound); 
             //     // } 
             // }
         }
@@ -123,42 +130,42 @@ public class RayShooter: MonoBehaviour
 
     private IEnumerator Reload()
     {   
-        _reload = true;
+        _isReload = true;
 
         // Ключевое слово yield указывает сопрограмме, когда следует остановиться.
-        yield return new WaitForSeconds(timeReload);
+        yield return new WaitForSeconds(_timeReload);
 
-        _reload = false;
+        _isReload = false;
     }
 
     private IEnumerator Shot()
     {   
         // Создаем стрелу
-        GameObject arrow = Instantiate(arrowPrefab) as GameObject;
+        GameObject _arrow = Instantiate(_arrowPrefab) as GameObject;
         // Указываем для нее коррдинаты и поворот
-        arrow.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
-        arrow.transform.rotation = transform.rotation;
+        _arrow.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
+        _arrow.transform.rotation = transform.rotation;
 
-        Rigidbody body = arrow.GetComponent<Collider>().attachedRigidbody;
+        Rigidbody body = _arrow.GetComponent<Collider>().attachedRigidbody;
 
         if (body != null)
         {
             // Назначаем физическому телу скорость.
-            body.velocity = transform.forward * shotForce;
+            body.velocity = transform.forward * _shotForce;
         }
 
         // Ключевое слово yield указывает сопрограмме, когда следует остановиться.
         yield return new WaitForSeconds(2);
 
         // Удаляем объект со сцены и очищаем память
-        Destroy(arrow);
+        Destroy(_arrow);
     }
 
-    void OnGUI() 
-    { 
-        int size = 12; 
-        float posX = camera.pixelWidth/2 - size/4; 
-        float posY = camera.pixelHeight/2 - size/2; 
-        GUI.Label(new Rect(posX, posY, size, size), "*");
-    } 
+    // void OnGUI() 
+    // { 
+    //     int size = 12; 
+    //     float posX = _camera.pixelWidth/2 - size/4; 
+    //     float posY = _camera.pixelHeight/2 - size/2; 
+    //     GUI.Label(new Rect(posX, posY, size, size), "*");
+    // } 
 }

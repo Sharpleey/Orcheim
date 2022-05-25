@@ -4,38 +4,64 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-	[SerializeField] private int damage = 1;
+	[SerializeField] private int _damage = 20;
+	[SerializeField] private int _damageSpread = 4;
+	private int _actualDamage;
 
-	private Rigidbody rg;
+	public bool isArrowInBowstring = true;
+	private bool _isArrowInFlight = false;
+	private Rigidbody _arrowRigidbody;
 	
 	private void Start() 
 	{
-		rg = this.gameObject.GetComponent<Rigidbody>();
+		_arrowRigidbody = this.gameObject.GetComponent<Rigidbody>();
+		_actualDamage = GetActualDamage();
 	}
 
 	private void FixedUpdate() 
 	{
-		transform.LookAt(transform.position + rg.velocity);
-		Debug.Log(rg.velocity);
+		// Момент вылета стрелы
+		if (!isArrowInBowstring && !_isArrowInFlight)
+		{
+			_isArrowInFlight = true;
+			// Запускаем отсчет для удаления стрелы
+			StartCoroutine(DeleteArrow(5));
+		}
+
+		transform.LookAt(transform.position + _arrowRigidbody.velocity);
 	}
 
 	void OnTriggerEnter(Collider other)
     {
-        rg.isKinematic = true;
-		StartCoroutine(DeleteArrow());
+		var enemy = other.GetComponent<Enemy1>();
+		if(enemy)
+		{
+			enemy.ReactToHit(_actualDamage);
+		}
+
+		if(!isArrowInBowstring)
+		{
+			StartCoroutine(DeleteArrow(0));
+		}
     }
 
-	private IEnumerator DeleteArrow()
+	private IEnumerator DeleteArrow(int secondsBeforeDeletion)
     {   
         // Ключевое слово yield указывает сопрограмме, когда следует остановиться.
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(secondsBeforeDeletion);
 
         // Удаляем объект со сцены и очищаем память
         Destroy(this.gameObject);
     }
 
+	private int GetActualDamage()
+	{	
+		int actualDamage = Random.Range(_damage - _damageSpread, _damage + _damageSpread);
+		return actualDamage;
+	}
+
 	// private void OnCollisionEnter(Collision other) {
-	// 	rg.isKinematic = true;
+	// 	_rg.isKinematic = true;
 	// 	StartCoroutine(DeleteArrow());
 	// }
 }

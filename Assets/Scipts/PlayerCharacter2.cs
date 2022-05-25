@@ -14,6 +14,9 @@ using UnityEditor;
 //     public int amount = 0;
 // }
 
+[RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(CharacterController))]
+
 public class PlayerCharacter2 : MonoBehaviour
 {
     //Urg that's ugly, maybe find a better way
@@ -36,6 +39,7 @@ public class PlayerCharacter2 : MonoBehaviour
     [SerializeField] private float _playerSpeed = 5.0f;
     [SerializeField] private float _runningSpeed = 7.0f;
     [SerializeField] private float _jumpSpeed = 5.0f;
+    
 
     // [Header("Audio")]
     // public RandomPlayer FootstepPlayer;
@@ -46,7 +50,6 @@ public class PlayerCharacter2 : MonoBehaviour
     public TextMeshProUGUI infoText;
     
     private float _verticalSpeed = 0.0f;
-
     private float _verticalAngle;
     private float _horizontalAngle;
 
@@ -114,7 +117,7 @@ public class PlayerCharacter2 : MonoBehaviour
 
     void Update()
     {
-        infoText.text = _verticalAngle.ToString();
+        infoText.text = "";
         // if (CanPause && Input.GetButtonDown("Menu"))
         // {
         //     PauseMenu.Instance.Display();
@@ -146,12 +149,13 @@ public class PlayerCharacter2 : MonoBehaviour
             _isGrounded = true;
         }
 
-        Speed = 0;
+        // Speed = 0;
         Vector3 move = Vector3.zero;
 
         if (!_isPaused && !LockControl)
         {
             // Прыжок
+            // --------------------------------------------------------------------
             if (_isGrounded && Input.GetButtonDown("Jump"))
             {
                 _verticalSpeed = _jumpSpeed;
@@ -167,8 +171,10 @@ public class PlayerCharacter2 : MonoBehaviour
             {
                 _speedAtJump = actualSpeed;
             }
+            // --------------------------------------------------------------------
 
             // Перемещение персонажа WASD
+            // --------------------------------------------------------------------
             move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
             if (move.sqrMagnitude > 1.0f)
                 move.Normalize();
@@ -179,6 +185,7 @@ public class PlayerCharacter2 : MonoBehaviour
             
             move = transform.TransformDirection(move);
             _characterController.Move(move);
+            // --------------------------------------------------------------------
             
             // Поворот персонажа налево/направо
             // --------------------------------------------------------------------
@@ -208,7 +215,8 @@ public class PlayerCharacter2 : MonoBehaviour
   
             // m_Weapons[m_CurrentWeapon].triggerDown = Input.GetMouseButton(0);
 
-            Speed = move.magnitude / (_playerSpeed * Time.deltaTime);
+            // Speed = move.magnitude / (_playerSpeed * Time.deltaTime); //???
+            // infoText.text += "\n" + "Speed:" + Speed.ToString();
 
             // if (Input.GetButton("Reload"))
             //     m_Weapons[m_CurrentWeapon].Reload();
@@ -244,13 +252,18 @@ public class PlayerCharacter2 : MonoBehaviour
 
         // Падение/гравитация
         // --------------------------------------------------------------------
-        _verticalSpeed -= 10.0f * Time.deltaTime;
-        // if (_verticalSpeed < -10.0f)
-        //     _verticalSpeed = -10.0f; // max fall speed
+        _verticalSpeed -= 9.8f * Time.deltaTime;
         var verticalMove = new Vector3(0, _verticalSpeed * Time.deltaTime, 0);
-        var flag = _characterController.Move(verticalMove);
-                if ((flag & CollisionFlags.Below) != 0)
-            _verticalSpeed = 0;
+        var flag = _characterController.Move(verticalMove); // Возращает направление столкновения персонажа (Below (Низ контроллера))
+        // Если мы на земле задаем вертикальную скорость около нуля, т.к. она постоянно увеличивается со временем
+        if (flag == CollisionFlags.Below)
+        {
+            _verticalSpeed = -0.3f;
+        }
+
+        // infoText.text += "\n" + "wasGrounded:" + wasGrounded.ToString();
+        // infoText.text += "\n" + "_isGrounded:" + _isGrounded.ToString();
+        // infoText.text += "\n" + "loosedGrounding:" + loosedGrounding.ToString();
 
         if (!wasGrounded && _isGrounded)
         {
@@ -259,12 +272,12 @@ public class PlayerCharacter2 : MonoBehaviour
         // --------------------------------------------------------------------
     }
 
-    public void DisplayCursor(bool display)
-    {
-        _isPaused = display;
-        Cursor.lockState = display ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = display;
-    }
+    // public void DisplayCursor(bool display)
+    // {
+    //     _isPaused = display;
+    //     Cursor.lockState = display ? CursorLockMode.None : CursorLockMode.Locked;
+    //     Cursor.visible = display;
+    // }
 
     // void PickupWeapon(Weapon prefab)
     // {
