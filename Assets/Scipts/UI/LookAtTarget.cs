@@ -5,17 +5,23 @@ using UnityEngine;
 public class LookAtTarget : MonoBehaviour
 {
     [SerializeField]
-    private GameObject targetLookAt;
+    private Transform _target;
+    private GameObject _mainCam;
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!_target)
+        {
+            _mainCam = GameObject.FindGameObjectsWithTag("MainCamera")[0];
+            if (_mainCam)
+                _target = _mainCam.transform;
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        if (targetLookAt)
-            transform.LookAt(targetLookAt.transform);
+        if (_target)
+            transform.LookAt(transform.position - _target.forward);
     }
 }
