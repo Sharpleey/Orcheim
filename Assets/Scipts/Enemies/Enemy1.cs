@@ -45,8 +45,13 @@ public class Enemy1 : MonoBehaviour, IEnemy
         }
     }
 
-    private IEnumerator Die() {
-		yield return new WaitForSeconds(1.5f);
+    private IEnumerator Die() 
+    {
+        var ragdollControl = GetComponent<RagdollControl>();
+        if(ragdollControl)
+            ragdollControl.MakePhysical();
+
+		yield return new WaitForSeconds(3.5f);
 		
 		Destroy(this.gameObject);
 	}

@@ -33,7 +33,9 @@ public class Arrow : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
     {
-		var enemy = other.GetComponent<Enemy1>();
+		var enemy = other.GetComponentInParent<Enemy1>();
+
+		// var enemy = other.GetComponent<Enemy1>();
 		if(enemy)
 		{
 			enemy.ReactToHit(_actualDamage);
