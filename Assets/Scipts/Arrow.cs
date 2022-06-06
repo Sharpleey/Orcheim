@@ -14,8 +14,8 @@ public class Arrow : MonoBehaviour
 	
 	private void Start() 
 	{
-		_arrowRigidbody = this.gameObject.GetComponent<Rigidbody>();
-		_actualDamage = GetActualDamage();
+		_arrowRigidbody = gameObject.GetComponent<Rigidbody>();
+		_actualDamage = GetActualDamageValue();
 	}
 
 	private void FixedUpdate() 
@@ -31,14 +31,13 @@ public class Arrow : MonoBehaviour
 		transform.LookAt(transform.position + _arrowRigidbody.velocity);
 	}
 
-	void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider hitCollider)
     {
-		var enemy = other.GetComponentInParent<Enemy1>();
+		Enemy1 enemy = hitCollider.GetComponentInParent<Enemy1>();
 
-		// var enemy = other.GetComponent<Enemy1>();
 		if(enemy)
 		{
-			enemy.ReactToHit(_actualDamage);
+			enemy.ReactToHit(_actualDamage, hitCollider);
 		}
 
 		if(!isArrowInBowstring)
@@ -56,7 +55,7 @@ public class Arrow : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-	private int GetActualDamage()
+	private int GetActualDamageValue()
 	{	
 		int actualDamage = Random.Range(_damage - _damageSpread, _damage + _damageSpread);
 		return actualDamage;

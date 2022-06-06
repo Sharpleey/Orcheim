@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
+[RequireComponent(typeof(HitBoxesController))]
+[RequireComponent(typeof(RagdollController))]
+
 public class Enemy1 : MonoBehaviour, IEnemy
 {
+    public static HitBoxesController HitBoxesController {get; private set;}
+
     [SerializeField] private float _maxHealth = 100;
 
     [SerializeField] private TextMeshProUGUI _textTakingDamage;
@@ -16,6 +22,8 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     private void Awake()
     {
+        HitBoxesController = GetComponent<HitBoxesController>();
+
         MaxHealth = _maxHealth;
         Health = MaxHealth;
     }
@@ -31,8 +39,11 @@ public class Enemy1 : MonoBehaviour, IEnemy
         
     }
 
-    public void ReactToHit(int damage)
+    public void ReactToHit(int damage, Collider hitCollider)
     {
+        // Получаем значение урона с учетом попадания в ту или иную часть тела
+        damage = HitBoxesController.GetDamageValue(damage, hitCollider);
+
         PopupDamage popupDamage = _textTakingDamage.GetComponent<PopupDamage>();
         popupDamage.SetText(damage.ToString());
         popupDamage.ShowAndHide();
@@ -47,12 +58,12 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     private IEnumerator Die() 
     {
-        var ragdollControl = GetComponent<RagdollControl>();
+        RagdollController ragdollControl = GetComponent<RagdollController>();
         if(ragdollControl)
             ragdollControl.MakePhysical();
 
 		yield return new WaitForSeconds(3.5f);
 		
-		Destroy(this.gameObject);
+		Destroy(gameObject);
 	}
 }

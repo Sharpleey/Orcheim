@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RagdollControl : MonoBehaviour
+public class RagdollController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private List<Rigidbody> _allRigibodys;

@@ -252,7 +252,7 @@ public class PlayerCharacter2 : MonoBehaviour
 
         // Падение/гравитация
         // --------------------------------------------------------------------
-        _verticalSpeed -= 9.8f * Time.deltaTime;
+        _verticalSpeed -= 11.8f * Time.deltaTime;
         var verticalMove = new Vector3(0, _verticalSpeed * Time.deltaTime, 0);
         var flag = _characterController.Move(verticalMove); // Возращает направление столкновения персонажа (Below (Низ контроллера))
         // Если мы на земле задаем вертикальную скорость около нуля, т.к. она постоянно увеличивается со временем

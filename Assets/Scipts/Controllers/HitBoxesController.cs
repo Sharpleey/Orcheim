@@ -1,0 +1,58 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class HitBoxesController : MonoBehaviour
+{
+    [Header("Hit Box Colliders")]
+    [SerializeField] private Collider _headCollider;
+    [SerializeField] private List<Collider> _handColliders;
+    [SerializeField] private List<Collider> _legColliders;
+    [SerializeField] private List<Collider> _bodyColliders;
+
+    [Header("Hit Boxe Multiply Damage")]
+    [SerializeField] private float _headDamageMultiplier = 3.0f;
+    [SerializeField] private float _handDamageMultiplier = 0.5f;
+    [SerializeField] private float _legDamageMultiplier = 0.5f;
+    [SerializeField] private float _bodyDamageMultiplier = 1.0f;
+
+
+    public int GetDamageValue(int damage, Collider hitCollider)
+    {   
+        // Сравниваю по имени, потому что при сравнении объектов, работает только на первои экземпляре префаба
+        if (hitCollider.name == _headCollider.name)
+        {
+            float actualDamage = damage * _headDamageMultiplier;
+            return (int)actualDamage;
+        }
+
+        foreach (Collider handCollider in _handColliders)
+        {
+            if (hitCollider.name == handCollider.name)
+            {
+                float actualDamage = damage * _handDamageMultiplier;
+                return (int)actualDamage;
+            }
+        } 
+        
+        foreach (Collider legCollider in _legColliders)
+        {
+            if (hitCollider.name == legCollider.name)
+            {
+                float actualDamage = damage * _legDamageMultiplier;
+                return (int)actualDamage;
+            }
+        }
+
+        foreach (Collider bodyCollider in _bodyColliders)
+        {
+            if (hitCollider.name == bodyCollider.name)
+            {
+                float actualDamage = damage * _bodyDamageMultiplier;
+                return (int)actualDamage;
+            }
+        }
+
+        return 1;
+    }
+}
