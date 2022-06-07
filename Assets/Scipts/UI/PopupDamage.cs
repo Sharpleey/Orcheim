@@ -6,12 +6,12 @@ using System;
 
 public class PopupDamage : MonoBehaviour
 {
-    private TextMeshProUGUI _textMeshPro;
+    [SerializeField] private TextMeshProUGUI _textMeshPro;
 
     private bool _isShow = false;
     private bool _isHide = false;
 
-    private float alpha = 0f;
+    private float _currentAlpha = 0f;
 
     [SerializeField]
     private float _rateShowing = 2.5f;
@@ -19,7 +19,7 @@ public class PopupDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _textMeshPro = GetComponent<TextMeshProUGUI>();
+        // _textMeshPro = GetComponent<TextMeshProUGUI>();
         _textMeshPro.alpha = 0f;
 
     }
@@ -30,14 +30,14 @@ public class PopupDamage : MonoBehaviour
         if(_isShow)
         {
 
-            _textMeshPro.alpha = alpha;
-            if(alpha < 1.0f)
+            _textMeshPro.alpha = _currentAlpha;
+            if(_currentAlpha < 1.0f)
             {
-                alpha += _rateShowing * Time.deltaTime;
+                _currentAlpha += _rateShowing * Time.deltaTime;
             }
             else
             {
-                alpha = 1.0f;
+                _currentAlpha = 1.0f;
                 _isShow = false;
                 _isHide = true;
             }
@@ -46,14 +46,14 @@ public class PopupDamage : MonoBehaviour
         if(_isHide)
         {
 
-            _textMeshPro.alpha = alpha;
-            if(alpha > 0f)
+            _textMeshPro.alpha = _currentAlpha;
+            if(_currentAlpha > 0f)
             {
-                alpha -= _rateShowing * Time.deltaTime;
+                _currentAlpha -= _rateShowing * Time.deltaTime;
             }
             else
             {
-                alpha = 0f;
+                _currentAlpha = 0f;
                 _isHide = false;
             }
 

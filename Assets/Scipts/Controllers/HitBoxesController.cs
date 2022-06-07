@@ -16,11 +16,10 @@ public class HitBoxesController : MonoBehaviour
     [SerializeField] private float _legDamageMultiplier = 0.5f;
     [SerializeField] private float _bodyDamageMultiplier = 1.0f;
 
-
     public int GetDamageValue(int damage, Collider hitCollider)
     {   
         // Сравниваю по имени, потому что при сравнении объектов, работает только на первои экземпляре префаба
-        if (hitCollider.name == _headCollider.name)
+        if (hitCollider == this._headCollider)
         {
             float actualDamage = damage * _headDamageMultiplier;
             return (int)actualDamage;
@@ -28,7 +27,7 @@ public class HitBoxesController : MonoBehaviour
 
         foreach (Collider handCollider in _handColliders)
         {
-            if (hitCollider.name == handCollider.name)
+            if (hitCollider == handCollider)
             {
                 float actualDamage = damage * _handDamageMultiplier;
                 return (int)actualDamage;
@@ -37,7 +36,7 @@ public class HitBoxesController : MonoBehaviour
         
         foreach (Collider legCollider in _legColliders)
         {
-            if (hitCollider.name == legCollider.name)
+            if (hitCollider == legCollider)
             {
                 float actualDamage = damage * _legDamageMultiplier;
                 return (int)actualDamage;
@@ -46,7 +45,7 @@ public class HitBoxesController : MonoBehaviour
 
         foreach (Collider bodyCollider in _bodyColliders)
         {
-            if (hitCollider.name == bodyCollider.name)
+            if (hitCollider == bodyCollider)
             {
                 float actualDamage = damage * _bodyDamageMultiplier;
                 return (int)actualDamage;
