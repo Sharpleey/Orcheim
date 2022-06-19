@@ -18,7 +18,6 @@ public class Enemy1 : MonoBehaviour, IEnemy
     public float Health {get; set;}
 
     private Material _enemyMaterial;
-    
 
     private void Awake()
     {

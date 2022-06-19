@@ -38,6 +38,7 @@ public class Arrow : MonoBehaviour
 		if(enemy)
 		{
 			enemy.ReactToHit(_actualDamage, hitCollider);
+			
 		}
 
 		if(!isArrowInBowstring)
