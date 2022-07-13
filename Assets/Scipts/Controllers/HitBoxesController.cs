@@ -18,7 +18,6 @@ public class HitBoxesController : MonoBehaviour
 
     public int GetDamageValue(int damage, Collider hitCollider)
     {   
-        // Сравниваю по имени, потому что при сравнении объектов, работает только на первои экземпляре префаба
         if (hitCollider == this._headCollider)
         {
             float actualDamage = damage * _headDamageMultiplier;

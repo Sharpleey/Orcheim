@@ -14,7 +14,6 @@ using UnityEditor;
 //     public int amount = 0;
 // }
 
-// [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(CharacterController))]
 
 public class PlayerCharacter : MonoBehaviour
@@ -23,15 +22,18 @@ public class PlayerCharacter : MonoBehaviour
     // public static PlayerCharacter2 Instance { get; protected set; }
 
     [SerializeField] private Camera _mainCamera;
-    // public Camera WeaponCamera;
-    
-    [SerializeField] private Transform CameraPosition;
+    //[SerializeField] private Transform CameraPosition;
     // public Transform WeaponPosition;
-    
+
     // public Weapon[] startingWeapons;
 
     //this is only use at start, allow to grant ammo in the inspector. m_AmmoInventory is used during gameplay
     // public AmmoInventoryEntry[] startingAmmo;
+
+    [Header("Weapon Settings")]
+    [SerializeField] public List<GameObject> _weapons;
+    [SerializeField] private GameObject _usedWeapon;
+    [SerializeField] private Transform _weaponPosition;
 
     [Header("Control Settings")]
     [SerializeField] private float _horizontalMouseSensitivity = 5.0f;
@@ -54,14 +56,13 @@ public class PlayerCharacter : MonoBehaviour
     private float _horizontalAngle;
 
     private bool _isPaused = false; //??? Надо понять для чего оно
-    // int m_CurrentWeapon;
     
     public float Speed { get; private set; } = 0.0f;
 
     public bool LockControl { get; set; }
     public bool CanPause { get; set; } = true;
 
-    // public bool isGrounded => _isGrounded; //??? Надо ли это нам вообще  (свойства только для чтения)(член, воплощающий выражение)
+    //public bool isGrounded => _isGrounded; //??? Надо ли это нам вообще  (свойства только для чтения)(член, воплощающий выражение)
 
     private bool _isGrounded;
     private float _groundedTimer;
@@ -91,6 +92,11 @@ public class PlayerCharacter : MonoBehaviour
         // _mainCamera.transform.localRotation = Quaternion.identity;
 
         _characterController = GetComponent<CharacterController>();
+
+        if (_weapons!= null)
+        {
+
+        }
 
         // for (int i = 0; i < startingWeapons.Length; ++i)
         // {

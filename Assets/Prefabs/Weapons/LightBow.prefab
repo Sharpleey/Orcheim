@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6862621969730909443}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bowMasterCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182344284632383582}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4724890205762107783}
   m_Father: {fileID: 2642054904864203970}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &501297900084924737
 GameObject:
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6524112666296344596}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_pullSlide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 7156396102592156164}
   - component: {fileID: 3415762456161234918}
   - component: {fileID: 6498529558394432896}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bowBodyGeo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2013504813143861546}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bend3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6546996677087529575}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: slideJoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 731149696192980138}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_drawIk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4612143959312875051}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_drawIk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,7 +274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6788307187522251080}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bend2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543509513564312648}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bowPull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6741685113017103150}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_pullSlide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7087252906298329983}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bend2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +396,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5451502895154369623}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_stringSlide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,6 +418,36 @@ Transform:
   m_Father: {fileID: 4724890205762107783}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3107828606079335275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4015682237520513031}
+  m_Layer: 2
+  m_Name: ProjectileSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4015682237520513031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3107828606079335275}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.333}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2642054904864203970}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4882080522381347152
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8421142350241393452}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bowString
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 749490519136330296}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bend4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +519,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8605734530270269373}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bowPull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -519,7 +549,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3168820776661763441}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bendIk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,7 +579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4108696421541399373}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bowGrip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4724890205762107783}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bones_controls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +646,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2260543751970098081}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_stringSlide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -647,7 +677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 304051624107684554}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: drawCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -680,7 +710,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1753385746706047583}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: stringSlideCtrl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -711,7 +741,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 488656737970072464}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bowString
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +773,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6949005375352024601}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bowGrip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -774,7 +804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7293474022780005976}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: transform1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -805,7 +835,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2075166248630496561}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bend4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -835,7 +865,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3161436269658396757}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bendIk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,7 +897,7 @@ GameObject:
   - component: {fileID: 3465751281491000323}
   - component: {fileID: 6694661608999805878}
   - component: {fileID: 80462937868810393}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bowStringGeo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -946,8 +976,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2642054904864203970}
-  m_Layer: 0
-  m_Name: Bow_1
+  - component: {fileID: 5142778388971988564}
+  m_Layer: 2
+  m_Name: LightBow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -960,15 +991,42 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8691227626589340173}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
+  m_LocalPosition: {x: 0.128, y: -0.161, z: 0.051}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4015682237520513031}
+  - {fileID: 6501762640100926238}
   - {fileID: 6862621969730909443}
   - {fileID: 8723369883924518213}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -80}
+--- !u!114 &5142778388971988564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8691227626589340173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf937d48eefe6b4cb3fa7b6ec9f1708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u041B\u0435\u0433\u043A\u0438\u0439 \u043B\u0443\u043A"
+  _damageSpread: 5
+  _timeReloadShot: 0.5
+  _originalArrow: {fileID: 0}
+  _arrowSpawn: {fileID: 0}
+  _camera: {fileID: 0}
+  _shotForce: 8
+  _onPenetrationMod: 0
+  _onCriticalDamageMod: 0
+  _onFireArrowMod: 0
+  _onSlowArrowMod: 0
+  _onMjolnirMod: 0
+  _debugMod: 0
 --- !u!1 &8880876587491862558
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,7 +1036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2752233575756942800}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bend3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1009,7 +1067,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2690679224554381435}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: b_bend1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1040,7 +1098,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8723369883924518213}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: geoGrp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1054,15 +1112,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8994698687756250126}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7156396102592156164}
   - {fileID: 3465751281491000323}
   m_Father: {fileID: 2642054904864203970}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &9082267000653258623
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,7 +1130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7405700354458064240}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: t_bend1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1103,7 +1161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4510337296946269728}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bendBones
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1126,3 +1184,69 @@ Transform:
   m_Father: {fileID: 4724890205762107783}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &913877920254301132
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2642054904864203970}
+    m_Modifications:
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547502266068540880, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_Name
+      value: ProjectileArrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547502266068540880, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+--- !u!4 &6501762640100926238 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6238709841742508242, guid: ed1fe874a10f3154bb94a7c84071a327, type: 3}
+  m_PrefabInstance: {fileID: 913877920254301132}
+  m_PrefabAsset: {fileID: 0}
