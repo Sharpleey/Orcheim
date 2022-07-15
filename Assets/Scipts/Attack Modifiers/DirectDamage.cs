@@ -5,10 +5,11 @@ using UnityEngine;
 public class DirectDamage : MonoBehaviour ,IModifier
 {
     #region Serialize Fields
-    [SerializeField] string _name = "”рон";
-    [SerializeField] string _description = "Ќаносит противнику урон при попадании";
+    [SerializeField] private string _name = "”рон";
+    [SerializeField] private string _description = "Ќаносит противнику урон при попадании";
 
-    [SerializeField] int _damage = 25;
+    [SerializeField] [Range(1, 300)] private int _damage = 25;
+    [SerializeField] private TypeDamage _typeDamage = TypeDamage.Physical;
     #endregion Serialize Fields
 
     #region Properties
@@ -30,7 +31,17 @@ public class DirectDamage : MonoBehaviour ,IModifier
             _damage = value;
         }
     }
+    public TypeDamage TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
     #endregion Properties
+
+    #region Fields
+
+    /// <summary>
+    /// C ее помощью фиксим баг, когда стрела успевает попасть по нескольким коллайдерам до момента удалени€
+    /// </summary>
+    private bool _isHitEnemy = false; 
+
+    #endregion Fields
 
     #region Methods
     private void Awake()
@@ -38,13 +49,18 @@ public class DirectDamage : MonoBehaviour ,IModifier
         Name = _name;
         Description = _description;
         Damage = _damage;
+        TypeDamage = _typeDamage;
     }
     private void OnTriggerEnter(Collider hitCollider)
     {
-        IEnemy enemy = hitCollider.GetComponentInParent<Enemy1>();
-        if (enemy != null)
+        if(!_isHitEnemy)
         {
-            enemy.TakeHitboxDamage(Damage, hitCollider);
+            IEnemy enemy = hitCollider.GetComponentInParent<Enemy1>();
+            if (enemy != null)
+            {
+                _isHitEnemy = true;
+                enemy.TakeHitboxDamage(Damage, hitCollider, TypeDamage);
+            }
         }
     }
     #endregion Methods

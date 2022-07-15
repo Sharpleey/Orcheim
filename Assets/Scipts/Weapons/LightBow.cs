@@ -233,26 +233,42 @@ public class LightBow : MonoBehaviour, IBowWeapon
             }
             AttackMods.Add(modifier);
         }
-        //if (_onCriticalDamageMod)
-        //{
-        //    IModifier mod = _originalArrow.AddComponent(typeof(DirectDamage)) as IModifier;
-        //    AttackMods.Add(mod);
-        //}
-        //if (_onFireArrowMod)
-        //{
-        //    IModifier mod = _originalArrow.AddComponent(typeof(DirectDamage)) as IModifier;
-        //    AttackMods.Add(mod);
-        //}
-        //if (_onSlowArrowMod)
-        //{
-        //    IModifier mod = _originalArrow.AddComponent(typeof(DirectDamage)) as IModifier;
-        //    AttackMods.Add(mod);
-        //}
-        //if (_onMjolnirMod)
-        //{
-        //    IModifier mod = _originalArrow.AddComponent(typeof(DirectDamage)) as IModifier;
-        //    AttackMods.Add(mod);
-        //}
+        if (_onCriticalDamageMod)
+        {
+            IModifier modifier = _originalArrow.GetComponent<CriticalDamage>();
+            if (modifier == null)
+            {
+                modifier = _originalArrow.AddComponent<CriticalDamage>() as IModifier;
+            }
+            AttackMods.Add(modifier);
+        }
+        if (_onFireArrowMod)
+        {
+            IModifier modifier = _originalArrow.GetComponent<FireArrow>();
+            if (modifier == null)
+            {
+                modifier = _originalArrow.AddComponent<FireArrow>() as IModifier;
+            }
+            AttackMods.Add(modifier);
+        }
+        if (_onSlowArrowMod)
+        {
+            IModifier modifier = _originalArrow.GetComponent<SlowArrow>();
+            if (modifier == null)
+            {
+                modifier = _originalArrow.AddComponent<SlowArrow>() as IModifier;
+            }
+            AttackMods.Add(modifier);
+        }
+        if (_onMjolnirMod)
+        {
+            IModifier modifier = _originalArrow.GetComponent<Mjolnir>();
+            if (modifier == null)
+            {
+                modifier = _originalArrow.AddComponent<Mjolnir>() as IModifier;
+            }
+            AttackMods.Add(modifier);
+        }
     }
 
     #endregion Methods

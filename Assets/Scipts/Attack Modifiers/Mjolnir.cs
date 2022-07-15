@@ -5,18 +5,20 @@ using UnityEngine;
 public class Mjolnir : MonoBehaviour, IModifier
 {
     #region Serialize Fields
-    [SerializeField] string _name = "Мьелнир";
-    [SerializeField] string _description = "С некоторым шансом можен сработать молния, которая нанесет противникам урон по цепочке";
+    [SerializeField] private string _name = "Мьелнир";
+    [SerializeField] private string _description = "С некоторым шансом можен сработать молния, которая нанесет противникам урон по цепочке";
 
-    [SerializeField] int _procСhance = 25;
-    [SerializeField] int _damage = 20;
-    [SerializeField] int _maxTargetMjolnir = 3;
-    [SerializeField] float _radius = 2.5f;
+    [SerializeField] [Range(10, 100)] private int _procСhance = 25;
+    [SerializeField] [Range(1, 300)] private int _damage = 20;
+    [SerializeField] [Range(3, 10)] private int _maxTargetMjolnir = 3;
+    [SerializeField] [Range(1.0f, 8.0f)] private float _radius = 2.5f;
+    [SerializeField] private TypeDamage _typeDamage = TypeDamage.Electric;
     #endregion Serialize Fields
 
     #region Properties
     public string Name { get => _name; private set => _name = value; }
     public string Description { get => _description; private set => _description = value; }
+    public TypeDamage TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
     public int ProcСhance
     {
         get
@@ -97,6 +99,7 @@ public class Mjolnir : MonoBehaviour, IModifier
         Damage = _damage;
         MaxTargetMjolnir = _maxTargetMjolnir;
         Radius = _radius;
+        TypeDamage = _typeDamage;
     }
     private void OnTriggerEnter(Collider hitCollider)
     {

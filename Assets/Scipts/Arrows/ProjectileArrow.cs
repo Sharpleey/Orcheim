@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DirectDamage))]
 public class ProjectileArrow : MonoBehaviour
 {
 	#region Serialize Fields

@@ -5,12 +5,12 @@ using UnityEngine;
 public class Penetration : MonoBehaviour, IModifier
 {
     #region Serialize Fields
-    [SerializeField] string _name = "Пробивание";
-    [SerializeField] string _description = "Позволяет пробивать нескольких противников c некоторым шансом, с каждым пробитием урон уменьшается";
+    [SerializeField] private string _name = "Пробивание";
+    [SerializeField] private string _description = "Позволяет пробивать нескольких противников c некоторым шансом, с каждым пробитием урон уменьшается";
 
-    [SerializeField] int _procСhance = 25;
-    [SerializeField] int _maxTargetPenetration = 2;
-    [SerializeField] float _damageDecrease = 0.50f;
+    [SerializeField] [Range(10, 100)] private int _procСhance = 10;
+    [SerializeField] [Range(2, 10)] private int _maxTargetPenetration = 2;
+    [SerializeField] [Range(0.5f, 0.1f)] private float _damageDecrease = 0.5f;
     #endregion Serialize Fields
 
     #region Properties
@@ -45,9 +45,9 @@ public class Penetration : MonoBehaviour, IModifier
         }
         set
         {
-            if (value < 1)
+            if (value < 2)
             {
-                _maxTargetPenetration = 1;
+                _maxTargetPenetration = 2;
                 return;
             }
             if (value > 10)
@@ -66,14 +66,14 @@ public class Penetration : MonoBehaviour, IModifier
         }
         set
         {
-            if (value < 0)
+            if (value < 0.1f)
             {
-                _damageDecrease = 0.0f;
+                _damageDecrease = 0.1f;
                 return;
             }
-            if (value > 0.9f)
+            if (value > 0.5f)
             {
-                _damageDecrease = 0.9f;
+                _damageDecrease = 0.5f;
                 return;
             }
             _damageDecrease = value;

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface IEnemy
 {
-    float MaxHealth {get; set;}
-    float Health {get; set;}
-    void TakeHitboxDamage(int damage, Collider hitCollider);
+    int MaxHealth {get; }
+    int Health {get; }
+    float Speed { get; }
+    void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage);
 }

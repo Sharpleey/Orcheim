@@ -5,64 +5,96 @@ using TMPro;
 
 [RequireComponent(typeof(HitBoxesController))]
 [RequireComponent(typeof(RagdollController))]
+[RequireComponent(typeof(EnemyUIController))]
 
 public class Enemy1 : MonoBehaviour, IEnemy
 {
-    public HitBoxesController HitBoxesController { get; set; }
+    #region Serialize Fields
 
-    [SerializeField] private float _maxHealth = 100;
+    [SerializeField] private int _maxHealth = 100;
+    [SerializeField] private int _health;
+    [SerializeField] private float _speed = 5;
 
-    // [SerializeField] private TextMeshProUGUI _textTakingDamage;
+    #endregion Serialize Fields
 
-    public float MaxHealth { get; set; }
-    public float Health { get; set; }
+    #region Properties
 
-    private Material _enemyMaterial;
-
-    private void Awake()
+    public int MaxHealth
     {
-        HitBoxesController = GetComponent<HitBoxesController>();
-
-        MaxHealth = _maxHealth;
-        Health = MaxHealth;
+        get
+        {
+            return _maxHealth;
+        }
+        set
+        {
+            if (value <= 0)
+            {
+                _maxHealth = 1;
+                return;
+            }
+            _maxHealth = value;
+        }
+    }
+    public int Health
+    {
+        get
+        {
+            return _health;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                _health = 0;
+                return;
+            }
+            if (value > _maxHealth)
+            {
+                _health = _maxHealth;
+                return;
+            }
+            _health = value;
+        }
+    }
+    public float Speed
+    {
+        get
+        {
+            return _speed;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                _speed = 0;
+                return;
+            }
+            _speed = value;
+        }
     }
 
-    // private int GetDamageValue(int damage, Collider hitCollider)
-    // {   
-    //     Debug.Log("Стрела: " + HitBoxesController.hitCollider.GetInstanceID());
-    //     Debug.Log("Противник голова: " + HitBoxesController_headCollider.GetInstanceID());
-    //     // Сравниваю по имени, потому что при сравнении объектов, работает только на первои экземпляре префаба
-    //     if (hitCollider.name == HitBoxesController._headCollider.name)
-    //     {
-    //         float actualDamage = damage * HitBoxesController._headDamageMultiplier;
-    //         return (int)actualDamage;
-    //     }
-    //     foreach (Collider handCollider in HitBoxesController._handColliders)
-    //     {
-    //         if (hitCollider.name == HitBoxesController.handCollider.name)
-    //         {
-    //             float actualDamage = damage * HitBoxesController._handDamageMultiplier;
-    //             return (int)actualDamage;
-    //         }
-    //     } 
-    //     foreach (Collider legCollider in HitBoxesController._legColliders)
-    //     {
-    //         if (hitCollider.name == HitBoxesController.legCollider.name)
-    //         {
-    //             float actualDamage = damage * HitBoxesController._legDamageMultiplier;
-    //             return (int)actualDamage;
-    //         }
-    //     }
-    //     foreach (Collider bodyCollider in HitBoxesController._bodyColliders)
-    //     {
-    //         if (hitCollider.name == HitBoxesController.bodyCollider.name)
-    //         {
-    //             float actualDamage = damage * HitBoxesController._bodyDamageMultiplier;
-    //             return (int)actualDamage;
-    //         }
-    //     }
-    //     return 1;
-    // }
+    #endregion Properties
+
+    #region Fields
+    private HitBoxesController _hitBoxesController;
+    private EnemyUIController _enemyUIController;
+
+    #endregion Fields
+
+    #region Methods
+    private void Awake()
+    {
+        MaxHealth = _maxHealth;
+        Health = MaxHealth;
+        Speed = _speed;
+    }
+
+    private void Start()
+    {
+        _hitBoxesController = GetComponent<HitBoxesController>();
+        _enemyUIController = GetComponent<EnemyUIController>();
+    }
+
     private IEnumerator Die()
     {
         RagdollController ragdollControl = GetComponent<RagdollController>();
@@ -74,17 +106,18 @@ public class Enemy1 : MonoBehaviour, IEnemy
         Destroy(this.gameObject);
     }
 
-    public void ReactToHit(int damage, Collider hitCollider)
+    public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
     {
         // Получаем значение урона с учетом попадания в ту или иную часть тела
-        damage = HitBoxesController.GetDamageValue(damage, hitCollider);
-        // damage = GetDamageValue(damage, hitCollider);
+        damage = _hitBoxesController.GetDamageValue(damage, hitCollider);
+        TakeDamage(damage, typeDamage);
+    }
 
-        PopupDamage popupDamage = GetComponent<PopupDamage>();
-        popupDamage.SetText(damage.ToString());
-        popupDamage.ShowAndHide();
-
+    private void TakeDamage(int damage, TypeDamage typeDamage)
+    {
         Health -= damage;
+
+        StartCoroutine(_enemyUIController.ShowDamage(damage, typeDamage));
 
         if (Health <= 0)
         {
@@ -92,30 +125,12 @@ public class Enemy1 : MonoBehaviour, IEnemy
         }
     }
 
-    public void TakeHitboxDamage(int damage, Collider hitCollider)
-    {
-        // Получаем значение урона с учетом попадания в ту или иную часть тела
-        damage = HitBoxesController.GetDamageValue(damage, hitCollider);
-        TakeDamage(damage);
-    }
+    //private void ShowPopupDamage(int damage)
+    //{
+    //    PopupDamage popupDamage = GetComponent<PopupDamage>();
+    //    popupDamage.SetText(damage.ToString());
+    //    popupDamage.ShowAndHide();
+    //}
 
-    private void TakeDamage(int damage)
-    {
-        Health -= damage;
-
-        ShowPopupDamage(damage);
-
-        if (Health <= 0)
-        {
-            StartCoroutine(Die());
-        }
-    }
-
-    private void ShowPopupDamage(int damage)
-    {
-        PopupDamage popupDamage = GetComponent<PopupDamage>();
-        popupDamage.SetText(damage.ToString());
-        popupDamage.ShowAndHide();
-    }
-
+    #endregion Methods
 }

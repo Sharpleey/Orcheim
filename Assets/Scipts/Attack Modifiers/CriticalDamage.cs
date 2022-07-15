@@ -5,11 +5,11 @@ using UnityEngine;
 public class CriticalDamage : MonoBehaviour, IModifier
 {
     #region Serialize Fields
-    [SerializeField] string _name = "Критический урон";
-    [SerializeField] string _description = "Позволяет с некоторым шансом наноситть увеличенный урон";
+    [SerializeField] private string _name = "Критический урон";
+    [SerializeField] private string _description = "Позволяет с некоторым шансом наноситть увеличенный урон";
 
-    [SerializeField] int _procСhance = 25;
-    [SerializeField] float _critMultiplierDamage = 2.0f;
+    [SerializeField] [Range(10, 100)] private int _procСhance = 10;
+    [SerializeField] [Range(1.5f, 10f)]  private float _critMultiplierDamage = 1.5f;
     #endregion Serialize Fields
 
     #region Properties
@@ -44,9 +44,9 @@ public class CriticalDamage : MonoBehaviour, IModifier
         }
         set
         {
-            if (value < 1.0f)
+            if (value < 1.5f)
             {
-                _critMultiplierDamage = 1.0f;
+                _critMultiplierDamage = 1.5f;
                 return;
             }
             if (value > 10.0f)

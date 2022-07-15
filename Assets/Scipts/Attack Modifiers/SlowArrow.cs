@@ -5,12 +5,12 @@ using UnityEngine;
 public class SlowArrow : MonoBehaviour, IModifier
 {
     #region Serialize Fields
-    [SerializeField] string _name = "Замедляющая стрела стрела";
-    [SerializeField] string _description = "Замедляет противника с некоторым шансом";
+    [SerializeField] private string _name = "Замедляющая стрела стрела";
+    [SerializeField] private string _description = "Замедляет противника с некоторым шансом";
 
-    [SerializeField] int _procСhance = 25;
-    [SerializeField] float _slowdown = 0.25f;
-    [SerializeField] int _duration = 3;
+    [SerializeField] [Range(10, 100)] private int _procСhance = 25;
+    [SerializeField] [Range(0.2f, 0.9f)] private float _slowdown = 0.2f;
+    [SerializeField] [Range(3, 10)] private int _duration = 3;
     #endregion Serialize Fields
 
     #region Properties
@@ -45,9 +45,9 @@ public class SlowArrow : MonoBehaviour, IModifier
         }
         set
         {
-            if (value <= 0)
+            if (value <= 3)
             {
-                _duration = 1;
+                _duration = 3;
                 return;
             }
             _duration = value;
@@ -61,9 +61,9 @@ public class SlowArrow : MonoBehaviour, IModifier
         }
         set
         {
-            if (value <= 0.0f)
+            if (value < 0.2f)
             {
-                _slowdown = 0.1f;
+                _slowdown = 0.2f;
                 return;
             }
             if (value > 0.9f)
