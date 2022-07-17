@@ -4,55 +4,24 @@ using UnityEngine;
 
 public class LightBow : MonoBehaviour, IBowWeapon
 {
-    #region Serialize Fields
+    #region Serialize fields
     [Header("Weapon Settings")]
     [SerializeField] private string _name = "Легкий лук";
-    [SerializeField] private float _damageSpread = 0.25f;
     [SerializeField] private float _timeReloadShot = 0.5f;
 
     [Header("Projectile Settings")]
     //[SerializeField] private GameObject _selectedPrefabArrow; // Префаб для стрелы
-    [SerializeField] private GameObject _originalArrow; // Объект из которого будем делать дубликаты стрел
+    [SerializeField] private GameObject _originalArrow; // Объект из которого будем делать дубликаты стрел, выстпает в роле префаба
     [SerializeField] private Transform _arrowSpawn;
     [SerializeField] private Camera _camera;
     [SerializeField] private float _shotForce = 8; // Сила выстрела
 
-    [Header("Attack Modifiers")]
-    [SerializeField] private bool _onPenetrationMod = false;
-    [SerializeField] private bool _onCriticalDamageMod = false;
-    [SerializeField] private bool _onFireArrowMod = false;
-    [SerializeField] private bool _onSlowArrowMod = false;
-    [SerializeField] private bool _onMjolnirMod = false;
-    [SerializeField] private const bool _onDirectDamageMod = true;
-
     [Header("Others")]
     [SerializeField] private bool _debugMod = false;
-
-    #endregion Serialize Fields
+    #endregion Serialize fields
 
     #region Properties
     public string Name { get => _name; private set => _name = value; }
-    public float DamageSpread
-    {
-        get
-        {
-            return _damageSpread;
-        }
-        private set
-        {
-            if (value < 0.0f)
-            {
-                _damageSpread = 0;
-                return;
-            }
-            if (value > 1.0f)
-            {
-                _damageSpread = 1.0f;
-                return;
-            }
-            _damageSpread = value;
-        }
-    }
     public float TimeReloadShot
     {
         get
@@ -61,18 +30,17 @@ public class LightBow : MonoBehaviour, IBowWeapon
         }
         set
         {
-            if (value <= 0.0f)
+            if (value < 0.1f)
             {
-                _damageSpread = 0.1f;
+                _timeReloadShot = 0.1f;
                 return;
             }
-            _damageSpread = value;
+            _timeReloadShot = value;
         }
     }
-
     #endregion Properties
 
-    #region Fields
+    #region Private fields
     private bool _isAiming = false;
     private bool _isReload = false;
 
@@ -80,17 +48,18 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     // Объект в котором будем хранить клон стрелы, его же будем выстреливать
     private GameObject _cloneArrow;
+    #endregion Private fields
 
+    #region Public fields
     // Для хранения модификаторов атаки
-    public List<IModifier> AttackMods = new List<IModifier>();
+    public IModifier[] atachedAttaksModifaers;
+    #endregion Public fields
 
-    #endregion Fields
-
-    #region Methods
+    #region Mono
     private void Awake()
     {
         Name = _name;
-        DamageSpread = _damageSpread;
+        TimeReloadShot = _timeReloadShot;
     }
 
     private void Start()
@@ -98,13 +67,15 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
         //_defaultBowRotate = transform.rotation;
 
-        // Устанавливаем модификаторы атаки на original arrow
-        SetupAttackModifiersOnTheOriginalArrow();
+        // Получаем список модификаторов установленных на стреле (Луке)
+        atachedAttaksModifaers = _originalArrow.GetComponents<IModifier>();
 
         // Заряжаем
         SpawnArrow();
     }
+    #endregion Mono
 
+    #region Private methods
     private void Update()
     {
         // ПКМ
@@ -152,7 +123,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
         }
     }
 
-    public void Shot()
+    private void Shot()
     {
         if (_debugMod) Debug.Log($"Выстрел");
 
@@ -176,21 +147,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
         StartCoroutine(Reload(TimeReloadShot));
     }
 
-    public void ChargedShot()
+    private void ChargedShot()
     {
         if (_debugMod) Debug.Log($"Заряженный выстрел");
-    }
-
-    private IEnumerator Reload(float timeReload)
-    {
-        _isReload = true;
-
-        // Ключевое слово yield указывает сопрограмме, когда следует остановиться.
-        yield return new WaitForSeconds(timeReload);
-
-        SpawnArrow();
-
-        _isReload = false;
     }
 
     private void SpawnArrow()
@@ -212,64 +171,16 @@ public class LightBow : MonoBehaviour, IBowWeapon
         //    projectileArrow.bowAttackModifiers = attackModifiers;
     }
 
-    private void SetupAttackModifiersOnTheOriginalArrow()
+    private IEnumerator Reload(float timeReload)
     {
-        // TODO избавиться от if-ов
-        if(_onDirectDamageMod)
-        {
-            IModifier modifier = _originalArrow.GetComponent<DirectDamage>();
-            if (modifier == null)
-            {
-                modifier = _originalArrow.AddComponent<DirectDamage>() as IModifier;
-            }
-            AttackMods.Add(modifier);
-        }
-        if (_onPenetrationMod)
-        {
-            IModifier modifier = _originalArrow.GetComponent<Penetration>();
-            if (modifier == null)
-            {
-                modifier = _originalArrow.AddComponent<Penetration>() as IModifier;
-            }
-            AttackMods.Add(modifier);
-        }
-        if (_onCriticalDamageMod)
-        {
-            IModifier modifier = _originalArrow.GetComponent<CriticalDamage>();
-            if (modifier == null)
-            {
-                modifier = _originalArrow.AddComponent<CriticalDamage>() as IModifier;
-            }
-            AttackMods.Add(modifier);
-        }
-        if (_onFireArrowMod)
-        {
-            IModifier modifier = _originalArrow.GetComponent<FireArrow>();
-            if (modifier == null)
-            {
-                modifier = _originalArrow.AddComponent<FireArrow>() as IModifier;
-            }
-            AttackMods.Add(modifier);
-        }
-        if (_onSlowArrowMod)
-        {
-            IModifier modifier = _originalArrow.GetComponent<SlowArrow>();
-            if (modifier == null)
-            {
-                modifier = _originalArrow.AddComponent<SlowArrow>() as IModifier;
-            }
-            AttackMods.Add(modifier);
-        }
-        if (_onMjolnirMod)
-        {
-            IModifier modifier = _originalArrow.GetComponent<Mjolnir>();
-            if (modifier == null)
-            {
-                modifier = _originalArrow.AddComponent<Mjolnir>() as IModifier;
-            }
-            AttackMods.Add(modifier);
-        }
-    }
+        _isReload = true;
 
-    #endregion Methods
+        // Ключевое слово yield указывает сопрограмме, когда следует остановиться.
+        yield return new WaitForSeconds(timeReload);
+
+        SpawnArrow();
+
+        _isReload = false;
+    }
+    #endregion Private methods
 }

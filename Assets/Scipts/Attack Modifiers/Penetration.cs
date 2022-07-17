@@ -4,39 +4,17 @@ using UnityEngine;
 
 public class Penetration : MonoBehaviour, IModifier
 {
-    #region Serialize Fields
+    #region Serialize fields
     [SerializeField] private string _name = "Пробивание";
     [SerializeField] private string _description = "Позволяет пробивать нескольких противников c некоторым шансом, с каждым пробитием урон уменьшается";
 
-    [SerializeField] [Range(10, 100)] private int _procСhance = 10;
     [SerializeField] [Range(2, 10)] private int _maxTargetPenetration = 2;
     [SerializeField] [Range(0.5f, 0.1f)] private float _damageDecrease = 0.5f;
-    #endregion Serialize Fields
+    #endregion Serialize fields
 
     #region Properties
     public string Name { get => _name; private set => _name = value; }
     public string Description { get => _description; private set => _description = value; }
-    public int ProcСhance
-    {
-        get
-        {
-            return _procСhance;
-        }
-        set
-        {
-            if (value < 10)
-            {
-                _procСhance = 10;
-                return;
-            }
-            if (value > 100)
-            {
-                _procСhance = 100;
-                return;
-            }
-            _procСhance = value;
-        }
-    }
     public int MaxTargetPenetration
     {
         get
@@ -80,19 +58,46 @@ public class Penetration : MonoBehaviour, IModifier
         }
     }
     #endregion Properties
-    
-    #region Methods
+
+    #region Private fields
+    private int _currentPenetration = 0;
+    private IEnemy _currentHitEnemy;
+    private DirectDamage _directDamage;
+    #endregion Private fields
+
+    #region Mono
     private void Awake()
     {
         Name = _name;
         Description = _description;
-        ProcСhance = _procСhance;
         MaxTargetPenetration = _maxTargetPenetration;
         DamageDecrease = _damageDecrease;
     }
+    private void Start()
+    {
+        _directDamage = GetComponent<DirectDamage>();
+    }
+    #endregion Mono
+
+    #region Private methods
     private void OnTriggerEnter(Collider hitCollider)
     {
+        IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
+        if (enemy != null)
+        {
+            if (enemy != _currentHitEnemy) 
+            {
+                _currentHitEnemy = enemy;
+                _currentPenetration++;
 
+                // Уменьшаем урон с каждым пробитием
+                _directDamage.Damage = (int)(_directDamage.Damage * (1 - DamageDecrease));
+
+                // Если число пробитий подошло к пределу, то удаляем стрелу
+                if (_currentPenetration == MaxTargetPenetration)
+                    Destroy(gameObject);
+            }
+        }
     }
-    #endregion Methods
+    #endregion Private methods
 }

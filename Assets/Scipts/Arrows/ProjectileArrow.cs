@@ -3,44 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DirectDamage))]
+[RequireComponent(typeof(Rigidbody))]
 public class ProjectileArrow : MonoBehaviour
 {
-	#region Serialize Fields
+	#region Serialize fields
 
-	#endregion Serialize Fields
+	#endregion Serialize fields
 
 	#region Properties
 
-	//public int BowDamage
-	//   {
-	//	get
-	//	{
-	//		return _bowDamage;
-	//	}
-	//	set
-	//	{
-	//		if (value < 0)
-	//		{
-	//			_bowDamage = 0;
-	//			return;
-	//		}
-	//		_bowDamage = value;
-	//	}
-	//}
 	#endregion Properties
 
-	#region Fields
-	[HideInInspector] public bool isArrowInBowstring;
-
-	public List<IModifier> bowAttackModifiers;
-
+	#region Private fields
 	private bool _isArrowInFlight;
-	[SerializeField] private bool _onPenetrationMod;
+	private bool _onPenetrationMod;
 
 	private Rigidbody _arrowRigidbody;
-	#endregion Fields
 
-	#region Methods
+	#endregion Private fields
+
+	#region Public fields
+	[HideInInspector] 
+	public bool isArrowInBowstring;
+
+	public List<IModifier> bowAttackModifiers;
+	#endregion Public fields
+
+	#region Mono
 	private void Awake()
     {
 		//DirectDamage = _directDamage;
@@ -53,16 +42,18 @@ public class ProjectileArrow : MonoBehaviour
 		isArrowInBowstring = true;
 		_isArrowInFlight = false;
 
-		//_onPenetrationMod = CheakPenetrationMod();
+		_onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
 
-		_arrowRigidbody = gameObject.GetComponent<Rigidbody>();
+        _arrowRigidbody = GetComponent<Rigidbody>();
 
 
 	}
+    #endregion Mono
 
-	private void FixedUpdate() 
+    #region Private methods
+    private void FixedUpdate() 
 	{
-		// Момент вылета стрелы
+		// Отлавливаем момент вылета стрелы
 		if (!isArrowInBowstring && !_isArrowInFlight)
 		{
 			_isArrowInFlight = true;
@@ -70,25 +61,19 @@ public class ProjectileArrow : MonoBehaviour
 			StartCoroutine(DeleteArrow(5));
 		}
 
-		// Стрела в полете
+		// Поворачиваем стрелу в полете в сторону движения
 		if (_isArrowInFlight)
         {
 			transform.LookAt(transform.position + _arrowRigidbody.velocity);
 		}
 	}
 
-    void OnTriggerEnter(Collider hitCollider)
+	private void OnTriggerEnter(Collider hitCollider)
     {
-        IEnemy enemy = hitCollider.GetComponentInParent<Enemy1>();
-        if (enemy != null)
-        {
-			
-        }
-
-        if (!isArrowInBowstring)
-        {
-            StartCoroutine(DeleteArrow(0));
-        }
+		IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
+		// Удаляем стрелу, если (она находится в полете и попала не в противника) или (она попала в противника и находится в полете и не включен мод на пробитие)
+		if ((_isArrowInFlight && enemy == null) || (_isArrowInFlight && !_onPenetrationMod))
+			Destroy(gameObject);
     }
 
     private IEnumerator DeleteArrow(int secondsBeforeDeletion)
@@ -97,8 +82,8 @@ public class ProjectileArrow : MonoBehaviour
         yield return new WaitForSeconds(secondsBeforeDeletion);
 
         // Удаляем объект со сцены и очищаем память
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
-	#endregion Methods
+	#endregion Private methods
 }

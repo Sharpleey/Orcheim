@@ -9,16 +9,13 @@ using TMPro;
 
 public class Enemy1 : MonoBehaviour, IEnemy
 {
-    #region Serialize Fields
-
+    #region Serialize fields
     [SerializeField] private int _maxHealth = 100;
     [SerializeField] private int _health;
     [SerializeField] private float _speed = 5;
-
-    #endregion Serialize Fields
+    #endregion Serialize fields
 
     #region Properties
-
     public int MaxHealth
     {
         get
@@ -72,16 +69,14 @@ public class Enemy1 : MonoBehaviour, IEnemy
             _speed = value;
         }
     }
-
     #endregion Properties
 
-    #region Fields
+    #region Private fields
     private HitBoxesController _hitBoxesController;
     private EnemyUIController _enemyUIController;
+    #endregion Private fields
 
-    #endregion Fields
-
-    #region Methods
+    #region Mono
     private void Awake()
     {
         MaxHealth = _maxHealth;
@@ -94,25 +89,9 @@ public class Enemy1 : MonoBehaviour, IEnemy
         _hitBoxesController = GetComponent<HitBoxesController>();
         _enemyUIController = GetComponent<EnemyUIController>();
     }
+    #endregion Mono
 
-    private IEnumerator Die()
-    {
-        RagdollController ragdollControl = GetComponent<RagdollController>();
-        if (ragdollControl)
-            ragdollControl.MakePhysical();
-
-        yield return new WaitForSeconds(3.5f);
-
-        Destroy(this.gameObject);
-    }
-
-    public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
-    {
-        // Получаем значение урона с учетом попадания в ту или иную часть тела
-        damage = _hitBoxesController.GetDamageValue(damage, hitCollider);
-        TakeDamage(damage, typeDamage);
-    }
-
+    #region Private methods
     private void TakeDamage(int damage, TypeDamage typeDamage)
     {
         Health -= damage;
@@ -124,13 +103,25 @@ public class Enemy1 : MonoBehaviour, IEnemy
             StartCoroutine(Die());
         }
     }
+    private IEnumerator Die()
+    {
+        RagdollController ragdollControl = GetComponent<RagdollController>();
+        if (ragdollControl)
+            ragdollControl.MakePhysical();
 
-    //private void ShowPopupDamage(int damage)
-    //{
-    //    PopupDamage popupDamage = GetComponent<PopupDamage>();
-    //    popupDamage.SetText(damage.ToString());
-    //    popupDamage.ShowAndHide();
-    //}
+        yield return new WaitForSeconds(3.5f);
 
-    #endregion Methods
+        Destroy(this.gameObject);
+    }
+
+    #endregion Private methods
+
+    #region Public methods
+    public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
+    {
+        // Получаем значение урона с учетом попадания в ту или иную часть тела
+        damage = _hitBoxesController.GetDamageValue(damage, hitCollider);
+        TakeDamage(damage, typeDamage);
+    }
+    #endregion Public methods
 }

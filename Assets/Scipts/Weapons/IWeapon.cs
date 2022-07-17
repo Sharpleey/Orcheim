@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IWeapon: IItem
+public interface IWeapon
 {
-    float DamageSpread { get; }
+    string Name { get; }
 }
