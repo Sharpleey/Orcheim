@@ -73,6 +73,7 @@ public class DirectDamage : MonoBehaviour ,IModifier
     /// </summary>
     private IEnemy _currentHitEnemy;
     private bool _onPenetrationMod;
+    private CriticalDamage _criticalDamageMod;
     #endregion Private fields
 
     #region Mono
@@ -87,6 +88,8 @@ public class DirectDamage : MonoBehaviour ,IModifier
     private void Start()
     {
         _onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
+
+        _criticalDamageMod = GetComponent<CriticalDamage>();
     }
     #endregion Mono
 
@@ -94,12 +97,24 @@ public class DirectDamage : MonoBehaviour ,IModifier
     private void OnTriggerEnter(Collider hitCollider)
     {
         IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
+        // Если мы попали в противника
         if (enemy != null)
         {
+            // Если мы (в первый раз попали в противника) или ((Противник, в которого мы попали не равен противнику, в которого мы попадали до этого) и (включен мод на пробитие))
             if (_currentHitEnemy == null || (enemy != _currentHitEnemy && _onPenetrationMod))
             {
+                // Запоминает противника, в которого мы попали как текущего
                 _currentHitEnemy = enemy;
-                enemy.TakeHitboxDamage(ActualDamage, hitCollider, TypeDamage);
+
+                // Если (влючен мод на криты) и (Прокнул крит)
+                if (_criticalDamageMod != null && _criticalDamageMod.GetProcCrit())
+                {
+                    // Рассчитываем критический урон
+                    int criticalDamage = (int)(ActualDamage * _criticalDamageMod.CritMultiplierDamage);
+                    enemy.TakeHitboxDamage(criticalDamage, hitCollider, TypeDamage);
+                }
+                else
+                    enemy.TakeHitboxDamage(ActualDamage, hitCollider, TypeDamage);
             }
         }
     }

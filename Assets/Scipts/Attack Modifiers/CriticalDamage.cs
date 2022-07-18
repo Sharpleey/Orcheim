@@ -59,7 +59,7 @@ public class CriticalDamage : MonoBehaviour, IModifier
     }
     #endregion Properties
 
-    #region Methods
+    #region Mono
     private void Awake()
     {
         Name = _name;
@@ -67,9 +67,16 @@ public class CriticalDamage : MonoBehaviour, IModifier
         Proc—hance = _proc—hance;
         CritMultiplierDamage = _critMultiplierDamage;
     }
-    private void OnTriggerEnter(Collider hitCollider)
-    {
+    #endregion Mono
 
+    #region Public methods
+    public bool GetProcCrit()
+    {
+        int proc = Random.Range(0, 100);
+        if (proc <= Proc—hance)
+            return true;
+        return false;
     }
-    #endregion Methods
+    #endregion Public methods
 }
+
