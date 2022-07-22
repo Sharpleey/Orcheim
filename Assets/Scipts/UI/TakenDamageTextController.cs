@@ -8,28 +8,30 @@ using System;
 
 public class TakenDamageTextController : MonoBehaviour
 {
-
+    #region Serialize fields
     [SerializeField] private TextMeshProUGUI _textMeshPro;
+    #endregion SerializeField
 
+    #region Private fields
     private bool _isShow = false;
     private bool _isHide = false;
 
     private float _currentAlpha = 0f;
 
     private Vector3 targetPosition;
-    private float offsetX, offsetY;
 
+    private float offsetX, offsetY;
+    #endregion Private fields
+
+    #region Public fields
     public float rateShowing = 2.5f;
 
-    [HideInInspector] public Color colorText = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+    [HideInInspector] 
+    public Color colorText = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
-    // Start is called before the first frame update
+    #endregion Public fields
 
-    private void Awake()
-    {
-
-    }
-
+    #region Mono
     void Start()
     {
         _textMeshPro = GetComponent<TextMeshProUGUI>();
@@ -40,9 +42,10 @@ public class TakenDamageTextController : MonoBehaviour
         offsetY = UnityEngine.Random.Range(0.3f, 1.2f);
         targetPosition = new Vector3(transform.position.x + offsetX, transform.position.y + 0.5f, transform.position.z);
     }
+    #endregion Mono
 
-    // Update is called once per frame
-    void Update()
+    #region Private methods
+    private void Update()
     {
         if (_isShow)
         {
@@ -78,7 +81,9 @@ public class TakenDamageTextController : MonoBehaviour
 
         }
     }
+    #endregion Private methods
 
+    #region Public methods
     public void ShowAndHide()
     {
         _textMeshPro.alpha = 0f;
@@ -90,5 +95,5 @@ public class TakenDamageTextController : MonoBehaviour
     {
         _textMeshPro.text = "-" + stext;
     }
-
+    #endregion Public methods
 }

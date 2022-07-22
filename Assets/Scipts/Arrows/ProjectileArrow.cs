@@ -40,13 +40,6 @@ public class ProjectileArrow : MonoBehaviour
 	#endregion Public fields
 
 	#region Mono
-	private void Awake()
-    {
-		//DirectDamage = _directDamage;
-		//DamageSpread = _damageSpread;
-		//Name = _name;
-    }
-
     private void Start() 
 	{
 		isArrowInBowstring = true;
@@ -58,6 +51,7 @@ public class ProjectileArrow : MonoBehaviour
 		_onCriticalDamageMod = UnityUtility.HasComponent<CriticalDamage>(gameObject);
 		
 		_directDamageMod = GetComponent<DirectDamage>();
+
 		if (_onPenetrationMod)
 			_penetrationMod = GetComponent<Penetration>();
 		if (_onCriticalDamageMod)
