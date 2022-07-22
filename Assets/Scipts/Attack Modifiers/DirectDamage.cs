@@ -71,9 +71,9 @@ public class DirectDamage : MonoBehaviour ,IModifier
     /// <summary>
     /// C ее помощью фиксим баг, когда стрела успевает попасть по нескольким коллайдерам до момента удалени€
     /// </summary>
-    private IEnemy _currentHitEnemy;
-    private bool _onPenetrationMod;
-    private CriticalDamage _criticalDamageMod;
+    //private IEnemy _currentHitEnemy;
+    //private bool _onPenetrationMod;
+    //private CriticalDamage _criticalDamageMod;
     #endregion Private fields
 
     #region Mono
@@ -87,36 +87,36 @@ public class DirectDamage : MonoBehaviour ,IModifier
     }
     private void Start()
     {
-        _onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
+        //_onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
 
-        _criticalDamageMod = GetComponent<CriticalDamage>();
+        //_criticalDamageMod = GetComponent<CriticalDamage>();
     }
     #endregion Mono
 
     #region Private methods
-    private void OnTriggerEnter(Collider hitCollider)
-    {
-        IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
-        // ≈сли мы попали в противника
-        if (enemy != null)
-        {
-            // ≈сли мы (в первый раз попали в противника) или ((ѕротивник, в которого мы попали не равен противнику, в которого мы попадали до этого) и (включен мод на пробитие))
-            if (_currentHitEnemy == null || (enemy != _currentHitEnemy && _onPenetrationMod))
-            {
-                // «апоминает противника, в которого мы попали как текущего
-                _currentHitEnemy = enemy;
+    //private void OnTriggerEnter(Collider hitCollider)
+    //{
+    //    IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
+    //    // ≈сли мы попали в противника
+    //    if (enemy != null)
+    //    {
+    //        // ≈сли мы (в первый раз попали в противника) или ((ѕротивник, в которого мы попали не равен противнику, в которого мы попадали до этого) и (включен мод на пробитие))
+    //        if (_currentHitEnemy == null || (enemy != _currentHitEnemy && _onPenetrationMod))
+    //        {
+    //            // «апоминает противника, в которого мы попали как текущего
+    //            _currentHitEnemy = enemy;
 
-                // ≈сли (влючен мод на криты) и (ѕрокнул крит)
-                if (_criticalDamageMod != null && _criticalDamageMod.GetProcCrit())
-                {
-                    // –ассчитываем критический урон
-                    int criticalDamage = (int)(ActualDamage * _criticalDamageMod.CritMultiplierDamage);
-                    enemy.TakeHitboxDamage(criticalDamage, hitCollider, TypeDamage);
-                }
-                else
-                    enemy.TakeHitboxDamage(ActualDamage, hitCollider, TypeDamage);
-            }
-        }
-    }
+    //            // ≈сли (влючен мод на криты) и (ѕрокнул крит)
+    //            if (_criticalDamageMod != null && _criticalDamageMod.GetProcCrit())
+    //            {
+    //                // –ассчитываем критический урон
+    //                int criticalDamage = (int)(ActualDamage * _criticalDamageMod.CritMultiplierDamage);
+    //                enemy.TakeHitboxDamage(criticalDamage, hitCollider, TypeDamage);
+    //            }
+    //            else
+    //                enemy.TakeHitboxDamage(ActualDamage, hitCollider, TypeDamage);
+    //        }
+    //    }
+    //}
     #endregion Private methods
 }

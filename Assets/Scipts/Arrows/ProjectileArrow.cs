@@ -7,7 +7,7 @@ using UnityEngine;
 public class ProjectileArrow : MonoBehaviour
 {
 	#region Serialize fields
-
+	[SerializeField] private GameObject _tracerEffect;
 	#endregion Serialize fields
 
 	#region Properties
@@ -16,9 +16,19 @@ public class ProjectileArrow : MonoBehaviour
 
 	#region Private fields
 	private bool _isArrowInFlight;
+	private bool _isBlockDamage;
+
 	private bool _onPenetrationMod;
+	private bool _onCriticalDamageMod;
+
+	private Penetration _penetrationMod;
+	private DirectDamage _directDamageMod;
+	private CriticalDamage _criticalDamageMod;
 
 	private Rigidbody _arrowRigidbody;
+	private CapsuleCollider _arrowCapsuleCollider;
+
+	private IEnemy _currentHitEnemy;
 
 	#endregion Private fields
 
@@ -40,13 +50,24 @@ public class ProjectileArrow : MonoBehaviour
     private void Start() 
 	{
 		isArrowInBowstring = true;
+
 		_isArrowInFlight = false;
+		_isBlockDamage = false;
 
 		_onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
+		_onCriticalDamageMod = UnityUtility.HasComponent<CriticalDamage>(gameObject);
+		
+		_directDamageMod = GetComponent<DirectDamage>();
+		if (_onPenetrationMod)
+			_penetrationMod = GetComponent<Penetration>();
+		if (_onCriticalDamageMod)
+			_criticalDamageMod = GetComponent<CriticalDamage>();
 
-        _arrowRigidbody = GetComponent<Rigidbody>();
+		_arrowRigidbody = GetComponent<Rigidbody>();
+		_arrowCapsuleCollider = GetComponent<CapsuleCollider>();
 
-
+		if (_arrowCapsuleCollider != null)
+			_arrowCapsuleCollider.isTrigger = false;
 	}
     #endregion Mono
 
@@ -57,8 +78,15 @@ public class ProjectileArrow : MonoBehaviour
 		if (!isArrowInBowstring && !_isArrowInFlight)
 		{
 			_isArrowInFlight = true;
+
+			if (_arrowCapsuleCollider != null)
+				_arrowCapsuleCollider.isTrigger = true;
+
+			if (_tracerEffect != null)
+				_tracerEffect.SetActive(true);
+
 			// Запускаем отсчет для удаления стрелы
-			StartCoroutine(DeleteArrow(5));
+			StartCoroutine(DeleteProjectile(5));
 		}
 
 		// Поворачиваем стрелу в полете в сторону движения
@@ -71,15 +99,68 @@ public class ProjectileArrow : MonoBehaviour
 	private void OnTriggerEnter(Collider hitCollider)
     {
 		IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
-		// Удаляем стрелу, если (она находится в полете и попала не в противника) или (она попала в противника и находится в полете и не включен мод на пробитие)
-		if ((_isArrowInFlight && enemy == null) || (_isArrowInFlight && !_onPenetrationMod))
-			Destroy(gameObject);
-    }
+		// Если мы попали в противника
+		if (enemy != null)
+		{
+			if (enemy != _currentHitEnemy)
+			{
+				int damage = _directDamageMod.ActualDamage;
+				// Если (влючен мод на криты) и (Прокнул крит)
+				if (_onCriticalDamageMod && _criticalDamageMod.GetProcCrit())
+                {
+                    // Рассчитываем критический урон
+                    damage = (int)(damage * _criticalDamageMod.CritMultiplierDamage);
+                }
 
-    private IEnumerator DeleteArrow(int secondsBeforeDeletion)
-    {   
-        // Ключевое слово yield указывает сопрограмме, когда следует остановиться.
-        yield return new WaitForSeconds(secondsBeforeDeletion);
+				// Наносим урон противнику
+				if (!_isBlockDamage)
+					enemy.TakeHitboxDamage(damage, hitCollider, _directDamageMod.TypeDamage);
+
+				if (_onPenetrationMod)
+                {
+					_penetrationMod.CurrentPenetration++;
+
+					// Уменьшаем урон с каждым пробитием
+					_directDamageMod.Damage = (int)(_directDamageMod.Damage * (1 - _penetrationMod.DamageDecrease));
+
+					// Если число пробитий подошло к пределу, то удаляем стрелу
+					if (_penetrationMod.CurrentPenetration == _penetrationMod.MaxTargetPenetration)
+                    {
+						_isBlockDamage = true;
+						StartCoroutine(DeleteProjectile(0));
+					}
+				}
+				else
+                {
+					_isBlockDamage = true;
+					StartCoroutine(DeleteProjectile(0));
+				}
+			}
+
+			if (enemy != _currentHitEnemy)
+			{
+				_currentHitEnemy = enemy;
+			}
+
+		}
+		else
+		{
+			StartCoroutine(DeleteProjectile(0));
+		}
+	}
+
+    private IEnumerator DeleteProjectile(int secondsBeforeDeletion)
+    {
+		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.
+		yield return new WaitForSeconds(secondsBeforeDeletion);
+
+		if (_tracerEffect != null)
+        {
+            _tracerEffect.transform.SetParent(null);
+			TracerEffectController traccerController = _tracerEffect.GetComponent<TracerEffectController>();
+			if (traccerController != null)
+				traccerController.DeleteTracer();
+		}
 
         // Удаляем объект со сцены и очищаем память
         Destroy(gameObject);

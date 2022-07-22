@@ -57,12 +57,35 @@ public class Penetration : MonoBehaviour, IModifier
             _damageDecrease = value;
         }
     }
+    public int CurrentPenetration
+    {
+        get
+        {
+            return _currentPenetration;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                _currentPenetration = 0;
+                return;
+            }
+            if (value > MaxTargetPenetration)
+            {
+                _currentPenetration = MaxTargetPenetration;
+                return;
+            }
+            _currentPenetration = value;
+        }
+    }
     #endregion Properties
 
     #region Private fields
     private int _currentPenetration = 0;
-    private IEnemy _currentHitEnemy;
-    private DirectDamage _directDamage;
+
+    //private IEnemy _currentHitEnemy;
+
+    //private DirectDamage _directDamage;
     #endregion Private fields
 
     #region Mono
@@ -75,29 +98,29 @@ public class Penetration : MonoBehaviour, IModifier
     }
     private void Start()
     {
-        _directDamage = GetComponent<DirectDamage>();
+        //_directDamage = GetComponent<DirectDamage>();
     }
     #endregion Mono
 
     #region Private methods
-    private void OnTriggerEnter(Collider hitCollider)
-    {
-        IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
-        if (enemy != null)
-        {
-            if (enemy != _currentHitEnemy) 
-            {
-                _currentHitEnemy = enemy;
-                _currentPenetration++;
+    //private void OnTriggerEnter(Collider hitCollider)
+    //{
+    //    IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
+    //    if (enemy != null)
+    //    {
+    //        if (enemy != _currentHitEnemy)
+    //        {
+    //            _currentHitEnemy = enemy;
+    //            _currentPenetration++;
 
-                // ”меньшаем урон с каждым пробитием
-                _directDamage.Damage = (int)(_directDamage.Damage * (1 - DamageDecrease));
+    //            // ”меньшаем урон с каждым пробитием
+    //            _directDamage.Damage = (int)(_directDamage.Damage * (1 - DamageDecrease));
 
-                // ≈сли число пробитий подошло к пределу, то удал€ем стрелу
-                if (_currentPenetration == MaxTargetPenetration)
-                    Destroy(gameObject);
-            }
-        }
-    }
+    //            // ≈сли число пробитий подошло к пределу, то удал€ем стрелу
+    //            if (_currentPenetration == MaxTargetPenetration)
+    //                Destroy(gameObject);
+    //        }
+    //    }
+    //}
     #endregion Private methods
 }
