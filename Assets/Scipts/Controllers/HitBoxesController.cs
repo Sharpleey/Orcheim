@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HitBoxesController : MonoBehaviour
 {
+    #region Serialize fields
     [Header("Hit Box Colliders")]
     [SerializeField] private Collider _headCollider;
     [SerializeField] private List<Collider> _handColliders;
@@ -15,9 +16,12 @@ public class HitBoxesController : MonoBehaviour
     [SerializeField] private float _handDamageMultiplier = 0.5f;
     [SerializeField] private float _legDamageMultiplier = 0.5f;
     [SerializeField] private float _bodyDamageMultiplier = 1.0f;
+    #endregion Serialize fields
 
+    #region Public methods
     public int GetDamageValue(int damage, Collider hitCollider)
-    {   
+    {
+        // TODO Возможно стоит оптимизировать/отрефакторить
         if (hitCollider == this._headCollider)
         {
             float actualDamage = damage * _headDamageMultiplier;
@@ -53,4 +57,11 @@ public class HitBoxesController : MonoBehaviour
 
         return 1;
     }
+
+    public void OnLayersAllColliders()
+    {
+        Physics.IgnoreLayerCollision(9, 8);
+    }
+
+    #endregion Public methods
 }

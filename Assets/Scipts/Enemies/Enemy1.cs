@@ -74,6 +74,8 @@ public class Enemy1 : MonoBehaviour, IEnemy
     #region Private fields
     private HitBoxesController _hitBoxesController;
     private EnemyUIController _enemyUIController;
+    private RagdollController _ragdollController;
+    private DieEffectController _dieEffectController;
     #endregion Private fields
 
     #region Mono
@@ -88,6 +90,11 @@ public class Enemy1 : MonoBehaviour, IEnemy
     {
         _hitBoxesController = GetComponent<HitBoxesController>();
         _enemyUIController = GetComponent<EnemyUIController>();
+        _ragdollController = GetComponent<RagdollController>();
+        _dieEffectController = GetComponent<DieEffectController>();
+
+        if (_dieEffectController != null)
+            _dieEffectController.enabled = false;
     }
     #endregion Mono
 
@@ -105,13 +112,20 @@ public class Enemy1 : MonoBehaviour, IEnemy
     }
     private IEnumerator Die()
     {
-        RagdollController ragdollControl = GetComponent<RagdollController>();
-        if (ragdollControl)
-            ragdollControl.MakePhysical();
+        if (_ragdollController != null)
+            _ragdollController.MakePhysical();
 
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(2);
 
-        Destroy(this.gameObject);
+        //if (_hitBoxesController)
+        //    _hitBoxesController.OnLayersAllColliders();
+
+        if (_dieEffectController != null)
+            _dieEffectController.enabled = true;
+
+        yield return new WaitForSeconds(5);
+
+        Destroy(gameObject);
     }
 
     #endregion Private methods

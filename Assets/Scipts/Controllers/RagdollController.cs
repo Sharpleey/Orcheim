@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
+    #region Serialize fields
     [SerializeField] private Animator _animator;
     [SerializeField] private List<Rigidbody> _allRigibodys;
+    #endregion Serialize fields
 
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
-    void Awake()
+    #region Mono
+    private void Awake()
     {
         foreach (Rigidbody rigidbody in _allRigibodys)
         {
             rigidbody.isKinematic = true;
         }
     }
+    #endregion Mono
 
+    #region Public methods
     public void MakePhysical()
     {
         _animator.enabled = false;
@@ -27,4 +29,5 @@ public class RagdollController : MonoBehaviour
             rigidbody.isKinematic = false;
         }
     }
+    #endregion Public methods
 }
