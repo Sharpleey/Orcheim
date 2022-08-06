@@ -8,6 +8,7 @@ public class ProjectileArrow : MonoBehaviour
 {
 	#region Serialize fields
 	[SerializeField] private GameObject _tracerEffect;
+	[SerializeField] private GameObject _hitEffect;
 	#endregion Serialize fields
 
 	#region Properties
@@ -106,9 +107,14 @@ public class ProjectileArrow : MonoBehaviour
                     damage = (int)(damage * _criticalDamageMod.CritMultiplierDamage);
                 }
 
-				// Наносим урон противнику
 				if (!_isBlockDamage)
+                {
+					// Эффект попадания
+					GameObject hitObj = Instantiate(_hitEffect, transform.position, transform.rotation);
+
+					// Наносим урон противнику
 					enemy.TakeHitboxDamage(damage, hitCollider, _directDamageMod.TypeDamage);
+				}
 
 				if (_onPenetrationMod)
                 {
