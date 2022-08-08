@@ -6,10 +6,13 @@ using TMPro;
 public class EnemyUIController : MonoBehaviour
 {
     #region Serialize fields
+    [Header("Enemy Canvas")]
+    [SerializeField] private Transform _enemyCanvas;
+
     [Header("Taken Damage Text Settings")]
     [SerializeField] private GameObject _prefabTakenDamage;
-    [SerializeField] private Transform _enemyCanvas;
     [SerializeField] private float _rateShowingTakenDamage = 2.5f;
+
     #endregion Serialize fields
 
     #region Public fields
@@ -22,7 +25,13 @@ public class EnemyUIController : MonoBehaviour
     #endregion Public fields
 
     #region Public methods
-    public IEnumerator ShowDamage(int damage, TypeDamage typeDamage)
+
+    public void ShowPopupDamage(int damage, TypeDamage typeDamage)
+    {
+        StartCoroutine(ShowDamage(damage, typeDamage));
+    }
+
+    private IEnumerator ShowDamage(int damage, TypeDamage typeDamage)
     {
         GameObject takenDamage = Instantiate(_prefabTakenDamage);
         takenDamage.transform.SetParent(_enemyCanvas, false);

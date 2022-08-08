@@ -76,6 +76,7 @@ public class Enemy1 : MonoBehaviour, IEnemy
     private EnemyUIController _enemyUIController;
     private RagdollController _ragdollController;
     private DieEffectController _dieEffectController;
+    private HealthBarController _healthBarController;
     #endregion Private fields
 
     #region Mono
@@ -92,18 +93,36 @@ public class Enemy1 : MonoBehaviour, IEnemy
         _enemyUIController = GetComponent<EnemyUIController>();
         _ragdollController = GetComponent<RagdollController>();
         _dieEffectController = GetComponent<DieEffectController>();
+        _healthBarController = GetComponentInChildren<HealthBarController>();
 
         if (_dieEffectController != null)
             _dieEffectController.enabled = false;
+
+        if (_healthBarController != null)
+        {
+            _healthBarController.SetMaxHealth(MaxHealth);
+            _healthBarController.SetHealth(Health);
+        }
     }
     #endregion Mono
 
     #region Private methods
     private void TakeDamage(int damage, TypeDamage typeDamage)
     {
-        Health -= damage;
+        if (Health > 0)
+        {
+            Health -= damage;
 
-        StartCoroutine(_enemyUIController.ShowDamage(damage, typeDamage));
+            // Всплывающий дамаг
+            _enemyUIController.ShowPopupDamage(damage, typeDamage); //TODO
+
+            // Полоска хп
+            if (_healthBarController != null)
+            {
+                _healthBarController.SetHealth(Health);
+                _healthBarController.ShowHealthBar();
+            }
+        }
 
         if (Health <= 0)
         {

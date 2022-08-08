@@ -297,7 +297,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 3
+  m_CollisionDetection: 2
 --- !u!136 &1361645993572321117
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -325,6 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tracerEffect: {fileID: 5747080897962300409}
+  _hitEffect: {fileID: 0}
   isArrowInBowstring: 1
 --- !u!114 &7430450002195997393
 MonoBehaviour:
