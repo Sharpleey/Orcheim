@@ -5,7 +5,6 @@ using TMPro;
 
 [RequireComponent(typeof(HitBoxesController))]
 [RequireComponent(typeof(RagdollController))]
-[RequireComponent(typeof(EnemyUIController))]
 
 public class Enemy1 : MonoBehaviour, IEnemy
 {
@@ -73,10 +72,10 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     #region Private fields
     private HitBoxesController _hitBoxesController;
-    private EnemyUIController _enemyUIController;
     private RagdollController _ragdollController;
     private DieEffectController _dieEffectController;
     private HealthBarController _healthBarController;
+    private PopupDamageController _popupDamageController;
     #endregion Private fields
 
     #region Mono
@@ -90,10 +89,11 @@ public class Enemy1 : MonoBehaviour, IEnemy
     private void Start()
     {
         _hitBoxesController = GetComponent<HitBoxesController>();
-        _enemyUIController = GetComponent<EnemyUIController>();
         _ragdollController = GetComponent<RagdollController>();
         _dieEffectController = GetComponent<DieEffectController>();
+
         _healthBarController = GetComponentInChildren<HealthBarController>();
+        _popupDamageController = GetComponentInChildren<PopupDamageController>();
 
         if (_dieEffectController != null)
             _dieEffectController.enabled = false;
@@ -114,7 +114,8 @@ public class Enemy1 : MonoBehaviour, IEnemy
             Health -= damage;
 
             // Всплывающий дамаг
-            _enemyUIController.ShowPopupDamage(damage, typeDamage); //TODO
+            if (_popupDamageController != null)
+                _popupDamageController.ShowPopupDamage(damage, typeDamage);
 
             // Полоска хп
             if (_healthBarController != null)
@@ -126,6 +127,11 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
         if (Health <= 0)
         {
+            if (_healthBarController != null)
+            {
+                _healthBarController.SetActiveHealthBar(false);
+            }
+
             StartCoroutine(Die());
         }
     }

@@ -26,10 +26,10 @@ public class HealthBarController : MonoBehaviour
     #region Mono
     private void Awake()
     {
-        
+
     }
     private void Start()
-    {   
+    {
         _images = GetComponentsInChildren<Image>();
 
         SetAlphaHealthBar(_currentAlpha);
@@ -75,7 +75,7 @@ public class HealthBarController : MonoBehaviour
         if (_isHide)
         {
             SetAlphaHealthBar(_currentAlpha);
-            
+
             if (_currentAlpha > 0f)
             {
                 _currentAlpha -= _rateShowing * Time.deltaTime;
@@ -102,7 +102,7 @@ public class HealthBarController : MonoBehaviour
     #region Public methods
     public void ShowHealthBar()
     {
-        if(!_isShowing && !_isShown)
+        if (!_isShowing && !_isShown)
         {
             _isShowing = true;
             _isHide = false;
@@ -119,9 +119,11 @@ public class HealthBarController : MonoBehaviour
     public void SetHealth(int health)
     {
         _hpSlider.value = health;
-
-        if (_hpSlider.value <= 0)
-            gameObject.SetActive(false);
     }
+    public void SetActiveHealthBar(bool active)
+    {
+        gameObject.SetActive(active);
+    }
+
     #endregion Public methods
 }

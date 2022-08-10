@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class LookAtTarget : MonoBehaviour
 {
-    [SerializeField]
-    private Transform _target;
+    #region Serialize fields
+    [SerializeField]  private Transform _target;
+    #endregion Serialize fields
+
+    #region Private fields
     private GameObject _mainCam;
-    // Start is called before the first frame update
-    void Start()
+    #endregion Private fields
+
+    #region Mono
+    private void Start()
     {
         if (!_target)
         {
@@ -17,11 +22,13 @@ public class LookAtTarget : MonoBehaviour
                 _target = _mainCam.transform;
         }
     }
+    #endregion Mono
 
-    // Update is called once per frame
-    void LateUpdate()
+    #region Private methods
+    private void LateUpdate()
     {
         if (_target)
             transform.LookAt(transform.position - _target.forward);
     }
+    #endregion Private methods
 }
