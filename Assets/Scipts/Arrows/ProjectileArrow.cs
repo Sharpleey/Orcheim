@@ -21,10 +21,12 @@ public class ProjectileArrow : MonoBehaviour
 
 	private bool _onPenetrationMod;
 	private bool _onCriticalDamageMod;
+	private bool _onFireArrowMod;
 
-	private Penetration _penetrationMod;
 	private DirectDamage _directDamageMod;
+	private Penetration _penetrationMod;
 	private CriticalDamage _criticalDamageMod;
+	private FireArrow _fireArrowMod;
 
 	private Rigidbody _arrowRigidbody;
 	private CapsuleCollider _arrowCapsuleCollider;
@@ -50,13 +52,16 @@ public class ProjectileArrow : MonoBehaviour
 
 		_onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
 		_onCriticalDamageMod = UnityUtility.HasComponent<CriticalDamage>(gameObject);
-		
+		_onFireArrowMod = UnityUtility.HasComponent<FireArrow>(gameObject);
+
 		_directDamageMod = GetComponent<DirectDamage>();
 
 		if (_onPenetrationMod)
 			_penetrationMod = GetComponent<Penetration>();
 		if (_onCriticalDamageMod)
 			_criticalDamageMod = GetComponent<CriticalDamage>();
+		if(_onFireArrowMod)
+			_fireArrowMod = GetComponent<FireArrow>();
 
 		_arrowRigidbody = GetComponent<Rigidbody>();
 		_arrowCapsuleCollider = GetComponent<CapsuleCollider>();
@@ -114,6 +119,12 @@ public class ProjectileArrow : MonoBehaviour
 
 					// Наносим урон противнику
 					enemy.TakeHitboxDamage(damage, hitCollider, _directDamageMod.TypeDamage);
+
+					// Поджигаем противника
+					if (_onFireArrowMod && _fireArrowMod.GetProcBurning())
+                    {
+						enemy.SetBurning(_fireArrowMod.DamagePerSecond, _fireArrowMod.Duration, _fireArrowMod.TypeDamage);
+                    }						
 				}
 
 				if (_onPenetrationMod)

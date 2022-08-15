@@ -4,8 +4,10 @@ using UnityEngine;
 
 public interface IEnemy
 {
-    int MaxHealth {get; }
-    int Health {get; }
+    int MaxHealth { get; }
+    int Health { get; }
     float Speed { get; }
+    void TakeDamage(int damage, TypeDamage typeDamage);
     void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage);
+    void SetBurning(int damagePerSecond, int duration, TypeDamage typeDamage);
 }

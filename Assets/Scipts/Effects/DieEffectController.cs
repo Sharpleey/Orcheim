@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Конроллер эффекта смерти. Анимация эффекта начинается полсе активации этого компонента
+/// </summary>
 public class DieEffectController : MonoBehaviour
 {
     #region Serialize fields
-    [SerializeField] private float _dieEffectTime = 2;
+    [SerializeField] private GameObject _enemy;
+    [SerializeField] private float _dutarionDieEffect = 2;
     [SerializeField] private AnimationCurve fadeIn;
     #endregion Serialize fields
 
@@ -21,11 +25,11 @@ public class DieEffectController : MonoBehaviour
     private void Awake()
     {
         _shaderProperty = Shader.PropertyToID("_cutoff");
-        _renderers = GetComponentsInChildren<Renderer>();
-        _particleSystem = GetComponentInChildren<ParticleSystem>();
+        _renderers = _enemy.GetComponentsInChildren<Renderer>();
+        _particleSystem = GetComponent<ParticleSystem>();
 
         var main = _particleSystem.main;
-        main.duration = _dieEffectTime;
+        main.duration = _dutarionDieEffect;
     }
     
     private void OnEnable()
@@ -37,13 +41,13 @@ public class DieEffectController : MonoBehaviour
     #region Private methods
     private void Update()
     {
-        if (_timer < _dieEffectTime)
+        if (_timer < _dutarionDieEffect)
         {
             _timer += Time.deltaTime;
         }
 
         foreach (var renderer in _renderers)
-            renderer.material.SetFloat(_shaderProperty, fadeIn.Evaluate(Mathf.InverseLerp(0, _dieEffectTime, _timer)));
+            renderer.material.SetFloat(_shaderProperty, fadeIn.Evaluate(Mathf.InverseLerp(0, _dutarionDieEffect, _timer)));
 
     }
     #endregion Private methods

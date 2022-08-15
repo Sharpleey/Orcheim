@@ -73,7 +73,7 @@ public class FireArrow : MonoBehaviour, IModifier
     }
     #endregion Properties
 
-    #region Methods
+    #region Private methods
     private void Awake()
     {
         Name = _name;
@@ -83,9 +83,15 @@ public class FireArrow : MonoBehaviour, IModifier
         Duration = _duration;
         TypeDamage = _typeDamage;
     }
-    private void OnTriggerEnter(Collider hitCollider)
-    {
+    #endregion Private methods
 
+    #region Public methods
+    public bool GetProcBurning()
+    {
+        int proc = Random.Range(0, 100);
+        if (proc <= ProcÑhance)
+            return true;
+        return false;
     }
-    #endregion Methods
+    #endregion Public methods
 }

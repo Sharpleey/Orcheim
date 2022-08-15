@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Контроллер отвечает за полосу здоровья над противником
+/// </summary>
 public class HealthBarController : MonoBehaviour
 {
     #region Serialize fields
@@ -12,8 +15,17 @@ public class HealthBarController : MonoBehaviour
     #endregion Serialize fields
 
     #region Private fields
+    /// <summary>
+    /// Состояние плавного появления
+    /// </summary>
     private bool _isShown = false;
+    /// <summary>
+    /// Состояние, когда полоса здровья полностью показана
+    /// </summary>
     private bool _isShowing = false;
+    /// <summary>
+    /// Состояние плавного сокрытия полосы хп
+    /// </summary>
     private bool _isHide = false;
 
     private float _currentAlpha = 0f;
@@ -24,10 +36,6 @@ public class HealthBarController : MonoBehaviour
     #endregion Private fields
 
     #region Mono
-    private void Awake()
-    {
-
-    }
     private void Start()
     {
         _images = GetComponentsInChildren<Image>();
@@ -88,7 +96,10 @@ public class HealthBarController : MonoBehaviour
 
         }
     }
-
+    /// <summary>
+    /// Метод устанавливает прозрачность для всех элементов объекта HealthBar
+    /// </summary>
+    /// <param name="curAlpha">Значение alpha</param>
     private void SetAlphaHealthBar(float curAlpha)
     {
         foreach (Image image in _images)
@@ -100,6 +111,9 @@ public class HealthBarController : MonoBehaviour
     #endregion Private methods
 
     #region Public methods
+    /// <summary>
+    /// Плавно показываем и плавно скрываем полосу хп
+    /// </summary>
     public void ShowHealthBar()
     {
         if (!_isShowing && !_isShown)
@@ -112,14 +126,26 @@ public class HealthBarController : MonoBehaviour
             _timer = 0;
         }
     }
+    /// <summary>
+    /// Устанавливаем максимальное значение полосы хп
+    /// </summary>
+    /// <param name="maxHealth">Значение максимального здоровья</param>
     public void SetMaxHealth(int maxHealth)
     {
         _hpSlider.maxValue = maxHealth;
     }
+    /// <summary>
+    /// Устанавливаем текущее значение здоровья для полосы хп
+    /// </summary>
+    /// <param name="health">Текущее значение здоровья</param>
     public void SetHealth(int health)
     {
         _hpSlider.value = health;
     }
+    /// <summary>
+    /// Метод для активации/деактивации полосы здоровья
+    /// </summary>
+    /// <param name="active"></param>
     public void SetActiveHealthBar(bool active)
     {
         gameObject.SetActive(active);

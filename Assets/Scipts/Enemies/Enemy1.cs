@@ -71,11 +71,17 @@ public class Enemy1 : MonoBehaviour, IEnemy
     #endregion Properties
 
     #region Private fields
+    private bool _isBurning = false;
+    private float _timerBurning = 0f;
+    private int _durationBurning = 0;
+
     private HitBoxesController _hitBoxesController;
     private RagdollController _ragdollController;
-    private DieEffectController _dieEffectController;
     private HealthBarController _healthBarController;
     private PopupDamageController _popupDamageController;
+
+    private DieEffectController _dieEffectController;
+    private BurningEffectController _burningEffectController;
     #endregion Private fields
 
     #region Mono
@@ -88,16 +94,25 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     private void Start()
     {
+        // Получаем контроллеры
+        // ---------------------------------------------------------------
         _hitBoxesController = GetComponent<HitBoxesController>();
         _ragdollController = GetComponent<RagdollController>();
-        _dieEffectController = GetComponent<DieEffectController>();
 
+        _burningEffectController = GetComponentInChildren<BurningEffectController>();
+        _dieEffectController = GetComponentInChildren<DieEffectController>();
         _healthBarController = GetComponentInChildren<HealthBarController>();
         _popupDamageController = GetComponentInChildren<PopupDamageController>();
+        // ---------------------------------------------------------------
 
+        // Делаем компонент неактивным, чтобы не началась анимация
         if (_dieEffectController != null)
             _dieEffectController.enabled = false;
 
+        if (_burningEffectController != null)
+            _burningEffectController.enabled = false;
+
+        // Устанавливаем максимальное и актуальное хп для полосы хп
         if (_healthBarController != null)
         {
             _healthBarController.SetMaxHealth(MaxHealth);
@@ -107,7 +122,47 @@ public class Enemy1 : MonoBehaviour, IEnemy
     #endregion Mono
 
     #region Private methods
-    private void TakeDamage(int damage, TypeDamage typeDamage)
+    private void Update()
+    {
+        if (_isBurning)
+        {
+            if (_timerBurning < _durationBurning+1)
+            {
+                _timerBurning += Time.deltaTime;
+            }
+            else
+            {
+                _timerBurning = 0;
+                _isBurning = false;
+                _burningEffectController.enabled = false;
+            }
+        }
+    }
+    private IEnumerator Die()
+    {
+        if (_ragdollController != null)
+            _ragdollController.MakePhysical();
+
+        if (_burningEffectController != null)
+            _burningEffectController.enabled = false;
+
+        yield return new WaitForSeconds(2);
+
+        //if (_hitBoxesController)
+        //    _hitBoxesController.OnLayersAllColliders();
+
+        if (_dieEffectController != null)
+            _dieEffectController.enabled = true;
+
+        yield return new WaitForSeconds(5);
+
+        Destroy(gameObject);
+    }
+
+    #endregion Private methods
+
+    #region Public methods
+    public void TakeDamage(int damage, TypeDamage typeDamage)
     {
         if (Health > 0)
         {
@@ -135,32 +190,24 @@ public class Enemy1 : MonoBehaviour, IEnemy
             StartCoroutine(Die());
         }
     }
-    private IEnumerator Die()
-    {
-        if (_ragdollController != null)
-            _ragdollController.MakePhysical();
-
-        yield return new WaitForSeconds(2);
-
-        //if (_hitBoxesController)
-        //    _hitBoxesController.OnLayersAllColliders();
-
-        if (_dieEffectController != null)
-            _dieEffectController.enabled = true;
-
-        yield return new WaitForSeconds(5);
-
-        Destroy(gameObject);
-    }
-
-    #endregion Private methods
-
-    #region Public methods
     public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
     {
         // Получаем значение урона с учетом попадания в ту или иную часть тела
         damage = _hitBoxesController.GetDamageValue(damage, hitCollider);
         TakeDamage(damage, typeDamage);
+    }
+    public void SetBurning(int damagePerSecond, int duration, TypeDamage typeDamage)
+    {
+        if (!_isBurning)
+        {
+            _durationBurning = duration;
+
+            _burningEffectController.DamagePerSecond = damagePerSecond;
+            _burningEffectController.TypeDamage = typeDamage;
+
+            _isBurning = true;
+            _burningEffectController.enabled = true;
+        }
     }
     #endregion Public methods
 }
