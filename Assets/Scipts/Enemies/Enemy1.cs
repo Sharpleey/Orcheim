@@ -82,6 +82,8 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     private DieEffectController _dieEffectController;
     private BurningEffectController _burningEffectController;
+
+    private IconEffectsController _iconEffectsController;
     #endregion Private fields
 
     #region Mono
@@ -98,6 +100,8 @@ public class Enemy1 : MonoBehaviour, IEnemy
         // ---------------------------------------------------------------
         _hitBoxesController = GetComponent<HitBoxesController>();
         _ragdollController = GetComponent<RagdollController>();
+
+        _iconEffectsController = GetComponentInChildren<IconEffectsController>();
 
         _burningEffectController = GetComponentInChildren<BurningEffectController>();
         _dieEffectController = GetComponentInChildren<DieEffectController>();
@@ -135,6 +139,9 @@ public class Enemy1 : MonoBehaviour, IEnemy
                 _timerBurning = 0;
                 _isBurning = false;
                 _burningEffectController.enabled = false;
+
+                if (_iconEffectsController != null)
+                    _iconEffectsController.SetActiveIconBurning(false);
             }
         }
     }
@@ -145,6 +152,12 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
         if (_burningEffectController != null)
             _burningEffectController.enabled = false;
+
+        if (_healthBarController != null)
+            _healthBarController.SetActiveHealthBar(false);
+
+        if (_iconEffectsController != null)
+            _iconEffectsController.DeactivateAllIcons();
 
         yield return new WaitForSeconds(2);
 
@@ -181,14 +194,7 @@ public class Enemy1 : MonoBehaviour, IEnemy
         }
 
         if (Health <= 0)
-        {
-            if (_healthBarController != null)
-            {
-                _healthBarController.SetActiveHealthBar(false);
-            }
-
             StartCoroutine(Die());
-        }
     }
     public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
     {
@@ -207,6 +213,10 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
             _isBurning = true;
             _burningEffectController.enabled = true;
+
+            // Включаем иконку горения над противником
+            if (_iconEffectsController != null)
+                _iconEffectsController.SetActiveIconBurning(true);
         }
     }
     #endregion Public methods
