@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using TMPro;
 
 [RequireComponent(typeof(HitBoxesController))]
 [RequireComponent(typeof(RagdollController))]
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
 
 public class Enemy1 : MonoBehaviour, IEnemy
 {
     #region Serialize fields
     [SerializeField] private int _maxHealth = 100;
     [SerializeField] private int _health;
-    [SerializeField] private float _speed = 5;
+    [SerializeField] private float _speed = 3.5f;
     #endregion Serialize fields
 
     #region Properties
@@ -60,12 +63,21 @@ public class Enemy1 : MonoBehaviour, IEnemy
         }
         set
         {
-            if (value < 0)
+            if (value < 0.1f)
             {
-                _speed = 0;
+                _speed = 0.1f;
+                navMeshAgent.speed = 0.1f;
                 return;
             }
+            navMeshAgent.speed = value;
             _speed = value;
+        }
+    }
+    public float CurrentSpeed
+    {
+        get
+        {
+            return navMeshAgent.velocity.magnitude;
         }
     }
     #endregion Properties
@@ -84,11 +96,27 @@ public class Enemy1 : MonoBehaviour, IEnemy
     private BurningEffectController _burningEffectController;
 
     private IconEffectsController _iconEffectsController;
+
+    private StateMachineEnemy _stateMachineEnemy;
+
+
     #endregion Private fields
+
+    #region Public fields
+    [HideInInspector] public NavMeshAgent navMeshAgent;
+
+    [HideInInspector] public Animator animator;
+
+    public IdleState idleState;
+    public PursuitState pursuitState;
+    public AttackState attackState;
+    #endregion Public fields
 
     #region Mono
     private void Awake()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+
         MaxHealth = _maxHealth;
         Health = MaxHealth;
         Speed = _speed;
@@ -96,7 +124,7 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     private void Start()
     {
-        // Получаем контроллеры
+        // Получаем контроллерыи компоненты
         // ---------------------------------------------------------------
         _hitBoxesController = GetComponent<HitBoxesController>();
         _ragdollController = GetComponent<RagdollController>();
@@ -107,6 +135,10 @@ public class Enemy1 : MonoBehaviour, IEnemy
         _dieEffectController = GetComponentInChildren<DieEffectController>();
         _healthBarController = GetComponentInChildren<HealthBarController>();
         _popupDamageController = GetComponentInChildren<PopupDamageController>();
+
+        _stateMachineEnemy = GetComponent<StateMachineEnemy>();
+
+        animator = GetComponent<Animator>();
         // ---------------------------------------------------------------
 
         // Делаем компонент неактивным, чтобы не началась анимация
@@ -122,12 +154,27 @@ public class Enemy1 : MonoBehaviour, IEnemy
             _healthBarController.SetMaxHealth(MaxHealth);
             _healthBarController.SetHealth(Health);
         }
+
+        // Инициализируем состояния и задаем начальное состояние
+        if (_stateMachineEnemy != null)
+        {
+            idleState = new IdleState(this, _stateMachineEnemy);
+            pursuitState = new PursuitState(this, _stateMachineEnemy);
+            attackState = new AttackState(this, _stateMachineEnemy);
+
+            // Задаем начальное состояние
+            _stateMachineEnemy.InitializeStartingState(idleState);
+        }
     }
     #endregion Mono
 
     #region Private methods
     private void Update()
     {
+        if (_stateMachineEnemy != null)
+            _stateMachineEnemy.CurrentState.Update();
+
+        // TODO когда будет больше эффектов переделать под машину состояний 
         if (_isBurning)
         {
             if (_timerBurning < _durationBurning+1)
@@ -145,10 +192,14 @@ public class Enemy1 : MonoBehaviour, IEnemy
             }
         }
     }
+    private void FixedUpdate()
+    {
+        if (_stateMachineEnemy != null)
+            _stateMachineEnemy.CurrentState.FixedUpdate();
+    }
     private IEnumerator Die()
     {
-        if (_ragdollController != null)
-            _ragdollController.MakePhysical();
+        _ragdollController.MakePhysical();
 
         if (_burningEffectController != null)
             _burningEffectController.enabled = false;
@@ -158,6 +209,9 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
         if (_iconEffectsController != null)
             _iconEffectsController.DeactivateAllIcons();
+
+        if (navMeshAgent != null)
+            navMeshAgent.enabled = false;
 
         yield return new WaitForSeconds(2);
 
