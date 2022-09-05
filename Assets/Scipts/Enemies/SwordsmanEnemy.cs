@@ -9,12 +9,17 @@ using TMPro;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
 
-public class Enemy1 : MonoBehaviour, IEnemy
+public class SwordsmanEnemy : MonoBehaviour, IEnemy
 {
     #region Serialize fields
     [SerializeField] private int _maxHealth = 100;
     [SerializeField] private int _health;
     [SerializeField] private float _speed = 3.5f;
+
+    [Header("Weapon Visual Settings")]
+    [SerializeField] private GameObject _currentWeapon;
+    [SerializeField] private GameObject[] _prefabWeapons;
+    [SerializeField] private Transform _weaponPlace;
     #endregion Serialize fields
 
     #region Properties
@@ -124,6 +129,9 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     private void Start()
     {
+        // Выбираем оружие из списка для визульной разницы
+        SetRandomWeaponModel();
+
         // Получаем контроллерыи компоненты
         // ---------------------------------------------------------------
         _hitBoxesController = GetComponent<HitBoxesController>();
@@ -197,9 +205,41 @@ public class Enemy1 : MonoBehaviour, IEnemy
         if (_stateMachineEnemy != null)
             _stateMachineEnemy.CurrentState.FixedUpdate();
     }
+
+    /// <summary>
+    /// Метод устанавливает рандомную модель оружия, для визуального разнообразия
+    /// </summary>
+    private void SetRandomWeaponModel()
+    {
+        int id_weapon = Random.Range(0, _prefabWeapons.Length);
+        _currentWeapon = Instantiate(_prefabWeapons[id_weapon]);
+
+        _currentWeapon.transform.parent = _weaponPlace.transform;
+
+        _currentWeapon.transform.position = _weaponPlace.position;
+        _currentWeapon.transform.rotation = _weaponPlace.rotation;
+
+    }
+    /// <summary>
+    /// Метод отвязывает оружие от модели противника и удаляет его со сцены через некоторое время 
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DeleteWeapon()
+    {
+        _currentWeapon.transform.parent = null;
+
+        Rigidbody rigidbodyWeapon = _currentWeapon.GetComponent<Rigidbody>();
+        rigidbodyWeapon.isKinematic = false;
+
+        yield return new WaitForSeconds(5);
+
+        Destroy(_currentWeapon);
+    }
     private IEnumerator Die()
     {
         _ragdollController.MakePhysical();
+
+        StartCoroutine(DeleteWeapon());
 
         if (_burningEffectController != null)
             _burningEffectController.enabled = false;
@@ -248,7 +288,9 @@ public class Enemy1 : MonoBehaviour, IEnemy
         }
 
         if (Health <= 0)
+        {
             StartCoroutine(Die());
+        }
     }
     public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
     {

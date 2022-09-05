@@ -7,7 +7,7 @@ public class IdleState : State
     private float _playerDetectionDistance = 10f;
     private Transform _transformPlayer;
 
-    public IdleState(Enemy1 enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
+    public IdleState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
     {
 
     }

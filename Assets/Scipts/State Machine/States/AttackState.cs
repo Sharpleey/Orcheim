@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    private float _attackDistance = 2.5f;
-    private float _attackFrequency = 1f;
+    private float _attackDistance;
+    private float _attackFrequency = 2f;
 
     private Transform _transformPlayer;
 
     private float _timer;
 
-    public AttackState(Enemy1 enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
+    public AttackState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
     {
 
     }
@@ -21,6 +21,7 @@ public class AttackState : State
 
         _timer = 0;
 
+        _attackDistance = _enemy.navMeshAgent.stoppingDistance;
         _enemy.animator.SetBool("isIdleAttacking", true);
 
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
@@ -37,16 +38,15 @@ public class AttackState : State
             _enemy.animator.SetTrigger("isAttacking");
             _timer = 0;
         }
-
-        //if (!_enemy.animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
-        //{
-
-        //}
-
-            float distance = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+        
+        float distance = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
         if (distance > _attackDistance)
         {
-            _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+            // Если анимация атаки не выполняется
+            if (!_enemy.animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
+            {
+                _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+            }
         }
 
     }

@@ -10,7 +10,7 @@ public abstract class State
     /// <summary>
     /// Хранит ссылку основной объект класса противника со всеми параметрами и данными. Необходимо для разного рода взаимодействий
     /// </summary>
-    protected Enemy1 _enemy;
+    protected SwordsmanEnemy _enemy;
 
     /// <summary>
     /// Хранит ссылку объекта класса машины состояний, которая привязана к данному противнику
@@ -22,7 +22,7 @@ public abstract class State
     /// </summary>
     /// <param name="enemy">Данный и параметры противника</param>
     /// <param name="stateMachineEnemy">Машина состоянйи противника</param>
-    protected State(Enemy1 enemy, StateMachineEnemy stateMachineEnemy)
+    protected State(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy)
     {
         _enemy = enemy;
         _stateMachineEnemy = stateMachineEnemy;

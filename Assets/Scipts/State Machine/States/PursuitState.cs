@@ -7,7 +7,7 @@ public class PursuitState : State
     private float _attackDistance = 2.5f;
     private Transform _transformPlayer;
 
-    public PursuitState(Enemy1 enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
+    public PursuitState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
     {
 
     }
