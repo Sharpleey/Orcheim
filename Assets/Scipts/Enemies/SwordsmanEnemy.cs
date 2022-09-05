@@ -85,6 +85,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             return navMeshAgent.velocity.magnitude;
         }
     }
+
+    public bool IsAttacked { get; private set; } = false;
+
     #endregion Properties
 
     #region Private fields
@@ -220,6 +223,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         _currentWeapon.transform.rotation = _weaponPlace.rotation;
 
     }
+
     /// <summary>
     /// Метод отвязывает оружие от модели противника и удаляет его со сцены через некоторое время 
     /// </summary>
@@ -237,9 +241,10 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     }
     private IEnumerator Die()
     {
-        _ragdollController.MakePhysical();
-
         StartCoroutine(DeleteWeapon());
+
+        if (_ragdollController != null)
+            _ragdollController.MakePhysical();
 
         if (_burningEffectController != null)
             _burningEffectController.enabled = false;
@@ -274,6 +279,8 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         if (Health > 0)
         {
             Health -= damage;
+
+            IsAttacked = true;
 
             // Всплывающий дамаг
             if (_popupDamageController != null)
