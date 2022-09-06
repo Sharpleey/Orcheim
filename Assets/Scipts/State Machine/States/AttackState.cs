@@ -5,12 +5,13 @@ using UnityEngine;
 public class AttackState : State
 {
     private float _attackDistance;
-    private float _attackFrequency = 3f;
+    private float _attackFrequency = 3.5f;
     private float _attackTimeAnimation;
 
     private Transform _transformPlayer;
 
     private float _timer;
+    private float _timerUpdate;
 
     public AttackState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
     {
@@ -21,8 +22,11 @@ public class AttackState : State
         base.Enter();
 
         _timer = 0;
+        _timerUpdate = 0;
 
-        _attackDistance = _enemy.navMeshAgent.stoppingDistance;
+        _attackFrequency = Random.Range(_attackFrequency - 0.5f, _attackFrequency + 0.5f);
+
+        _attackDistance = _enemy.navMeshAgent.stoppingDistance + 0.1f;
         _enemy.animator.SetBool("isIdleAttacking", true);
 
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
@@ -39,16 +43,23 @@ public class AttackState : State
             _enemy.animator.SetTrigger("isAttacking");
             _timer = 0;
         }
-        
-        float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
-        if (distanceToTarget > _attackDistance)
+
+        _timerUpdate += Time.deltaTime;
+        if (_timerUpdate > 0.5f)
         {
-            // Если анимация атаки не выполняется
-            if (!_enemy.animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
+            float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+            if (distanceToTarget > _attackDistance)
             {
-                _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+                // Если анимация атаки не выполняется
+                if (!_enemy.animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
+                {
+                    _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+                }
             }
+
+            _timerUpdate = 0;
         }
+
 
     }
 

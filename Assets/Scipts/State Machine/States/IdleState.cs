@@ -7,17 +7,19 @@ public class IdleState : State
     /// <summary>
     /// Угол обзора враг
     /// </summary>
-    private float _viewAngleDetection = 90f;
+    private float _viewAngleDetection = 110f;
     /// <summary>
     /// Дистанция обзора врага
     /// </summary>
-    private float _viewDetectionDistance = 10f;
+    private float _viewDetectionDistance = 12f;
     /// <summary>
     /// Радиус обнаружения, при котором в любом случае враг заметит игрока
     /// </summary>
     private float _absoluteDetectionDistance = 3f;
 
     private Transform _transformPlayer;
+
+    private float _timerUpdate;
 
     public IdleState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
     {
@@ -27,23 +29,36 @@ public class IdleState : State
     public override void Enter()
     {
         base.Enter();
-        _enemy.animator.StopPlayback();
+
+        _timerUpdate = 0;
+
+        //_enemy.animator.StopPlayback();
 
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+
+        _enemy.animator.SetBool("isIdle", true);
     }
 
     public override void Update()
     {
         base.Update();
-        _enemy.animator.SetFloat("Speed", _enemy.CurrentSpeed/_enemy.Speed);
+        
 
-        float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
-
-        // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
-        if (distanceToTarget < _absoluteDetectionDistance || _enemy.IsAttacked || IsIsView())
+        _timerUpdate += Time.deltaTime;
+        if (_timerUpdate > 0.5)
         {
-            _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+            float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+
+            // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
+            if (distanceToTarget < _absoluteDetectionDistance || _enemy.IsAttacked || IsIsView())
+            {
+                _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+            }
+
+            _timerUpdate = 0;
         }
+
+        
     }
 
     public override void FixedUpdate()
@@ -54,6 +69,8 @@ public class IdleState : State
     public override void Exit()
     {
         base.Exit();
+
+        _enemy.animator.SetBool("isIdle", false);
     }
 
     #region Private methods
