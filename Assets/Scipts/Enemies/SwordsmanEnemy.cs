@@ -85,9 +85,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             return navMeshAgent.velocity.magnitude;
         }
     }
-
-    public bool IsAttacked { get; private set; } = false;
-
+    public bool IsAttacked { get; private set; }
+    //public HitBoxesController HitBoxesController => _hitBoxesController;
+    //public RagdollController RagdollController => _ragdollController;
     #endregion Properties
 
     #region Private fields
@@ -106,8 +106,6 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     private IconEffectsController _iconEffectsController;
 
     private StateMachineEnemy _stateMachineEnemy;
-
-
     #endregion Private fields
 
     #region Public fields
@@ -132,7 +130,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
     private void Start()
     {
-        // Выбираем оружие из списка для визульной разницы
+        // Выбираем оружие из списка для визуальной разницы
         SetRandomWeaponModel();
 
         // Получаем контроллерыи компоненты
@@ -187,21 +185,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
         // TODO когда будет больше эффектов переделать под машину состояний 
         if (_isBurning)
-        {
-            if (_timerBurning < _durationBurning+1)
-            {
-                _timerBurning += Time.deltaTime;
-            }
-            else
-            {
-                _timerBurning = 0;
-                _isBurning = false;
-                _burningEffectController.enabled = false;
-
-                if (_iconEffectsController != null)
-                    _iconEffectsController.SetActiveIconBurning(false);
-            }
-        }
+            Burning();
     }
     private void FixedUpdate()
     {
@@ -222,6 +206,26 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         _currentWeapon.transform.position = _weaponPlace.position;
         _currentWeapon.transform.rotation = _weaponPlace.rotation;
 
+    }
+
+    /// <summary>
+    /// Метод отвечает за эффект горения, его длительность и нанесения урона
+    /// </summary>
+    private void Burning()
+    {
+        if (_timerBurning < _durationBurning + 1)
+        {
+            _timerBurning += Time.deltaTime;
+        }
+        else
+        {
+            _timerBurning = 0;
+            _isBurning = false;
+            _burningEffectController.enabled = false;
+
+            if (_iconEffectsController != null)
+                _iconEffectsController.SetActiveIconBurning(false);
+        }
     }
 
     /// <summary>

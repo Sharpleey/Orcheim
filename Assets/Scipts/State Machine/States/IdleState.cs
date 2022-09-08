@@ -42,7 +42,6 @@ public class IdleState : State
     public override void Update()
     {
         base.Update();
-        
 
         _timerUpdate += Time.deltaTime;
         if (_timerUpdate > 0.5)
