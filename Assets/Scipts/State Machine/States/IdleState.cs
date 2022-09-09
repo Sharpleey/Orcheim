@@ -36,7 +36,7 @@ public class IdleState : State
 
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
-        _enemy.animator.SetBool("isIdle", true);
+        _enemy.Animator.SetBool("isIdle", true);
     }
 
     public override void Update()
@@ -69,7 +69,7 @@ public class IdleState : State
     {
         base.Exit();
 
-        _enemy.animator.SetBool("isIdle", false);
+        _enemy.Animator.SetBool("isIdle", false);
     }
 
     #region Private methods

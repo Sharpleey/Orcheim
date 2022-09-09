@@ -21,7 +21,7 @@ public class PursuitState : State
 
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
-        _enemy.animator.SetBool("isMovement", true);
+        _enemy.Animator.SetBool("isMovement", true);
     }
 
     public override void Update()
@@ -46,15 +46,15 @@ public class PursuitState : State
     {
         base.FixedUpdate();
 
-        _enemy.navMeshAgent.SetDestination(_transformPlayer.position);
+        _enemy.NavMeshAgent.SetDestination(_transformPlayer.position);
 
-        _enemy.animator.SetFloat("Speed", _enemy.CurrentSpeed / _enemy.Speed);
+        _enemy.Animator.SetFloat("Speed", _enemy.CurrentSpeed / _enemy.Speed);
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        _enemy.animator.SetBool("isMovement", false);
+        _enemy.Animator.SetBool("isMovement", false);
     }
 }

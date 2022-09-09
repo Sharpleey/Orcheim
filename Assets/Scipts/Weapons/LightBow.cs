@@ -11,7 +11,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     [Header("Projectile Settings")]
     //[SerializeField] private GameObject _selectedPrefabArrow; // Префаб для стрелы
-    [SerializeField] private GameObject _originalArrow; // Объект из которого будем делать дубликаты стрел, выстпает в роле префаба
+    [SerializeField] private GameObject _originalArrow; // Объект из которого будем делать дубликаты стрел, выстeпает в роле префаба
     [SerializeField] private Transform _arrowSpawn;
     [SerializeField] private Camera _camera;
     [SerializeField] private float _shotForce = 8; // Сила выстрела

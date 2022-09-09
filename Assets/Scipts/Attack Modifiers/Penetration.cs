@@ -82,10 +82,6 @@ public class Penetration : MonoBehaviour, IModifier
 
     #region Private fields
     private int _currentPenetration = 0;
-
-    //private IEnemy _currentHitEnemy;
-
-    //private DirectDamage _directDamage;
     #endregion Private fields
 
     #region Mono
@@ -95,10 +91,6 @@ public class Penetration : MonoBehaviour, IModifier
         Description = _description;
         MaxTargetPenetration = _maxTargetPenetration;
         DamageDecrease = _damageDecrease;
-    }
-    private void Start()
-    {
-        //_directDamage = GetComponent<DirectDamage>();
     }
     #endregion Mono
 

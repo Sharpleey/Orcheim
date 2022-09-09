@@ -38,9 +38,9 @@ public class AttackState : State
         _attackFrequency = Random.Range(_attackFrequency - 0.5f, _attackFrequency + 0.5f);
 
         // Устанавливаем дистанцию атаки
-        _attackDistance = _enemy.navMeshAgent.stoppingDistance + 0.1f;
+        _attackDistance = _enemy.NavMeshAgent.stoppingDistance + 0.1f;
         // Включаем анимацию
-        _enemy.animator.SetBool("isIdleAttacking", true);
+        _enemy.Animator.SetBool("isIdleAttacking", true);
         // Получаем transform игрока для использования его в дальнейшем
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
@@ -56,7 +56,7 @@ public class AttackState : State
         if (_timer > _attackFrequency)
         {
             // Включаем анимацию атаки, тем самым атакуем
-            _enemy.animator.SetTrigger("isAttacking");
+            _enemy.Animator.SetTrigger("isAttacking");
             _timer = 0;
         }
         // -------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ public class AttackState : State
             if (distanceToTarget > _attackDistance)
             {
                 // Если анимация атаки не выполняется
-                if (!_enemy.animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
+                if (!_enemy.Animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
                 {
                     _stateMachineEnemy.ChangeState(_enemy.pursuitState);
                 }
@@ -85,7 +85,6 @@ public class AttackState : State
     {
         base.FixedUpdate();
 
-        //_enemy.transform.LookAt(_transformPlayer);
         LookAtTarget();
     }
 
@@ -93,10 +92,13 @@ public class AttackState : State
     {
         base.Exit();
 
-        _enemy.animator.SetBool("isIdleAttacking", false);
+        _enemy.Animator.SetBool("isIdleAttacking", false);
 
     }
 
+    /// <summary>
+    /// Метод плавно поворачивает с определенной скоростью врага к игроку
+    /// </summary>
     private void LookAtTarget()
     {
         Vector3 direction = -(_enemy.transform.position - _transformPlayer.position);

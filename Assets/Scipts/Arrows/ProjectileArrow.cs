@@ -9,6 +9,8 @@ public class ProjectileArrow : MonoBehaviour
 	#region Serialize fields
 	[SerializeField] private GameObject _tracerEffect;
 	[SerializeField] private GameObject _hitEffect;
+
+	[SerializeField] private float _forceHit = 3f;
 	#endregion Serialize fields
 
 	#region Properties
@@ -159,6 +161,14 @@ public class ProjectileArrow : MonoBehaviour
 			StartCoroutine(DeleteProjectile(0));
 		}
 	}
+	/// <summary>
+	/// Метод возвращает вектор силы от попадания стрелы
+	/// </summary>
+	/// <returns>Вектор силы, навправленный в определенную сторону</returns>
+	private Vector3 GetForceHit()
+    {
+		return transform.TransformDirection(Vector3.forward) * _forceHit;
+	}	
 
     private IEnumerator DeleteProjectile(int secondsBeforeDeletion)
     {

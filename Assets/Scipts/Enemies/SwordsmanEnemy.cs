@@ -71,10 +71,10 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             if (value < 0.1f)
             {
                 _speed = 0.1f;
-                navMeshAgent.speed = 0.1f;
+                _navMeshAgent.speed = 0.1f;
                 return;
             }
-            navMeshAgent.speed = value;
+            _navMeshAgent.speed = value;
             _speed = value;
         }
     }
@@ -82,10 +82,12 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     {
         get
         {
-            return navMeshAgent.velocity.magnitude;
+            return _navMeshAgent.velocity.magnitude;
         }
     }
     public bool IsAttacked { get; private set; }
+    public NavMeshAgent NavMeshAgent => _navMeshAgent;
+    public Animator Animator => _animator;
     //public HitBoxesController HitBoxesController => _hitBoxesController;
     //public RagdollController RagdollController => _ragdollController;
     #endregion Properties
@@ -106,13 +108,13 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     private IconEffectsController _iconEffectsController;
 
     private StateMachineEnemy _stateMachineEnemy;
+
+    private NavMeshAgent _navMeshAgent;
+
+    private Animator _animator;
     #endregion Private fields
 
     #region Public fields
-    [HideInInspector] public NavMeshAgent navMeshAgent;
-
-    [HideInInspector] public Animator animator;
-
     public IdleState idleState;
     public PursuitState pursuitState;
     public AttackState attackState;
@@ -121,7 +123,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     #region Mono
     private void Awake()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
 
         MaxHealth = _maxHealth;
         Health = MaxHealth;
@@ -147,7 +149,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
         _stateMachineEnemy = GetComponent<StateMachineEnemy>();
 
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         // ---------------------------------------------------------------
 
         // Делаем компонент неактивным, чтобы не началась анимация
@@ -259,8 +261,8 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         if (_iconEffectsController != null)
             _iconEffectsController.DeactivateAllIcons();
 
-        if (navMeshAgent != null)
-            navMeshAgent.enabled = false;
+        if (_navMeshAgent != null)
+            _navMeshAgent.enabled = false;
 
         yield return new WaitForSeconds(2);
 
