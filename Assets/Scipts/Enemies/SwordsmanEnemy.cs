@@ -17,7 +17,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     [SerializeField] private int _health;
     [SerializeField] private float _speed = 3.5f;
 
-    [Header("_weapon Visual Settings")]
+    [Header("Weapon Visual Settings")]
     [SerializeField] private GameObject _weapon;
     [SerializeField] private GameObject[] _prefabWeapons;
     [SerializeField] private Transform _weaponPlace;
