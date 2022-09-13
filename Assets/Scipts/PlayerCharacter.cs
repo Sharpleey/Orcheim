@@ -25,12 +25,12 @@ public class PlayerCharacter : MonoBehaviour
     //[SerializeField] private Transform CameraPosition;
     // public Transform WeaponPosition;
 
-    // public Weapon[] startingWeapons;
+    // public _weapon[] startingWeapons;
 
     //this is only use at start, allow to grant ammo in the inspector. m_AmmoInventory is used during gameplay
     // public AmmoInventoryEntry[] startingAmmo;
 
-    [Header("Weapon Settings")]
+    [Header("_weapon Settings")]
     [SerializeField] public List<GameObject> _weapons;
     [SerializeField] private GameObject _usedWeapon;
     [SerializeField] private Transform _weaponPosition;
@@ -70,7 +70,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private CharacterController _characterController;
 
-    // List<Weapon> m_Weapons = new List<Weapon>();
+    // List<_weapon> m_Weapons = new List<_weapon>();
     // Dictionary<int, int> m_AmmoInventory = new Dictionary<int, int>();
 
     void Awake()
@@ -236,7 +236,7 @@ public class PlayerCharacter : MonoBehaviour
             //     ChangeWeapon(m_CurrentWeapon + 1);
             // }
             
-            //Key input to change weapon
+            //Key input to change _weapon
 
             // for (int i = 0; i < 10; ++i)
             // {
@@ -285,11 +285,11 @@ public class PlayerCharacter : MonoBehaviour
     //     Cursor.visible = display;
     // }
 
-    // void PickupWeapon(Weapon prefab)
+    // void PickupWeapon(_weapon prefab)
     // {
     //     //TODO : maybe find a better way than comparing name...
-    //     if (m_Weapons.Exists(weapon => weapon.name == prefab.name))
-    //     {//if we already have that weapon, grant a clip size of the ammo type instead
+    //     if (m_Weapons.Exists(_weapon => _weapon.name == prefab.name))
+    //     {//if we already have that _weapon, grant a clip size of the ammo type instead
     //         ChangeAmmo(prefab.ammoType, prefab.clipSize);
     //     }
     //     else
@@ -344,7 +344,7 @@ public class PlayerCharacter : MonoBehaviour
     //     if (m_Weapons[m_CurrentWeapon].ammoType == ammoType)
     //     {
     //         if (previous == 0 && amount > 0)
-    //         {//we just grabbed ammo for a weapon that add non left, so it's disabled right now. Reselect it.
+    //         {//we just grabbed ammo for a _weapon that add non left, so it's disabled right now. Reselect it.
     //             m_Weapons[m_CurrentWeapon].Selected();
     //         }
             

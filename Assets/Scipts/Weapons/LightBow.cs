@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DirectDamage))]
 public class LightBow : MonoBehaviour, IBowWeapon
 {
     #region Serialize fields
@@ -11,7 +13,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     [Header("Projectile Settings")]
     //[SerializeField] private GameObject _selectedPrefabArrow; // Префаб для стрелы
-    [SerializeField] private GameObject _originalArrow; // Объект из которого будем делать дубликаты стрел, выстeпает в роле префаба
+    [SerializeField] private GameObject _prefabArrow; // Объект из которого будем делать дубликаты стрел, выстeпает в роле префаба
     [SerializeField] private Transform _arrowSpawn;
     [SerializeField] private Camera _camera;
     [SerializeField] private float _shotForce = 8; // Сила выстрела
@@ -21,7 +23,13 @@ public class LightBow : MonoBehaviour, IBowWeapon
     #endregion Serialize fields
 
     #region Properties
+    /// <summary>
+    /// Название лука
+    /// </summary>
     public string Name { get => _name; private set => _name = value; }
+    /// <summary>
+    /// Время перезарядки в секундах
+    /// </summary>
     public float TimeReloadShot
     {
         get
@@ -38,6 +46,10 @@ public class LightBow : MonoBehaviour, IBowWeapon
             _timeReloadShot = value;
         }
     }
+    /// <summary>
+    /// Словарь хранит модификаторы атаки установленные на луке
+    /// </summary>
+    public Dictionary<Type, IModifier> AttackModifaers { get; private set; }
     #endregion Properties
 
     #region Private fields
@@ -50,11 +62,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private GameObject _cloneArrow;
     #endregion Private fields
 
-    #region Public fields
-    // Для хранения модификаторов атаки
-    public IModifier[] atachedAttaksModifaers;
-    #endregion Public fields
-
     #region Mono
     private void Awake()
     {
@@ -64,11 +71,16 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     private void Start()
     {
+        AttackModifaers = new Dictionary<Type, IModifier>();
+
+        AttackModifaers[typeof(DirectDamage)] = GetComponent<DirectDamage>();
+        AttackModifaers[typeof(CriticalDamage)] = GetComponent<CriticalDamage>();
+        AttackModifaers[typeof(Penetration)] = GetComponent<Penetration>();
+        AttackModifaers[typeof(FireArrow)] = GetComponent<FireArrow>();
+        AttackModifaers[typeof(SlowArrow)] = GetComponent<SlowArrow>();
+        AttackModifaers[typeof(Mjolnir)] = GetComponent<Mjolnir>();
 
         //_defaultBowRotate = transform.rotation;
-
-        // Получаем список модификаторов установленных на стреле (Луке)
-        atachedAttaksModifaers = _originalArrow.GetComponents<IModifier>();
 
         // Заряжаем
         SpawnArrow();
@@ -105,9 +117,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             _isAiming = false;
         }
 
-        if (Input.GetMouseButtonDown(0)
-            //&& _isArrowInBowstring 
-            && !_isReload)
+        if (Input.GetMouseButtonDown(0) && !_isReload)
         {
             if (_isAiming)
             {
@@ -127,22 +137,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
     {
         if (_debugMod) Debug.Log($"Выстрел");
 
-        _cloneArrow.transform.parent = null;
-
-        Rigidbody arrowRb = _cloneArrow.GetComponent<Rigidbody>();
-        if (arrowRb != null)
-        {
-            arrowRb.isKinematic = false;
-
-            // Назначаем физическому телу скорость.
-            arrowRb.AddForce((_cloneArrow.transform.forward) * _shotForce, ForceMode.Impulse);
-        }
-
-        ProjectileArrow projectileArrow = _cloneArrow.GetComponent<ProjectileArrow>();
-        if (projectileArrow != null)
-        { 
-            projectileArrow.isArrowInBowstring = false;
-        }
+        // Запускаем стрелу
+        _cloneArrow.GetComponent<ProjectileArrow>().Launch(_shotForce);
 
         StartCoroutine(Reload(TimeReloadShot));
     }
@@ -154,8 +150,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     private void SpawnArrow()
     {
-        _cloneArrow = Instantiate(_originalArrow);
-        _cloneArrow.SetActive(true);
+        _cloneArrow = Instantiate(_prefabArrow);
 
         _cloneArrow.transform.parent = transform;
 
@@ -163,12 +158,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
         _cloneArrow.transform.rotation = _arrowSpawn.rotation;
 
         Rigidbody arrowRb = _cloneArrow.GetComponent<Rigidbody>();
-        if (arrowRb != null)
-            arrowRb.isKinematic = true;
+        arrowRb.isKinematic = true;
 
-        //ProjectileArrow projectileArrow = _cloneArrow.GetComponent<ProjectileArrow>();
-        //if (projectileArrow != null)
-        //    projectileArrow.bowAttackModifiers = attackModifiers;
     }
 
     private IEnumerator Reload(float timeReload)

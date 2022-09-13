@@ -9,7 +9,7 @@ public class PursuitState : State
 
     private float _timerUpdate;
 
-    public PursuitState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
+    public PursuitState(SwordsmanEnemy enemy, StateMachineSwordsman stateMachine) : base(enemy, stateMachine)
     {
 
     }
@@ -35,7 +35,7 @@ public class PursuitState : State
 
             if (distance < _attackDistance)
             {
-                _stateMachineEnemy.ChangeState(_enemy.attackState);
+                _stateMachine.ChangeState(_stateMachine.AttackState);
             }
 
             _timerUpdate = 0;

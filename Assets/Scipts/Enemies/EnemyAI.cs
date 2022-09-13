@@ -7,25 +7,25 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private Transform _targetEnemy;
 
-    private NavMeshAgent _navMeshAgent;
-    private Animator _animator;
+    private NavMeshAgent NavMeshAgent;
+    private Animator Animator;
 
     // Start is called before the first frame update
     void Start()
     {
-        _animator = GetComponent<Animator>();
-        _navMeshAgent = GetComponent<NavMeshAgent>();
+        Animator = GetComponent<Animator>();
+        NavMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (_targetEnemy != null)
-            _navMeshAgent.SetDestination(_targetEnemy.position);
+            NavMeshAgent.SetDestination(_targetEnemy.position);
     }
 
     public void SetEnabledNavMeshAgent(bool enabled)
     {
-        _navMeshAgent.enabled = enabled;
+        NavMeshAgent.enabled = enabled;
     }
 }

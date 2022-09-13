@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Базовый абстрактный класс, от которого наследуются все классы состояния
 /// </summary>
-public abstract class State
+public abstract class State : Object
 {
     /// <summary>
     /// Хранит ссылку основной объект класса противника со всеми параметрами и данными. Необходимо для разного рода взаимодействий
@@ -15,17 +15,17 @@ public abstract class State
     /// <summary>
     /// Хранит ссылку объекта класса машины состояний, которая привязана к данному противнику
     /// </summary>
-    protected StateMachineEnemy _stateMachineEnemy;
+    protected StateMachineSwordsman _stateMachine;
 
     /// <summary>
     /// Конструктор класса состояния, необходим для прокидывания связей с данными противника и машины состояний
     /// </summary>
     /// <param name="enemy">Данный и параметры противника</param>
     /// <param name="stateMachineEnemy">Машина состоянйи противника</param>
-    protected State(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy)
+    protected State(SwordsmanEnemy enemy, StateMachineSwordsman stateMachine)
     {
         _enemy = enemy;
-        _stateMachineEnemy = stateMachineEnemy;
+        _stateMachine = stateMachine;
     }
     /// <summary>
     /// Метод вызываемый при входе в состояние

@@ -6,6 +6,7 @@ using TMPro;
 
 [RequireComponent(typeof(HitBoxesController))]
 [RequireComponent(typeof(RagdollController))]
+[RequireComponent(typeof(StateMachineSwordsman))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
 
@@ -16,8 +17,8 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     [SerializeField] private int _health;
     [SerializeField] private float _speed = 3.5f;
 
-    [Header("Weapon Visual Settings")]
-    [SerializeField] private GameObject _currentWeapon;
+    [Header("_weapon Visual Settings")]
+    [SerializeField] private GameObject _weapon;
     [SerializeField] private GameObject[] _prefabWeapons;
     [SerializeField] private Transform _weaponPlace;
     #endregion Serialize fields
@@ -71,10 +72,10 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             if (value < 0.1f)
             {
                 _speed = 0.1f;
-                _navMeshAgent.speed = 0.1f;
+                NavMeshAgent.speed = 0.1f;
                 return;
             }
-            _navMeshAgent.speed = value;
+            NavMeshAgent.speed = value;
             _speed = value;
         }
     }
@@ -82,14 +83,27 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     {
         get
         {
-            return _navMeshAgent.velocity.magnitude;
+            return NavMeshAgent.velocity.magnitude;
         }
     }
+    
     public bool IsAttacked { get; private set; }
-    public NavMeshAgent NavMeshAgent => _navMeshAgent;
-    public Animator Animator => _animator;
-    //public HitBoxesController HitBoxesController => _hitBoxesController;
-    //public RagdollController RagdollController => _ragdollController;
+
+    public HitBoxesController HitBoxesController { get; private set; }
+    public RagdollController RagdollController { get; private set; }
+    public HealthBarController HealthBarController { get; private set; }
+    public PopupDamageController PopupDamageController { get; private set; }
+
+    public DieEffectController DieEffectController { get; private set; }
+    public BurningEffectController BurningEffectController { get; private set; }
+
+    public IconEffectsController IconEffectsController { get; private set; }
+
+    public NavMeshAgent NavMeshAgent { get; private set; }
+
+    public Animator Animator;
+
+    public GameObject Weapon => _weapon;
     #endregion Properties
 
     #region Private fields
@@ -97,33 +111,13 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     private float _timerBurning = 0f;
     private int _durationBurning = 0;
 
-    private HitBoxesController _hitBoxesController;
-    private RagdollController _ragdollController;
-    private HealthBarController _healthBarController;
-    private PopupDamageController _popupDamageController;
-
-    private DieEffectController _dieEffectController;
-    private BurningEffectController _burningEffectController;
-
-    private IconEffectsController _iconEffectsController;
-
-    private StateMachineEnemy _stateMachineEnemy;
-
-    private NavMeshAgent _navMeshAgent;
-
-    private Animator _animator;
+    private StateMachineSwordsman _stateMachine;
     #endregion Private fields
-
-    #region Public fields
-    public IdleState idleState;
-    public PursuitState pursuitState;
-    public AttackState attackState;
-    #endregion Public fields
 
     #region Mono
     private void Awake()
     {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
+        NavMeshAgent = GetComponent<NavMeshAgent>();
 
         MaxHealth = _maxHealth;
         Health = MaxHealth;
@@ -137,53 +131,45 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
         // Получаем контроллерыи компоненты
         // ---------------------------------------------------------------
-        _hitBoxesController = GetComponent<HitBoxesController>();
-        _ragdollController = GetComponent<RagdollController>();
+        HitBoxesController = GetComponent<HitBoxesController>();
+        RagdollController = GetComponent<RagdollController>();
 
-        _iconEffectsController = GetComponentInChildren<IconEffectsController>();
+        IconEffectsController = GetComponentInChildren<IconEffectsController>();
 
-        _burningEffectController = GetComponentInChildren<BurningEffectController>();
-        _dieEffectController = GetComponentInChildren<DieEffectController>();
-        _healthBarController = GetComponentInChildren<HealthBarController>();
-        _popupDamageController = GetComponentInChildren<PopupDamageController>();
+        BurningEffectController = GetComponentInChildren<BurningEffectController>();
+        DieEffectController = GetComponentInChildren<DieEffectController>();
+        HealthBarController = GetComponentInChildren<HealthBarController>();
+        PopupDamageController = GetComponentInChildren<PopupDamageController>();
 
-        _stateMachineEnemy = GetComponent<StateMachineEnemy>();
+        Animator = GetComponent<Animator>();
 
-        _animator = GetComponent<Animator>();
+        _stateMachine = GetComponent<StateMachineSwordsman>();
         // ---------------------------------------------------------------
 
         // Делаем компонент неактивным, чтобы не началась анимация
-        if (_dieEffectController != null)
-            _dieEffectController.enabled = false;
+        if (DieEffectController != null)
+            DieEffectController.enabled = false;
 
-        if (_burningEffectController != null)
-            _burningEffectController.enabled = false;
+        if (BurningEffectController != null)
+            BurningEffectController.enabled = false;
 
         // Устанавливаем максимальное и актуальное хп для полосы хп
-        if (_healthBarController != null)
+        if (HealthBarController != null)
         {
-            _healthBarController.SetMaxHealth(MaxHealth);
-            _healthBarController.SetHealth(Health);
+            HealthBarController.SetMaxHealth(MaxHealth);
+            HealthBarController.SetHealth(Health);
         }
 
-        // Инициализируем состояния и задаем начальное состояние
-        if (_stateMachineEnemy != null)
-        {
-            idleState = new IdleState(this, _stateMachineEnemy);
-            pursuitState = new PursuitState(this, _stateMachineEnemy);
-            attackState = new AttackState(this, _stateMachineEnemy);
-
-            // Задаем начальное состояние
-            _stateMachineEnemy.InitializeStartingState(idleState);
-        }
+        // Задаем начальное состояние
+        _stateMachine.InitializeStartingState(_stateMachine.IdleState);
     }
     #endregion Mono
 
     #region Private methods
     private void Update()
     {
-        if (_stateMachineEnemy != null)
-            _stateMachineEnemy.CurrentState.Update();
+        if (_stateMachine != null)
+            _stateMachine.CurrentState.Update();
 
         // TODO когда будет больше эффектов переделать под машину состояний 
         if (_isBurning)
@@ -191,8 +177,8 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     }
     private void FixedUpdate()
     {
-        if (_stateMachineEnemy != null)
-            _stateMachineEnemy.CurrentState.FixedUpdate();
+        if (_stateMachine != null)
+            _stateMachine.CurrentState.FixedUpdate();
     }
 
     /// <summary>
@@ -201,12 +187,12 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     private void SetRandomWeaponModel()
     {
         int id_weapon = Random.Range(0, _prefabWeapons.Length);
-        _currentWeapon = Instantiate(_prefabWeapons[id_weapon]);
+        _weapon = Instantiate(_prefabWeapons[id_weapon]);
 
-        _currentWeapon.transform.parent = _weaponPlace.transform;
+        _weapon.transform.parent = _weaponPlace.transform;
 
-        _currentWeapon.transform.position = _weaponPlace.position;
-        _currentWeapon.transform.rotation = _weaponPlace.rotation;
+        _weapon.transform.position = _weaponPlace.position;
+        _weapon.transform.rotation = _weaponPlace.rotation;
 
     }
 
@@ -223,60 +209,12 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         {
             _timerBurning = 0;
             _isBurning = false;
-            _burningEffectController.enabled = false;
+            BurningEffectController.enabled = false;
 
-            if (_iconEffectsController != null)
-                _iconEffectsController.SetActiveIconBurning(false);
+            if (IconEffectsController != null)
+                IconEffectsController.SetActiveIconBurning(false);
         }
     }
-
-    /// <summary>
-    /// Метод отвязывает оружие от модели противника и удаляет его со сцены через некоторое время 
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator DeleteWeapon()
-    {
-        _currentWeapon.transform.parent = null;
-
-        Rigidbody rigidbodyWeapon = _currentWeapon.GetComponent<Rigidbody>();
-        rigidbodyWeapon.isKinematic = false;
-
-        yield return new WaitForSeconds(5);
-
-        Destroy(_currentWeapon);
-    }
-    private IEnumerator Die()
-    {
-        StartCoroutine(DeleteWeapon());
-
-        if (_ragdollController != null)
-            _ragdollController.MakePhysical();
-
-        if (_burningEffectController != null)
-            _burningEffectController.enabled = false;
-
-        if (_healthBarController != null)
-            _healthBarController.SetActiveHealthBar(false);
-
-        if (_iconEffectsController != null)
-            _iconEffectsController.DeactivateAllIcons();
-
-        if (_navMeshAgent != null)
-            _navMeshAgent.enabled = false;
-
-        yield return new WaitForSeconds(2);
-
-        //if (_hitBoxesController)
-        //    _hitBoxesController.OnLayersAllColliders();
-
-        if (_dieEffectController != null)
-            _dieEffectController.enabled = true;
-
-        yield return new WaitForSeconds(5);
-
-        Destroy(gameObject);
-    }
-
     #endregion Private methods
 
     #region Public methods
@@ -289,26 +227,26 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             IsAttacked = true;
 
             // Всплывающий дамаг
-            if (_popupDamageController != null)
-                _popupDamageController.ShowPopupDamage(damage, typeDamage);
+            if (PopupDamageController != null)
+                PopupDamageController.ShowPopupDamage(damage, typeDamage);
 
             // Полоска хп
-            if (_healthBarController != null)
+            if (HealthBarController != null)
             {
-                _healthBarController.SetHealth(Health);
-                _healthBarController.ShowHealthBar();
+                HealthBarController.SetHealth(Health);
+                HealthBarController.ShowHealthBar();
             }
         }
 
         if (Health <= 0)
         {
-            StartCoroutine(Die());
+            _stateMachine.ChangeState(_stateMachine.DieState);
         }
     }
     public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
     {
         // Получаем значение урона с учетом попадания в ту или иную часть тела
-        damage = _hitBoxesController.GetDamageValue(damage, hitCollider);
+        damage = HitBoxesController.GetDamageValue(damage, hitCollider);
         TakeDamage(damage, typeDamage);
     }
     public void SetBurning(int damagePerSecond, int duration, TypeDamage typeDamage)
@@ -317,15 +255,15 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         {
             _durationBurning = duration;
 
-            _burningEffectController.DamagePerSecond = damagePerSecond;
-            _burningEffectController.TypeDamage = typeDamage;
+            BurningEffectController.DamagePerSecond = damagePerSecond;
+            BurningEffectController.TypeDamage = typeDamage;
 
             _isBurning = true;
-            _burningEffectController.enabled = true;
+            BurningEffectController.enabled = true;
 
             // Включаем иконку горения над противником
-            if (_iconEffectsController != null)
-                _iconEffectsController.SetActiveIconBurning(true);
+            if (IconEffectsController != null)
+                IconEffectsController.SetActiveIconBurning(true);
         }
     }
     #endregion Public methods

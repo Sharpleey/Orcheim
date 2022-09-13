@@ -21,7 +21,7 @@ public class IdleState : State
 
     private float _timerUpdate;
 
-    public IdleState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
+    public IdleState(SwordsmanEnemy enemy, StateMachineSwordsman stateMachine) : base(enemy, stateMachine)
     {
 
     }
@@ -37,6 +37,9 @@ public class IdleState : State
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
         _enemy.Animator.SetBool("isIdle", true);
+
+        if(_stateMachine.IsStartPursuitState)
+            _stateMachine.ChangeState(_stateMachine.PursuitState);
     }
 
     public override void Update()
@@ -51,7 +54,8 @@ public class IdleState : State
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
             if (distanceToTarget < _absoluteDetectionDistance || _enemy.IsAttacked || IsIsView())
             {
-                _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+                if (!_stateMachine.IsOnlyIdleState)
+                    _stateMachine.ChangeState(_stateMachine.PursuitState);
             }
 
             _timerUpdate = 0;

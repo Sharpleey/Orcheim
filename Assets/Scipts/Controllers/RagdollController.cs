@@ -5,7 +5,7 @@ using UnityEngine;
 public class RagdollController : MonoBehaviour
 {
     #region Serialize fields
-    [SerializeField] private Animator _animator;
+    [SerializeField] private Animator Animator;
     [SerializeField] private List<Rigidbody> _allRigibodys;
     #endregion Serialize fields
 
@@ -22,7 +22,7 @@ public class RagdollController : MonoBehaviour
     #region Public methods
     public void MakePhysical()
     {
-        _animator.enabled = false;
+        Animator.enabled = false;
 
         foreach (Rigidbody rigidbody in _allRigibodys)
         {

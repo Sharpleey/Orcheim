@@ -93,26 +93,4 @@ public class Penetration : MonoBehaviour, IModifier
         DamageDecrease = _damageDecrease;
     }
     #endregion Mono
-
-    #region Private methods
-    //private void OnTriggerEnter(Collider hitCollider)
-    //{
-    //    IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
-    //    if (enemy != null)
-    //    {
-    //        if (enemy != _currentHitEnemy)
-    //        {
-    //            _currentHitEnemy = enemy;
-    //            _currentPenetration++;
-
-    //            // ”меньшаем урон с каждым пробитием
-    //            _directDamage.Damage = (int)(_directDamage.Damage * (1 - DamageDecrease));
-
-    //            // ≈сли число пробитий подошло к пределу, то удал€ем стрелу
-    //            if (_currentPenetration == MaxTargetPenetration)
-    //                Destroy(gameObject);
-    //        }
-    //    }
-    //}
-    #endregion Private methods
 }

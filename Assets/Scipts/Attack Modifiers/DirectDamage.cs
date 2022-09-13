@@ -8,52 +8,80 @@ public class DirectDamage : MonoBehaviour ,IModifier
     [SerializeField] private string _name = "Урон";
     [SerializeField] private string _description = "Наносит противнику урон при попадании";
 
-    [SerializeField] [Range(1, 300)] private int _damage = 25;
-    [SerializeField] [Range(0f, 0.5f)] private float _damageSpread = 0.25f;
+    [SerializeField] [Range(1, 300)] private int _averageDamage = 25;
+    [SerializeField] [Range(0f, 0.5f)] private float _offsetDamage = 0.25f;
     [SerializeField] private TypeDamage _typeDamage = TypeDamage.Physical;
     #endregion Serialize fields
 
     #region Properties
     public string Name { get => _name; private set => _name = value; }
     public string Description { get => _description; private set => _description = value; }
-    public int Damage
+    /// <summary>
+    /// Исходный средний урон. Изменять только при прокачке модификатора или в инспекторе
+    /// </summary>
+    public int AverageDamage
     {
         get
         {
-            return _damage;
+            return _averageDamage;
         }
         set
         {
             if (value < 0)
             {
-                _damage = 0;
+                _averageDamage = 0;
                 return;
             }
-            _damage = value;
+            _averageDamage = value;
         }
     }
-    public float DamageSpread
+    /// <summary>
+    /// Разброс урона 
+    /// </summary>
+    public float OffsetDamage
     {
         get
         {
-            return _damageSpread;
+            return _offsetDamage;
         }
         private set
         {
             if (value < 0f)
             {
-                _damageSpread = 0f;
+                _offsetDamage = 0f;
                 return;
             }
             if (value > 0.5f)
             {
-                _damageSpread = 0.5f;
+                _offsetDamage = 0.5f;
                 return;
             }
-            _damageSpread = value;
+            _offsetDamage = value;
         }
     }
+    /// <summary>
+    /// Тип урона
+    /// </summary>
     public TypeDamage TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
+    /// <summary>
+    /// Текущий (Используемый) средний урон. Изменяется при уменьшении урона при последующем пробитии (при включенном модификаторе Penetration) или других модах
+    /// </summary>
+    public int CurrentAverageDamage
+    {
+        get
+        {
+            return _currentAverageDamage;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                _currentAverageDamage = 0;
+                return;
+            }
+            _currentAverageDamage = value;
+        }
+    }
     /// <summary>
     /// Урон с учетом разброса
     /// </summary>
@@ -61,19 +89,14 @@ public class DirectDamage : MonoBehaviour ,IModifier
     {
         get
         {
-            int range = (int)(Damage * DamageSpread);
-            return Random.Range(Damage - range, Damage + range);
+            int range = (int)(CurrentAverageDamage * OffsetDamage);
+            return Random.Range(CurrentAverageDamage - range, CurrentAverageDamage + range);
         }
     }
     #endregion Properties
 
     #region Private fields
-    /// <summary>
-    /// C ее помощью фиксим баг, когда стрела успевает попасть по нескольким коллайдерам до момента удаления
-    /// </summary>
-    //private IEnemy _currentHitEnemy;
-    //private bool _onPenetrationMod;
-    //private CriticalDamage _criticalDamageMod;
+    private int _currentAverageDamage;
     #endregion Private fields
 
     #region Mono
@@ -81,42 +104,10 @@ public class DirectDamage : MonoBehaviour ,IModifier
     {
         Name = _name;
         Description = _description;
-        Damage = _damage;
-        DamageSpread = _damageSpread;
+        AverageDamage = _averageDamage;
+        CurrentAverageDamage = _averageDamage;
+        OffsetDamage = _offsetDamage;
         TypeDamage = _typeDamage;
     }
-    private void Start()
-    {
-        //_onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
-
-        //_criticalDamageMod = GetComponent<CriticalDamage>();
-    }
     #endregion Mono
-
-    #region Private methods
-    //private void OnTriggerEnter(Collider hitCollider)
-    //{
-    //    IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
-    //    // Если мы попали в противника
-    //    if (enemy != null)
-    //    {
-    //        // Если мы (в первый раз попали в противника) или ((Противник, в которого мы попали не равен противнику, в которого мы попадали до этого) и (включен мод на пробитие))
-    //        if (_currentHitEnemy == null || (enemy != _currentHitEnemy && _onPenetrationMod))
-    //        {
-    //            // Запоминает противника, в которого мы попали как текущего
-    //            _currentHitEnemy = enemy;
-
-    //            // Если (влючен мод на криты) и (Прокнул крит)
-    //            if (_criticalDamageMod != null && _criticalDamageMod.GetProcCrit())
-    //            {
-    //                // Рассчитываем критический урон
-    //                int criticalDamage = (int)(ActualDamage * _criticalDamageMod.CritMultiplierDamage);
-    //                enemy.TakeHitboxDamage(criticalDamage, hitCollider, TypeDamage);
-    //            }
-    //            else
-    //                enemy.TakeHitboxDamage(ActualDamage, hitCollider, TypeDamage);
-    //        }
-    //    }
-    //}
-    #endregion Private methods
 }

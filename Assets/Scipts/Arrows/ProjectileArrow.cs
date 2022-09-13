@@ -1,103 +1,73 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(DirectDamage))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider))]
+
 public class ProjectileArrow : MonoBehaviour
 {
 	#region Serialize fields
 	[SerializeField] private GameObject _tracerEffect;
 	[SerializeField] private GameObject _hitEffect;
-
-	[SerializeField] private float _forceHit = 3f;
 	#endregion Serialize fields
-
-	#region Properties
-
-	#endregion Properties
 
 	#region Private fields
 	private bool _isArrowInFlight;
 	private bool _isBlockDamage;
 
-	private bool _onPenetrationMod;
-	private bool _onCriticalDamageMod;
-	private bool _onFireArrowMod;
-
 	private DirectDamage _directDamageMod;
-	private Penetration _penetrationMod;
 	private CriticalDamage _criticalDamageMod;
+	private Penetration _penetrationMod;
 	private FireArrow _fireArrowMod;
+	private SlowArrow _slowArrowMod;
+	private Mjolnir _mjolnirMod;
 
 	private Rigidbody _arrowRigidbody;
 	private CapsuleCollider _arrowCapsuleCollider;
 
 	private IEnemy _currentHitEnemy;
 
+	private Dictionary<Type, IModifier> _bowAttackModifaers = new Dictionary<Type, IModifier>();
 	#endregion Private fields
-
-	#region Public fields
-	[HideInInspector] 
-	public bool isArrowInBowstring;
-
-	public List<IModifier> bowAttackModifiers;
-	#endregion Public fields
 
 	#region Mono
     private void Start() 
 	{
-		isArrowInBowstring = true;
-
 		_isArrowInFlight = false;
 		_isBlockDamage = false;
 
-		_onPenetrationMod = UnityUtility.HasComponent<Penetration>(gameObject);
-		_onCriticalDamageMod = UnityUtility.HasComponent<CriticalDamage>(gameObject);
-		_onFireArrowMod = UnityUtility.HasComponent<FireArrow>(gameObject);
+		// Получаем модификаторы атаки, установленные на луке
+		_bowAttackModifaers = GetComponentInParent<LightBow>().AttackModifaers;
 
-		_directDamageMod = GetComponent<DirectDamage>();
-
-		if (_onPenetrationMod)
-			_penetrationMod = GetComponent<Penetration>();
-		if (_onCriticalDamageMod)
-			_criticalDamageMod = GetComponent<CriticalDamage>();
-		if(_onFireArrowMod)
-			_fireArrowMod = GetComponent<FireArrow>();
+		_directDamageMod = (DirectDamage)_bowAttackModifaers[typeof(DirectDamage)];
+		_criticalDamageMod = (CriticalDamage)_bowAttackModifaers[typeof(CriticalDamage)];
+		_penetrationMod = (Penetration)_bowAttackModifaers[typeof(Penetration)];
+		_fireArrowMod = (FireArrow)_bowAttackModifaers[typeof(FireArrow)];
+		_slowArrowMod = (SlowArrow)_bowAttackModifaers[typeof(SlowArrow)];
+		_mjolnirMod = (Mjolnir)_bowAttackModifaers[typeof(Mjolnir)];
 
 		_arrowRigidbody = GetComponent<Rigidbody>();
 		_arrowCapsuleCollider = GetComponent<CapsuleCollider>();
 
-		if (_arrowCapsuleCollider != null)
-			_arrowCapsuleCollider.isTrigger = false;
+		_arrowCapsuleCollider.isTrigger = false;
 	}
     #endregion Mono
 
     #region Private methods
     private void FixedUpdate() 
 	{
-		// Отлавливаем момент вылета стрелы
-		if (!isArrowInBowstring && !_isArrowInFlight)
-		{
-			_isArrowInFlight = true;
-
-			if (_arrowCapsuleCollider != null)
-				_arrowCapsuleCollider.isTrigger = true;
-
-			if (_tracerEffect != null)
-				_tracerEffect.SetActive(true);
-
-			// Запускаем отсчет для удаления стрелы
-			StartCoroutine(DeleteProjectile(5));
-		}
-
 		// Поворачиваем стрелу в полете в сторону движения
 		if (_isArrowInFlight)
         {
 			transform.LookAt(transform.position + _arrowRigidbody.velocity);
 		}
 	}
-
+	/// <summary>
+	/// Метод срабатывает при касании стрелы с другими объектами на которых есть коллайдер
+	/// </summary>
+	/// <param name="hitCollider">Коллайдер, с которым соприкоснулась стрела</param>
 	private void OnTriggerEnter(Collider hitCollider)
     {
 		IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
@@ -108,7 +78,7 @@ public class ProjectileArrow : MonoBehaviour
 			{
 				int damage = _directDamageMod.ActualDamage;
 				// Если (влючен мод на криты) и (Прокнул крит)
-				if (_onCriticalDamageMod && _criticalDamageMod.GetProcCrit())
+				if (_criticalDamageMod != null && _criticalDamageMod.GetProcCrit())
                 {
                     // Рассчитываем критический урон
                     damage = (int)(damage * _criticalDamageMod.CritMultiplierDamage);
@@ -123,18 +93,18 @@ public class ProjectileArrow : MonoBehaviour
 					enemy.TakeHitboxDamage(damage, hitCollider, _directDamageMod.TypeDamage);
 
 					// Поджигаем противника
-					if (_onFireArrowMod && _fireArrowMod.GetProcBurning())
+					if (_fireArrowMod != null && _fireArrowMod.GetProcBurning())
                     {
 						enemy.SetBurning(_fireArrowMod.DamagePerSecond, _fireArrowMod.Duration, _fireArrowMod.TypeDamage);
                     }						
 				}
 
-				if (_onPenetrationMod)
+				if (_penetrationMod != null)
                 {
 					_penetrationMod.CurrentPenetration++;
 
 					// Уменьшаем урон с каждым пробитием
-					_directDamageMod.Damage = (int)(_directDamageMod.Damage * (1 - _penetrationMod.DamageDecrease));
+					_directDamageMod.CurrentAverageDamage = (int)(_directDamageMod.CurrentAverageDamage * (1 - _penetrationMod.DamageDecrease));
 
 					// Если число пробитий подошло к пределу, то удаляем стрелу
 					if (_penetrationMod.CurrentPenetration == _penetrationMod.MaxTargetPenetration)
@@ -154,7 +124,6 @@ public class ProjectileArrow : MonoBehaviour
 			{
 				_currentHitEnemy = enemy;
 			}
-
 		}
 		else
 		{
@@ -162,16 +131,18 @@ public class ProjectileArrow : MonoBehaviour
 		}
 	}
 	/// <summary>
-	/// Метод возвращает вектор силы от попадания стрелы
+	/// Метод удаляет объект стрелы с определенной задержкой по времени
 	/// </summary>
-	/// <returns>Вектор силы, навправленный в определенную сторону</returns>
-	private Vector3 GetForceHit()
+	/// <param name="secondsBeforeDeletion"></param>
+	/// <returns>Задержка (в секундах) до удаления объекта стрелы</returns>
+	private IEnumerator DeleteProjectile(int secondsBeforeDeletion)
     {
-		return transform.TransformDirection(Vector3.forward) * _forceHit;
-	}	
+		if (_penetrationMod != null)
+        {
+			_penetrationMod.CurrentPenetration = 0;
+			_directDamageMod.CurrentAverageDamage = _directDamageMod.AverageDamage;
+		}			
 
-    private IEnumerator DeleteProjectile(int secondsBeforeDeletion)
-    {
 		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.
 		yield return new WaitForSeconds(secondsBeforeDeletion);
 
@@ -186,6 +157,30 @@ public class ProjectileArrow : MonoBehaviour
         // Удаляем объект со сцены и очищаем память
         Destroy(gameObject);
     }
-
 	#endregion Private methods
+
+	#region Public methods
+	/// <summary>
+	/// Запуск стрелы, с применение определенного значения силы
+	/// </summary>
+	/// <param name="forceLaunch">Сила импульса придаваемого стреле</param>
+	public void Launch (float forceLaunch)
+    {
+		transform.parent = null;
+
+		_arrowRigidbody.isKinematic = false;
+		_arrowRigidbody.AddForce((transform.forward) * forceLaunch, ForceMode.Impulse);
+
+        _isArrowInFlight = true;
+
+        _arrowCapsuleCollider.isTrigger = true;
+
+        if (_tracerEffect != null)
+            _tracerEffect.SetActive(true);
+
+        // Запускаем отсчет для удаления стрелы
+        StartCoroutine(DeleteProjectile(5));
+
+    }
+	#endregion Public methods
 }

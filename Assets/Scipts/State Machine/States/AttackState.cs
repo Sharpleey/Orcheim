@@ -22,7 +22,7 @@ public class AttackState : State
     private float _timer;
     private float _timerUpdate;
 
-    public AttackState(SwordsmanEnemy enemy, StateMachineEnemy stateMachineEnemy) : base(enemy, stateMachineEnemy)
+    public AttackState(SwordsmanEnemy enemy, StateMachineSwordsman stateMachine) : base(enemy, stateMachine)
     {
 
     }
@@ -73,7 +73,7 @@ public class AttackState : State
                 // Если анимация атаки не выполняется
                 if (!_enemy.Animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
                 {
-                    _stateMachineEnemy.ChangeState(_enemy.pursuitState);
+                    _stateMachine.ChangeState(_stateMachine.PursuitState);
                 }
             }
             _timerUpdate = 0;
