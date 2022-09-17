@@ -75,8 +75,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
                 NavMeshAgent.speed = 0.1f;
                 return;
             }
-            NavMeshAgent.speed = value;
-            _speed = value;
+            float speed = Random.Range(value - 0.4f, value + 0.4f);
+            NavMeshAgent.speed = speed;
+            _speed = speed;
         }
     }
     public float CurrentSpeed

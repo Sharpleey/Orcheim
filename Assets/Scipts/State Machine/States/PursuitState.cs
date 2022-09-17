@@ -12,7 +12,7 @@ public class PursuitState : State
     /// <summary>
     /// Радиус генерации случайной точки на меше возле игрока
     /// </summary>
-    private float _randomPointRadius = 5f;
+    private float _randomPointRadius = 6f;
     
     private Transform _transformPlayer;
 
@@ -116,6 +116,10 @@ public class PursuitState : State
         _enemy.Animator.SetBool("isMovement", false);
     }
 
+    /// <summary>
+    /// Метод генерирут случайную точку на навмеше радом с игроком
+    /// </summary>
+    /// <returns>Vector3 случайной точки</returns>
     private Vector3 GenerateRandomPointNearPlayer()
     {
         NavMeshHit navMeshHit;
