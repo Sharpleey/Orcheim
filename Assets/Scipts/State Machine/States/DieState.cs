@@ -18,6 +18,9 @@ public class DieState : State
         if (_enemy.RagdollController != null)
             _enemy.RagdollController.MakePhysical();
 
+        if (_enemy.Animator != null)
+            _enemy.Animator.enabled = false;
+
         if (_enemy.BurningEffectController != null)
             _enemy.BurningEffectController.enabled = false;
 

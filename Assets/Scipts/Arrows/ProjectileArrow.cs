@@ -146,13 +146,10 @@ public class ProjectileArrow : MonoBehaviour
 		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.
 		yield return new WaitForSeconds(secondsBeforeDeletion);
 
-		if (_tracerEffect != null)
-        {
-            _tracerEffect.transform.SetParent(null);
-			TracerEffectController traccerController = _tracerEffect.GetComponent<TracerEffectController>();
-			if (traccerController != null)
-				traccerController.DeleteTracer();
-		}
+		// Отвязываем эффект от стрелы
+        _tracerEffect?.transform.SetParent(null);
+		// Удаляем объект трассера через некоторое время
+		_tracerEffect?.GetComponent<TracerEffectController>()?.DeleteTracer();
 
         // Удаляем объект со сцены и очищаем память
         Destroy(gameObject);

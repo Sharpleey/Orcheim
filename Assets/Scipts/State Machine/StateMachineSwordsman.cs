@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class StateMachineSwordsman : MonoBehaviour
 {
-    //[SerializeField] private String _nameCurrentState;
     /// <summary>
     /// Враг имеет только состояние покоя
     /// </summary>
@@ -30,21 +29,17 @@ public class StateMachineSwordsman : MonoBehaviour
     public bool IsStartPursuitState { get; private set; }
     public bool IsOnlyIdleState { get; private set; }
 
-    private SwordsmanEnemy _swordsmanEnemy;
-
     private void Awake()
     {
         IsStartPursuitState = _isStartPursuitState;
         IsOnlyIdleState = _isOnlyIdleState;
     }
-    private void Start()
+    public void InitializeStates(SwordsmanEnemy swordsmanEnemy)
     {
-        _swordsmanEnemy = GetComponent<SwordsmanEnemy>();
-
-        IdleState = new IdleState(_swordsmanEnemy, this);
-        PursuitState = new PursuitState(_swordsmanEnemy, this);
-        AttackState = new AttackState(_swordsmanEnemy, this);
-        DieState = new DieState(_swordsmanEnemy, this);
+        IdleState = new IdleState(swordsmanEnemy, this);
+        PursuitState = new PursuitState(swordsmanEnemy, this);
+        AttackState = new AttackState(swordsmanEnemy, this);
+        DieState = new DieState(swordsmanEnemy, this);
     }
 
     /// <summary>
@@ -55,7 +50,6 @@ public class StateMachineSwordsman : MonoBehaviour
     public void InitializeStartingState(State startingState)
     {
         CurrentState = startingState;
-        //_nameCurrentState = CurrentState.ToString();
         startingState.Enter();
     }
 
@@ -68,7 +62,6 @@ public class StateMachineSwordsman : MonoBehaviour
         CurrentState.Exit();
 
         CurrentState = newState;
-        //_nameCurrentState = CurrentState.ToString();
         newState.Enter();
     }
 }

@@ -100,8 +100,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     public IconEffectsController IconEffectsController { get; private set; }
 
     public NavMeshAgent NavMeshAgent { get; private set; }
-
-    public Animator Animator;
+    public Animator Animator { get; private set; }
 
     public GameObject Weapon => _weapon;
     #endregion Properties
@@ -144,6 +143,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         Animator = GetComponent<Animator>();
 
         _stateMachine = GetComponent<StateMachineSwordsman>();
+        _stateMachine?.InitializeStates(this);
         // ---------------------------------------------------------------
 
         // Делаем компонент неактивным, чтобы не началась анимация
@@ -154,14 +154,11 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             BurningEffectController.enabled = false;
 
         // Устанавливаем максимальное и актуальное хп для полосы хп
-        if (HealthBarController != null)
-        {
-            HealthBarController.SetMaxHealth(MaxHealth);
-            HealthBarController.SetHealth(Health);
-        }
+        HealthBarController?.SetMaxHealth(MaxHealth);
+        HealthBarController?.SetHealth(Health);
 
         // Задаем начальное состояние
-        _stateMachine.InitializeStartingState(_stateMachine.IdleState);
+        _stateMachine?.InitializeStartingState(_stateMachine.IdleState);
     }
     #endregion Mono
 

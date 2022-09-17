@@ -278,82 +278,9 @@ public class PlayerCharacter : MonoBehaviour
         // --------------------------------------------------------------------
     }
 
-    // public void DisplayCursor(bool display)
-    // {
-    //     _isPaused = display;
-    //     Cursor.lockState = display ? CursorLockMode.None : CursorLockMode.Locked;
-    //     Cursor.visible = display;
-    // }
-
-    // void PickupWeapon(_weapon prefab)
-    // {
-    //     //TODO : maybe find a better way than comparing name...
-    //     if (m_Weapons.Exists(_weapon => _weapon.name == prefab.name))
-    //     {//if we already have that _weapon, grant a clip size of the ammo type instead
-    //         ChangeAmmo(prefab.ammoType, prefab.clipSize);
-    //     }
-    //     else
-    //     {
-    //         var w = Instantiate(prefab, WeaponPosition, false);
-    //         w.name = prefab.name;
-    //         w.transform.localPosition = Vector3.zero;
-    //         w.transform.localRotation = Quaternion.identity;
-    //         w.gameObject.SetActive(false);
-            
-    //         w.PickedUp(this);
-            
-    //         m_Weapons.Add(w);
-    //     }
-    // }
-
-    // void ChangeWeapon(int number)
-    // {
-    //     if (m_CurrentWeapon != -1)
-    //     {
-    //         m_Weapons[m_CurrentWeapon].PutAway();
-    //         m_Weapons[m_CurrentWeapon].gameObject.SetActive(false);
-    //     }
-
-    //     m_CurrentWeapon = number;
-
-    //     if (m_CurrentWeapon < 0)
-    //         m_CurrentWeapon = m_Weapons.Count - 1;
-    //     else if (m_CurrentWeapon >= m_Weapons.Count)
-    //         m_CurrentWeapon = 0;
-        
-    //     m_Weapons[m_CurrentWeapon].gameObject.SetActive(true);
-    //     m_Weapons[m_CurrentWeapon].Selected();
-    // }
-
-    // public int GetAmmo(int ammoType)
-    // {
-    //     int value = 0;
-    //     m_AmmoInventory.TryGetValue(ammoType, out value);
-
-    //     return value;
-    // }
-
-    // public void ChangeAmmo(int ammoType, int amount)
-    // {
-    //     if (!m_AmmoInventory.ContainsKey(ammoType))
-    //         m_AmmoInventory[ammoType] = 0;
-
-    //     var previous = m_AmmoInventory[ammoType];
-    //     m_AmmoInventory[ammoType] = Mathf.Clamp(m_AmmoInventory[ammoType] + amount, 0, 999);
-
-    //     if (m_Weapons[m_CurrentWeapon].ammoType == ammoType)
-    //     {
-    //         if (previous == 0 && amount > 0)
-    //         {//we just grabbed ammo for a _weapon that add non left, so it's disabled right now. Reselect it.
-    //             m_Weapons[m_CurrentWeapon].Selected();
-    //         }
-            
-    //         WeaponInfoUI.Instance.UpdateAmmoAmount(GetAmmo(ammoType));
-    //     }
-    // }
-
-    // public void PlayFootstep()
-    // {
-    //     FootstepPlayer.PlayRandom();
-    // }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 5f);
+    }
 }
