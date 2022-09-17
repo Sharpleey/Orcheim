@@ -8,16 +8,22 @@ public class AttackState : State
     /// <summary>
     /// Дистанция атаки противника в метрах
     /// </summary>
-    private float _attackDistance;
+    private float _attackDistance = 2.5f;
     /// <summary>
     /// Частота атаки, т.е. задержка между атаками в секундах
     /// </summary>
     private float _attackFrequency = 3.5f;
-    private float _attackTimeAnimation;
+    private float _currentAttackFrequency = 3.5f;
+    /// <summary>
+    /// Скорость поворота врага к цели
+    /// </summary>
+    private float _rotationSpeedToTarget = 2.5f;
+    /// <summary>
+    /// Дистанция от противника до игрока
+    /// </summary>
+    private float _distanceFromEnemyToPlayer;
 
     private Transform _transformPlayer;
-
-    private float _rotationSpeedToTarget = 2.5f;
 
     private float _timer;
     private float _timerUpdate;
@@ -34,8 +40,8 @@ public class AttackState : State
         _timer = 0;
         _timerUpdate = 0;
 
-         // Рандомизируем частоту атаки, делаем ее немного хаотичной
-        _attackFrequency = Random.Range(_attackFrequency - 0.5f, _attackFrequency + 0.5f);
+        // Рандомизируем частоту атаки, делаем ее немного хаотичной
+        _currentAttackFrequency = Random.Range(0.2f, 1.0f);
 
         // Устанавливаем дистанцию атаки
         _attackDistance = _enemy.NavMeshAgent.stoppingDistance + 0.1f;
@@ -43,7 +49,6 @@ public class AttackState : State
         _enemy.Animator.SetBool("isIdleAttacking", true);
         // Получаем transform игрока для использования его в дальнейшем
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
-
     }
 
     public override void Update()
@@ -53,10 +58,13 @@ public class AttackState : State
         // Атака с определенной частотой
         // -------------------------------------------------------------------------------
         _timer += Time.deltaTime;
-        if (_timer > _attackFrequency)
+        if (_timer > _currentAttackFrequency)
         {
             // Включаем анимацию атаки, тем самым атакуем
             _enemy.Animator.SetTrigger("isAttacking");
+            // Рандомизируем частоту атаки, делаем ее немного хаотичной
+            _currentAttackFrequency = Random.Range(_attackFrequency - 0.8f, _attackFrequency + 0.8f);
+
             _timer = 0;
         }
         // -------------------------------------------------------------------------------
@@ -67,8 +75,8 @@ public class AttackState : State
         if (_timerUpdate > 0.5f)
         {
             // Определяем дистанцию до игрока
-            float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
-            if (distanceToTarget > _attackDistance)
+            _distanceFromEnemyToPlayer = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+            if (_distanceFromEnemyToPlayer > _attackDistance)
             {
                 // Если анимация атаки не выполняется
                 if (!_enemy.Animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
