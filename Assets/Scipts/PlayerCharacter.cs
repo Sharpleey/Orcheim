@@ -30,7 +30,7 @@ public class PlayerCharacter : MonoBehaviour
     //this is only use at start, allow to grant ammo in the inspector. m_AmmoInventory is used during gameplay
     // public AmmoInventoryEntry[] startingAmmo;
 
-    [Header("_weapon Settings")]
+    [Header("Weapon Settings")]
     [SerializeField] public List<GameObject> _weapons;
     [SerializeField] private GameObject _usedWeapon;
     [SerializeField] private Transform _weaponPosition;
@@ -276,11 +276,5 @@ public class PlayerCharacter : MonoBehaviour
             // FootstepPlayer.PlayClip(LandingAudioClip, 0.8f,1.1f);
         }
         // --------------------------------------------------------------------
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 5f);
     }
 }
