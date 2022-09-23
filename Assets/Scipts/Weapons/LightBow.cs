@@ -56,6 +56,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private bool _isAiming = false;
     private bool _isReload = false;
 
+    private Animator _animator;
+
     private Quaternion _defaultBowRotate;
 
     // Объект в котором будем хранить клон стрелы, его же будем выстреливать
@@ -71,6 +73,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     private void Start()
     {
+        _animator = GetComponent<Animator>();
+
         AttackModifaers = new Dictionary<Type, IModifier>();
 
         AttackModifaers[typeof(DirectDamage)] = GetComponent<DirectDamage>();
@@ -93,49 +97,40 @@ public class LightBow : MonoBehaviour, IBowWeapon
         // ПКМ
         if (Input.GetMouseButtonDown(1))
         {
-            if(_debugMod) Debug.Log($"Прицеливание");
+            //_animator.SetBool("Load", true);
+            //_isAiming = true;
 
-            _isAiming = true;
+            //Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
+            //RaycastHit hit;
 
-            Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
-            RaycastHit hit;
+            //if (Physics.Raycast(ray, out hit))
+            //{
+            //    _pointer.position = hit.point;
+            //    Debug.Log(hit.point);
+            //    transform.LookAt(hit.point);
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                // _pointer.position = hit.point;
-                // Debug.Log(hit.point);
-                //transform.LookAt(hit.point);
-
-                //transform.Rotate(0.0f, 0.0f, -90.0f);
-            }
+            //    transform.Rotate(0.0f, 0.0f, -90.0f);
+            //}
         }
 
+        // Отпустить ПКМ
         if (Input.GetMouseButtonUp(1))
         {
-            if (_debugMod) Debug.Log($"Отмена Прицеливание");
-            //transform.rotation = _defaultBowRotate.rotation; //TODO
-            _isAiming = false;
+            //_animator.SetBool("Load", false);
+            //_isAiming = false;
         }
 
+        // ЛКМ
         if (Input.GetMouseButtonDown(0) && !_isReload)
         {
-            if (_isAiming)
-            {
-                // ChargedShot
-                Shot();
-            }
-            else
-            {
-                // Shot
-                Shot();
-            }
-
+            _animator.SetTrigger("FastShoot");
+            Shot();
         }
     }
 
     private void Shot()
     {
-        if (_debugMod) Debug.Log($"Выстрел");
+        
 
         // Запускаем стрелу
         _cloneArrow.GetComponent<ProjectileArrow>().Launch(_shotForce);
@@ -145,20 +140,19 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     private void ChargedShot()
     {
-        if (_debugMod) Debug.Log($"Заряженный выстрел");
+        
     }
 
     private void SpawnArrow()
     {
         _cloneArrow = Instantiate(_prefabArrow);
 
-        _cloneArrow.transform.parent = transform;
+        _cloneArrow.transform.parent = _arrowSpawn.transform;
 
         _cloneArrow.transform.position = _arrowSpawn.position;
         _cloneArrow.transform.rotation = _arrowSpawn.rotation;
 
-        Rigidbody arrowRb = _cloneArrow.GetComponent<Rigidbody>();
-        arrowRb.isKinematic = true;
+        _cloneArrow.GetComponent<Rigidbody>().isKinematic = true;
 
     }
 
@@ -173,5 +167,25 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
         _isReload = false;
     }
+
+    //void Reload()
+    //{
+    //    Transform newProjectileInstance = Transform.Instantiate(projectile);
+
+    //    Rigidbody projectileRigidbody = newProjectileInstance.GetComponent<Rigidbody>();
+    //    if (projectileRigidbody != null)
+    //    {
+    //        projectileRigidbody.useGravity = false;
+    //    }
+
+    //    newProjectileInstance.parent = projectileParent;
+    //    newProjectileInstance.localPosition = originalPosition;
+    //    newProjectileInstance.localEulerAngles = originalEulerAngles;
+    //    newProjectileInstance.localScale = originalScale;
+
+    //    newProjectileInstance.GetComponent<MeshRenderer>().enabled = true;
+
+    //    projectiles.Insert(0, newProjectileInstance);
+    //}
     #endregion Private methods
 }

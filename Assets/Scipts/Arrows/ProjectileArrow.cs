@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(BoxCollider))]
 
 public class ProjectileArrow : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class ProjectileArrow : MonoBehaviour
 	private Mjolnir _mjolnirMod;
 
 	private Rigidbody _arrowRigidbody;
-	private CapsuleCollider _arrowCapsuleCollider;
+	private BoxCollider _arrowCollider;
 
 	private IEnemy _currentHitEnemy;
 
@@ -49,9 +49,9 @@ public class ProjectileArrow : MonoBehaviour
 		_mjolnirMod = (Mjolnir)_bowAttackModifaers[typeof(Mjolnir)];
 
 		_arrowRigidbody = GetComponent<Rigidbody>();
-		_arrowCapsuleCollider = GetComponent<CapsuleCollider>();
+		_arrowCollider = GetComponent<BoxCollider>();
 
-		_arrowCapsuleCollider.isTrigger = false;
+		_arrowCollider.isTrigger = false;
 	}
     #endregion Mono
 
@@ -170,7 +170,7 @@ public class ProjectileArrow : MonoBehaviour
 
         _isArrowInFlight = true;
 
-        _arrowCapsuleCollider.isTrigger = true;
+        _arrowCollider.isTrigger = true;
 
         if (_tracerEffect != null)
             _tracerEffect.SetActive(true);
