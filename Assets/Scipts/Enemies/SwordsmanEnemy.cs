@@ -24,6 +24,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     #endregion Serialize fields
 
     #region Properties
+    /// <summary>
+    /// Максимальное значение здоровья противника
+    /// </summary>
     public int MaxHealth
     {
         get
@@ -40,6 +43,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             _maxHealth = value;
         }
     }
+    /// <summary>
+    /// Текущее значение здоровья противника
+    /// </summary>
     public int Health
     {
         get
@@ -61,6 +67,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             _health = value;
         }
     }
+    /// <summary>
+    /// Максимальное значение скорости передвижения противника
+    /// </summary>
     public float Speed
     {
         get
@@ -72,19 +81,29 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             if (value < 0.1f)
             {
                 _speed = 0.1f;
-                NavMeshAgent.speed = 0.1f;
                 return;
             }
             float speed = Random.Range(value - 0.4f, value + 0.4f);
-            NavMeshAgent.speed = speed;
             _speed = speed;
         }
     }
+    /// <summary>
+    /// Актуальная скорость противника, скорость передвижения в NavMeshAgent
+    /// </summary>
     public float CurrentSpeed
     {
         get
         {
             return NavMeshAgent.velocity.magnitude;
+        }
+        set
+        {
+            if (value < 0.1f)
+            {
+                NavMeshAgent.speed = 0.1f;
+                return;
+            }
+            NavMeshAgent.speed = value;
         }
     }
     
@@ -111,13 +130,16 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     private float _timerBurning = 0f;
     private int _durationBurning = 0;
 
+    private bool _isSlow = false;
+    private float _timerSlow = 0f;
+    private int _durationSlow = 0;
+
     private StateMachineSwordsman _stateMachine;
     #endregion Private fields
 
     #region Mono
     private void Awake()
     {
-        NavMeshAgent = GetComponent<NavMeshAgent>();
 
         MaxHealth = _maxHealth;
         Health = MaxHealth;
@@ -142,6 +164,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         PopupDamageController = GetComponentInChildren<PopupDamageController>();
 
         Animator = GetComponent<Animator>();
+        NavMeshAgent = GetComponent<NavMeshAgent>();
 
         _stateMachine = GetComponent<StateMachineSwordsman>();
         _stateMachine?.InitializeStates(this);
@@ -153,6 +176,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
         if (BurningEffectController != null)
             BurningEffectController.enabled = false;
+
+        // Устанавливаем скорость для NavMeshAgent
+        CurrentSpeed = Speed;
 
         // Устанавливаем максимальное и актуальное хп для полосы хп
         HealthBarController?.SetMaxHealth(MaxHealth);
@@ -172,6 +198,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         // TODO когда будет больше эффектов переделать под машину состояний 
         if (_isBurning)
             Burning();
+
+        if (_isSlow)
+            Slowing();
     }
     private void FixedUpdate()
     {
@@ -211,6 +240,24 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
             if (IconEffectsController != null)
                 IconEffectsController.SetActiveIconBurning(false);
+        }
+    }
+
+    private void Slowing()
+    {
+        if (_timerSlow < _durationSlow + 1)
+        {
+            _timerSlow += Time.deltaTime;
+        }
+        else
+        {
+            _timerSlow = 0;
+
+            CurrentSpeed = Speed;
+            _isSlow = false;
+
+            if (IconEffectsController != null)
+                IconEffectsController.SetActiveIconSlowdown(false);
         }
     }
     #endregion Private methods
@@ -262,6 +309,21 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             // Включаем иконку горения над противником
             if (IconEffectsController != null)
                 IconEffectsController.SetActiveIconBurning(true);
+        }
+    }
+    public void SetSlowing(float slowdown, int duration)
+    {
+        if (!_isSlow)
+        {
+            _durationSlow = duration;
+
+            CurrentSpeed = Speed * (1f - slowdown);
+
+            _isSlow = true;
+
+            // Включаем иконку замедления над противником
+            if (IconEffectsController != null)
+                IconEffectsController.SetActiveIconSlowdown(true);
         }
     }
     #endregion Public methods

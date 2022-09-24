@@ -85,9 +85,12 @@ public class SlowArrow : MonoBehaviour, IModifier
         Slowdown = _slowdown;
         Duration = _duration;
     }
-    private void OnTriggerEnter(Collider hitCollider)
+    public bool GetProcSlowing()
     {
-
+        int proc = Random.Range(0, 100);
+        if (proc <= ProcÑhance)
+            return true;
+        return false;
     }
     #endregion Methods
 }

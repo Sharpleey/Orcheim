@@ -77,7 +77,7 @@ public class IconEffectsController : MonoBehaviour
     /// <param name="active">активировать (true) / деактивировать (false)</param>
     public void SetActiveIconElectric(bool active)
     {
-        _electroIcon.SetActive(true);
+        _electroIcon.SetActive(active);
         if (active)
             _activeIcons.Add(_electroIcon);
         else
@@ -91,7 +91,7 @@ public class IconEffectsController : MonoBehaviour
     /// <param name="active">активировать (true) / деактивировать (false)</param>
     public void SetActiveIconSlowdown(bool active)
     {
-        _slowdownIcon.SetActive(true);
+        _slowdownIcon.SetActive(active);
 
         if (active)
             _activeIcons.Add(_slowdownIcon);

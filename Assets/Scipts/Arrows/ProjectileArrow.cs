@@ -92,11 +92,17 @@ public class ProjectileArrow : MonoBehaviour
 					// Наносим урон противнику
 					enemy.TakeHitboxDamage(damage, hitCollider, _directDamageMod.TypeDamage);
 
-					// Поджигаем противника
+					// Поджигаем противника, если прокнуло
 					if (_fireArrowMod != null && _fireArrowMod.GetProcBurning())
                     {
 						enemy.SetBurning(_fireArrowMod.DamagePerSecond, _fireArrowMod.Duration, _fireArrowMod.TypeDamage);
-                    }						
+                    }
+
+					// Замедляем противника, если прокнуло
+					if (_slowArrowMod != null && _slowArrowMod.GetProcSlowing())
+					{
+						enemy.SetSlowing(_slowArrowMod.Slowdown, _slowArrowMod.Duration);
+					}
 				}
 
 				if (_penetrationMod != null)
