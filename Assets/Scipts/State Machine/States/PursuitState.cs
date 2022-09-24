@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -103,7 +104,7 @@ public class PursuitState : State
         base.FixedUpdate();
 
         // Рисуем линию от протиника до его цели
-        Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
+        //Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
         _enemy.Animator.SetFloat("Speed", _enemy.CurrentSpeed / _enemy.Speed);
@@ -112,6 +113,8 @@ public class PursuitState : State
     public override void Exit()
     {
         base.Exit();
+
+        //_enemy.SummonTrigger.enabled = false;
 
         // Задаем параметр анимации, выключаем анимацию для этого состояния
         _enemy.Animator.SetBool("isMovement", false);
@@ -134,21 +137,22 @@ public class PursuitState : State
             Vector3 sourcePosition = Random.insideUnitSphere * _randomPointRadius + _transformPlayer.position;
             NavMesh.SamplePosition(sourcePosition, out navMeshHit, _randomPointRadius, NavMesh.AllAreas);
             randomPoint = navMeshHit.position;
+            isPathComplite = true;
 
-            if (randomPoint.y > -10000 && randomPoint.y < 10000)
-            {
-                //_enemy.NavMeshAgent.CalculatePath(randomPoint, _navMeshPath);
+            //if (randomPoint.y > -10000 && randomPoint.y < 10000)
+            //{
+            //    //_enemy.NavMeshAgent.CalculatePath(randomPoint, _navMeshPath);
 
-                //if(_navMeshPath.status == NavMeshPathStatus.PathComplete && !NavMesh.Raycast(_transformPlayer.position, randomPoint, out navMeshHit, NavMesh.AllAreas))
-                //{
-                //    isPathComplite = true;
-                //}
+            //    //if(_navMeshPath.status == NavMeshPathStatus.PathComplete && !NavMesh.Raycast(_transformPlayer.position, randomPoint, out navMeshHit, NavMesh.AllAreas))
+            //    //{
+            //    //    isPathComplite = true;
+            //    //}
 
-                if (!NavMesh.Raycast(_transformPlayer.position, randomPoint, out navMeshHit, NavMesh.AllAreas))
-                {
-                    isPathComplite = true;
-                }
-            }
+            //    if (!NavMesh.Raycast(_transformPlayer.position, randomPoint, out navMeshHit, NavMesh.AllAreas))
+            //    {
+            //        isPathComplite = true;
+            //    }
+            //}
         }
 
         return randomPoint;

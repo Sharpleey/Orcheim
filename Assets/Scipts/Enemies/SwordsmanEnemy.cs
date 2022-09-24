@@ -21,6 +21,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     [SerializeField] private GameObject _weapon;
     [SerializeField] private GameObject[] _prefabWeapons;
     [SerializeField] private Transform _weaponPlace;
+
+    [Header("Summon Trigger")]
+    [SerializeField] private BoxCollider _summonTrigger;
     #endregion Serialize fields
 
     #region Properties
@@ -107,7 +110,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         }
     }
     
-    public bool IsAttacked { get; private set; }
+    public bool IsAttacked { get; set; }
 
     public HitBoxesController HitBoxesController { get; private set; }
     public RagdollController RagdollController { get; private set; }
@@ -121,6 +124,8 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
     public NavMeshAgent NavMeshAgent { get; private set; }
     public Animator Animator { get; private set; }
+
+    public BoxCollider SummonTrigger { get; set; }
 
     public GameObject Weapon => _weapon;
     #endregion Properties
@@ -144,6 +149,8 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         MaxHealth = _maxHealth;
         Health = MaxHealth;
         Speed = _speed;
+
+        SummonTrigger = _summonTrigger;
     }
 
     private void Start()
@@ -269,7 +276,8 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         {
             Health -= damage;
 
-            IsAttacked = true;
+            if (!IsAttacked)
+                IsAttacked = true;
 
             // Всплывающий дамаг
             if (PopupDamageController != null)
