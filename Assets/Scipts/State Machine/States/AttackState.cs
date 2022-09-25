@@ -76,13 +76,9 @@ public class AttackState : State
         {
             // Определяем дистанцию до игрока
             _distanceFromEnemyToPlayer = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
-            if (_distanceFromEnemyToPlayer > _attackDistance)
+            if (_distanceFromEnemyToPlayer > _attackDistance && !IsAnimationPlaying("Base Layer.Melee Attack 1"))
             {
-                // Если анимация атаки не выполняется
-                if (!_enemy.Animator.GetCurrentAnimatorStateInfo(0).IsName("Melee Attack 1"))
-                {
-                    _enemy.ChangeState(_enemy.PursuitState);
-                }
+                _enemy.ChangeState(_enemy.PursuitState);
             }
             _timerUpdate = 0;
         }
@@ -101,7 +97,6 @@ public class AttackState : State
         base.Exit();
 
         _enemy.Animator.SetBool("isIdleAttacking", false);
-
     }
 
     /// <summary>

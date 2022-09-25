@@ -48,15 +48,16 @@ public class PursuitState : State
         // Получаем Transform игрока для отслеживания его позиции
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
+        // Включаем анимацию для этого состояния, задаем параметр анимации
+        _enemy.Animator.SetBool("isMovement", true);
+
         // Получаем случайную точку в определенном радиусе (_randomPointRadius) рядом с игрок
         _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
         // Задаем цель противнику, к которой он движется
-        _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
+        if (IsAnimationPlaying("Base Layer.Movement"))
+            _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
         // Устанавливаем дистанцию остановки 0, чтобы исключить ситуации, когда враг останавливался за радиусом (_randomPointRadius) и не мог сменить цель на игрока
         _enemy.NavMeshAgent.stoppingDistance = 0f;
-
-        // Включаем анимацию для этого состояния, задаем параметр анимации
-        _enemy.Animator.SetBool("isMovement", true);
     }
 
     public override void Update()
@@ -82,7 +83,8 @@ public class PursuitState : State
                 // Изменяем дистанцию остановки протиника
                 _enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.1f;
                 // Изменияем цель противнику на игрока
-                _enemy.NavMeshAgent.SetDestination(_transformPlayer.position);
+                if (IsAnimationPlaying("Base Layer.Movement"))
+                    _enemy.NavMeshAgent.SetDestination(_transformPlayer.position);
             }
 
             // Генерим новую случайную точку, если текущая случайная точка находится за пределом радиуса (_randomPointRadius)
@@ -91,7 +93,8 @@ public class PursuitState : State
                 // Генерим случайную точку
                 _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
                 // Изменияем цель противнику на новую случайную точку рядом с игроком
-                _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
+                if (IsAnimationPlaying("Base Layer.Movement"))
+                    _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
             }
 
             // Обнуляем таймер
