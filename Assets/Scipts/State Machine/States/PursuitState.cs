@@ -31,7 +31,7 @@ public class PursuitState : State
 
     private float _timerUpdate;
 
-    public PursuitState(SwordsmanEnemy enemy, StateMachineSwordsman stateMachine) : base(enemy, stateMachine)
+    public PursuitState(SwordsmanEnemy enemy) : base(enemy)
     {
 
     }
@@ -73,7 +73,7 @@ public class PursuitState : State
             if (_distanceFromEnemyToPlayer < _attackDistance)
             {
                 // »змен€ем состо€ние на состо€ние атаки
-                _stateMachine.ChangeState(_stateMachine.AttackState);
+                _enemy.ChangeState(_enemy.AttackState);
             }
 
             // ≈сли противник подошел в радиус генерации случайной точки (_randomPointRadius), то измен€ем цель противнику

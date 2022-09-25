@@ -18,8 +18,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
     [SerializeField] private Camera _camera;
     [SerializeField] private float _shotForce = 8; // Сила выстрела
 
-    [Header("Others")]
-    [SerializeField] private bool _debugMod = false;
     #endregion Serialize fields
 
     #region Properties

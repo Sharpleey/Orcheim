@@ -5,7 +5,7 @@ using UnityEngine;
 public class DieState : State
 {
     private float _timer = 0;
-    public DieState(SwordsmanEnemy enemy, StateMachineSwordsman stateMachine) : base(enemy, stateMachine)
+    public DieState(SwordsmanEnemy enemy) : base(enemy)
     {
     }
     public override void Enter()
@@ -49,8 +49,7 @@ public class DieState : State
 
         if (_timer > 8)
         {
-            Destroy(_enemy.Weapon);
-            Destroy(_enemy.gameObject);
+            _enemy.DestroyEnemyObjects();
         }
     }
 

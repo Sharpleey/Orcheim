@@ -15,13 +15,13 @@ public class IdleState : State
     /// <summary>
     /// Радиус обнаружения, при котором в любом случае враг заметит игрока
     /// </summary>
-    private float _absoluteDetectionDistance = 3f;
+    private float _absoluteDetectionDistance = 4f;
 
     private Transform _transformPlayer;
 
     private float _timerUpdate;
 
-    public IdleState(SwordsmanEnemy enemy, StateMachineSwordsman stateMachine) : base(enemy, stateMachine)
+    public IdleState(SwordsmanEnemy enemy) : base(enemy)
     {
 
     }
@@ -38,8 +38,8 @@ public class IdleState : State
 
         _enemy.Animator.SetBool("isIdle", true);
 
-        if(_stateMachine.IsStartPursuitState)
-            _stateMachine.ChangeState(_stateMachine.PursuitState);
+        if(_enemy.IsStartPursuitState)
+            _enemy.ChangeState(_enemy.PursuitState);
     }
 
     public override void Update()
@@ -52,10 +52,10 @@ public class IdleState : State
             float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
 
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
-            if (distanceToTarget < _absoluteDetectionDistance || _enemy.IsAttacked || IsIsView())
+            if (distanceToTarget < _absoluteDetectionDistance || IsIsView())
             {
-                if (!_stateMachine.IsOnlyIdleState)
-                    _stateMachine.ChangeState(_stateMachine.PursuitState);
+                if (!_enemy.IsOnlyIdleState)
+                    _enemy.ChangeState(_enemy.PursuitState);
             }
 
             _timerUpdate = 0;

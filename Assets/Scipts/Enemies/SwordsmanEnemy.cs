@@ -6,7 +6,6 @@ using TMPro;
 
 [RequireComponent(typeof(HitBoxesController))]
 [RequireComponent(typeof(RagdollController))]
-[RequireComponent(typeof(StateMachineSwordsman))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
 
@@ -16,6 +15,10 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     [SerializeField] private int _maxHealth = 100;
     [SerializeField] private int _health;
     [SerializeField] private float _speed = 3.5f;
+
+    [Header("State Settings")]
+    [SerializeField] private bool _isOnlyIdleState;
+    [SerializeField] private bool _isStartPursuitState;
 
     [Header("Weapon Visual Settings")]
     [SerializeField] private GameObject _weapon;
@@ -109,8 +112,6 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             NavMeshAgent.speed = value;
         }
     }
-    
-    public bool IsAttacked { get; set; }
 
     public HitBoxesController HitBoxesController { get; private set; }
     public RagdollController RagdollController { get; private set; }
@@ -127,6 +128,21 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
     public BoxCollider SummonTrigger { get; set; }
 
+    public State CurrentState { get; private set; }
+    public IdleState IdleState { get; private set; }
+    public PursuitState PursuitState { get; private set; }
+    public AttackState AttackState { get; private set; }
+    public DieState DieState { get; private set; }
+
+    /// <summary>
+    /// Враг имеет только состояние покоя
+    /// </summary>
+    public bool IsStartPursuitState { get; private set; }
+    /// <summary>
+    /// Начальное состояние врага - преследование (По умолчанию - покоя)
+    /// </summary>
+    public bool IsOnlyIdleState { get; private set; }
+
     public GameObject Weapon => _weapon;
     #endregion Properties
 
@@ -138,8 +154,6 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     private bool _isSlow = false;
     private float _timerSlow = 0f;
     private int _durationSlow = 0;
-
-    private StateMachineSwordsman _stateMachine;
     #endregion Private fields
 
     #region Mono
@@ -149,6 +163,9 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         MaxHealth = _maxHealth;
         Health = MaxHealth;
         Speed = _speed;
+
+        IsStartPursuitState = _isStartPursuitState;
+        IsOnlyIdleState = _isOnlyIdleState;
 
         SummonTrigger = _summonTrigger;
     }
@@ -173,15 +190,18 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         Animator = GetComponent<Animator>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
 
-        _stateMachine = GetComponent<StateMachineSwordsman>();
-        _stateMachine?.InitializeStates(this);
+        IdleState = new IdleState(this);
+        PursuitState = new PursuitState(this);
+        AttackState = new AttackState(this);
+        DieState = new DieState(this);
+
         // ---------------------------------------------------------------
 
         // Делаем компонент неактивным, чтобы не началась анимация
-        if (DieEffectController != null)
+        if (DieEffectController)
             DieEffectController.enabled = false;
 
-        if (BurningEffectController != null)
+        if (BurningEffectController)
             BurningEffectController.enabled = false;
 
         // Устанавливаем скорость для NavMeshAgent
@@ -192,15 +212,14 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         HealthBarController?.SetHealth(Health);
 
         // Задаем начальное состояние
-        _stateMachine?.InitializeStartingState(_stateMachine.IdleState);
+        InitializeStartingState(IdleState);
     }
     #endregion Mono
 
     #region Private methods
     private void Update()
     {
-        if (_stateMachine != null)
-            _stateMachine.CurrentState.Update();
+        CurrentState.Update();
 
         // TODO когда будет больше эффектов переделать под машину состояний 
         if (_isBurning)
@@ -211,8 +230,17 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     }
     private void FixedUpdate()
     {
-        if (_stateMachine != null)
-            _stateMachine.CurrentState.FixedUpdate();
+        CurrentState.FixedUpdate();
+    }
+
+    /// <summary>
+    /// Метод конфигурирует машину состояний, присваивая CurrentState значение startingState и вызывая для него Enter. 
+    /// Это инициализирует машину состояний, в первый раз задавая активное состояние.
+    /// </summary>
+    private void InitializeStartingState(State startingState)
+    {
+        CurrentState = startingState;
+        startingState.Enter();
     }
 
     /// <summary>
@@ -275,9 +303,10 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         if (Health > 0)
         {
             Health -= damage;
-
-            if (!IsAttacked)
-                IsAttacked = true;
+            
+            // Если игрок атаковал врага, изменяем состояние
+            if (CurrentState == IdleState)
+                ChangeState(PursuitState);
 
             // Всплывающий дамаг
             if (PopupDamageController != null)
@@ -293,7 +322,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
         if (Health <= 0)
         {
-            _stateMachine.ChangeState(_stateMachine.DieState);
+            ChangeState(DieState);
         }
     }
     public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
@@ -302,6 +331,24 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
         damage = HitBoxesController.GetDamageValue(damage, hitCollider);
         TakeDamage(damage, typeDamage);
     }
+
+    /// <summary>
+    /// Метод обрабатывает переходы между состояниями. Он вызывает Exit для старого CurrentState перед заменой его ссылки на newState. В конце он вызывает Enter для newState.
+    /// </summary>
+    /// <param name="newState">Новое состояние, которое хотим установить</param>
+    public void ChangeState(State newState)
+    {
+        CurrentState.Exit();
+
+        CurrentState = newState;
+        newState.Enter();
+    }
+    /// <summary>
+    /// Метод полжигает врага на некоторое время
+    /// </summary>
+    /// <param name="damagePerSecond">Значения урона в секунгду</param>
+    /// <param name="duration">Длительность горения</param>
+    /// <param name="typeDamage">Тип наносимого урона</param>
     public void SetBurning(int damagePerSecond, int duration, TypeDamage typeDamage)
     {
         if (!_isBurning)
@@ -319,6 +366,11 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
                 IconEffectsController.SetActiveIconBurning(true);
         }
     }
+    /// <summary>
+    /// Метод замедляет скорость передвижения противника на некоторое время
+    /// </summary>
+    /// <param name="slowdown">Значение замедления</param>
+    /// <param name="duration">Длительность эффекьа замедления</param>
     public void SetSlowing(float slowdown, int duration)
     {
         if (!_isSlow)
@@ -333,6 +385,14 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
             if (IconEffectsController != null)
                 IconEffectsController.SetActiveIconSlowdown(true);
         }
+    }
+    /// <summary>
+    /// Уничтожает объект оружия врага и его самого
+    /// </summary>
+    public void DestroyEnemyObjects()
+    {
+        Destroy(Weapon);
+        Destroy(gameObject);
     }
     #endregion Public methods
 }

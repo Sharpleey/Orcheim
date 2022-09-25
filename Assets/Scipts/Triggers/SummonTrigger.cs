@@ -5,18 +5,22 @@ using UnityEngine;
 
 public class SummonTrigger : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider otherSummonTriggerCollider)
-    {
-        bool curEnemyIsAttacked = GetComponentInParent<SwordsmanEnemy>().IsAttacked;
+    [SerializeField] private SwordsmanEnemy _enemy;
 
-        if (!curEnemyIsAttacked)
+    private void Awake()
+    {
+        _enemy = GetComponentInParent<SwordsmanEnemy>();
+    }
+    private void OnTriggerExit(Collider otherSummonTriggerCollider)
+    {
+        if (_enemy.CurrentState == _enemy.IdleState)
             return;
 
-        SwordsmanEnemy swordsmanEnemy = otherSummonTriggerCollider.GetComponentInParent<SwordsmanEnemy>();
+        SwordsmanEnemy otherEnemy = otherSummonTriggerCollider.GetComponentInParent<SwordsmanEnemy>();
 
-        if (!swordsmanEnemy.IsAttacked)
+        if (_enemy.CurrentState == _enemy.PursuitState && otherEnemy.CurrentState == otherEnemy.IdleState)
         {
-            swordsmanEnemy.IsAttacked = true;
+            otherEnemy.ChangeState(otherEnemy.PursuitState);
         }
     }
 }
