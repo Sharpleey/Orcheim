@@ -54,8 +54,7 @@ public class PursuitState : State
         // ѕолучаем случайную точку в определенном радиусе (_randomPointRadius) р€дом с игрок
         _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
         // «адаем цель противнику, к которой он движетс€
-        if (IsAnimationPlaying("Base Layer.Movement"))
-            _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
+        _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
         // ”станавливаем дистанцию остановки 0, чтобы исключить ситуации, когда враг останавливалс€ за радиусом (_randomPointRadius) и не мог сменить цель на игрока
         _enemy.NavMeshAgent.stoppingDistance = 0f;
     }
@@ -77,24 +76,22 @@ public class PursuitState : State
                 _enemy.ChangeState(_enemy.AttackState);
             }
 
-            // ≈сли противник подошел в радиус генерации случайной точки (_randomPointRadius), то измен€ем цель противнику
-            if (_distanceFromEnemyToPlayer < _randomPointRadius)
+            // ≈сли противник подошел в радиус генерации случайной точки  (_randomPointRadius) и если не проигрываетс€ анимаци€ атаки, то измен€ем цель противнику
+            if (_distanceFromEnemyToPlayer < _randomPointRadius && IsAnimationPlaying("Base Layer.Movement"))
             {
                 // »змен€ем дистанцию остановки протиника
                 _enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.1f;
                 // »змени€ем цель противнику на игрока
-                if (IsAnimationPlaying("Base Layer.Movement"))
-                    _enemy.NavMeshAgent.SetDestination(_transformPlayer.position);
+                _enemy.NavMeshAgent.SetDestination(_transformPlayer.position);
             }
 
-            // √енерим новую случайную точку, если текуща€ случайна€ точка находитс€ за пределом радиуса (_randomPointRadius)
-            if (_distanceFromRandomPointToPlayer > _randomPointRadius)
+            // √енерим новую случайную точку, если текуща€ случайна€ точка находитс€ за пределом радиуса (_randomPointRadius) и если не проигрываетс€ анимаци€ атаки
+            if (_distanceFromRandomPointToPlayer > _randomPointRadius && IsAnimationPlaying("Base Layer.Movement"))
             {
                 // √енерим случайную точку
                 _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
                 // »змени€ем цель противнику на новую случайную точку р€дом с игроком
-                if (IsAnimationPlaying("Base Layer.Movement"))
-                    _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
+                _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
             }
 
             // ќбнул€ем таймер
