@@ -77,7 +77,7 @@ public class PursuitState : State
             }
 
             // Если противник подошел в радиус генерации случайной точки  (_randomPointRadius) и если не проигрывается анимация атаки, то изменяем цель противнику
-            if (_distanceFromEnemyToPlayer < _randomPointRadius && IsAnimationPlaying("Base Layer.Movement"))
+            if (_distanceFromEnemyToPlayer < _randomPointRadius)
             {
                 // Изменяем дистанцию остановки протиника
                 _enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.1f;
@@ -86,7 +86,7 @@ public class PursuitState : State
             }
 
             // Генерим новую случайную точку, если текущая случайная точка находится за пределом радиуса (_randomPointRadius) и если не проигрывается анимация атаки
-            if (_distanceFromRandomPointToPlayer > _randomPointRadius && IsAnimationPlaying("Base Layer.Movement"))
+            if (_distanceFromRandomPointToPlayer > _randomPointRadius)
             {
                 // Генерим случайную точку
                 _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();

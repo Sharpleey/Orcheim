@@ -2,12 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Класс отвечает за управление Ragdoll персонажа
+/// </summary>
 public class RagdollController : MonoBehaviour
 {
     #region Serialize fields
-    [SerializeField] private Animator Animator;
+    /// <summary>
+    /// Список всех Rigibody на персонаже
+    /// </summary>
     [SerializeField] private List<Rigidbody> _allRigibodys;
     #endregion Serialize fields
+
+    #region Private fields
+    /// <summary>
+    /// Аниматор персонажа
+    /// </summary>
+    private Animator _animator;
+    #endregion Private fields
 
     #region Mono
     private void Awake()
@@ -17,12 +29,19 @@ public class RagdollController : MonoBehaviour
             rigidbody.isKinematic = true;
         }
     }
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
+    }
     #endregion Mono
 
     #region Public methods
+    /// <summary>
+    /// Метод делает Ragdoll персонажа физичным, отключая при этом анимации
+    /// </summary>
     public void MakePhysical()
     {
-        Animator.enabled = false;
+        _animator.enabled = false;
 
         foreach (Rigidbody rigidbody in _allRigibodys)
         {

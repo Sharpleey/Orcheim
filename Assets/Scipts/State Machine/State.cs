@@ -53,15 +53,4 @@ public abstract class State
     {
 
     }
-
-    public virtual bool IsAnimationPlaying(string animationName)
-    {
-        // Берем информацию о состоянии
-        var animatorStateInfo = _enemy.Animator.GetCurrentAnimatorStateInfo(0);
-        // Смотрим, есть ли в нем имя какой-то анимации, то возвращаем true
-        if (animatorStateInfo.IsName(animationName))
-            return true;
-
-        return false;
-    }
 }

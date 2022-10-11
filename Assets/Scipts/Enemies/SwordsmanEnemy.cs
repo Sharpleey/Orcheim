@@ -20,11 +20,6 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     [SerializeField] private bool _isOnlyIdleState;
     [SerializeField] private bool _isStartPursuitState;
 
-    [Header("Weapon Visual Settings")]
-    [SerializeField] private GameObject _weapon;
-    [SerializeField] private GameObject[] _prefabWeapons;
-    [SerializeField] private Transform _weaponPlace;
-
     [Header("Summon Trigger")]
     [SerializeField] private BoxCollider _summonTrigger;
     #endregion Serialize fields
@@ -117,6 +112,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     public RagdollController RagdollController { get; private set; }
     public HealthBarController HealthBarController { get; private set; }
     public PopupDamageController PopupDamageController { get; private set; }
+    public WeaponController WeaponController { get; private set; }
 
     public DieEffectController DieEffectController { get; private set; }
     public BurningEffectController BurningEffectController { get; private set; }
@@ -131,7 +127,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     public State CurrentState { get; private set; }
     public IdleState IdleState { get; private set; }
     public PursuitState PursuitState { get; private set; }
-    public AttackState AttackState { get; private set; }
+    public AttackIdleState AttackState { get; private set; }
     public DieState DieState { get; private set; }
 
     /// <summary>
@@ -143,7 +139,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     /// </summary>
     public bool IsOnlyIdleState { get; private set; }
 
-    public GameObject Weapon => _weapon;
+    public GameObject Weapon => WeaponController.UsedWeapon;
     #endregion Properties
 
     #region Private fields
@@ -172,13 +168,11 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
     private void Start()
     {
-        // Выбираем оружие из списка для визуальной разницы
-        SetRandomWeaponModel();
-
         // Получаем контроллерыи компоненты
         // ---------------------------------------------------------------
         HitBoxesController = GetComponent<HitBoxesController>();
         RagdollController = GetComponent<RagdollController>();
+        WeaponController = GetComponent<WeaponController>();
 
         IconEffectsController = GetComponentInChildren<IconEffectsController>();
 
@@ -192,7 +186,7 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
 
         IdleState = new IdleState(this);
         PursuitState = new PursuitState(this);
-        AttackState = new AttackState(this);
+        AttackState = new AttackIdleState(this);
         DieState = new DieState(this);
 
         // ---------------------------------------------------------------
@@ -241,21 +235,6 @@ public class SwordsmanEnemy : MonoBehaviour, IEnemy
     {
         CurrentState = startingState;
         startingState.Enter();
-    }
-
-    /// <summary>
-    /// Метод устанавливает рандомную модель оружия, для визуального разнообразия
-    /// </summary>
-    private void SetRandomWeaponModel()
-    {
-        int id_weapon = Random.Range(0, _prefabWeapons.Length);
-        _weapon = Instantiate(_prefabWeapons[id_weapon]);
-
-        _weapon.transform.parent = _weaponPlace.transform;
-
-        _weapon.transform.position = _weaponPlace.position;
-        _weapon.transform.rotation = _weaponPlace.rotation;
-
     }
 
     /// <summary>

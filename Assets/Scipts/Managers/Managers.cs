@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Убеждаемся, что различные диспетчеры существуют.
-// [RequireComponent(typeof(PlayerManager))]
-// [RequireComponent(typeof(InventoryManager))]
-// [RequireComponent(typeof(MissionManager))]
-// [RequireComponent(typeof(DataManager))]
+[RequireComponent(typeof(GameSceneManager))]
 
 public class Managers : MonoBehaviour
-{   
+{
     // Статические свойства, которыми остальной код пользуется для доступа к диспетчерам.
-    
+
     // public static DataManager Data {get; private set;}
     // public static PlayerManager Player {get; private set;}
     // public static InventoryManager Inventory {get; private set;}
-    // public static MissionManager Mission {get; private set;}
+    public static GameSceneManager GameSceneManager { get; private set; }
 
     // Список диспетчеров, который просматривается в цикле во время стартовой последовательности.
     private List<IGameManager> _startSequence;
@@ -28,12 +25,12 @@ public class Managers : MonoBehaviour
         // Data = GetComponent<DataManager>();
         // Player = GetComponent<PlayerManager>();
         // Inventory = GetComponent<InventoryManager>();
-        // Mission = GetComponent<MissionManager>();
+        GameSceneManager = GetComponent<GameSceneManager>();
 
         _startSequence = new List<IGameManager>();
         // _startSequence.Add(Player);
         // _startSequence.Add(Inventory);
-        // _startSequence.Add(Mission);
+        _startSequence.Add(GameSceneManager);
         // _startSequence.Add(Data);
 
         StartCoroutine(StartupManagers()); 
@@ -63,15 +60,19 @@ public class Managers : MonoBehaviour
             }
 
             if (numReady > lastReady)
+            {
                 Debug.Log("Progress: " + numReady + "/" + numModules);
+
                 // Событие загрузки рассылается вместе с относящимися к нему данными.
                 Messenger<int, int>.Broadcast(StartupEvent.MANAGERS_PROGRESS, numReady, numModules);
+            }
             
-            yield return new WaitForSeconds(1); // Остановка на один кадр перед следующей проверкой.
+            yield return new WaitForSeconds(0);
 
         }
         
         Debug.Log("All managers started up");
+
         //Событие загрузки рассылается без параметров.
         Messenger.Broadcast(StartupEvent.MANAGERS_STARTED);
     }
