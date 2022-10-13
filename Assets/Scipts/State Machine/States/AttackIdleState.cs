@@ -33,7 +33,7 @@ public class AttackIdleState : State
 
     private bool _isBlockChangeState = false;
 
-    public AttackIdleState(SwordsmanEnemy enemy) : base(enemy)
+    public AttackIdleState(Enemy enemy) : base(enemy)
     {
 
     }

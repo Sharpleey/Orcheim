@@ -27,7 +27,7 @@ public class ProjectileArrow : MonoBehaviour
 	private Rigidbody _arrowRigidbody;
 	private BoxCollider _arrowCollider;
 
-	private IEnemy _currentHitEnemy;
+	private Enemy _currentHitEnemy;
 
 	private Dictionary<Type, IModifier> _bowAttackModifaers = new Dictionary<Type, IModifier>();
 	#endregion Private fields
@@ -70,7 +70,7 @@ public class ProjectileArrow : MonoBehaviour
 	/// <param name="hitCollider">Коллайдер, с которым соприкоснулась стрела</param>
 	private void OnTriggerEnter(Collider hitCollider)
     {
-		IEnemy enemy = hitCollider.GetComponentInParent<IEnemy>();
+		Enemy enemy = hitCollider.GetComponentInParent<Enemy>();
 		// Если мы попали в противника
 		if (enemy != null)
 		{

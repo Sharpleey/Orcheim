@@ -5,7 +5,7 @@ using UnityEngine;
 public class DieState : State
 {
     private float _timer = 0;
-    public DieState(SwordsmanEnemy enemy) : base(enemy)
+    public DieState(Enemy enemy) : base(enemy)
     {
     }
     public override void Enter()

@@ -21,7 +21,7 @@ public class IdleState : State
 
     private float _timerUpdate;
 
-    public IdleState(SwordsmanEnemy enemy) : base(enemy)
+    public IdleState(Enemy enemy) : base(enemy)
     {
 
     }

@@ -9,11 +9,11 @@ using UnityEngine;
 /// </summary>
 public class SummonTrigger : MonoBehaviour
 {
-    private SwordsmanEnemy _enemy;
+    private Warrior _enemy;
 
     private void Awake()
     {
-        _enemy = GetComponentInParent<SwordsmanEnemy>();
+        _enemy = GetComponentInParent<Warrior>();
     }
     private void OnTriggerExit(Collider otherSummonTriggerCollider)
     {
@@ -21,7 +21,7 @@ public class SummonTrigger : MonoBehaviour
         if (_enemy.CurrentState == _enemy.IdleState)
             return;
 
-        SwordsmanEnemy otherEnemy = otherSummonTriggerCollider.GetComponentInParent<SwordsmanEnemy>();
+        Warrior otherEnemy = otherSummonTriggerCollider.GetComponentInParent<Warrior>();
 
         // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя", то второму меняем состояние на "преследования"
         if (_enemy.CurrentState == _enemy.PursuitState && otherEnemy.CurrentState == otherEnemy.IdleState)

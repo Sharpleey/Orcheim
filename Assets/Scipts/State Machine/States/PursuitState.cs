@@ -31,7 +31,7 @@ public class PursuitState : State
 
     private float _timerUpdate;
 
-    public PursuitState(SwordsmanEnemy enemy) : base(enemy)
+    public PursuitState(Enemy enemy) : base(enemy)
     {
 
     }
@@ -73,7 +73,7 @@ public class PursuitState : State
             if (_distanceFromEnemyToPlayer < _attackDistance)
             {
                 // »змен€ем состо€ние на состо€ние атаки
-                _enemy.ChangeState(_enemy.AttackState);
+                _enemy.ChangeState(_enemy.AttackIdleState);
             }
 
             // ≈сли противник подошел в радиус генерации случайной точки  (_randomPointRadius) и если не проигрываетс€ анимаци€ атаки, то измен€ем цель противнику
@@ -107,7 +107,7 @@ public class PursuitState : State
         //Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
 
         // «адаем параметр анимации
-        _enemy.Animator.SetFloat("Speed", _enemy.CurrentSpeed / _enemy.Speed);
+        _enemy.Animator.SetFloat("Speed", _enemy.Speed / _enemy.MaxSpeed);
     }
 
     public override void Exit()

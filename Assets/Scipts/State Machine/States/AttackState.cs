@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    public AttackState(SwordsmanEnemy enemy) : base(enemy)
+    public AttackState(Warrior enemy) : base(enemy)
     {
 
     }

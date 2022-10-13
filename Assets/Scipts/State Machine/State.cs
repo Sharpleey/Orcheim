@@ -10,14 +10,14 @@ public abstract class State
     /// <summary>
     /// Хранит ссылку основной объект класса противника со всеми параметрами и данными. Необходимо для разного рода взаимодействий
     /// </summary>
-    protected SwordsmanEnemy _enemy;
+    protected Enemy _enemy;
 
     /// <summary>
     /// Конструктор класса состояния, необходим для прокидывания связей с данными противника и машины состояний
     /// </summary>
     /// <param name="enemy">Данный и параметры противника</param>
     /// <param name="stateMachineEnemy">Машина состоянйи противника</param>
-    protected State(SwordsmanEnemy enemy)
+    protected State(Enemy enemy)
     {
         _enemy = enemy;
         //_stateMachine = stateMachine;
