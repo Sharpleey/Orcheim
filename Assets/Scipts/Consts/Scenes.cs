@@ -7,5 +7,5 @@ public class Scenes
     /// Название сцены главного меню
     /// </summary>
     public const string MAIN_MENU = "MainMenu";
-    public const string TEST_AI = "TestAI";
+    public const string TEST_AI = "TestSceneController";
 }

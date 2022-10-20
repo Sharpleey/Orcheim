@@ -34,7 +34,7 @@ public class IdleState : State
 
         //_enemy.animator.StopPlayback();
 
-        _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+        _transformPlayer = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         _enemy.Animator.SetBool("isIdle", true);
 
@@ -47,7 +47,7 @@ public class IdleState : State
         base.Update();
 
         _timerUpdate += Time.deltaTime;
-        if (_timerUpdate > 0.5)
+        if (_timerUpdate > 0.5 && !_enemy.IsOnlyIdleState)
         {
             float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
 

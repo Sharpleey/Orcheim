@@ -42,6 +42,11 @@ public class MainMenuController : MonoBehaviour
         Application.Quit();
     }
 
+    public void OnClickTestSceneAI()
+    {
+        Managers.GameSceneManager.SwitchToScene(Scenes.TEST_AI);
+    }
+
     private void ShowMenu(GameObject menu)
     {
         _activeMenu.SetActive(false);

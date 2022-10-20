@@ -1,67 +1,65 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviour, IGameManager
 {
-    public ManagerStatus Status { get; private set; }
+	[SerializeField] private LoadingScreenController _loadingScreen;
 
-    public void Startup()
+    public ManagerStatus Status { get; private set; }
+	/// <summary>
+	/// Свойство используется в LoadingScreenController для отображения значения прогресса
+	/// </summary>
+	public AsyncOperation AsyncOperationLoadingScene => _asyncOperationLoadingScene;
+
+	private AsyncOperation _asyncOperationLoadingScene;
+
+	public void Startup()
     {
-        Debug.Log("GameScene manager starting...");
+        Debug.Log("Game Scene manager starting...");
+
 
         // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
         Status = ManagerStatus.Started;
     }
 
-	public void StartMainMenu()
+	/// <summary>
+	/// Метод смены сцены
+	/// </summary>
+	/// <param name="sceneName">Название сцены, на которую необходимо перейти</param>
+	public void SwitchToScene(string sceneName)
     {
-        SceneManager.LoadScene(Scenes.MAIN_MENU);
+		StartCoroutine(LoadAsyncScene(sceneName));
 	}
 
-	public void StartTestScene()
-    {
-		SceneManager.LoadScene(Scenes.TEST_AI);
+	/// <summary>
+	/// Метод для аминхронной загрузки сцены
+	/// </summary>
+	/// <param name="sceneName">Название сцены, на которую необходимо перейти</param>
+	/// <returns></returns>
+	private IEnumerator LoadAsyncScene(string sceneName)
+	{
+		// Показываем анимацию появления экрана загрузки
+        _loadingScreen.Show();
+
+		// Останавливаем дальнейшее выполнение кода пока не окончена анимация показа экрана загрузки
+        while (_loadingScreen.IsShow)
+        {
+			yield return null;
+		}
+
+		// Загружаем сцену в асинхронном режиме
+		_asyncOperationLoadingScene = SceneManager.LoadSceneAsync(sceneName);
+
+		// Останавливаем дальнейшее выполнение кода, пока идет загрузка сцены
+		while (!_asyncOperationLoadingScene.isDone)
+		{
+			yield return null;
+		}
+		// После загрузки происходит автоматический переход на сцену
+		// Плавное скрываем экрна загрузки
+		_loadingScreen.Hide();
+		// Обнуляем данные операции по сцене
+		_asyncOperationLoadingScene = null;
 	}
-
-	//// Метод перехода на следующий уровень
-	//public void GoToNext()
-	//{
-	//	// Проверяем, достигнут ли последний уровень.
-	//	if (curLevel < maxLevel)
-	//	{
-	//		curLevel++;
-	//		string name = "Level_" + curLevel;
-	//		Debug.Log("Loading " + name);
-	//		// Команда загрузки сцены
-	//		SceneManager.LoadScene(name);
-	//	}
-	//	else
-	//	{
-	//		Debug.Log("Last level");
-	//		Messenger.Broadcast(GameEvent.GAME_COMPLETE);
-	//	}
-	//}
-
-	//// Метод для тригера завершения уровня
-	//public void ReachObjective()
-	//{
-	//	// здесь может быть код обработки нескольких целей
-	//	Messenger.Broadcast(GameEvent.LEVEL_COMPLETE);
-	//}
-
-	//// Метод перезагрузки текщег уровня
-	//public void RestartCurrent()
-	//{
-	//	string name = "Level_" + curLevel;
-	//	Debug.Log("Loading " + name);
-	//	SceneManager.LoadScene(name);
-	//}
-
-	//public void UpdateData(int curLevel, int maxLevel)
-	//{
-	//	this.curLevel = curLevel;
-	//	this.maxLevel = maxLevel;
-	//}
 }
