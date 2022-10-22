@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuCanvasController : MonoBehaviour
 {
     [SerializeField] private GameObject _mainMenu;
     [SerializeField] private GameObject _settings;
@@ -14,7 +11,10 @@ public class MainMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _activeMenu = _mainMenu;
+        ShowMenu(_mainMenu);
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 
     public void OnClickNewGame()
@@ -49,8 +49,8 @@ public class MainMenuController : MonoBehaviour
 
     private void ShowMenu(GameObject menu)
     {
-        _activeMenu.SetActive(false);
+        _activeMenu?.SetActive(false);
         _activeMenu = menu;
-        _activeMenu.SetActive(true);
+        _activeMenu?.SetActive(true);
     }
 }

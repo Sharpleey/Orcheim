@@ -158,7 +158,7 @@ public class PlayerCharacterController : MonoBehaviour
         // Speed = 0;
         Vector3 move = Vector3.zero;
 
-        if (!_isPaused && !LockControl)
+        if (!Managers.GameSceneManager.IsGamePaused)
         {
             // Прыжок
             // --------------------------------------------------------------------

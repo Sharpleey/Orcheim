@@ -11,16 +11,20 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 	/// Свойство используется в LoadingScreenController для отображения значения прогресса
 	/// </summary>
 	public AsyncOperation AsyncOperationLoadingScene => _asyncOperationLoadingScene;
+	public bool IsGamePaused => _isGamePaused;
 
 	private AsyncOperation _asyncOperationLoadingScene;
+
+	private bool _isGamePaused;
 
 	public void Startup()
     {
         Debug.Log("Game Scene manager starting...");
 
+		_isGamePaused = false;
 
-        // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
-        Status = ManagerStatus.Started;
+		// any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
+		Status = ManagerStatus.Started;
     }
 
 	/// <summary>
@@ -30,6 +34,17 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 	public void SwitchToScene(string sceneName)
     {
 		StartCoroutine(LoadAsyncScene(sceneName));
+	}
+
+	public void PauseGame()
+    {
+		Time.timeScale = 0;
+		_isGamePaused = true;
+	}
+	public void ResumeGame()
+	{
+		Time.timeScale = 1;
+		_isGamePaused = false;
 	}
 
 	/// <summary>
@@ -57,8 +72,14 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 			yield return null;
 		}
 		// После загрузки происходит автоматический переход на сцену
+
+		// Снимаем игру с паузы, если она была на паузе
+		if (_isGamePaused)
+			ResumeGame();
+
 		// Плавное скрываем экрна загрузки
 		_loadingScreen.Hide();
+
 		// Обнуляем данные операции по сцене
 		_asyncOperationLoadingScene = null;
 	}

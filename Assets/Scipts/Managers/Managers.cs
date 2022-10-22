@@ -64,7 +64,7 @@ public class Managers : MonoBehaviour
                 Debug.Log("Progress: " + numReady + "/" + numModules);
 
                 // Событие загрузки рассылается вместе с относящимися к нему данными.
-                Messenger<int, int>.Broadcast(StartupEvent.MANAGERS_PROGRESS, numReady, numModules);
+                //Messenger<int, int>.Broadcast(StartupEvent.MANAGERS_PROGRESS, numReady, numModules);
             }
             
             yield return new WaitForSeconds(0);

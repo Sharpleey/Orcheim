@@ -92,44 +92,45 @@ public class LightBow : MonoBehaviour, IBowWeapon
     #region Private methods
     private void Update()
     {
-        // ПКМ
-        if (Input.GetMouseButtonDown(1))
+        if (!Managers.GameSceneManager.IsGamePaused)
         {
-            //_animator.SetBool("Load", true);
-            //_isAiming = true;
+            // ПКМ
+            if (Input.GetMouseButtonDown(1))
+            {
+                //_animator.SetBool("Load", true);
+                //_isAiming = true;
 
-            //Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
-            //RaycastHit hit;
+                //Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
+                //RaycastHit hit;
 
-            //if (Physics.Raycast(ray, out hit))
-            //{
-            //    _pointer.position = hit.point;
-            //    Debug.Log(hit.point);
-            //    transform.LookAt(hit.point);
+                //if (Physics.Raycast(ray, out hit))
+                //{
+                //    _pointer.position = hit.point;
+                //    Debug.Log(hit.point);
+                //    transform.LookAt(hit.point);
 
-            //    transform.Rotate(0.0f, 0.0f, -90.0f);
-            //}
-        }
+                //    transform.Rotate(0.0f, 0.0f, -90.0f);
+                //}
+            }
 
-        // Отпустить ПКМ
-        if (Input.GetMouseButtonUp(1))
-        {
-            //_animator.SetBool("Load", false);
-            //_isAiming = false;
-        }
+            // Отпустить ПКМ
+            if (Input.GetMouseButtonUp(1))
+            {
+                //_animator.SetBool("Load", false);
+                //_isAiming = false;
+            }
 
-        // ЛКМ
-        if (Input.GetMouseButtonDown(0) && !_isReload)
-        {
-            _animator.SetTrigger("FastShoot");
-            Shot();
+            // ЛКМ
+            if (Input.GetMouseButtonDown(0) && !_isReload)
+            {
+                _animator.SetTrigger("FastShoot");
+                Shot();
+            }
         }
     }
 
     private void Shot()
     {
-        
-
         // Запускаем стрелу
         _cloneArrow.GetComponent<ProjectileArrow>().Launch(_shotForce);
 
