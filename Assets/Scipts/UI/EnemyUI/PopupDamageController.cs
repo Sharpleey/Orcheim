@@ -28,7 +28,8 @@ public class PopupDamageController : MonoBehaviour
     {
         { TypeDamage.Physical, new Color(0.9f, 0.9f, 0.9f) },
         { TypeDamage.Fire, new Color(0.81f, 0.32f, 0.07f) },
-        { TypeDamage.Electric, new Color(0.04f, 0.92f, 0.98f) }
+        { TypeDamage.Bleeding, Color.red },
+        { TypeDamage.Poison, Color.green }
     };
     #endregion Public fields
 

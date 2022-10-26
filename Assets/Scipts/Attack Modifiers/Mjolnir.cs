@@ -12,7 +12,7 @@ public class Mjolnir : MonoBehaviour, IModifier
     [SerializeField] [Range(1, 300)] private int _damage = 20;
     [SerializeField] [Range(3, 10)] private int _maxTargetMjolnir = 3;
     [SerializeField] [Range(1.0f, 8.0f)] private float _radius = 2.5f;
-    [SerializeField] private TypeDamage _typeDamage = TypeDamage.Electric;
+    [SerializeField] private TypeDamage _typeDamage = TypeDamage.Physical;
     #endregion Serialize Fields
 
     #region Properties

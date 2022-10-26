@@ -6,5 +6,6 @@ public enum TypeDamage
 {
     Physical,
     Fire,
-    Electric
+    Bleeding,
+    Poison
 }
