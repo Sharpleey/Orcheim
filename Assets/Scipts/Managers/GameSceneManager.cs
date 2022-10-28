@@ -6,7 +6,7 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 {
 	[SerializeField] private LoadingScreenController _loadingScreen;
 
-    public ManagerStatus Status { get; private set; }
+	public ManagerStatus Status { get; private set; }
 	/// <summary>
 	/// Свойство используется в LoadingScreenController для отображения значения прогресса
 	/// </summary>
@@ -16,16 +16,34 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 	private AsyncOperation _asyncOperationLoadingScene;
 
 	private bool _isGamePaused;
+	private bool _isLoadSceneGameModeOrccheim;
+
+	private void Awake()
+	{
+		Messenger.AddListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
+		Messenger<string>.AddListener(GameSceneManagerEvent.SWITCH_TO_SCENE, SwitchToScene);
+	}
+	private void OnDestroy()
+	{
+		Messenger.RemoveListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
+		Messenger<string>.RemoveListener(GameSceneManagerEvent.SWITCH_TO_SCENE, SwitchToScene);
+	}
 
 	public void Startup()
-    {
-        Debug.Log("Game Scene manager starting...");
+	{
+		Debug.Log("Game Scene manager starting...");
 
 		_isGamePaused = false;
+		_isLoadSceneGameModeOrccheim = false;
 
 		// any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
 		Status = ManagerStatus.Started;
-    }
+	}
+
+	private void NewGameModeOrccheim()
+	{
+		_isLoadSceneGameModeOrccheim = true;
+	}
 
 	/// <summary>
 	/// Метод смены сцены
@@ -71,7 +89,17 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		{
 			yield return null;
 		}
+		//
 		// После загрузки происходит автоматический переход на сцену
+		//
+
+		// Если сцена загружена в режиме Orccheim
+		if (_isLoadSceneGameModeOrccheim)
+        {
+			Messenger.Broadcast(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM);
+
+			_isLoadSceneGameModeOrccheim = false;
+		}
 
 		// Снимаем игру с паузы, если она была на паузе
 		if (_isGamePaused)
@@ -80,7 +108,7 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		// Плавное скрываем экрна загрузки
 		_loadingScreen.Hide();
 
-		// Обнуляем данные операции по сцене
+		// Обнуляем данные операции загрузки сцены
 		_asyncOperationLoadingScene = null;
 	}
 }

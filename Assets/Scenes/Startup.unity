@@ -952,8 +952,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 695206896}
-  - component: {fileID: 695206898}
   - component: {fileID: 695206897}
+  - component: {fileID: 695206898}
+  - component: {fileID: 695206901}
+  - component: {fileID: 695206900}
+  - component: {fileID: 695206899}
+  - component: {fileID: 695206902}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -1000,6 +1004,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loadingScreen: {fileID: 418036967}
+--- !u!114 &695206899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695206895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3147b939f6b73b54da717d3d9e31cfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &695206900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695206895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f76371bad2c1f642831e28352a2a666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maximumEnemiesOnScene: 16
+  _incrementMaximumEnemiesOnScene: 2
+  _incrementWaveMaximumEnemiesOnScene: 16
+  _maximumEnemiesOnWave: 32
+  _incrementMaximumEnemiesOnWave: 4
+  _incrementWaveMaximumEnemiesOnWave: 3
+  _prefabEnemy: {fileID: 3949734795052093717, guid: 6457d12cec7289942b985c0cbe0321e4, type: 3}
+--- !u!114 &695206901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695206895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d7a6c6ee84cc4543ae88329a62031ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wave: 1
+--- !u!114 &695206902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695206895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5737a2c833bd9d4eb89d3dc9efa9f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _maxArmor: 0
+  _maxSpeed: 4
+  _playerCharacterPrefab: {fileID: 8556230809386165456, guid: 5de317114319d4e48b5dc65f11f7a1d8, type: 3}
 --- !u!1 &1771973317
 GameObject:
   m_ObjectHideFlags: 0

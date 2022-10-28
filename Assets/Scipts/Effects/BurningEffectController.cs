@@ -105,7 +105,7 @@ public class BurningEffectController : MonoBehaviour
         else
         {
             // Наносим урон каждую секунду
-            _enemy.TakeDamage(ActualDamage, TypeDamage);
+            _enemy.TakeDamage(ActualDamage, TypeDamage.Fire);
             _timer = 0f;
         }
     }

@@ -72,7 +72,7 @@ public class PauseMenuCanvasController : MonoBehaviour
         ///
         /// ѕроизводим сохранени€ данных перед выходом
         ///
-        Managers.GameSceneManager.SwitchToScene(Scenes.MAIN_MENU);
+        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.MAIN_MENU);
     }
 
    

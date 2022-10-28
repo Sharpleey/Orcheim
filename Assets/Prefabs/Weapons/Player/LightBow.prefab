@@ -1252,6 +1252,9 @@ GameObject:
   - component: {fileID: 1387729011419223800}
   - component: {fileID: 5717763794030177118}
   - component: {fileID: 1055840573406871445}
+  - component: {fileID: 8306339513926929914}
+  - component: {fileID: 2917699692064156178}
+  - component: {fileID: 8482112283156662846}
   m_Layer: 2
   m_Name: LightBow
   m_TagString: Untagged
@@ -1330,6 +1333,63 @@ MonoBehaviour:
   _averageDamage: 25
   _offsetDamage: 0.25
   _typeDamage: 0
+--- !u!114 &8306339513926929914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387729011428710486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fa4a554d9c58104ba7f1cf54a4c86b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u041A\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u0443\u0440\u043E\u043D"
+  _description: "\u041F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u0441 \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u044B\u043C
+    \u0448\u0430\u043D\u0441\u043E\u043C \u043D\u0430\u043D\u043E\u0441\u0438\u0442\u0442\u044C
+    \u0443\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u043D\u044B\u0439 \u0443\u0440\u043E\u043D"
+  "_proc\u0421hance": 20
+  _critMultiplierDamage: 2.04
+--- !u!114 &2917699692064156178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387729011428710486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea1bddff13b6d11409ffdca66ce35c74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u041E\u0433\u043D\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0440\u0435\u043B\u0430"
+  _description: "\u041F\u043E\u0434\u0436\u0438\u0433\u0430\u0435\u0442 \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430
+    \u0441 \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u044B\u043C \u0448\u0430\u043D\u0441\u043E\u043C,
+    \u043D\u0430\u043D\u043E\u0441\u044F \u0443\u0440\u043E\u043D \u0432 \u0441\u0435\u043A\u0443\u043D\u0434\u0443"
+  "_proc\u0421hance": 25
+  _damagePerSecond: 10
+  _duration: 3
+  _typeDamage: 1
+--- !u!114 &8482112283156662846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387729011428710486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cab312119ea05c24192203e0383ef339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u0417\u0430\u043C\u0435\u0434\u043B\u044F\u044E\u0449\u0430\u044F \u0441\u0442\u0440\u0435\u043B\u0430
+    \u0441\u0442\u0440\u0435\u043B\u0430"
+  _description: "\u0417\u0430\u043C\u0435\u0434\u043B\u044F\u0435\u0442 \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430
+    \u0441 \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u044B\u043C \u0448\u0430\u043D\u0441\u043E\u043C"
+  "_proc\u0421hance": 25
+  _slowdown: 0.2
+  _duration: 3
 --- !u!1 &1387729011428711024
 GameObject:
   m_ObjectHideFlags: 0

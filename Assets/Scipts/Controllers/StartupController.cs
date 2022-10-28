@@ -24,6 +24,6 @@ public class StartupController : MonoBehaviour
     //}
     private void OnManagersStarted()
     {
-        Managers.GameSceneManager.SwitchToScene(Scenes.MAIN_MENU);
+        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.MAIN_MENU);
     }
 }

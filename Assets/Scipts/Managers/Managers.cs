@@ -8,11 +8,12 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     // Статические свойства, которыми остальной код пользуется для доступа к диспетчерам.
-
-    // public static DataManager Data {get; private set;}
-    // public static PlayerManager Player {get; private set;}
-    // public static InventoryManager Inventory {get; private set;}
+   
     public static GameSceneManager GameSceneManager { get; private set; }
+    public static WaveManager WaveManager { get; private set; }
+    public static SpawnEnemyManager SpawnEnemyManager { get; private set; }
+    public static PlayerManager PlayerManager { get; private set; }
+    public static LootManager LootManager { get; private set; }
 
     // Список диспетчеров, который просматривается в цикле во время стартовой последовательности.
     private List<IGameManager> _startSequence;
@@ -22,16 +23,19 @@ public class Managers : MonoBehaviour
         // Команда Unity для сохранения объекта между сценами.
         DontDestroyOnLoad(gameObject);
 
-        // Data = GetComponent<DataManager>();
-        // Player = GetComponent<PlayerManager>();
-        // Inventory = GetComponent<InventoryManager>();
         GameSceneManager = GetComponent<GameSceneManager>();
+        WaveManager = GetComponent<WaveManager>();
+        SpawnEnemyManager = GetComponent<SpawnEnemyManager>();
+        PlayerManager = GetComponent<PlayerManager>();
+        LootManager = GetComponent<LootManager>();
+
 
         _startSequence = new List<IGameManager>();
-        // _startSequence.Add(Player);
-        // _startSequence.Add(Inventory);
         _startSequence.Add(GameSceneManager);
-        // _startSequence.Add(Data);
+        _startSequence.Add(WaveManager);
+        _startSequence.Add(SpawnEnemyManager);
+        _startSequence.Add(PlayerManager);
+        _startSequence.Add(LootManager);
 
         StartCoroutine(StartupManagers()); 
     }

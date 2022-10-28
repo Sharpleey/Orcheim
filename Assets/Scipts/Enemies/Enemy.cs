@@ -168,7 +168,7 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// ¬раг имеет только состо€ние поко€
     /// </summary>
-    public bool IsStartPursuitState { get; private set; }
+    public bool IsStartPursuitState { get; set; }
     /// <summary>
     /// Ќачальное состо€ние врага - преследование (ѕо умолчанию - поко€)
     /// </summary>
@@ -323,7 +323,13 @@ public abstract class Enemy : MonoBehaviour
 
             // ≈сли игрок атаковал врага, измен€ем состо€ние
             if (CurrentState == IdleState)
+            {
+                // –ассылаем событие, по сути €вл€етс первым тригером дл€ начала игры
+                Messenger.Broadcast(GlobalGameEvent.FIRST_TRIGGER_GAME);
+
+                // »змен€ем состо€ние на преследование
                 ChangeState(PursuitState);
+            }
 
             // ¬сплывающий дамаг
             if (PopupDamageController != null)
@@ -339,7 +345,8 @@ public abstract class Enemy : MonoBehaviour
 
         if (Health <= 0)
         {
-            ChangeState(DieState);
+            if (CurrentState != DieState)
+                ChangeState(DieState);
         }
     }
     public void TakeHitboxDamage(int damage, Collider hitCollider, TypeDamage typeDamage)
