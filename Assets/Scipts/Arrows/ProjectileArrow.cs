@@ -56,7 +56,7 @@ public class ProjectileArrow : MonoBehaviour
     #endregion Mono
 
     #region Private methods
-    private void FixedUpdate() 
+    private void Update() 
 	{
 		// Поворачиваем стрелу в полете в сторону движения
 		if (_isArrowInFlight)
