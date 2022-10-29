@@ -63,7 +63,7 @@ public class BurningEffectController : MonoBehaviour
     #region Private fields
     private ParticleSystem _particleSystem;
 
-    private IEnemy _enemy;
+    private Enemy _enemy;
 
     private float _timer = 0;
 
@@ -75,7 +75,7 @@ public class BurningEffectController : MonoBehaviour
     private void Awake()
     {
         // Получаем компонент врага, что вызывать метод получения урона каждую секунду
-        _enemy = GetComponentInParent<IEnemy>();
+        _enemy = GetComponentInParent<Enemy>();
 
         _particleSystem = GetComponent<ParticleSystem>();
         _particleSystem.Stop();
@@ -105,7 +105,7 @@ public class BurningEffectController : MonoBehaviour
         else
         {
             // Наносим урон каждую секунду
-            _enemy.TakeDamage(ActualDamage, TypeDamage.Fire);
+            _enemy.TakeDamage(ActualDamage, TypeDamage);
             _timer = 0f;
         }
     }
