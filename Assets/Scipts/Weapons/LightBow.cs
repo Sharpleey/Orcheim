@@ -54,6 +54,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private bool _isAiming = false;
     private bool _isReload = false;
 
+    private bool _isLockControl = false;
+
     private Animator _animator;
 
     private Quaternion _defaultBowRotate;
@@ -67,6 +69,13 @@ public class LightBow : MonoBehaviour, IBowWeapon
     {
         Name = _name;
         TimeReloadShot = _timeReloadShot;
+
+        Messenger<bool>.AddListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger<bool>.RemoveListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
     }
 
     private void Start()
@@ -92,7 +101,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     #region Private methods
     private void Update()
     {
-        if (!Managers.GameSceneManager.IsGamePaused)
+        if (!_isLockControl)
         {
             // ПКМ
             if (Input.GetMouseButtonDown(1))
@@ -127,6 +136,15 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 Shot();
             }
         }
+    }
+
+    /// <summary>
+    /// Метод блокирования управления
+    /// </summary>
+    /// <param name="isPaused">Блокировать или не блокировать</param>
+    private void LockControl(bool isPaused)
+    {
+        _isLockControl = isPaused;
     }
 
     private void Shot()

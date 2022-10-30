@@ -55,11 +55,9 @@ public class PlayerCharacterController : MonoBehaviour
     private float _verticalAngle;
     private float _horizontalAngle;
 
-    private bool _isPaused = false; //??? Надо понять для чего оно
+    private bool _isLockControl;
     
     public float Speed { get; private set; } = 0.0f;
-
-    public bool LockControl { get; set; }
     public bool CanPause { get; set; } = true;
 
     //public bool isGrounded => _isGrounded; //??? Надо ли это нам вообще  (свойства только для чтения)(член, воплощающий выражение)
@@ -73,18 +71,26 @@ public class PlayerCharacterController : MonoBehaviour
     // List<_weapon> m_Weapons = new List<_weapon>();
     // Dictionary<int, int> m_AmmoInventory = new Dictionary<int, int>();
 
-    void Awake()
+    private void Awake()
     {
         // Instance = this;
+
+        Messenger<bool>.AddListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
     }
-    
-    void Start()
+
+    private void OnDestroy()
+    {
+        Messenger<bool>.RemoveListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
+    }
+
+
+    private void Start()
     {   
         // Блокируем курсор и делаем его невидимым 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        _isPaused = false;
+        _isLockControl = false;
         _isGrounded = true;
         
         // _mainCamera.transform.SetParent(CameraPosition, false);
@@ -121,7 +127,7 @@ public class PlayerCharacterController : MonoBehaviour
         _horizontalAngle = transform.localEulerAngles.y;
     }
 
-    void Update()
+    private void Update()
     {
         // infoText.text = "";
         // if (CanPause && Input.GetButtonDown("Menu"))
@@ -158,7 +164,7 @@ public class PlayerCharacterController : MonoBehaviour
         // Speed = 0;
         Vector3 move = Vector3.zero;
 
-        if (!Managers.GameSceneManager.IsGamePaused)
+        if (!_isLockControl)
         {
             // Прыжок
             // --------------------------------------------------------------------
@@ -276,5 +282,14 @@ public class PlayerCharacterController : MonoBehaviour
             // FootstepPlayer.PlayClip(LandingAudioClip, 0.8f,1.1f);
         }
         // --------------------------------------------------------------------
+    }
+
+    /// <summary>
+    /// Метод блокирования управления
+    /// </summary>
+    /// <param name="isPaused">Блокировать или не блокировать</param>
+    private void LockControl(bool isPaused)
+    {
+        _isLockControl = isPaused;
     }
 }

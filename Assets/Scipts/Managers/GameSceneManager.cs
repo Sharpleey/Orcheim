@@ -11,7 +11,6 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 	/// Свойство используется в LoadingScreenController для отображения значения прогресса
 	/// </summary>
 	public AsyncOperation AsyncOperationLoadingScene => _asyncOperationLoadingScene;
-	public bool IsGamePaused => _isGamePaused;
 
 	private AsyncOperation _asyncOperationLoadingScene;
 
@@ -20,12 +19,18 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 
 	private void Awake()
 	{
+		Messenger<bool>.AddListener(GameSceneManagerEvent.PAUSE_GAME, PauseGame);
+
 		Messenger.AddListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
+
 		Messenger<string>.AddListener(GameSceneManagerEvent.SWITCH_TO_SCENE, SwitchToScene);
 	}
 	private void OnDestroy()
 	{
+		Messenger<bool>.RemoveListener(GameSceneManagerEvent.PAUSE_GAME, PauseGame);
+
 		Messenger.RemoveListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
+
 		Messenger<string>.RemoveListener(GameSceneManagerEvent.SWITCH_TO_SCENE, SwitchToScene);
 	}
 
@@ -49,20 +54,26 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 	/// Метод смены сцены
 	/// </summary>
 	/// <param name="sceneName">Название сцены, на которую необходимо перейти</param>
-	public void SwitchToScene(string sceneName)
+	private void SwitchToScene(string sceneName)
     {
 		StartCoroutine(LoadAsyncScene(sceneName));
 	}
 
-	public void PauseGame()
+	/// <summary>
+	/// Метод ставит игру на паузу
+	/// </summary>
+	/// <param name="isPaused">Поставить игру на паузу или нет</param>
+	private void PauseGame(bool isPaused)
     {
-		Time.timeScale = 0;
-		_isGamePaused = true;
-	}
-	public void ResumeGame()
-	{
+		_isGamePaused = isPaused;
+
+		if (_isGamePaused)
+		{
+			Time.timeScale = 0;
+			return;
+		}
+		
 		Time.timeScale = 1;
-		_isGamePaused = false;
 	}
 
 	/// <summary>
@@ -103,7 +114,7 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 
 		// Снимаем игру с паузы, если она была на паузе
 		if (_isGamePaused)
-			ResumeGame();
+			PauseGame(false);
 
 		// Плавное скрываем экрна загрузки
 		_loadingScreen.Hide();
