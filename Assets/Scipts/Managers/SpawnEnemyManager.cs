@@ -110,7 +110,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
     {
         Messenger.AddListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
         Messenger<int>.AddListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, StartSpawnEnemies);
+        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
         Messenger.AddListener(GlobalGameEvent.ENEMY_KILLED, CheckEnemiesRemaining);
         Messenger.AddListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
     }
@@ -119,7 +119,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
     {
         Messenger.RemoveListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
         Messenger<int>.RemoveListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, StartSpawnEnemies);
+        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
         Messenger.RemoveListener(GlobalGameEvent.ENEMY_KILLED, CheckEnemiesRemaining);
         Messenger.RemoveListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
     }
@@ -201,7 +201,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
         Debug.Log("Found: " + _countEnemyOnScene.ToString() + " enemies");
     }
 
-    private void StartSpawnEnemies(int wave)
+    private void StartSpawnEnemies()
     {
         Debug.Log("Starting spawning enemies");
 
@@ -277,6 +277,13 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
         UpdateValueMaximumEnemiesOnWave(wave);
 
         FillPoolEnemies();
+    }
+
+    private void WaveIsComing_EventHandler(int wave)
+    {
+        StartSpawnEnemies();
+
+        Messenger<int>.Broadcast(GlobalGameEvent.ENEMIES_REMAINING, EnemiesRemaining);
     }
 
     private void GameOver_EventHandler()
