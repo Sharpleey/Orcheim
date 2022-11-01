@@ -42,14 +42,6 @@ public class PlayerHUDController : MonoBehaviour
             _countEnemyOnWavePool.text = "";
     }
 
-    private void FixedUpdate()
-    {
-        if (_countEnemyOnScene)
-            _countEnemyOnScene.text = Managers.SpawnEnemyManager.CountEnemyOnScene.ToString();
-        if (_countEnemyOnWavePool)
-            _countEnemyOnWavePool.text = Managers.SpawnEnemyManager.CountEnemyOnWavePool.ToString();
-    }
-
     /// <summary>
     /// Вывод оповещения с задержкой на экран игрока
     /// </summary>
