@@ -112,6 +112,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
         Messenger<int>.AddListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
         Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, StartSpawnEnemies);
         Messenger.AddListener(GlobalGameEvent.ENEMY_KILLED, CheckEnemiesRemaining);
+        Messenger.AddListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
     }
 
     private void OnDestroy()
@@ -120,6 +121,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
         Messenger<int>.RemoveListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
         Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, StartSpawnEnemies);
         Messenger.RemoveListener(GlobalGameEvent.ENEMY_KILLED, CheckEnemiesRemaining);
+        Messenger.RemoveListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
     }
 
     private void Update()
@@ -164,11 +166,9 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
 
         // ¬озрождаем врага на одной из точек возрождени€
         int numSpawnZone = Random.Range(0, _enemySpawnZones.Length);
-        Transform transformSpawn = _enemySpawnZones[numSpawnZone].transform;
+        GameObject spawn = _enemySpawnZones[numSpawnZone];
 
-        GameObject enemyOrc = Instantiate(_prefabEnemy);
-        enemyOrc.transform.position = transformSpawn.position;
-        enemyOrc.transform.rotation = transformSpawn.rotation;
+        GameObject enemyOrc = Instantiate(_prefabEnemy, spawn.transform.position, Quaternion.identity);
 
         // ћен€ем состо€ние врага на преследование
         Enemy enemy = enemyOrc.GetComponent<Enemy>();
@@ -277,6 +277,12 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
         UpdateValueMaximumEnemiesOnWave(wave);
 
         FillPoolEnemies();
+    }
+
+    private void GameOver_EventHandler()
+    {
+        StopSpawnEnemies();
+        SetDefaultParameters();
     }
 
     private void CheckEnemiesRemaining()

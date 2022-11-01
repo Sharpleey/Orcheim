@@ -28,22 +28,20 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
         Messenger<int>.AddListener(GlobalGameEvent.PLAYER_DAMAGED, TakeDamage);
         Messenger.AddListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, SetDefaultParameters);
-
         Messenger.AddListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindPlayerSpawnZonesOnScene);
         Messenger.AddListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, PlayerRespawn);
-
         Messenger.AddListener(GlobalGameEvent.ENEMY_KILLED, UpdateCounterKills);
+        Messenger.AddListener(GlobalGameEvent.GAME_OVER, SetDefaultParameters);
     }
 
     private void OnDestroy()
     {
         Messenger<int>.RemoveListener(GlobalGameEvent.PLAYER_DAMAGED, TakeDamage);
         Messenger.RemoveListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, SetDefaultParameters);
-
         Messenger.RemoveListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindPlayerSpawnZonesOnScene);
         Messenger.RemoveListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, PlayerRespawn);
-
         Messenger.RemoveListener(GlobalGameEvent.ENEMY_KILLED, UpdateCounterKills);
+        Messenger.RemoveListener(GlobalGameEvent.GAME_OVER, SetDefaultParameters);
     }
 
     public void Startup()
@@ -105,14 +103,12 @@ public class PlayerManager : MonoBehaviour, IGameManager
         if (_playerCharacter == null)
             _playerCharacter = Instantiate(_playerCharacterPrefab);
 
-        _playerCharacter.transform.position = spawn.transform.position;
+        _playerCharacter.transform.position = new Vector3(spawn.transform.position.x, spawn.transform.position.y + 1f, spawn.transform.position.z);
         _playerCharacter.transform.rotation = spawn.transform.rotation;
     }
 
     private void UpdateCounterKills()
     {
-        //Debug.Log("Update counter kills");
-
         _kills++;
     }
 }

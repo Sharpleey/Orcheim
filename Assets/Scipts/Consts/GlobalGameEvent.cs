@@ -12,4 +12,6 @@ public class GlobalGameEvent
 
     public const string PLAYER_DAMAGED = "PLAYER_DAMAGED";
     public const string PLAYER_DEAD = "PLAYER_DEAD";
+
+    public const string GAME_OVER = "GAME_OVER";
 }

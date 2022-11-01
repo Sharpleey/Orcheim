@@ -34,7 +34,7 @@ public class IdleState : State
 
         //_enemy.animator.StopPlayback();
 
-        _transformPlayer = GameObject.FindGameObjectWithTag("Player")?.transform;
+        _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
 
         Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
@@ -51,8 +51,12 @@ public class IdleState : State
         _timerUpdate += Time.deltaTime;
         if (_timerUpdate > 0.5 && !_enemy.IsOnlyIdleState)
         {
-            float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+            // Ќа случай, когда игрок еще не заспавнилс€
+            if (!_transformPlayer)
+                _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
 
+            float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+                
             // ћен€ем соссто€ние на преследеование, если (»грок в зоне абсолютной дистанции видимости) или (»грок атаковал врага)
             if (distanceToTarget < _absoluteDetectionDistance || IsIsView())
             {
@@ -99,6 +103,5 @@ public class IdleState : State
     {
         _enemy.ChangeState(_enemy.PursuitState);
     }
-
     #endregion Private methods
 }

@@ -12,6 +12,17 @@ public static class UnityUtility
 	{
 		return obj.GetComponent<T>() != null;
 	}
+	/// <summary>
+	/// Метод получает ищет объект на сцене с определенным тэгом, получает его компонент Transform и возвращает его
+	/// </summary>
+	/// <param name="tagName">Тэг искомого объекта на сцене</param>
+	/// <returns></returns>
+	public static Transform FindGameObjectTransformWithTag(string tagName)
+    {
+		Debug.Log("!!!");
+		Transform transform = GameObject.FindGameObjectWithTag(tagName)?.transform;
+		return transform;
+	}
 }
 
 

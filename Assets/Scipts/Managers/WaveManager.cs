@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour, IGameManager
         Messenger.AddListener(GlobalGameEvent.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
         Messenger<int>.AddListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
         Messenger.AddListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger.AddListener(GlobalGameEvent.GAME_OVER, SetDefaultParameters);
     }
 
     private void OnDestroy()
@@ -30,6 +31,7 @@ public class WaveManager : MonoBehaviour, IGameManager
         Messenger.RemoveListener(GlobalGameEvent.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
         Messenger<int>.RemoveListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
         Messenger.RemoveListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger.RemoveListener(GlobalGameEvent.GAME_OVER, SetDefaultParameters);
     }
 
     /// <summary>
