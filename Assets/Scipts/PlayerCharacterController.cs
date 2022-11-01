@@ -55,14 +55,14 @@ public class PlayerCharacterController : MonoBehaviour
     private float _verticalAngle;
     private float _horizontalAngle;
 
-    private bool _isLockControl;
+    private bool _isLockControl = false;
     
     public float Speed { get; private set; } = 0.0f;
     public bool CanPause { get; set; } = true;
 
     //public bool isGrounded => _isGrounded; //??? Надо ли это нам вообще  (свойства только для чтения)(член, воплощающий выражение)
 
-    private bool _isGrounded;
+    private bool _isGrounded = true;
     private float _groundedTimer;
     private float _speedAtJump = 0.0f;
 
@@ -90,8 +90,6 @@ public class PlayerCharacterController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        _isLockControl = false;
-        _isGrounded = true;
         
         // _mainCamera.transform.SetParent(CameraPosition, false);
         // _mainCamera.transform.localPosition = Vector3.zero;
