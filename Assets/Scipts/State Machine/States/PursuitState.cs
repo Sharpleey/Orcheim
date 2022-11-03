@@ -73,7 +73,7 @@ public class PursuitState : State
             if (_distanceFromEnemyToPlayer < _attackDistance)
             {
                 // Изменяем состояние на состояние атаки
-                _enemy.ChangeState(_enemy.AttackIdleState);
+                _enemy.SetAttackIdleState();
             }
 
             // Если противник подошел в радиус генерации случайной точки  (_randomPointRadius) и если не проигрывается анимация атаки, то изменяем цель противнику
@@ -97,11 +97,6 @@ public class PursuitState : State
             // Обнуляем таймер
             _timerUpdate = 0;
         }
-    }
-
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
 
         // Рисуем линию от протиника до его цели
         //Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
@@ -113,8 +108,6 @@ public class PursuitState : State
     public override void Exit()
     {
         base.Exit();
-
-        //_enemy.SummonTrigger.enabled = false;
 
         // Задаем параметр анимации, выключаем анимацию для этого состояния
         _enemy.Animator.SetBool(HashAnimation.IsMovement, false);

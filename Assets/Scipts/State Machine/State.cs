@@ -39,14 +39,6 @@ public abstract class State
     }
 
     /// <summary>
-    /// Данный метод необходимо вызвать в методе FixedUpdate в классе наслдеованного от MonoBehaviour. Пищем логику, ту которую хотели бы выполнить в методе FixedUpdate 
-    /// </summary>
-    public virtual void FixedUpdate()
-    {
-
-    }
-
-    /// <summary>
     /// Метод вызываемый при выходе из состояния
     /// </summary>
     public virtual void Exit()

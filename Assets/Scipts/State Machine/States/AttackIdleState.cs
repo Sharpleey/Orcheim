@@ -64,10 +64,7 @@ public class AttackIdleState : State
         {
             // Включаем анимацию атаки, тем самым атакуем
             _enemy.Animator.SetTrigger(HashAnimation.IsAttacking);
-            // Получаем время выполнения анимации атаки
-            //_durationAttackAnimation = GetDurationAnimation(HashAnimation.MeleeAttack1);
-            // Блокируем переход состояний, на время выполнения анимации атаки
-            //_isBlockChangeState = true;
+
             // Рандомизируем частоту атаки, делаем ее немного хаотичной
             _currentAttackFrequency = Random.Range(_attackFrequency - 0.8f, _attackFrequency + 0.8f);
 
@@ -75,17 +72,6 @@ public class AttackIdleState : State
         }
         // -------------------------------------------------------------------------------
 
-
-        //// Таймер блокировки смены состояния
-        //if (_isBlockChangeState)
-        //{
-        //    _timerBlockChangeState += Time.deltaTime;
-        //    if (_timerBlockChangeState > _durationAttackAnimation + 0.25f)
-        //    {
-        //        _timerBlockChangeState = 0;
-        //        _isBlockChangeState = false;
-        //    }
-        //}
 
         // Делаем частоту обновления дистацнии не каждый кадр, а раз в пол секунды
         // -------------------------------------------------------------------------------
@@ -97,16 +83,11 @@ public class AttackIdleState : State
             _animatorStateInfo = _enemy.Animator.GetCurrentAnimatorStateInfo(0);
             if (_distanceFromEnemyToPlayer > _attackDistance && _animatorStateInfo.nameHash != HashAnimation.MeleeAttack1)
             {
-                _enemy.ChangeState(_enemy.PursuitState);
+                _enemy.SetPursuitState();
             }
             _timerUpdate = 0;
         }
         // -------------------------------------------------------------------------------
-    }
-
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
 
         LookAtTarget();
     }

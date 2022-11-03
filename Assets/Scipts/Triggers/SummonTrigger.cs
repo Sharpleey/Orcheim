@@ -18,15 +18,15 @@ public class SummonTrigger : MonoBehaviour
     private void OnTriggerExit(Collider otherSummonTriggerCollider)
     {
         // Если текущее состояние "покоя", то ничего не делаем
-        if (_enemy.CurrentState == _enemy.IdleState)
+        if (_enemy.CurrentState.GetType() == typeof(IdleState))
             return;
 
         Warrior otherEnemy = otherSummonTriggerCollider.GetComponentInParent<Warrior>();
 
         // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя", то второму меняем состояние на "преследования"
-        if (_enemy.CurrentState == _enemy.PursuitState && otherEnemy.CurrentState == otherEnemy.IdleState)
+        if (_enemy.CurrentState.GetType() == typeof(PursuitState) && otherEnemy.CurrentState.GetType() == typeof(IdleState))
         {
-            otherEnemy.ChangeState(otherEnemy.PursuitState);
+            otherEnemy.SetPursuitState();
         }
     }
 }

@@ -17,6 +17,8 @@ public class IdleState : State
     /// </summary>
     private float _absoluteDetectionDistance = 4f;
 
+    private float _distanceToTarget;
+
     private Transform _transformPlayer;
 
     private float _timerUpdate;
@@ -36,12 +38,12 @@ public class IdleState : State
 
         _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
 
-        //Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
+        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
         _enemy.Animator.SetBool(HashAnimation.IsIdle, true);
 
-        if(_enemy.IsStartPursuitState)
-            _enemy.ChangeState(_enemy.PursuitState);
+        if (_enemy.IsStartPursuitState)
+            _enemy.SetPursuitState();
     }
 
     public override void Update()
@@ -55,31 +57,24 @@ public class IdleState : State
             if (!_transformPlayer)
                 _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
 
-            float distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+            _distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
                 
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
-            if (distanceToTarget < _absoluteDetectionDistance || IsIsView())
+            if (_distanceToTarget < _absoluteDetectionDistance || IsIsView())
             {
                 if (!_enemy.IsOnlyIdleState)
-                    _enemy.ChangeState(_enemy.PursuitState);
+                    _enemy.SetPursuitState();
             }
 
             _timerUpdate = 0;
         }
-
-        
-    }
-
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        //Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
+        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
         _enemy?.Animator?.SetBool(HashAnimation.IsIdle, false);
     }
@@ -101,7 +96,7 @@ public class IdleState : State
 
     private void PursuitPlayer(int wave)
     {
-        _enemy.ChangeState(_enemy.PursuitState);
+        _enemy.SetPursuitState();
     }
     #endregion Private methods
 }

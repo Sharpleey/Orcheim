@@ -63,14 +63,6 @@ public class DieState : State
     }
 
     /// <summary>
-    /// Данный метод необходимо вызвать в методе FixedUpdate в классе наслдеованного от MonoBehaviour. Пищем логику, ту которую хотели бы выполнить в методе FixedUpdate 
-    /// </summary>
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
-    }
-
-    /// <summary>
     /// Метод вызываемый при выходе из состояния
     /// </summary>
     public override void Exit()
@@ -88,6 +80,5 @@ public class DieState : State
 
         Rigidbody rigidbodyWeapon = _enemy.Weapon.GetComponent<Rigidbody>();
         rigidbodyWeapon.isKinematic = false;
-
     }
 }

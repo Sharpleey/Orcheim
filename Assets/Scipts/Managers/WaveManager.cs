@@ -112,8 +112,9 @@ public class WaveManager : MonoBehaviour, IGameManager
     private void WaveIsOver_EventHandler()
     {
         SetNumWave(_wave + 1);
-        StartCoroutine(BroadcastPreparingForWave(_delayToFirstBroadcastPreparingForWave));
+        StartCoroutine(BroadcastPreparingForWave(_delayToBroadcastPreparingForWave));
     }
+
     private void GameOver_EventHandler()
     {
         SetDefaultParameters();
