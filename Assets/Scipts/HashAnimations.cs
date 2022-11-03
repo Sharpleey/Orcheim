@@ -10,4 +10,5 @@ public class HashAnimation
     public static int Speed = Animator.StringToHash("Speed");
 
     public static int MeleeAttack1 = Animator.StringToHash("Base Layer.Melee Attack 1");
+    public static int AttackIdle1 = Animator.StringToHash("Base Layer.Attack Idle 1");
 }
