@@ -77,8 +77,8 @@ public class Managers : MonoBehaviour
         
         Debug.Log("All managers started up");
 
-        //Событие загрузки рассылается без параметров.
-        Messenger.Broadcast(StartupEvent.MANAGERS_STARTED);
+
+        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.MAIN_MENU);
     }
 
 }
