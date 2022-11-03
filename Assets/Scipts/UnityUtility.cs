@@ -19,7 +19,6 @@ public static class UnityUtility
 	/// <returns></returns>
 	public static Transform FindGameObjectTransformWithTag(string tagName)
     {
-		Debug.Log("!!!");
 		Transform transform = GameObject.FindGameObjectWithTag(tagName)?.transform;
 		return transform;
 	}
