@@ -77,7 +77,6 @@ public class Managers : MonoBehaviour
         
         Debug.Log("All managers started up");
 
-
         Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.MAIN_MENU);
     }
 

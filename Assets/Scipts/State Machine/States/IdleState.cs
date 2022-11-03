@@ -36,9 +36,9 @@ public class IdleState : State
 
         _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
 
-        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
+        //Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
-        _enemy.Animator.SetBool("isIdle", true);
+        _enemy.Animator.SetBool(HashAnimation.IsIdle, true);
 
         if(_enemy.IsStartPursuitState)
             _enemy.ChangeState(_enemy.PursuitState);
@@ -79,9 +79,9 @@ public class IdleState : State
     {
         base.Exit();
 
-        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
+        //Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
-        _enemy.Animator.SetBool("isIdle", false);
+        _enemy?.Animator?.SetBool(HashAnimation.IsIdle, false);
     }
 
     #region Private methods

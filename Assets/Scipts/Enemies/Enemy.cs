@@ -325,7 +325,14 @@ public abstract class Enemy : MonoBehaviour
             if (CurrentState == IdleState)
             {
                 // –ассылаем событие, по сути €вл€етс первым тригером дл€ начала игры
-                Messenger.Broadcast(GlobalGameEvent.FIRST_TRIGGER_GAME);
+                try
+                {
+                    Messenger.Broadcast(GlobalGameEvent.FIRST_TRIGGER_GAME);
+                }
+                catch
+                {
+                     
+                }
 
                 // »змен€ем состо€ние на преследование
                 ChangeState(PursuitState);

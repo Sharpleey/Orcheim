@@ -52,7 +52,7 @@ public class AttackIdleState : State
         // Устанавливаем дистанцию атаки
         _attackDistance = _enemy.NavMeshAgent.stoppingDistance + 0.1f;
         // Включаем анимацию
-        _enemy.Animator.SetBool("isIdleAttacking", true);
+        _enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, true);
         // Получаем transform игрока для использования его в дальнейшем
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -67,9 +67,9 @@ public class AttackIdleState : State
         if (_timer > _currentAttackFrequency)
         {
             // Включаем анимацию атаки, тем самым атакуем
-            _enemy.Animator.SetTrigger("isAttacking");
+            _enemy.Animator.SetTrigger(HashAnimation.IsAttacking);
             // Получаем время выполнения анимации атаки
-            _durationAttackAnimation = GetDurationAnimation("Base Layer.Melee Attack 1");
+            _durationAttackAnimation = GetDurationAnimation(HashAnimation.MeleeAttack1);
             // Блокируем переход состояний, на время выполнения анимации атаки
             _isBlockChangeState = true;
             // Рандомизируем частоту атаки, делаем ее немного хаотичной
@@ -117,7 +117,7 @@ public class AttackIdleState : State
     {
         base.Exit();
 
-        _enemy.Animator.SetBool("isIdleAttacking", false);
+        _enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, false);
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class AttackIdleState : State
         _enemy.transform.rotation = Quaternion.Lerp(_enemy.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
     }
 
-    public float GetDurationAnimation(string animationName)
+    public float GetDurationAnimation(int hashAnimationName)
     {
         // Берем информацию о состоянии
         var animatorStateInfo = _enemy.Animator.GetCurrentAnimatorStateInfo(0);

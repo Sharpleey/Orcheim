@@ -12,7 +12,14 @@ public class DieState : State
     {
         base.Enter();
 
-        Messenger.Broadcast(GlobalGameEvent.ENEMY_KILLED);
+        try
+        {
+            Messenger.Broadcast(GlobalGameEvent.ENEMY_KILLED);
+        }
+        catch
+        {
+
+        }
 
         if (_enemy.Weapon != null)
             MakePhysicalWeapon();

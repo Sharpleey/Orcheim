@@ -49,7 +49,7 @@ public class PursuitState : State
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
-        _enemy.Animator.SetBool("isMovement", true);
+        _enemy.Animator.SetBool(HashAnimation.IsMovement, true);
 
         // Получаем случайную точку в определенном радиусе (_randomPointRadius) рядом с игрок
         _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
@@ -107,7 +107,7 @@ public class PursuitState : State
         //Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
-        _enemy.Animator.SetFloat("Speed", _enemy.Speed / _enemy.MaxSpeed);
+        _enemy.Animator.SetFloat(HashAnimation.Speed, _enemy.Speed / _enemy.MaxSpeed);
     }
 
     public override void Exit()
@@ -117,7 +117,7 @@ public class PursuitState : State
         //_enemy.SummonTrigger.enabled = false;
 
         // Задаем параметр анимации, выключаем анимацию для этого состояния
-        _enemy.Animator.SetBool("isMovement", false);
+        _enemy.Animator.SetBool(HashAnimation.IsMovement, false);
     }
 
     /// <summary>
