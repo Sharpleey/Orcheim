@@ -88,10 +88,12 @@ public class WaveManager : MonoBehaviour, IGameManager
 
         Messenger<int>.Broadcast(GlobalGameEvent.WAVE_IN_COMMING, _wave);
     }
+
     private void NewGameModeOrccheim_EventHandler()
     {
         SetDefaultParameters();
     }
+
     private void FirstTriggerGame_EventHandler()
     {
         if (!_isFirstTriggerGame)

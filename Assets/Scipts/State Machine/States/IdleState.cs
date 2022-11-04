@@ -41,9 +41,6 @@ public class IdleState : State
         Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
         _enemy.Animator.SetBool(HashAnimation.IsIdle, true);
-
-        if (_enemy.IsStartPursuitState)
-            _enemy.SetPursuitState();
     }
 
     public override void Update()
@@ -51,7 +48,7 @@ public class IdleState : State
         base.Update();
 
         _timerUpdate += Time.deltaTime;
-        if (_timerUpdate > 0.5 && !_enemy.IsOnlyIdleState)
+        if (_timerUpdate > 0.5)
         {
             // Ќа случай, когда игрок еще не заспавнилс€
             if (!_transformPlayer)
@@ -62,8 +59,7 @@ public class IdleState : State
             // ћен€ем соссто€ние на преследеование, если (»грок в зоне абсолютной дистанции видимости) или (»грок атаковал врага)
             if (_distanceToTarget < _absoluteDetectionDistance || IsIsView())
             {
-                if (!_enemy.IsOnlyIdleState)
-                    _enemy.SetPursuitState();
+                _enemy.SetPursuitState();
             }
 
             _timerUpdate = 0;

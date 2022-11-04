@@ -15,8 +15,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float _maxSpeed = 3.5f;
 
     [Header("State Settings")]
-    [SerializeField] private bool _isOnlyIdleState;
-    [SerializeField] private bool _isStartPursuitState;
+    [SerializeField] private DefaultState _defaultState; 
 
     [Header("Summon Trigger")]
     [SerializeField] private BoxCollider _summonTrigger;
@@ -154,6 +153,8 @@ public abstract class Enemy : MonoBehaviour
         }
     }
     
+    public DefaultState DefaultState { get => _defaultState; set => _defaultState = value; }
+
     public HitBoxesController HitBoxesController { get; private set; }
     public RagdollController RagdollController { get; private set; }
     public HealthBarController HealthBarController { get; private set; }
@@ -172,16 +173,6 @@ public abstract class Enemy : MonoBehaviour
     /// Текущее состояние врага
     /// </summary>
     public State CurrentState { get; private set; }
-
-    /// <summary>
-    /// Начальное состояние врага - преследование (По умолчанию - покоя)
-    /// </summary>
-    public bool IsStartPursuitState { get; set; }
-    
-    /// <summary>
-    /// Враг имеет только состояние покоя
-    /// </summary>
-    public bool IsOnlyIdleState { get; private set; }
 
     public GameObject Weapon => WeaponController.UsedWeapon;
     #endregion Properties
@@ -214,8 +205,7 @@ public abstract class Enemy : MonoBehaviour
         Health = _maxHealth;
         Armor = _maxArmor;
 
-        IsStartPursuitState = _isStartPursuitState;
-        IsOnlyIdleState = _isOnlyIdleState;
+        DefaultState = _defaultState;
 
         SummonTrigger = _summonTrigger;
     }
@@ -314,7 +304,10 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     private void SetStateByDefault()
     {
-        SetIdleState();
+        if (DefaultState == DefaultState.Pursuit)
+            SetPursuitState();
+        else
+            SetIdleState();
     }
     
     /// <summary>
