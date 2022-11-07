@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Класс состояния смерти противника
+/// </summary>
 public class DieState : State
 {
     private float _timer = 0;

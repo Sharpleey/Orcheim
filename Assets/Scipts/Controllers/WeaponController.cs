@@ -17,7 +17,7 @@ public class WeaponController : MonoBehaviour
 
     public GameObject UsedWeapon => _usedWeapon;
 
-    void Start()
+    private void Awake()
     {
         DisableWeapons();
 

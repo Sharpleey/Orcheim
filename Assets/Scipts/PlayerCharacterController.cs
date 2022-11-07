@@ -47,9 +47,6 @@ public class PlayerCharacterController : MonoBehaviour
     // public RandomPlayer FootstepPlayer;
     // public AudioClip JumpingAudioCLip;
     // public AudioClip LandingAudioClip;
-  
-    [Header("Other")]
-    public TextMeshProUGUI infoText;
     
     private float _verticalSpeed = 0.0f;
     private float _verticalAngle;
@@ -97,29 +94,6 @@ public class PlayerCharacterController : MonoBehaviour
 
         _characterController = GetComponent<CharacterController>();
 
-        if (_weapons!= null)
-        {
-
-        }
-
-        // for (int i = 0; i < startingWeapons.Length; ++i)
-        // {
-        //     PickupWeapon(startingWeapons[i]);
-        // }
-
-        // for (int i = 0; i < startingAmmo.Length; ++i)
-        // {
-        //     ChangeAmmo(startingAmmo[i].ammoType, startingAmmo[i].amount);
-        // }
-        
-        // m_CurrentWeapon = -1;
-        // ChangeWeapon(0);
-
-        // for (int i = 0; i < startingAmmo.Length; ++i)
-        // {
-        //     m_AmmoInventory[startingAmmo[i].ammoType] = startingAmmo[i].amount;
-        // }
-
         // Задаем начальные значение поворота персонажа 
         _verticalAngle = 0.0f;
         _horizontalAngle = transform.localEulerAngles.y;
@@ -127,14 +101,6 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void Update()
     {
-        // infoText.text = "";
-        // if (CanPause && Input.GetButtonDown("Menu"))
-        // {
-        //     PauseMenu.Instance.Display();
-        // }
-        
-        // FullscreenMap.Instance.gameObject.SetActive(Input.GetButton("Map"));
-
         bool wasGrounded = _isGrounded;
         bool loosedGrounding = false;
         
@@ -159,7 +125,6 @@ public class PlayerCharacterController : MonoBehaviour
             _isGrounded = true;
         }
 
-        // Speed = 0;
         Vector3 move = Vector3.zero;
 
         if (!_isLockControl)
@@ -222,42 +187,6 @@ public class PlayerCharacterController : MonoBehaviour
             currentAngles.x = _verticalAngle;
             _mainCamera.transform.localEulerAngles = currentAngles;
             // --------------------------------------------------------------------
-  
-            // m_Weapons[m_CurrentWeapon].triggerDown = Input.GetMouseButton(0);
-
-            // Speed = move.magnitude / (_playerSpeed * Time.deltaTime); //???
-            // infoText.text += "\n" + "Speed:" + Speed.ToString();
-
-            // if (Input.GetButton("Reload"))
-            //     m_Weapons[m_CurrentWeapon].Reload();
-
-            // if (Input.GetAxis("Mouse ScrollWheel") < 0)
-            // {
-            //     ChangeWeapon(m_CurrentWeapon - 1);
-            // }
-            // else if (Input.GetAxis("Mouse ScrollWheel") > 0)
-            // {
-            //     ChangeWeapon(m_CurrentWeapon + 1);
-            // }
-            
-            //Key input to change _weapon
-
-            // for (int i = 0; i < 10; ++i)
-            // {
-            //     if (Input.GetKeyDown(KeyCode.Alpha0 + i))
-            //     {
-            //         int num = 0;
-            //         if (i == 0)
-            //             num = 10;
-            //         else
-            //             num = i - 1;
-
-            //         if (num < m_Weapons.Count)
-            //         {
-            //             ChangeWeapon(num);
-            //         }
-            //     }
-            // }
         }
 
         // Падение/гравитация
@@ -270,10 +199,6 @@ public class PlayerCharacterController : MonoBehaviour
         {
             _verticalSpeed = -0.3f;
         }
-
-        // infoText.text += "\n" + "wasGrounded:" + wasGrounded.ToString();
-        // infoText.text += "\n" + "_isGrounded:" + _isGrounded.ToString();
-        // infoText.text += "\n" + "loosedGrounding:" + loosedGrounding.ToString();
 
         if (!wasGrounded && _isGrounded)
         {

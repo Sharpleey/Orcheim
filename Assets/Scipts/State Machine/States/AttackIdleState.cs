@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu(fileName = "new AttackState", menuName = "Enemy States/AttackState", order = 1)]
+/// <summary>
+///  ласс состо€ни€ атаки проивника. ¬ этом состо€нии противник чередует анимацию стойки перед атакой с анимацией атаки 
+/// </summary>
 public class AttackIdleState : State
 {
     /// <summary>

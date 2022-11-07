@@ -1,7 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+///  ласс состо€ни€ преследовани€ противником игрока
+/// </summary>
 public class PursuitState : State
 {
     /// <summary>

@@ -16,6 +16,7 @@ public class DirectDamage : MonoBehaviour ,IModifier
     #region Properties
     public string Name { get => _name; private set => _name = value; }
     public string Description { get => _description; private set => _description = value; }
+    
     /// <summary>
     /// Исходный средний урон. Изменять только при прокачке модификатора или в инспекторе
     /// </summary>
@@ -35,34 +36,12 @@ public class DirectDamage : MonoBehaviour ,IModifier
             _averageDamage = value;
         }
     }
-    /// <summary>
-    /// Разброс урона 
-    /// </summary>
-    public float OffsetDamage
-    {
-        get
-        {
-            return _offsetDamage;
-        }
-        private set
-        {
-            if (value < 0f)
-            {
-                _offsetDamage = 0f;
-                return;
-            }
-            if (value > 0.5f)
-            {
-                _offsetDamage = 0.5f;
-                return;
-            }
-            _offsetDamage = value;
-        }
-    }
+  
     /// <summary>
     /// Тип урона
     /// </summary>
     public TypeDamage TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
+    
     /// <summary>
     /// Текущий (Используемый) средний урон. Изменяется при уменьшении урона при последующем пробитии (при включенном модификаторе Penetration) или других модах
     /// </summary>
@@ -82,6 +61,7 @@ public class DirectDamage : MonoBehaviour ,IModifier
             _currentAverageDamage = value;
         }
     }
+    
     /// <summary>
     /// Урон с учетом разброса
     /// </summary>
@@ -89,7 +69,7 @@ public class DirectDamage : MonoBehaviour ,IModifier
     {
         get
         {
-            int range = (int)(CurrentAverageDamage * OffsetDamage);
+            int range = (int)(CurrentAverageDamage * GeneralParameter.OFFSET_DAMAGE_HEALING);
             return Random.Range(CurrentAverageDamage - range, CurrentAverageDamage + range);
         }
     }
@@ -106,7 +86,6 @@ public class DirectDamage : MonoBehaviour ,IModifier
         Description = _description;
         AverageDamage = _averageDamage;
         CurrentAverageDamage = _averageDamage;
-        OffsetDamage = _offsetDamage;
         TypeDamage = _typeDamage;
     }
     #endregion Mono

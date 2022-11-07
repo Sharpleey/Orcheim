@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  Класс состояния покоя противника
+/// </summary>
 public class IdleState : State
 {
     /// <summary>

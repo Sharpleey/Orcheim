@@ -10,9 +10,10 @@ using UnityEngine.AI;
 public abstract class Enemy : MonoBehaviour
 {
     #region Serialize fields
-    [SerializeField] private int _maxHealth = 100;
+    [SerializeField] private int _maxHealth = 150;
     [SerializeField] private int _maxArmor = 0;
     [SerializeField] private float _maxSpeed = 3.5f;
+    [SerializeField] private int _averageDamage = 25;
 
     [Header("State Settings")]
     [SerializeField] private DefaultState _defaultState; 
@@ -51,7 +52,7 @@ public abstract class Enemy : MonoBehaviour
         {
             return _maxArmor;
         }
-        set
+        private set
         {
             if (value < 0)
             {
@@ -61,7 +62,7 @@ public abstract class Enemy : MonoBehaviour
             _maxArmor = value;
         }
     }
-    
+
     /// <summary>
     /// Максимальное значение скорости передвижения противника
     /// </summary>
@@ -82,24 +83,81 @@ public abstract class Enemy : MonoBehaviour
             _maxSpeed = speed;
         }
     }
-    
+
     /// <summary>
-    /// Актуальная скорость противника, скорость передвижения в NavMeshAgent
+    /// Исходный средний урон. Изменять только при прокачке модификатора или в инспекторе
     /// </summary>
-    public float Speed
+    public int AverageDamage
     {
         get
         {
-            return NavMeshAgent.velocity.magnitude;
+            return _averageDamage;
+        }
+        private set
+        {
+            if (value < 0)
+            {
+                _averageDamage = 0;
+                return;
+            }
+            _averageDamage = value;
+        }
+    }
+
+    /// <summary>
+    /// Текущий (Используемый) средний урон. Изменяется для уменьшении разными модификаторами
+    /// </summary>
+    public int CurrentAverageDamage
+    {
+        get
+        {
+            return _currentAverageDamage;
         }
         set
         {
-            if (value < 0.1f)
+            if (value < 0)
             {
-                NavMeshAgent.speed = 0.1f;
+                _currentAverageDamage = 0;
                 return;
             }
-            NavMeshAgent.speed = value;
+            _currentAverageDamage = value;
+        }
+    }
+
+    /// <summary>
+    /// Урон с учетом разброса, данное значение используем при нанесении урона
+    /// </summary>
+    public int ActualDamage
+    {
+        get
+        {
+            int range = (int)(CurrentAverageDamage * GeneralParameter.OFFSET_DAMAGE_HEALING);
+            return UnityEngine.Random.Range(CurrentAverageDamage - range, CurrentAverageDamage + range);
+        }
+    }
+
+    /// <summary>
+    /// Текущее значение здоровья противника
+    /// </summary>
+    public int Health
+    {
+        get
+        {
+            return _health;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                _health = 0;
+                return;
+            }
+            if (value > _maxHealth)
+            {
+                _health = _maxHealth;
+                return;
+            }
+            _health = value;
         }
     }
     
@@ -127,32 +185,27 @@ public abstract class Enemy : MonoBehaviour
             _armor = value;
         }
     }
-    
+
     /// <summary>
-    /// Текущее значение здоровья противника
+    /// Актуальная скорость противника, скорость передвижения в NavMeshAgent
     /// </summary>
-    public int Health
+    public float Speed
     {
         get
         {
-            return _health;
+            return NavMeshAgent.velocity.magnitude;
         }
         set
         {
-            if (value < 0)
+            if (value < 0.1f)
             {
-                _health = 0;
+                NavMeshAgent.speed = 0.1f;
                 return;
             }
-            if (value > _maxHealth)
-            {
-                _health = _maxHealth;
-                return;
-            }
-            _health = value;
+            NavMeshAgent.speed = value;
         }
     }
-    
+
     public DefaultState DefaultState { get => _defaultState; set => _defaultState = value; }
 
     public HitBoxesController HitBoxesController { get; private set; }
@@ -167,7 +220,7 @@ public abstract class Enemy : MonoBehaviour
     public NavMeshAgent NavMeshAgent { get; private set; }
     public Animator Animator { get; private set; }
 
-    public BoxCollider SummonTrigger { get; set; }
+    public BoxCollider SummonTrigger { get; private set; }
 
     /// <summary>
     /// Текущее состояние врага
@@ -175,6 +228,8 @@ public abstract class Enemy : MonoBehaviour
     public State CurrentState { get; private set; }
 
     public GameObject Weapon => WeaponController.UsedWeapon;
+    public BoxCollider WeaponTriggerCollider { get; private set; }
+
     #endregion Properties
 
     #region Private fields
@@ -185,6 +240,8 @@ public abstract class Enemy : MonoBehaviour
 
     private int _health = 0;
     private int _armor = 0;
+
+    private int _currentAverageDamage = 0;
 
     private bool _isBurning = false;
     private float _timerBurning = 0;
@@ -200,6 +257,8 @@ public abstract class Enemy : MonoBehaviour
     {
         MaxHealth = _maxHealth;
         MaxArmor = _maxArmor;
+        AverageDamage = _averageDamage;
+        CurrentAverageDamage = _averageDamage;
         MaxSpeed = _maxSpeed;
 
         Health = _maxHealth;
@@ -218,6 +277,8 @@ public abstract class Enemy : MonoBehaviour
         RagdollController = GetComponent<RagdollController>();
         WeaponController = GetComponent<WeaponController>();
 
+        WeaponTriggerCollider = Weapon.GetComponentInChildren<BoxCollider>();
+
         IconEffectsController = GetComponentInChildren<IconEffectsController>();
 
         BurningEffectController = GetComponentInChildren<BurningEffectController>();
@@ -227,6 +288,9 @@ public abstract class Enemy : MonoBehaviour
 
         Animator = GetComponent<Animator>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
+
+        if (WeaponTriggerCollider)
+            WeaponTriggerCollider.enabled = false;
 
         // Делаем компонент неактивным, чтобы не началась анимация
         if (DieEffectController)
@@ -250,7 +314,8 @@ public abstract class Enemy : MonoBehaviour
     
     private void Update()
     {
-        CurrentState.Update();
+        if(CurrentState != null)
+            CurrentState.Update();
 
         // TODO когда будет больше эффектов переделать под машину состояний 
         if (_isBurning)
@@ -350,6 +415,17 @@ public abstract class Enemy : MonoBehaviour
                 IconEffectsController.SetActiveIconSlowdown(false);
         }
     }
+
+    private void SetEnableWeaponTriggerCollider()
+    {
+        WeaponTriggerCollider.enabled = true;
+    }
+
+    private void DisableWeaponTriggerCollider()
+    {
+        WeaponTriggerCollider.enabled = false;
+    }
+
     #endregion Private methods
 
     #region Public methods
@@ -493,7 +569,7 @@ public abstract class Enemy : MonoBehaviour
                 IconEffectsController.SetActiveIconSlowdown(true);
         }
     }
-    
+
     /// <summary>
     /// Уничтожает объект оружия врага и его самого
     /// </summary>

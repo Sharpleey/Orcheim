@@ -1,15 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using System;
 
 public class PlayerHUDController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _playerNotification;
     [SerializeField] private TextMeshProUGUI _waveCounter;
     [SerializeField] private TextMeshProUGUI _enemiesRemaining;
-    [SerializeField] private TextMeshProUGUI _countEnemyOnScene;
-    [SerializeField] private TextMeshProUGUI _countEnemyOnWavePool;
+
+    [Header("Health Bar")]
+    [SerializeField] private TextMeshProUGUI _healthPlayer;
+    [SerializeField] private Slider _healthSlider;
 
     private void Awake()
     {
@@ -18,6 +21,7 @@ public class PlayerHUDController : MonoBehaviour
         Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
         Messenger<int>.AddListener(GlobalGameEvent.ENEMIES_REMAINING, SetTextEnemiesRemaining);
         Messenger.AddListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger<int>.AddListener(GlobalGameEvent.PLAYER_DAMAGED, PlayerDamaged_EventHandler);
     }
     private void OnDestroy()
     {
@@ -26,6 +30,7 @@ public class PlayerHUDController : MonoBehaviour
         Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
         Messenger<int>.RemoveListener(GlobalGameEvent.ENEMIES_REMAINING, SetTextEnemiesRemaining);
         Messenger.RemoveListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger<int>.AddListener(GlobalGameEvent.PLAYER_DAMAGED, PlayerDamaged_EventHandler);
     }
 
     private void Start()
@@ -36,10 +41,8 @@ public class PlayerHUDController : MonoBehaviour
             _waveCounter.text = "";
         if (_enemiesRemaining)
             _enemiesRemaining.text = "";
-        if (_countEnemyOnScene)
-            _countEnemyOnScene.text = "";
-        if (_countEnemyOnWavePool)
-            _countEnemyOnWavePool.text = "";
+        if (_healthPlayer)
+            _healthPlayer.text = "";
     }
 
     /// <summary>
@@ -78,9 +81,35 @@ public class PlayerHUDController : MonoBehaviour
             _enemiesRemaining.text = PlayerNotification.ENEMIES_REMAIMING + enemiesRemaining.ToString();
     }
 
+    private void SetTextHealthPlayer(int currentHealth, int maxHealth)
+    {
+        if (_healthPlayer)
+            _healthPlayer.text = currentHealth.ToString() + "/" + maxHealth.ToString();
+    }
+
+    private void SetValueHealthBar(int currentHealth, int maxHealth)
+    {
+        if (_healthSlider)
+        {
+            _healthSlider.maxValue = maxHealth;
+            _healthSlider.value = currentHealth;
+        }
+            
+    }
+
     private void StartingNewGameModeOrccheim_EventHandler()
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.CLEAR_VILLAGE, 5));
+
+        try
+        {
+            SetTextHealthPlayer(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
+            SetValueHealthBar(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
+        }
+        catch (Exception exeption)
+        {
+            Debug.Log(exeption.Message);
+        }
     }
 
     private void PreparingForWave_EventHandler(int wave)
@@ -97,5 +126,18 @@ public class PlayerHUDController : MonoBehaviour
     private void WaveIsOver_EventHandler()
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_OVER, 0));
+    }
+
+    private void PlayerDamaged_EventHandler(int damage)
+    {
+        try
+        {
+            SetTextHealthPlayer(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
+            SetValueHealthBar(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
+        }
+        catch (Exception exeption)
+        {
+            Debug.Log(exeption.Message);
+        }
     }
 }
