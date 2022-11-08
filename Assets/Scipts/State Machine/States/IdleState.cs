@@ -8,21 +8,21 @@ public class IdleState : State
     /// <summary>
     /// Угол обзора враг
     /// </summary>
-    private float _viewAngleDetection = 110f;
+    private float _viewAngleDetection = 120f;
+    
     /// <summary>
     /// Дистанция обзора врага
     /// </summary>
-    private float _viewDetectionDistance = 12f;
+    private float _viewDetectionDistance = 14f;
+    
     /// <summary>
     /// Радиус обнаружения, при котором в любом случае враг заметит игрока
     /// </summary>
-    private float _absoluteDetectionDistance = 4f;
+    private float _absoluteDetectionDistance = 6f;
 
     private float _distanceToTarget;
-
-    private Transform _transformPlayer;
-
     private float _timerUpdate;
+    private Transform _transformPlayer;
 
     public IdleState(Enemy enemy) : base(enemy)
     {
@@ -60,7 +60,7 @@ public class IdleState : State
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
             if (_distanceToTarget < _absoluteDetectionDistance || IsIsView())
             {
-                _enemy.SetPursuitState();
+                _enemy.SetState<PursuitState>();
             }
 
             _timerUpdate = 0;
@@ -93,7 +93,7 @@ public class IdleState : State
 
     private void PursuitPlayer(int wave)
     {
-        _enemy.SetPursuitState();
+        _enemy.SetState<PursuitState>();
     }
     #endregion Private methods
 }

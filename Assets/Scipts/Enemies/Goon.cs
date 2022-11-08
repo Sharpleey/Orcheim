@@ -1,20 +1,21 @@
-п»їusing System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class Warrior : Enemy
+public class Goon : Enemy
 {
-    private void Start()
+    private new void Start()
     {
         base.Start();
 
-        // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј СЃРѕСЃС‚РѕСЏРЅРёСЏ
+        // Инициализируем состояния
         InitStates();
-        // Р—Р°РґР°РµРј СЃРѕСЃС‚РѕСЏРЅРёРµ РїРѕСѓРјРѕР»С‡Р°РЅРёСЋ
+        // Задаем состояние поумолчанию
         SetStateByDefault();
     }
 
     /// <summary>
-    /// РњРµС‚РѕРґ РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ СЃРѕСЃС‚РѕСЏРЅРёСЏ
+    /// Метод инициализирует состояния
     /// </summary>
     private new void InitStates()
     {
@@ -25,7 +26,7 @@ public class Warrior : Enemy
     }
 
     /// <summary>
-    /// РњРµС‚РѕРґ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РїРµСЂРІРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РїРѕСѓРјРѕР»С‡Р°РЅРёСЋ
+    /// Метод устанавливает первое состояние поумолчанию
     /// </summary>
     private void SetStateByDefault()
     {

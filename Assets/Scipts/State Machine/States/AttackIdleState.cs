@@ -83,7 +83,7 @@ public class AttackIdleState : State
             _animatorStateInfo = _enemy.Animator.GetCurrentAnimatorStateInfo(0);
             if (_distanceFromEnemyToPlayer > _attackDistance && _animatorStateInfo.nameHash != HashAnimation.MeleeAttack1)
             {
-                _enemy.SetPursuitState();
+                _enemy.SetState<PursuitState>();
             }
             _timerUpdate = 0;
         }

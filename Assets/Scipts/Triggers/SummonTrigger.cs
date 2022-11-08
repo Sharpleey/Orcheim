@@ -6,11 +6,11 @@ using UnityEngine;
 /// </summary>
 public class SummonTrigger : MonoBehaviour
 {
-    private Warrior _enemy;
+    private Enemy _enemy;
 
     private void Awake()
     {
-        _enemy = GetComponentInParent<Warrior>();
+        _enemy = GetComponentInParent<Enemy>();
     }
     private void OnTriggerExit(Collider otherSummonTriggerCollider)
     {
@@ -18,12 +18,12 @@ public class SummonTrigger : MonoBehaviour
         if (_enemy.CurrentState.GetType() == typeof(IdleState))
             return;
 
-        Warrior otherEnemy = otherSummonTriggerCollider.GetComponentInParent<Warrior>();
+        Enemy otherEnemy = otherSummonTriggerCollider.GetComponentInParent<Enemy>();
 
         // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя", то второму меняем состояние на "преследования"
         if (_enemy.CurrentState.GetType() == typeof(PursuitState) && otherEnemy.CurrentState.GetType() == typeof(IdleState))
         {
-            otherEnemy.SetPursuitState();
+            otherEnemy.SetState<PursuitState>();
         }
     }
 }

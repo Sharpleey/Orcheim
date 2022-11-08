@@ -5686,7 +5686,7 @@ GameObject:
   - component: {fileID: 5411927958380410483}
   - component: {fileID: 9054142667778223098}
   m_Layer: 0
-  m_Name: Orc
+  m_Name: Warrior
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5771,6 +5771,7 @@ MonoBehaviour:
   _maxHealth: 150
   _maxArmor: 0
   _maxSpeed: 3.5
+  _averageDamage: 25
   _defaultState: 0
   _summonTrigger: {fileID: 1395253491944094854}
 --- !u!114 &318694718837138595
@@ -15453,7 +15454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1923880590728329775, guid: 479014a94ee8e6648ae8bd7a2680c560, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 479014a94ee8e6648ae8bd7a2680c560, type: 3}

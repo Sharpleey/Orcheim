@@ -75,7 +75,7 @@ public class PursuitState : State
             if (_distanceFromEnemyToPlayer < _attackDistance)
             {
                 // Изменяем состояние на состояние атаки
-                _enemy.SetAttackIdleState();
+                _enemy.SetState<AttackIdleState>();
             }
 
             // Если противник подошел в радиус генерации случайной точки  (_randomPointRadius) и если не проигрывается анимация атаки, то изменяем цель противнику

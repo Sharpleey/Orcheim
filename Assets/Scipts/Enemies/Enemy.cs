@@ -225,7 +225,7 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Текущее состояние врага
     /// </summary>
-    public State CurrentState { get; private set; }
+    public State CurrentState { get; private protected set; }
 
     public GameObject Weapon => WeaponController.UsedWeapon;
     public BoxCollider WeaponTriggerCollider { get; private set; }
@@ -236,7 +236,8 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Словарь для хранения состояний
     /// </summary>
-    private Dictionary<Type, State> _states;
+    protected Dictionary<Type, State> _states;
+    //protected State _currentState;
 
     private int _health = 0;
     private int _armor = 0;
@@ -269,7 +270,7 @@ public abstract class Enemy : MonoBehaviour
         SummonTrigger = _summonTrigger;
     }
 
-    private void Start()
+    protected void Start()
     {
         // Получаем контроллерыи компоненты
         // ---------------------------------------------------------------
@@ -307,9 +308,9 @@ public abstract class Enemy : MonoBehaviour
         HealthBarController?.SetHealth(Health);
 
         // Инициализируем состояния
-        InitStates();
-        // Задаем состояние поумолчанию
-        SetStateByDefault();
+        //InitStates();
+        //// Задаем состояние поумолчанию
+        //SetStateByDefault();
     }
     
     private void Update()
@@ -330,13 +331,11 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Метод инициализирует состояния
     /// </summary>
-    private void InitStates()
+    protected void InitStates()
     {
         _states = new Dictionary<Type, State>();
 
         _states[typeof(IdleState)] = new IdleState(this);
-        _states[typeof(PursuitState)] = new PursuitState(this);
-        _states[typeof(AttackIdleState)] = new AttackIdleState(this);
         _states[typeof(DieState)] = new DieState(this);
     }
 
@@ -344,37 +343,26 @@ public abstract class Enemy : MonoBehaviour
     /// Метод обрабатывает переходы между состояниями. Он вызывает Exit для старого CurrentState перед заменой его ссылки на newState. В конце он вызывает Enter для newState.
     /// </summary>
     /// <param name="newState">Новое состояние, которое хотим установить</param>
-    private void SetState(State newState)
+    protected internal void SetState<T>() where T : State
     {
         if (CurrentState != null)
             CurrentState.Exit();
 
-        CurrentState = newState;
+        CurrentState = _states[typeof(T)];
         CurrentState.Enter();
     }
-    
-    /// <summary>
-    /// Метод вытаскивает нужное состояние из словаря
-    /// </summary>
-    /// <typeparam name="T">Тип состояния</typeparam>
-    /// <returns></returns>
-    private State GetState<T>() where T : State
-    {
-        var type = typeof(T);
-        return _states[type];
-    }
-    
-    /// <summary>
-    /// Метод устанавливает первое состояние поумолчанию
-    /// </summary>
-    private void SetStateByDefault()
-    {
-        if (DefaultState == DefaultState.Pursuit)
-            SetPursuitState();
-        else
-            SetIdleState();
-    }
-    
+
+    ///// <summary>
+    ///// Метод устанавливает первое состояние поумолчанию
+    ///// </summary>
+    //private void SetStateByDefault()
+    //{
+    //    if (DefaultState == DefaultState.Pursuit)
+    //        SetState<PursuitState>();
+    //    else
+    //        SetState<IdleState>();
+    //}
+
     /// <summary>
     /// Метод отвечает за эффект горения, его длительность и нанесения урона
     /// </summary>
@@ -416,11 +404,17 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Метод для события начала анимации атаки
+    /// </summary>
     private void SetEnableWeaponTriggerCollider()
     {
         WeaponTriggerCollider.enabled = true;
     }
 
+    /// <summary>
+    /// Метод для события в анимации при окончания атаки 
+    /// </summary>
     private void DisableWeaponTriggerCollider()
     {
         WeaponTriggerCollider.enabled = false;
@@ -429,42 +423,6 @@ public abstract class Enemy : MonoBehaviour
     #endregion Private methods
 
     #region Public methods
-    /// <summary>
-    /// Устанавливает состояние покоя
-    /// </summary>
-    public void SetIdleState()
-    {
-        State state = GetState<IdleState>();
-        SetState(state);
-    }
-
-    /// <summary>
-    /// Устанавливает состояние преследования
-    /// </summary>
-    public void SetPursuitState()
-    {
-        State state = GetState<PursuitState>();
-        SetState(state);
-    }
-
-    /// <summary>
-    /// Устанавливает состояние атаки
-    /// </summary>
-    public void SetAttackIdleState()
-    {
-        State state = GetState<AttackIdleState>();
-        SetState(state);
-    }
-
-    /// <summary>
-    /// Устанавливаем состояние смерти
-    /// </summary>
-    public void SetDieState()
-    {
-        State state = GetState<DieState>();
-        SetState(state);
-    }
-    
     /// <summary>
     /// Метод получения урона персонажем
     /// </summary>
@@ -490,7 +448,7 @@ public abstract class Enemy : MonoBehaviour
                 }
 
                 // Изменяем состояние на преследование
-                SetPursuitState();
+                SetState<PursuitState>();
             }
 
             // Всплывающий дамаг
@@ -508,7 +466,7 @@ public abstract class Enemy : MonoBehaviour
         if (Health <= 0)
         {
             if (CurrentState.GetType() != typeof(DieState))
-                SetDieState();
+                SetState<DieState>();
         }
     }
     
