@@ -237,7 +237,6 @@ public abstract class Enemy : MonoBehaviour
     /// Словарь для хранения состояний
     /// </summary>
     protected Dictionary<Type, State> _states;
-    //protected State _currentState;
 
     private int _health = 0;
     private int _armor = 0;
@@ -342,26 +341,27 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Метод обрабатывает переходы между состояниями. Он вызывает Exit для старого CurrentState перед заменой его ссылки на newState. В конце он вызывает Enter для newState.
     /// </summary>
-    /// <param name="newState">Новое состояние, которое хотим установить</param>
+    /// <typeparam name="T">Тип класса состояния</typeparam>
     protected internal void SetState<T>() where T : State
     {
+        State newState = null;
+
+        try
+        {
+            newState = _states[typeof(T)];
+        }
+        catch
+        {
+            Debug.Log("Состояние "+ typeof(T).ToString() + " у данного вида врага отсутсвует!");
+            return;
+        }
+
         if (CurrentState != null)
             CurrentState.Exit();
 
-        CurrentState = _states[typeof(T)];
+        CurrentState = newState;
         CurrentState.Enter();
     }
-
-    ///// <summary>
-    ///// Метод устанавливает первое состояние поумолчанию
-    ///// </summary>
-    //private void SetStateByDefault()
-    //{
-    //    if (DefaultState == DefaultState.Pursuit)
-    //        SetState<PursuitState>();
-    //    else
-    //        SetState<IdleState>();
-    //}
 
     /// <summary>
     /// Метод отвечает за эффект горения, его длительность и нанесения урона
