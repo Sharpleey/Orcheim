@@ -9768,6 +9768,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7759942574175720983}
+  - component: {fileID: 4185271578425692968}
   - component: {fileID: 4418302250214050925}
   - component: {fileID: 5838308226947222058}
   - component: {fileID: 6093298801307300560}
@@ -9776,7 +9777,7 @@ GameObject:
   - component: {fileID: 3455951752080535283}
   - component: {fileID: 2103263591171664843}
   - component: {fileID: 3138316330951292482}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Goon
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -9792,7 +9793,7 @@ Transform:
   m_GameObject: {fileID: 6988190262742535341}
   m_LocalRotation: {x: -0, y: -0.89645153, z: -0, w: 0.44314182}
   m_LocalPosition: {x: 4.6718893, y: 0, z: -14.601292}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_Children:
   - {fileID: 1657342232334124681}
   - {fileID: 5227308433553236602}
@@ -9806,6 +9807,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -127.391, z: 0}
+--- !u!136 &4185271578425692968
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6988190262742535341}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!95 &4418302250214050925
 Animator:
   serializedVersion: 3
@@ -9819,7 +9834,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 18bd2ce643f5d7047a05f0fb8cea925a, type: 2}
   m_CullingMode: 2
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -9839,7 +9854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 260
   _maxArmor: 20
-  _maxSpeed: 3
+  _maxSpeed: 2.6
   _averageDamage: 50
   _defaultState: 0
   _summonTrigger: {fileID: 5005649224482365758}
@@ -14390,14 +14405,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c50e2ac61c288b4d92215972e2d3a57, type: 3}
---- !u!1 &6058281599478076877 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1923880590728329775, guid: 5c50e2ac61c288b4d92215972e2d3a57, type: 3}
-  m_PrefabInstance: {fileID: 5665994732443824098}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6739850579108940886 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1380751669917361076, guid: 5c50e2ac61c288b4d92215972e2d3a57, type: 3}
+  m_PrefabInstance: {fileID: 5665994732443824098}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6058281599478076877 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1923880590728329775, guid: 5c50e2ac61c288b4d92215972e2d3a57, type: 3}
   m_PrefabInstance: {fileID: 5665994732443824098}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6685536222991761789
