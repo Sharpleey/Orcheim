@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Warrior : Enemy
 {
-    private void Start()
+    private new void Start()
     {
         base.Start();
 

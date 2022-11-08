@@ -9,7 +9,6 @@ public class DirectDamage : MonoBehaviour ,IModifier
     [SerializeField] private string _description = "Ќаносит противнику урон при попадании";
 
     [SerializeField] [Range(1, 300)] private int _averageDamage = 25;
-    [SerializeField] [Range(0f, 0.5f)] private float _offsetDamage = 0.25f;
     [SerializeField] private TypeDamage _typeDamage = TypeDamage.Physical;
     #endregion Serialize fields
 

@@ -10,6 +10,7 @@ public class PursuitState : State
     /// Дистанция до атаки 
     /// </summary>
     private float _attackDistance = 2.5f;
+    
     /// <summary>
     /// Радиус генерации случайной точки на меше возле игрока
     /// </summary>

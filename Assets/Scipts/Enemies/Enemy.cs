@@ -344,7 +344,7 @@ public abstract class Enemy : MonoBehaviour
     /// <typeparam name="T">Тип класса состояния</typeparam>
     protected internal void SetState<T>() where T : State
     {
-        State newState = null;
+        State newState;
 
         try
         {
