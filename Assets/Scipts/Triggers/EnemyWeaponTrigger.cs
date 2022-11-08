@@ -14,9 +14,9 @@ public class EnemyWeaponTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider hitCollider)
     {
-        PlayerCharacterController player = hitCollider.GetComponentInParent<PlayerCharacterController>();
+        //PlayerCharacterController player = hitCollider.GetComponentInParent<PlayerCharacterController>();
 
-        if(player)
+        if(hitCollider.tag == "Player")
         {
             try
             {
