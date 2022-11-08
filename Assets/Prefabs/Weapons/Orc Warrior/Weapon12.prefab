@@ -123,9 +123,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6027955585504743390}
-  - component: {fileID: 6115840991359874288}
   - component: {fileID: 5270922632266980978}
   - component: {fileID: 5476268889899110720}
+  - component: {fileID: 188597813100007863}
   m_Layer: 13
   m_Name: TriggerCollider
   m_TagString: Untagged
@@ -147,19 +147,6 @@ Transform:
   m_Father: {fileID: 1380751669917361076}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6115840991359874288
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6416090332397856202}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1008907, y: 0.8218328, z: 1.7903321}
-  m_Center: {x: -0.0016714074, y: 0.0012607425, z: 1.3015729}
 --- !u!54 &5270922632266980978
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -188,3 +175,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e289141af7a51fd4e8408aff9a96b337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &188597813100007863
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6416090332397856202}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.19
+  m_Height: 1.9825845
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 1.2320025}

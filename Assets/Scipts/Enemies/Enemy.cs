@@ -228,7 +228,7 @@ public abstract class Enemy : MonoBehaviour
     public State CurrentState { get; private protected set; }
 
     public GameObject Weapon => WeaponController.UsedWeapon;
-    public BoxCollider WeaponTriggerCollider { get; private set; }
+    public CapsuleCollider WeaponTriggerCollider { get; private set; }
 
     #endregion Properties
 
@@ -277,7 +277,7 @@ public abstract class Enemy : MonoBehaviour
         RagdollController = GetComponent<RagdollController>();
         WeaponController = GetComponent<WeaponController>();
 
-        WeaponTriggerCollider = Weapon.GetComponentInChildren<BoxCollider>();
+        WeaponTriggerCollider = Weapon.GetComponentInChildren<CapsuleCollider>();
 
         IconEffectsController = GetComponentInChildren<IconEffectsController>();
 
