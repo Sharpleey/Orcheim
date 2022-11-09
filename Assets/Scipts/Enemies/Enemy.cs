@@ -79,8 +79,7 @@ public abstract class Enemy : MonoBehaviour
                 _maxSpeed = 0.1f;
                 return;
             }
-            float speed = UnityEngine.Random.Range(value - 0.4f, value + 0.4f);
-            _maxSpeed = speed;
+            _maxSpeed = value;
         }
     }
 
@@ -288,6 +287,8 @@ public abstract class Enemy : MonoBehaviour
 
         Animator = GetComponent<Animator>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
+
+        //NavMeshAgent.updatePosition = false;
 
         if (WeaponTriggerCollider)
             WeaponTriggerCollider.enabled = false;
