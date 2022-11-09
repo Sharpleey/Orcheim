@@ -14,7 +14,7 @@ public class PursuitState : State
     /// <summary>
     /// Радиус генерации случайной точки на меше возле игрока
     /// </summary>
-    private float _randomPointRadius = 6f;
+    private float _randomPointRadius = 8f;
     
     private Transform _transformPlayer;
 
@@ -46,7 +46,7 @@ public class PursuitState : State
         _timerUpdate = 0;
 
         // Устанавливаем дистанцию атаки
-        _attackDistance = _enemy.NavMeshAgent.stoppingDistance + 0.1f;
+        _attackDistance = _enemy.NavMeshAgent.stoppingDistance + 0.2f;
 
         // Получаем Transform игрока для отслеживания его позиции
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
@@ -84,7 +84,7 @@ public class PursuitState : State
             if (_distanceFromEnemyToPlayer < _randomPointRadius)
             {
                 // Изменяем дистанцию остановки протиника
-                _enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.1f;
+                _enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.2f;
                 // Изменияем цель противнику на игрока
                 _enemy.NavMeshAgent.SetDestination(_transformPlayer.position);
             }
@@ -106,7 +106,7 @@ public class PursuitState : State
         //Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
-        _enemy.Animator.SetFloat(HashAnimation.Speed, _enemy.Speed / _enemy.MaxSpeed);
+        _enemy.Animator.SetFloat(HashAnimation.Speed, _enemy.Speed);
     }
 
     public override void Exit()

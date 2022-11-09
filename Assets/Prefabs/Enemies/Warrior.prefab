@@ -5760,9 +5760,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 12
   avoidancePriority: 50
-  m_AngularSpeed: 240
+  m_AngularSpeed: 360
   m_StoppingDistance: 2.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -5787,6 +5787,7 @@ MonoBehaviour:
   _maxArmor: 0
   _maxSpeed: 3.5
   _averageDamage: 25
+  _curNammeState: 
   _defaultState: 0
   _summonTrigger: {fileID: 1395253491944094854}
 --- !u!114 &318694718837138595

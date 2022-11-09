@@ -16,6 +16,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private int _averageDamage = 25;
 
     [Header("State Settings")]
+    [SerializeField] private String _curNammeState;
     [SerializeField] private DefaultState _defaultState; 
 
     [Header("Summon Trigger")]
@@ -249,6 +250,8 @@ public abstract class Enemy : MonoBehaviour
     private bool _isSlow = false;
     private float _timerSlow = 0;
     private int _durationSlow = 0;
+
+    private Vector3 _position = Vector3.zero;
     #endregion Private fields
 
     #region Mono
@@ -288,8 +291,12 @@ public abstract class Enemy : MonoBehaviour
         Animator = GetComponent<Animator>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
 
-        //NavMeshAgent.updatePosition = false;
+        Animator.applyRootMotion = true;
 
+        NavMeshAgent.updatePosition = false;
+        NavMeshAgent.updateRotation = true;
+
+        // Отключаем коллайдер у оружия, чтобы нельзя было нанести урон раньше начала анмиации атаки
         if (WeaponTriggerCollider)
             WeaponTriggerCollider.enabled = false;
 
@@ -310,7 +317,7 @@ public abstract class Enemy : MonoBehaviour
     
     private void Update()
     {
-        if(CurrentState != null)
+        if (CurrentState != null)
             CurrentState.Update();
 
         // TODO когда будет больше эффектов переделать под машину состояний 
@@ -320,6 +327,15 @@ public abstract class Enemy : MonoBehaviour
         if (_isSlow)
             Slowing();
     }
+
+    private void OnAnimatorMove()
+    {
+        _position = Animator.rootPosition;
+        _position.y = NavMeshAgent.nextPosition.y;
+        transform.position = _position;
+        NavMeshAgent.nextPosition = _position;
+    }
+
     #endregion Mono
 
     #region Private methods
@@ -373,6 +389,7 @@ public abstract class Enemy : MonoBehaviour
 
         CurrentState = newState;
         CurrentState.Enter();
+        _curNammeState = CurrentState.GetType().ToString();
     }
 
     /// <summary>
