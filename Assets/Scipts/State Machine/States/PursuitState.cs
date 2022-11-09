@@ -56,6 +56,7 @@ public class PursuitState : State
 
         // Получаем случайную точку в определенном радиусе (_randomPointRadius) рядом с игрок
         _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
+
         // Задаем цель противнику, к которой он движется
         _enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
         // Устанавливаем дистанцию остановки 0, чтобы исключить ситуации, когда враг останавливался за радиусом (_randomPointRadius) и не мог сменить цель на игрока

@@ -23,15 +23,4 @@ public class Warrior : Enemy
         _states[typeof(PursuitState)] = new PursuitState(this);
         _states[typeof(AttackIdleState)] = new AttackIdleState(this);
     }
-
-    /// <summary>
-    /// Метод устанавливает первое состояние поумолчанию
-    /// </summary>
-    private void SetStateByDefault()
-    {
-        if (DefaultState == DefaultState.Pursuit)
-            SetState<PursuitState>();
-        else
-            SetState<IdleState>();
-    }
 }

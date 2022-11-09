@@ -306,11 +306,6 @@ public abstract class Enemy : MonoBehaviour
         // Устанавливаем максимальное и актуальное хп для полосы хп
         HealthBarController?.SetMaxHealth(MaxHealth);
         HealthBarController?.SetHealth(Health);
-
-        // Инициализируем состояния
-        //InitStates();
-        //// Задаем состояние поумолчанию
-        //SetStateByDefault();
     }
     
     private void Update()
@@ -337,6 +332,17 @@ public abstract class Enemy : MonoBehaviour
 
         _states[typeof(IdleState)] = new IdleState(this);
         _states[typeof(DieState)] = new DieState(this);
+    }
+
+    /// <summary>
+    /// Метод устанавливает первое состояние поумолчанию
+    /// </summary>
+    protected void SetStateByDefault()
+    {
+        if (DefaultState == DefaultState.Pursuit)
+            SetState<PursuitState>();
+        else
+            SetState<IdleState>();
     }
 
     /// <summary>
