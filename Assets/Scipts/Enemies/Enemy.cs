@@ -339,10 +339,15 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     protected void SetStateByDefault()
     {
-        if (DefaultState == DefaultState.Pursuit)
-            SetState<PursuitState>();
-        else
-            SetState<IdleState>();
+        switch(DefaultState)
+        {
+            case DefaultState.Pursuit:
+                SetState<PursuitState>();
+                break;
+            default:
+                SetState<IdleState>();
+                break;
+        }
     }
 
     /// <summary>
