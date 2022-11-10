@@ -352,7 +352,7 @@ public abstract class Enemy : MonoBehaviour
         switch(DefaultState)
         {
             case DefaultState.Pursuit:
-                SetState<PursuitState>();
+                SetState<ChasingPlayerState>();
                 break;
             default:
                 SetState<IdleState>();
@@ -471,7 +471,7 @@ public abstract class Enemy : MonoBehaviour
                 }
 
                 // Изменяем состояние на преследование
-                SetState<PursuitState>();
+                SetState<ChasingPlayerState>();
             }
 
             // Всплывающий дамаг

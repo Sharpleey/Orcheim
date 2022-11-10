@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Класс состояния атаки проивника. В этом состоянии противник чередует анимацию стойки перед атакой с анимацией атаки 
 /// </summary>
-public class AttackIdleState : State
+public class AttackState : State
 {
     /// <summary>
     /// Дистанция атаки противника в метрах
@@ -24,21 +24,18 @@ public class AttackIdleState : State
     /// Скорость поворота врага к цели
     /// </summary>
     private float _rotationSpeedToTarget = 2.5f;
+
+    /// <summary>
+    /// Таймер задержки между атаками
+    /// </summary>
+    private float _timerAttack;
     
     /// <summary>
-    /// Дистанция от противника до игрока
+    /// Таймер между обновлениями дистации
     /// </summary>
-    private float _distanceFromEnemyToPlayer;
-
-    /// <summary>
-    /// Трансформ игрока для отслеживания дистанции
-    /// </summary>
-    private Transform _transformPlayer;
-
-    private float _timerAttack;
     private float _timerUpdateDistance;
 
-    public AttackIdleState(Enemy enemy) : base(enemy)
+    public AttackState(Enemy enemy) : base(enemy)
     {
 
     }
@@ -58,7 +55,7 @@ public class AttackIdleState : State
         // Включаем анимацию
         enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, true);
         // Получаем transform игрока для использования его в дальнейшем
-        _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+        transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public override void Update()
@@ -87,10 +84,10 @@ public class AttackIdleState : State
         if (_timerUpdateDistance > 0.5f)
         {
             // Определяем дистанцию до игрока
-            _distanceFromEnemyToPlayer = Vector3.Distance(enemy.transform.position, _transformPlayer.position);
-            if (_distanceFromEnemyToPlayer > _attackDistance && !enemy.IsBlockChangeState)
+            distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
+            if (distanceEnemyToPlayer > _attackDistance && !enemy.IsBlockChangeState)
             {
-                enemy.SetState<PursuitState>();
+                enemy.SetState<ChasingPlayerState>();
             }
             _timerUpdateDistance = 0;
         }
@@ -111,7 +108,7 @@ public class AttackIdleState : State
     /// </summary>
     private void LookAtTarget()
     {
-        Vector3 direction = -(enemy.transform.position - _transformPlayer.position);
+        Vector3 direction = -(enemy.transform.position - transformPlayer.position);
         enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
     }
 }

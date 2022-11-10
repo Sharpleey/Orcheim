@@ -15,6 +15,11 @@ public abstract class State
     protected Transform transformPlayer;
 
     /// <summary>
+    /// Дистанция от врага до игрока
+    /// </summary>
+    protected float distanceEnemyToPlayer;
+
+    /// <summary>
     /// Конструктор класса состояния, необходим для прокидывания связей с данными противника и машины состояний
     /// </summary>
     /// <param name="enemy">Данный и параметры противника</param>
@@ -22,7 +27,6 @@ public abstract class State
     protected State(Enemy enemy)
     {
         this.enemy = enemy;
-        //_stateMachine = stateMachine;
     }
     /// <summary>
     /// Метод вызываемый при входе в состояние
@@ -46,5 +50,10 @@ public abstract class State
     public virtual void Exit()
     {
 
+    }
+
+    protected float GetDistanceEnemyToPlayer()
+    {
+        return Vector3.Distance(enemy.transform.position, transformPlayer.position);
     }
 }

@@ -21,9 +21,9 @@ public class SummonTrigger : MonoBehaviour
         Enemy otherEnemy = otherSummonTriggerCollider.GetComponentInParent<Enemy>();
 
         // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя", то второму меняем состояние на "преследования"
-        if (_enemy.CurrentState.GetType() == typeof(PursuitState) && otherEnemy.CurrentState.GetType() == typeof(IdleState))
+        if (_enemy.CurrentState.GetType() == typeof(ChasingPlayerState) && otherEnemy.CurrentState.GetType() == typeof(IdleState))
         {
-            otherEnemy.SetState<PursuitState>();
+            otherEnemy.SetState<ChasingPlayerState>();
         }
     }
 }

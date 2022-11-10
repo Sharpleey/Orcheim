@@ -20,7 +20,7 @@ public class Warrior : Enemy
     {
         base.InitStates();
 
-        _states[typeof(PursuitState)] = new PursuitState(this);
-        _states[typeof(AttackIdleState)] = new AttackIdleState(this);
+        _states[typeof(ChasingPlayerState)] = new ChasingPlayerState(this);
+        _states[typeof(AttackState)] = new AttackState(this);
     }
 }

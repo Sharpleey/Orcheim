@@ -60,7 +60,7 @@ public class IdleState : State
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
             if (_distanceToTarget < _absoluteDetectionDistance || IsIsView())
             {
-                enemy.SetState<PursuitState>();
+                enemy.SetState<ChasingPlayerState>();
             }
 
             _timerUpdate = 0;
@@ -93,7 +93,7 @@ public class IdleState : State
 
     private void PursuitPlayer(int wave)
     {
-        enemy.SetState<PursuitState>();
+        enemy.SetState<ChasingPlayerState>();
     }
     #endregion Private methods
 }

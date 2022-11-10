@@ -4,7 +4,7 @@ using UnityEngine.AI;
 /// <summary>
 ///  ласс состо€ни€ преследовани€ противником игрока
 /// </summary>
-public class PursuitState : State
+public class ChasingPlayerState : State
 {
     /// <summary>
     /// ƒистанци€ до атаки 
@@ -15,26 +15,25 @@ public class PursuitState : State
     /// –адиус генерации случайной точки на меше возле игрока
     /// </summary>
     private float _randomPointRadius = 8f;
-    
-    private Transform _transformPlayer;
-
-    private Vector3 _positionRandomPointNearPlayer;
-    private Vector3 _positionTarget;
 
     /// <summary>
-    /// ƒистанци€ от противника до игрока
+    /// ѕозици€ случайной точки возле игрока
     /// </summary>
-    private float _distanceFromEnemyToPlayer;
+    private Vector3 _positionRandomPointNearPlayer;
+
     /// <summary>
     /// ƒистанци€ от случайной точки возле игрока до игрока
     /// </summary>
-    private float _distanceFromRandomPointToPlayer;
+    private float _distanceRandomPointToPlayer;
 
     private NavMeshPath _navMeshPath = new NavMeshPath();
 
+    /// <summary>
+    /// “аймер обновлени€ позиции
+    /// </summary>
     private float _timerUpdateDistance;
 
-    public PursuitState(Enemy enemy) : base(enemy)
+    public ChasingPlayerState(Enemy enemy) : base(enemy)
     {
 
     }
@@ -49,7 +48,7 @@ public class PursuitState : State
         _attackDistance = enemy.NavMeshAgent.stoppingDistance + 0.2f;
 
         // ѕолучаем Transform игрока дл€ отслеживани€ его позиции
-        _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+        transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
         // ¬ключаем анимацию дл€ этого состо€ни€, задаем параметр анимации
         enemy.Animator.SetBool(HashAnimation.IsMovement, true);
@@ -70,27 +69,27 @@ public class PursuitState : State
         _timerUpdateDistance += Time.deltaTime;
         if (_timerUpdateDistance > 0.5f)
         {
-            _distanceFromEnemyToPlayer = Vector3.Distance(enemy.transform.position, _transformPlayer.position);
-            _distanceFromRandomPointToPlayer = Vector3.Distance(_positionRandomPointNearPlayer, _transformPlayer.position);
+            distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
+            _distanceRandomPointToPlayer = GetDistanceRandomPointToPlayer();
 
             // ≈сли противник подошел на дистанцию атаки (_attackDistance), то измен€ем состо€ние
-            if (_distanceFromEnemyToPlayer < _attackDistance)
+            if (distanceEnemyToPlayer < _attackDistance)
             {
                 // »змен€ем состо€ние на состо€ние атаки
-                enemy.SetState<AttackIdleState>();
+                enemy.SetState<AttackState>();
             }
 
             // ≈сли противник подошел в радиус генерации случайной точки  (_randomPointRadius) и если не проигрываетс€ анимаци€ атаки, то измен€ем цель противнику
-            if (_distanceFromEnemyToPlayer < _randomPointRadius)
+            if (distanceEnemyToPlayer < _randomPointRadius)
             {
                 // »змен€ем дистанцию остановки протиника
                 enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.2f;
                 // »змени€ем цель противнику на игрока
-                enemy.NavMeshAgent.SetDestination(_transformPlayer.position);
+                enemy.NavMeshAgent.SetDestination(transformPlayer.position);
             }
 
             // √енерим новую случайную точку, если текуща€ случайна€ точка находитс€ за пределом радиуса (_randomPointRadius) и если не проигрываетс€ анимаци€ атаки
-            if (_distanceFromRandomPointToPlayer > _randomPointRadius)
+            if (_distanceRandomPointToPlayer > _randomPointRadius)
             {
                 // √енерим случайную точку
                 _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
@@ -120,7 +119,7 @@ public class PursuitState : State
     /// <summary>
     /// ћетод генерирут случайную точку на навмеше радом с игроком
     /// </summary>
-    /// <returns>Vector3 случайной точки</returns>
+    /// <returns>ѕозицию случайной точки</returns>
     private Vector3 GenerateRandomPointNearPlayer()
     {
         NavMeshHit navMeshHit;
@@ -131,7 +130,7 @@ public class PursuitState : State
         // TODO ќптимизировать, избавитс€ от цикла
         while(!isPathComplite)
         {
-            Vector3 sourcePosition = Random.insideUnitSphere * _randomPointRadius + _transformPlayer.position;
+            Vector3 sourcePosition = Random.insideUnitSphere * _randomPointRadius + transformPlayer.position;
             NavMesh.SamplePosition(sourcePosition, out navMeshHit, _randomPointRadius, NavMesh.AllAreas);
             randomPoint = navMeshHit.position;
             isPathComplite = true;
@@ -154,4 +153,14 @@ public class PursuitState : State
 
         return randomPoint;
     }
-}
+
+    /// <summary>
+    /// ћетод определ€ет дистанцию от случайной точки до игрока
+    /// </summary>
+    /// <returns>ƒистанцию случайной точки до игрока</returns>
+    private float GetDistanceRandomPointToPlayer()
+    {
+        return Vector3.Distance(_positionRandomPointNearPlayer, transformPlayer.position);
+    }
+}   
+

@@ -23,7 +23,7 @@ public class TEST : MonoBehaviour
         foreach (var hitCollider in hitColliders)
         {
             Enemy enemy = hitCollider.GetComponent<Enemy>();
-            enemy.SetState<PursuitState>();
+            enemy.SetState<ChasingPlayerState>();
         }
     }
 }
