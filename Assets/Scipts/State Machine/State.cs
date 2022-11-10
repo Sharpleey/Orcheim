@@ -56,4 +56,9 @@ public abstract class State
     {
         return Vector3.Distance(enemy.transform.position, transformPlayer.position);
     }
+
+    protected Transform GetTransformPlayer()
+    {
+        return GameObject.FindGameObjectWithTag("Player").transform;
+    }
 }

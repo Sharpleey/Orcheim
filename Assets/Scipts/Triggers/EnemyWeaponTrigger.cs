@@ -18,14 +18,7 @@ public class EnemyWeaponTrigger : MonoBehaviour
 
         if(hitCollider.tag == "Player")
         {
-            try
-            {
-                Messenger<int>.Broadcast(GlobalGameEvent.PLAYER_DAMAGED, _enemy.ActualDamage);
-            }
-            catch (BroadcastException exeption)
-            {
-                Debug.Log(exeption.Message);
-            }
+            Messenger<int>.Broadcast(GlobalGameEvent.PLAYER_DAMAGED, _enemy.ActualDamage);
         }
     }
 }

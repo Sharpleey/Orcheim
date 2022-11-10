@@ -26,12 +26,13 @@ public class ChasingPlayerState : State
     /// </summary>
     private float _distanceRandomPointToPlayer;
 
-    private NavMeshPath _navMeshPath = new NavMeshPath();
-
     /// <summary>
     /// Таймер обновления позиции
     /// </summary>
     private float _timerUpdateDistance;
+
+    private NavMeshPath _navMeshPath = new NavMeshPath();
+
 
     public ChasingPlayerState(Enemy enemy) : base(enemy)
     {
@@ -39,62 +40,44 @@ public class ChasingPlayerState : State
     }
     public override void Enter()
     {
-        base.Enter();
-
         // Обнуляем таймер
-        _timerUpdateDistance = 0;
-
-        // Устанавливаем дистанцию атаки
-        _attackDistance = enemy.NavMeshAgent.stoppingDistance + 0.2f;
+        _timerUpdateDistance = 0.5f;
 
         // Получаем Transform игрока для отслеживания его позиции
-        transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+        transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
         enemy.Animator.SetBool(HashAnimation.IsMovement, true);
 
-        // Получаем случайную точку в определенном радиусе (_randomPointRadius) рядом с игрок
-        _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
+        // Получаем случайную точку в определенном радиусе (_randomPointRadius) рядом с игроком
+        GenerateRandomPointNearPlayer();
 
-        // Задаем цель противнику, к которой он движется
-        enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
-        // Устанавливаем дистанцию остановки 0, чтобы исключить ситуации, когда враг останавливался за радиусом (_randomPointRadius) и не мог сменить цель на игрока
-        enemy.NavMeshAgent.stoppingDistance = 0f;
+        // Двигаем противника к случайной точке
+        MoveToRandomPointNearPlayer();
     }
 
     public override void Update()
     {
-        base.Update();
-
         _timerUpdateDistance += Time.deltaTime;
         if (_timerUpdateDistance > 0.5f)
         {
             distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
             _distanceRandomPointToPlayer = GetDistanceRandomPointToPlayer();
 
-            // Если противник подошел на дистанцию атаки (_attackDistance), то изменяем состояние
-            if (distanceEnemyToPlayer < _attackDistance)
-            {
-                // Изменяем состояние на состояние атаки
-                enemy.SetState<AttackState>();
-            }
-
-            // Если противник подошел в радиус генерации случайной точки  (_randomPointRadius) и если не проигрывается анимация атаки, то изменяем цель противнику
-            if (distanceEnemyToPlayer < _randomPointRadius)
-            {
-                // Изменяем дистанцию остановки протиника
-                enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.2f;
-                // Изменияем цель противнику на игрока
-                enemy.NavMeshAgent.SetDestination(transformPlayer.position);
-            }
-
             // Генерим новую случайную точку, если текущая случайная точка находится за пределом радиуса (_randomPointRadius) и если не проигрывается анимация атаки
             if (_distanceRandomPointToPlayer > _randomPointRadius)
             {
                 // Генерим случайную точку
-                _positionRandomPointNearPlayer = GenerateRandomPointNearPlayer();
-                // Изменияем цель противнику на новую случайную точку рядом с игроком
-                enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
+                GenerateRandomPointNearPlayer();
+
+                // Двигаем противника к случайной точке
+                MoveToRandomPointNearPlayer();
+            }
+
+            // Если противник подошел в радиус генерации случайной точки, то изменяем цель противнику
+            if (distanceEnemyToPlayer < _randomPointRadius)
+            {
+                MoveToPlayer();
             }
 
             // Обнуляем таймер
@@ -102,25 +85,53 @@ public class ChasingPlayerState : State
         }
 
         // Рисуем линию от протиника до его цели
-        //Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
+        //Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
         enemy.Animator.SetFloat(HashAnimation.Speed, enemy.Speed/enemy.MaxSpeed);
+
+
+        // Если противник подошел на дистанцию атаки (_attackDistance), то изменяем состояние
+        if (distanceEnemyToPlayer < _attackDistance)
+        {
+            // Изменяем состояние на состояние атаки
+            enemy.SetState<AttackState>();
+        }
     }
 
     public override void Exit()
     {
-        base.Exit();
-
         // Задаем параметр анимации, выключаем анимацию для этого состояния
         enemy.Animator.SetBool(HashAnimation.IsMovement, false);
+    }
+
+    /// <summary>
+    /// Враг двигается в сторону случайной точки возле игрока
+    /// </summary>
+    private void MoveToRandomPointNearPlayer()
+    {
+        // Изменяем дистанцию остановки протиника
+        enemy.NavMeshAgent.stoppingDistance = 0f;
+        // Изменияем цель противнику на новую случайную точку рядом с игроком
+        enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
+    }
+
+    /// <summary>
+    /// Враг двигается в сторону игрока
+    /// </summary>
+    private void MoveToPlayer()
+    {
+        // Изменяем дистанцию остановки протиника
+        enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.2f;
+        // Изменияем цель противнику на игрока
+        enemy.NavMeshAgent.SetDestination(transformPlayer.position);
     }
 
     /// <summary>
     /// Метод генерирут случайную точку на навмеше радом с игроком
     /// </summary>
     /// <returns>Позицию случайной точки</returns>
-    private Vector3 GenerateRandomPointNearPlayer()
+    private void GenerateRandomPointNearPlayer()
     {
         NavMeshHit navMeshHit;
         Vector3 randomPoint = Vector3.zero;
@@ -151,7 +162,7 @@ public class ChasingPlayerState : State
             //}
         }
 
-        return randomPoint;
+        _positionRandomPointNearPlayer = randomPoint;
     }
 
     /// <summary>
