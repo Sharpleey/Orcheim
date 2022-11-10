@@ -441,6 +441,7 @@ public class FirstPersonController : MonoBehaviour
                 Vector3 velocityChange = (targetVelocity - velocity);
                 velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
                 velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+                velocityChange.y = 0; 
 
                 rb.AddForce(velocityChange, ForceMode.VelocityChange);
             }
