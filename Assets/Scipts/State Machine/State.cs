@@ -1,3 +1,4 @@
+using UnityEngine;
 /// <summary>
 /// Базовый абстрактный класс, от которого наследуются все классы состояния
 /// </summary>
@@ -6,7 +7,12 @@ public abstract class State
     /// <summary>
     /// Хранит ссылку основной объект класса противника со всеми параметрами и данными. Необходимо для разного рода взаимодействий
     /// </summary>
-    protected Enemy _enemy;
+    protected Enemy enemy;
+
+    /// <summary>
+    /// Transform игрока для отслеживания его позиции
+    /// </summary>
+    protected Transform transformPlayer;
 
     /// <summary>
     /// Конструктор класса состояния, необходим для прокидывания связей с данными противника и машины состояний
@@ -15,7 +21,7 @@ public abstract class State
     /// <param name="stateMachineEnemy">Машина состоянйи противника</param>
     protected State(Enemy enemy)
     {
-        _enemy = enemy;
+        this.enemy = enemy;
         //_stateMachine = stateMachine;
     }
     /// <summary>

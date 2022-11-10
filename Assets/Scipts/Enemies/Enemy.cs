@@ -206,6 +206,14 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Флаг для блокировки изменения состояния
+    /// </summary>
+    public bool IsBlockChangeState { get; private set; }
+
+    /// <summary>
+    /// Первое стартовое состояние
+    /// </summary>
     public DefaultState DefaultState { get => _defaultState; set => _defaultState = value; }
 
     public HitBoxesController HitBoxesController { get; private set; }
@@ -422,17 +430,17 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Метод для события начала анимации атаки
     /// </summary>
-    private void SetEnableWeaponTriggerCollider()
+    private void SetEnableWeaponTriggerCollider(int param)
     {
-        WeaponTriggerCollider.enabled = true;
+        WeaponTriggerCollider.enabled = param == 1;
     }
 
     /// <summary>
     /// Метод для события в анимации при окончания атаки 
     /// </summary>
-    private void DisableWeaponTriggerCollider()
+    private void SetBlockChangeState(int param)
     {
-        WeaponTriggerCollider.enabled = false;
+        IsBlockChangeState = param == 1;
     }
 
     #endregion Private methods

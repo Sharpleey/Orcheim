@@ -22,26 +22,26 @@ public class DieState : State
 
         }
 
-        if (_enemy.Weapon != null)
+        if (enemy.Weapon != null)
             MakePhysicalWeapon();
 
-        if (_enemy.RagdollController != null)
-            _enemy.RagdollController.MakePhysical();
+        if (enemy.RagdollController != null)
+            enemy.RagdollController.MakePhysical();
 
-        if (_enemy.Animator != null)
-            _enemy.Animator.enabled = false;
+        if (enemy.Animator != null)
+            enemy.Animator.enabled = false;
 
-        if (_enemy.BurningEffectController != null)
-            _enemy.BurningEffectController.enabled = false;
+        if (enemy.BurningEffectController != null)
+            enemy.BurningEffectController.enabled = false;
 
-        if (_enemy.HealthBarController != null)
-            _enemy.HealthBarController.SetActiveHealthBar(false);
+        if (enemy.HealthBarController != null)
+            enemy.HealthBarController.SetActiveHealthBar(false);
 
-        if (_enemy.IconEffectsController != null)
-            _enemy.IconEffectsController.DeactivateAllIcons();
+        if (enemy.IconEffectsController != null)
+            enemy.IconEffectsController.DeactivateAllIcons();
 
-        if (_enemy.NavMeshAgent != null)
-            _enemy.NavMeshAgent.enabled = false;
+        if (enemy.NavMeshAgent != null)
+            enemy.NavMeshAgent.enabled = false;
     }
 
     /// <summary>
@@ -52,14 +52,14 @@ public class DieState : State
         base.Update();
 
         _timer += Time.deltaTime;
-        if (_timer > 3 && _enemy.DieEffectController != null && _enemy.DieEffectController.enabled == false)
+        if (_timer > 3 && enemy.DieEffectController != null && enemy.DieEffectController.enabled == false)
         {
-           _enemy.DieEffectController.enabled = true;
+           enemy.DieEffectController.enabled = true;
         }
 
         if (_timer > 8)
         {
-            _enemy.DestroyEnemyObjects();
+            enemy.DestroyEnemyObjects();
         }
     }
 
@@ -77,9 +77,9 @@ public class DieState : State
     /// <returns></returns>
     private void MakePhysicalWeapon()
     {
-        _enemy.Weapon.transform.parent = null;
+        enemy.Weapon.transform.parent = null;
 
-        Rigidbody rigidbodyWeapon = _enemy.Weapon.GetComponent<Rigidbody>();
+        Rigidbody rigidbodyWeapon = enemy.Weapon.GetComponent<Rigidbody>();
         rigidbodyWeapon.isKinematic = false;
     }
 }

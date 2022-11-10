@@ -9,26 +9,34 @@ public class AttackIdleState : State
     /// Дистанция атаки противника в метрах
     /// </summary>
     private float _attackDistance = 2.5f;
+   
     /// <summary>
     /// Частота атаки, т.е. задержка между атаками в секундах
     /// </summary>
     private float _attackFrequency = 3.5f;
+
+    /// <summary>
+    /// Текущая задержка перед атакой
+    /// </summary>
     private float _currentAttackFrequency = 3.5f;
+    
     /// <summary>
     /// Скорость поворота врага к цели
     /// </summary>
     private float _rotationSpeedToTarget = 2.5f;
+    
     /// <summary>
     /// Дистанция от противника до игрока
     /// </summary>
     private float _distanceFromEnemyToPlayer;
 
+    /// <summary>
+    /// Трансформ игрока для отслеживания дистанции
+    /// </summary>
     private Transform _transformPlayer;
 
-    private AnimatorStateInfo _animatorStateInfo;
-
-    private float _timer;
-    private float _timerUpdate;
+    private float _timerAttack;
+    private float _timerUpdateDistance;
 
     public AttackIdleState(Enemy enemy) : base(enemy)
     {
@@ -39,16 +47,16 @@ public class AttackIdleState : State
         base.Enter();
 
         // Обнуляем таймеры
-        _timer = 0;
-        _timerUpdate = 0;
+        _timerAttack = 0;
+        _timerUpdateDistance = 0;
 
         // Рандомизируем частоту атаки, делаем ее немного хаотичной
         _currentAttackFrequency = Random.Range(0.2f, 1.0f);
 
         // Устанавливаем дистанцию атаки
-        _attackDistance = _enemy.NavMeshAgent.stoppingDistance + 0.1f;
+        _attackDistance = enemy.NavMeshAgent.stoppingDistance + 0.1f;
         // Включаем анимацию
-        _enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, true);
+        enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, true);
         // Получаем transform игрока для использования его в дальнейшем
         _transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -59,33 +67,32 @@ public class AttackIdleState : State
 
         // Атака с определенной частотой
         // -------------------------------------------------------------------------------
-        _timer += Time.deltaTime;
-        if (_timer > _currentAttackFrequency)
+        _timerAttack += Time.deltaTime;
+        if (_timerAttack > _currentAttackFrequency)
         {
             // Включаем анимацию атаки, тем самым атакуем
-            _enemy.Animator.SetTrigger(HashAnimation.IsAttacking);
+            enemy.Animator.SetTrigger(HashAnimation.IsAttacking);
 
             // Рандомизируем частоту атаки, делаем ее немного хаотичной
             _currentAttackFrequency = Random.Range(_attackFrequency - 0.8f, _attackFrequency + 0.8f);
 
-            _timer = 0;
+            _timerAttack = 0;
         }
         // -------------------------------------------------------------------------------
 
 
         // Делаем частоту обновления дистацнии не каждый кадр, а раз в пол секунды
         // -------------------------------------------------------------------------------
-        _timerUpdate += Time.deltaTime;
-        if (_timerUpdate > 0.5f)
+        _timerUpdateDistance += Time.deltaTime;
+        if (_timerUpdateDistance > 0.5f)
         {
             // Определяем дистанцию до игрока
-            _distanceFromEnemyToPlayer = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
-            _animatorStateInfo = _enemy.Animator.GetCurrentAnimatorStateInfo(0);
-            if (_distanceFromEnemyToPlayer > _attackDistance && _animatorStateInfo.nameHash != HashAnimation.MeleeAttack1)
+            _distanceFromEnemyToPlayer = Vector3.Distance(enemy.transform.position, _transformPlayer.position);
+            if (_distanceFromEnemyToPlayer > _attackDistance && !enemy.IsBlockChangeState)
             {
-                _enemy.SetState<PursuitState>();
+                enemy.SetState<PursuitState>();
             }
-            _timerUpdate = 0;
+            _timerUpdateDistance = 0;
         }
         // -------------------------------------------------------------------------------
 
@@ -96,7 +103,7 @@ public class AttackIdleState : State
     {
         base.Exit();
 
-        _enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, false);
+        enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, false);
     }
 
     /// <summary>
@@ -104,7 +111,7 @@ public class AttackIdleState : State
     /// </summary>
     private void LookAtTarget()
     {
-        Vector3 direction = -(_enemy.transform.position - _transformPlayer.position);
-        _enemy.transform.rotation = Quaternion.Lerp(_enemy.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
+        Vector3 direction = -(enemy.transform.position - _transformPlayer.position);
+        enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
     }
 }

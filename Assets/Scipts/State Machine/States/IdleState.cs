@@ -41,7 +41,7 @@ public class IdleState : State
 
         Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
-        _enemy.Animator.SetBool(HashAnimation.IsIdle, true);
+        enemy.Animator.SetBool(HashAnimation.IsIdle, true);
     }
 
     public override void Update()
@@ -55,12 +55,12 @@ public class IdleState : State
             if (!_transformPlayer)
                 _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
 
-            _distanceToTarget = Vector3.Distance(_enemy.transform.position, _transformPlayer.position);
+            _distanceToTarget = Vector3.Distance(enemy.transform.position, _transformPlayer.position);
                 
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
             if (_distanceToTarget < _absoluteDetectionDistance || IsIsView())
             {
-                _enemy.SetState<PursuitState>();
+                enemy.SetState<PursuitState>();
             }
 
             _timerUpdate = 0;
@@ -73,17 +73,17 @@ public class IdleState : State
 
         Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
 
-        _enemy?.Animator?.SetBool(HashAnimation.IsIdle, false);
+        enemy?.Animator?.SetBool(HashAnimation.IsIdle, false);
     }
 
     #region Private methods
     private bool IsIsView()
     {
-        float realAngle = Vector3.Angle(_enemy.transform.forward, _transformPlayer.position - _enemy.transform.position);
+        float realAngle = Vector3.Angle(enemy.transform.forward, _transformPlayer.position - enemy.transform.position);
         RaycastHit hit;
-        if (Physics.Raycast(_enemy.transform.position, _transformPlayer.position - _enemy.transform.position, out hit, _viewDetectionDistance))
+        if (Physics.Raycast(enemy.transform.position, _transformPlayer.position - enemy.transform.position, out hit, _viewDetectionDistance))
         {
-            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(_enemy.transform.position, _transformPlayer.position) <= _viewDetectionDistance && hit.transform == _transformPlayer.transform)
+            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemy.transform.position, _transformPlayer.position) <= _viewDetectionDistance && hit.transform == _transformPlayer.transform)
             {
                 return true;
             }
@@ -93,7 +93,7 @@ public class IdleState : State
 
     private void PursuitPlayer(int wave)
     {
-        _enemy.SetState<PursuitState>();
+        enemy.SetState<PursuitState>();
     }
     #endregion Private methods
 }
