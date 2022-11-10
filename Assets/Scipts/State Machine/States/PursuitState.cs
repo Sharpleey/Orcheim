@@ -106,7 +106,7 @@ public class PursuitState : State
         //Debug.DrawLine(_enemy.transform.position, _enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
-        _enemy.Animator.SetFloat(HashAnimation.Speed, _enemy.Speed);
+        _enemy.Animator.SetFloat(HashAnimation.Speed, _enemy.Speed/_enemy.MaxSpeed);
     }
 
     public override void Exit()

@@ -291,11 +291,6 @@ public abstract class Enemy : MonoBehaviour
         Animator = GetComponent<Animator>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
 
-        Animator.applyRootMotion = true;
-
-        NavMeshAgent.updatePosition = false;
-        NavMeshAgent.updateRotation = true;
-
         // Отключаем коллайдер у оружия, чтобы нельзя было нанести урон раньше начала анмиации атаки
         if (WeaponTriggerCollider)
             WeaponTriggerCollider.enabled = false;
@@ -327,15 +322,6 @@ public abstract class Enemy : MonoBehaviour
         if (_isSlow)
             Slowing();
     }
-
-    private void OnAnimatorMove()
-    {
-        _position = Animator.rootPosition;
-        _position.y = NavMeshAgent.nextPosition.y;
-        transform.position = _position;
-        NavMeshAgent.nextPosition = _position;
-    }
-
     #endregion Mono
 
     #region Private methods
