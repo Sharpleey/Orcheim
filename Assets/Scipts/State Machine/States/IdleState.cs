@@ -19,10 +19,11 @@ public class IdleState : State
     /// Радиус обнаружения, при котором в любом случае враг заметит игрока
     /// </summary>
     private float _absoluteDetectionDistance = 6f;
-
-    private float _distanceToTarget;
+    
+    /// <summary>
+    /// Таймер обновления
+    /// </summary>
     private float _timerUpdate;
-    private Transform _transformPlayer;
 
     public IdleState(Enemy enemy) : base(enemy)
     {
@@ -31,59 +32,61 @@ public class IdleState : State
 
     public override void Enter()
     {
-        base.Enter();
+        _timerUpdate = 0.5f;
 
-        _timerUpdate = 0;
+        // Получаем Transform игрока для отслеживания его позиции
+        transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
-        //_enemy.animator.StopPlayback();
-
-        _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
-
-        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
+        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, SetChasingPlayerState);
 
         enemy.Animator.SetBool(HashAnimation.IsIdle, true);
     }
 
     public override void Update()
     {
-        base.Update();
-
         _timerUpdate += Time.deltaTime;
-        if (_timerUpdate > 0.5)
+
+        if (_timerUpdate > 0.5f)
         {
             // На случай, когда игрок еще не заспавнился
-            if (!_transformPlayer)
-                _transformPlayer = UnityUtility.FindGameObjectTransformWithTag("Player");
+            if (!transformPlayer)
+            {
+                transformPlayer = GetTransformPlayer();
+                return;
+            }
 
-            _distanceToTarget = Vector3.Distance(enemy.transform.position, _transformPlayer.position);
+            distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
                 
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
-            if (_distanceToTarget < _absoluteDetectionDistance || IsIsView())
+            if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
             {
                 enemy.SetState<ChasingPlayerState>();
             }
 
+            // Обнуляем таймер
             _timerUpdate = 0;
         }
     }
 
     public override void Exit()
     {
-        base.Exit();
-
-        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, PursuitPlayer);
+        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, SetChasingPlayerState);
 
         enemy?.Animator?.SetBool(HashAnimation.IsIdle, false);
     }
 
     #region Private methods
-    private bool IsIsView()
+    /// <summary>
+    /// Метод проверяет находится ли игрок в поле зрения врага
+    /// </summary>
+    /// <returns></returns>
+    private bool IsPlayerInSight()
     {
-        float realAngle = Vector3.Angle(enemy.transform.forward, _transformPlayer.position - enemy.transform.position);
+        float realAngle = Vector3.Angle(enemy.transform.forward, transformPlayer.position - enemy.transform.position);
         RaycastHit hit;
-        if (Physics.Raycast(enemy.transform.position, _transformPlayer.position - enemy.transform.position, out hit, _viewDetectionDistance))
+        if (Physics.Raycast(enemy.transform.position, transformPlayer.position - enemy.transform.position, out hit, _viewDetectionDistance))
         {
-            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemy.transform.position, _transformPlayer.position) <= _viewDetectionDistance && hit.transform == _transformPlayer.transform)
+            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemy.transform.position, transformPlayer.position) <= _viewDetectionDistance && hit.transform == transformPlayer.transform)
             {
                 return true;
             }
@@ -91,7 +94,11 @@ public class IdleState : State
         return false;
     }
 
-    private void PursuitPlayer(int wave)
+    /// <summary>
+    /// Метод обработки события 
+    /// </summary>
+    /// <param name="wave"></param>
+    private void SetChasingPlayerState(int wave)
     {
         enemy.SetState<ChasingPlayerState>();
     }

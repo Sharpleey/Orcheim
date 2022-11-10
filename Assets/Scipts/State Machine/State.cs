@@ -59,6 +59,6 @@ public abstract class State
 
     protected Transform GetTransformPlayer()
     {
-        return GameObject.FindGameObjectWithTag("Player").transform;
+        return GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 }
