@@ -41,11 +41,9 @@ public class AttackState : State
     }
     public override void Enter()
     {
-        base.Enter();
-
         // Обнуляем таймеры
         _timerAttack = 0;
-        _timerUpdateDistance = 0;
+        _timerUpdateDistance = 0.5f;
 
         // Рандомизируем частоту атаки, делаем ее немного хаотичной
         _currentAttackFrequency = Random.Range(0.2f, 1.0f);
@@ -55,13 +53,11 @@ public class AttackState : State
         // Включаем анимацию
         enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, true);
         // Получаем transform игрока для использования его в дальнейшем
-        transformPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+        transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
     }
 
     public override void Update()
     {
-        base.Update();
-
         // Атака с определенной частотой
         // -------------------------------------------------------------------------------
         _timerAttack += Time.deltaTime;
@@ -89,6 +85,7 @@ public class AttackState : State
             {
                 enemy.SetState<ChasingPlayerState>();
             }
+
             _timerUpdateDistance = 0;
         }
         // -------------------------------------------------------------------------------
@@ -98,8 +95,6 @@ public class AttackState : State
 
     public override void Exit()
     {
-        base.Exit();
-
         enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, false);
     }
 
