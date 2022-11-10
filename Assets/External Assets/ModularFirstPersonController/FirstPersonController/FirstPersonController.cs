@@ -18,6 +18,8 @@ public class FirstPersonController : MonoBehaviour
 {
     private Rigidbody rb;
 
+    private bool _isLockControl;
+
     #region Camera Movement Variables
 
     public Camera playerCamera;
@@ -147,6 +149,13 @@ public class FirstPersonController : MonoBehaviour
             sprintRemaining = sprintDuration;
             sprintCooldownReset = sprintCooldown;
         }
+
+        Messenger<bool>.AddListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger<bool>.RemoveListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
     }
 
     void Start()
@@ -205,7 +214,7 @@ public class FirstPersonController : MonoBehaviour
         #region Camera
 
         // Control camera movement
-        if(cameraCanMove)
+        if(cameraCanMove && !_isLockControl)
         {
             yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
 
@@ -232,7 +241,7 @@ public class FirstPersonController : MonoBehaviour
         {
             // Changes isZoomed when key is pressed
             // Behavior for toogle zoom
-            if(Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting)
+            if(Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting && !_isLockControl)
             {
                 if (!isZoomed)
                 {
@@ -326,7 +335,7 @@ public class FirstPersonController : MonoBehaviour
         #region Jump
 
         // Gets input and calls jump method
-        if(enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
+        if(enableJump && Input.GetKeyDown(jumpKey) && isGrounded && !_isLockControl)
         {
             Jump();
         }
@@ -432,7 +441,6 @@ public class FirstPersonController : MonoBehaviour
                 Vector3 velocityChange = (targetVelocity - velocity);
                 velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
                 velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                velocityChange.y = 0;
 
                 rb.AddForce(velocityChange, ForceMode.VelocityChange);
             }
@@ -495,6 +503,15 @@ public class FirstPersonController : MonoBehaviour
 
             isCrouched = true;
         }
+    }
+
+    /// <summary>
+    /// Метод блокирования управления
+    /// </summary>
+    /// <param name="isPaused">Блокировать или не блокировать</param>
+    private void LockControl(bool isPaused)
+    {
+        _isLockControl = isPaused;
     }
 
     private void HeadBob()
