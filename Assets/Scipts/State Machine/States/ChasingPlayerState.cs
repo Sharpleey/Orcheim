@@ -2,37 +2,31 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// Класс состояния преследования противником игрока
+/// Базовый абстрактный класс состояния преследования противником игрока
 /// </summary>
-public class ChasingPlayerState : State
+public abstract class ChasingPlayerState : State
 {
-    /// <summary>
-    /// Дистанция до атаки 
-    /// </summary>
-    private float _attackDistance = 2.5f;
-    
     /// <summary>
     /// Радиус генерации случайной точки на меше возле игрока
     /// </summary>
-    private float _randomPointRadius = 8f;
+    protected float _randomPointRadius = 8f;
 
     /// <summary>
     /// Позиция случайной точки возле игрока
     /// </summary>
-    private Vector3 _positionRandomPointNearPlayer;
+    protected Vector3 _positionRandomPointNearPlayer;
 
     /// <summary>
     /// Дистанция от случайной точки возле игрока до игрока
     /// </summary>
-    private float _distanceRandomPointToPlayer;
+    protected float _distanceRandomPointToPlayer;
 
     /// <summary>
     /// Таймер обновления позиции
     /// </summary>
-    private float _timerUpdateDistance;
+    protected float _timerUpdateDistance;
 
-    private NavMeshPath _navMeshPath = new NavMeshPath();
-
+    protected NavMeshPath _navMeshPath = new NavMeshPath();
 
     public ChasingPlayerState(Enemy enemy) : base(enemy)
     {
@@ -45,9 +39,6 @@ public class ChasingPlayerState : State
 
         // Получаем Transform игрока для отслеживания его позиции
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
-
-        // Включаем анимацию для этого состояния, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimation.IsMovement, true);
 
         // Получаем случайную точку в определенном радиусе (_randomPointRadius) рядом с игроком
         GenerateRandomPointNearPlayer();
@@ -88,27 +79,18 @@ public class ChasingPlayerState : State
         //Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
-        enemy.Animator.SetFloat(HashAnimation.Speed, enemy.Speed/enemy.MaxSpeed);
-
-
-        // Если противник подошел на дистанцию атаки (_attackDistance), то изменяем состояние
-        if (distanceEnemyToPlayer < _attackDistance)
-        {
-            // Изменяем состояние на состояние атаки
-            enemy.SetState<AttackState>();
-        }
+        enemy.Animator.SetFloat(HashAnimString.Speed, enemy.Speed/enemy.MaxSpeed);
     }
 
     public override void Exit()
     {
-        // Задаем параметр анимации, выключаем анимацию для этого состояния
-        enemy.Animator.SetBool(HashAnimation.IsMovement, false);
+
     }
 
     /// <summary>
     /// Враг двигается в сторону случайной точки возле игрока
     /// </summary>
-    private void MoveToRandomPointNearPlayer()
+    protected void MoveToRandomPointNearPlayer()
     {
         // Изменяем дистанцию остановки протиника
         enemy.NavMeshAgent.stoppingDistance = 0f;
@@ -119,10 +101,10 @@ public class ChasingPlayerState : State
     /// <summary>
     /// Враг двигается в сторону игрока
     /// </summary>
-    private void MoveToPlayer()
+    protected void MoveToPlayer()
     {
         // Изменяем дистанцию остановки протиника
-        enemy.NavMeshAgent.stoppingDistance = _attackDistance - 0.2f;
+        enemy.NavMeshAgent.stoppingDistance = enemy.AttackDistance - 0.2f;
         // Изменияем цель противнику на игрока
         enemy.NavMeshAgent.SetDestination(transformPlayer.position);
     }
@@ -131,7 +113,7 @@ public class ChasingPlayerState : State
     /// Метод генерирут случайную точку на навмеше радом с игроком
     /// </summary>
     /// <returns>Позицию случайной точки</returns>
-    private void GenerateRandomPointNearPlayer()
+    protected void GenerateRandomPointNearPlayer()
     {
         NavMeshHit navMeshHit;
         Vector3 randomPoint = Vector3.zero;
@@ -169,7 +151,7 @@ public class ChasingPlayerState : State
     /// Метод определяет дистанцию от случайной точки до игрока
     /// </summary>
     /// <returns>Дистанцию случайной точки до игрока</returns>
-    private float GetDistanceRandomPointToPlayer()
+    protected float GetDistanceRandomPointToPlayer()
     {
         return Vector3.Distance(_positionRandomPointNearPlayer, transformPlayer.position);
     }

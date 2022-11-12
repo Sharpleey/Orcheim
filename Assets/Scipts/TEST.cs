@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TEST : MonoBehaviour
 {
-    [SerializeField] LayerMask collisionMask;
+    [SerializeField] private LayerMask collisionMask = 4096;
 
     private void Update()
     {

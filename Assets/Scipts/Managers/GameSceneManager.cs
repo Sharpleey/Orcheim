@@ -67,6 +67,7 @@ public class GameSceneManager : MonoBehaviour, IGameManager
     {
 		_isGamePaused = isPaused;
 
+		//TODO 
 		if (_isGamePaused)
 		{
 			Time.timeScale = 0;

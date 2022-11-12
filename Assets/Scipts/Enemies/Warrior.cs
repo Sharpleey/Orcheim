@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-public class Warrior : Enemy
+﻿public class Warrior : Enemy
 {
     private new void Start()
     {
@@ -20,7 +17,7 @@ public class Warrior : Enemy
     {
         base.InitStates();
 
-        _states[typeof(ChasingPlayerState)] = new ChasingPlayerState(this);
-        _states[typeof(AttackState)] = new AttackState(this);
+        _states[typeof(ChasingPlayerState)] = new WarriorChasingPlayerState(this);
+        _states[typeof(WarriorAttackState)] = new WarriorAttackState(this);
     }
 }

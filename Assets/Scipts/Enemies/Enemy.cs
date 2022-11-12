@@ -10,10 +10,11 @@ using UnityEngine.AI;
 public abstract class Enemy : MonoBehaviour
 {
     #region Serialize fields
-    [SerializeField] private int _maxHealth = 150;
-    [SerializeField] private int _maxArmor = 0;
-    [SerializeField] private float _maxSpeed = 3.5f;
-    [SerializeField] private int _averageDamage = 25;
+    [SerializeField, Min(100)] private int _maxHealth = 150;
+    [SerializeField, Min(0)] private int _maxArmor = 0;
+    [SerializeField, Min(1)] private float _maxSpeed = 3.5f;
+    [SerializeField, Min(1)] private int _averageDamage = 25;
+    [SerializeField, Min(1)] private float _attackDistance = 2.5f;
 
     [Header("State Settings")]
     [SerializeField] private String _curNammeState;
@@ -101,6 +102,26 @@ public abstract class Enemy : MonoBehaviour
                 return;
             }
             _averageDamage = value;
+        }
+    }
+
+    /// <summary>
+    /// Дистанция атаки противника
+    /// </summary>
+    public float AttackDistance
+    {
+        get
+        {
+            return _attackDistance;
+        }
+        protected set
+        {
+            if (value < 1)
+            {
+                _attackDistance = 1;
+                return;
+            }
+            _attackDistance = value;
         }
     }
 
@@ -209,7 +230,7 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Флаг для блокировки изменения состояния
     /// </summary>
-    public bool IsBlockChangeState { get; private set; }
+    public bool IsBlockChangeState { get; set; }
 
     /// <summary>
     /// Первое стартовое состояние
@@ -351,7 +372,7 @@ public abstract class Enemy : MonoBehaviour
     {
         switch(DefaultState)
         {
-            case DefaultState.Pursuit:
+            case DefaultState.ChasingPlayer:
                 SetState<ChasingPlayerState>();
                 break;
             default:
@@ -428,7 +449,8 @@ public abstract class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Метод для события начала анимации атаки
+    /// Метод для события анимации атаки. Используется чтобы в определенные моменты атаки включать и отключать 
+    /// возможность нанесения врагом урона
     /// </summary>
     private void SetEnableWeaponTriggerCollider(int param)
     {

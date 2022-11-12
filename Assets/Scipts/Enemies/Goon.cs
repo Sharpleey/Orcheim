@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Goon : Enemy
 {
+    [Header("Spell Parameters")]
+    [SerializeField, Min(5)] private float _cooldownWarcry = 20f;
+    [SerializeField, Min(2)] private float _radiusWarcry = 8f;
+
+    public bool IsWarcryInCooldown { get; private set; }
+
     private new void Start()
     {
         base.Start();
@@ -21,7 +27,30 @@ public class Goon : Enemy
     {
         base.InitStates();
 
-        _states[typeof(ChasingPlayerState)] = new ChasingPlayerState(this);
-        _states[typeof(AttackState)] = new AttackState(this);
+        _states[typeof(ChasingPlayerState)] = new GoonChasingPlayerState(this);
+        _states[typeof(GoonAttackState)] = new GoonAttackState(this);
+        _states[typeof(InspirationState)] = new InspirationState(this);
+    }
+
+    public void CastWarcry()
+    {
+        if (IsWarcryInCooldown)
+            return;
+
+        Debug.Log("Использование способности Warcry");
+
+        StartCoroutine(ResetCooldown());
+
+        // Ищем союзных существ в радиусе
+        // Вешаем на них положительный эффект повышащий броню
+    }
+
+    private IEnumerator ResetCooldown()
+    {
+        IsWarcryInCooldown = true;
+
+        yield return new WaitForSeconds(_cooldownWarcry);
+
+        IsWarcryInCooldown = false;
     }
 }

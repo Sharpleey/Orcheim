@@ -172,7 +172,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
 
         // Меняем состояние врага на преследование
         Enemy enemy = enemyOrc.GetComponent<Enemy>();
-        enemy.DefaultState = DefaultState.Pursuit;
+        enemy.DefaultState = DefaultState.ChasingPlayer;
 
         Debug.Log("Spawn enemy " + enemy.GetType());
     }

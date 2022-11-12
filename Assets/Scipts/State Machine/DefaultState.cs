@@ -4,5 +4,5 @@
 public enum DefaultState
 {
    Idle,
-   Pursuit
+   ChasingPlayer
 }

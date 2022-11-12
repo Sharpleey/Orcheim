@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8747887088219537894}
   - component: {fileID: 75913131540232318}
   m_Layer: 10
-  m_Name: Weapon7
+  m_Name: Weapon5_Goon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1923880590728329775}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 6027955585504743390}
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923880590728329775}
-  m_Mesh: {fileID: -2556504532885143673, guid: 6a85988b40d745f4ca430c041e84a4ee, type: 3}
+  m_Mesh: {fileID: 1147752550323321503, guid: 6a85988b40d745f4ca430c041e84a4ee, type: 3}
 --- !u!23 &2710392084437477027
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eb378f2a91f9e8a40bfa0018eb4d0038, type: 2}
+  - {fileID: 2100000, guid: c8455736074967e499a8e9cc0a9f34b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,7 +97,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -2556504532885143673, guid: 6a85988b40d745f4ca430c041e84a4ee, type: 3}
+  m_Mesh: {fileID: 1147752550323321503, guid: 6a85988b40d745f4ca430c041e84a4ee, type: 3}
 --- !u!54 &75913131540232318
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -106,7 +106,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923880590728329775}
   serializedVersion: 2
-  m_Mass: 14
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -123,9 +123,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6027955585504743390}
-  - component: {fileID: 7852609647822600140}
+  - component: {fileID: 1477411290036477456}
   - component: {fileID: 5270922632266980978}
-  - component: {fileID: 2895428722575416128}
+  - component: {fileID: 7990931914175805030}
   m_Layer: 13
   m_Name: TriggerCollider
   m_TagString: Untagged
@@ -147,7 +147,7 @@ Transform:
   m_Father: {fileID: 1380751669917361076}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &7852609647822600140
+--- !u!136 &1477411290036477456
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,10 +157,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.22
-  m_Height: 2.5537608
+  m_Radius: 0.34
+  m_Height: 1.9593732
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 1.9052404}
+  m_Center: {x: 0, y: 0, z: 1.1898686}
 --- !u!54 &5270922632266980978
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -177,7 +177,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2895428722575416128
+--- !u!114 &7990931914175805030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

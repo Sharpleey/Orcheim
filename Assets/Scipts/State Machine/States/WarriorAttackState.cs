@@ -3,13 +3,8 @@ using UnityEngine;
 /// <summary>
 /// Класс состояния атаки проивника. В этом состоянии противник чередует анимацию стойки перед атакой с анимацией атаки 
 /// </summary>
-public class AttackState : State
-{
-    /// <summary>
-    /// Дистанция атаки противника в метрах
-    /// </summary>
-    private float _attackDistance = 2.5f;
-   
+public class WarriorAttackState : State
+{  
     /// <summary>
     /// Частота атаки, т.е. задержка между атаками в секундах
     /// </summary>
@@ -35,7 +30,7 @@ public class AttackState : State
     /// </summary>
     private float _timerUpdateDistance;
 
-    public AttackState(Enemy enemy) : base(enemy)
+    public WarriorAttackState(Enemy enemy) : base(enemy)
     {
 
     }
@@ -48,12 +43,11 @@ public class AttackState : State
         // Рандомизируем частоту атаки, делаем ее немного хаотичной
         _currentAttackFrequency = Random.Range(0.2f, 1.0f);
 
-        // Устанавливаем дистанцию атаки
-        _attackDistance = enemy.NavMeshAgent.stoppingDistance + 0.1f;
-        // Включаем анимацию
-        enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, true);
         // Получаем transform игрока для использования его в дальнейшем
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
+
+        // Включаем анимацию
+        enemy.Animator.SetBool(HashAnimString.IsIdleAttack, true);
     }
 
     public override void Update()
@@ -64,7 +58,7 @@ public class AttackState : State
         if (_timerAttack > _currentAttackFrequency)
         {
             // Включаем анимацию атаки, тем самым атакуем
-            enemy.Animator.SetTrigger(HashAnimation.IsAttacking);
+            enemy.Animator.SetTrigger(HashAnimString.IsAttack_1);
 
             // Рандомизируем частоту атаки, делаем ее немного хаотичной
             _currentAttackFrequency = Random.Range(_attackFrequency - 0.8f, _attackFrequency + 0.8f);
@@ -81,7 +75,7 @@ public class AttackState : State
         {
             // Определяем дистанцию до игрока
             distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
-            if (distanceEnemyToPlayer > _attackDistance && !enemy.IsBlockChangeState)
+            if (distanceEnemyToPlayer > enemy.AttackDistance && !enemy.IsBlockChangeState)
             {
                 enemy.SetState<ChasingPlayerState>();
             }
@@ -95,7 +89,7 @@ public class AttackState : State
 
     public override void Exit()
     {
-        enemy.Animator.SetBool(HashAnimation.IsIdleAttacking, false);
+        enemy.Animator.SetBool(HashAnimString.IsIdleAttack, false);
     }
 
     /// <summary>

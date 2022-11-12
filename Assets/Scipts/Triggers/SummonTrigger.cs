@@ -6,22 +6,25 @@ using UnityEngine;
 /// </summary>
 public class SummonTrigger : MonoBehaviour
 {
-    private Enemy _enemy;
+    public Enemy Enemy { get; private set; }
 
     private void Awake()
     {
-        _enemy = GetComponentInParent<Enemy>();
+        Enemy = GetComponentInParent<Enemy>();
     }
-    private void OnTriggerExit(Collider otherSummonTriggerCollider)
+    private void OnTriggerExit(Collider otherSummonTriggerCollider)  
     {
         // Если текущее состояние "покоя", то ничего не делаем
-        if (_enemy.CurrentState.GetType() == typeof(IdleState))
+        if (Enemy.CurrentState.GetType() == typeof(IdleState))
             return;
 
-        Enemy otherEnemy = otherSummonTriggerCollider.GetComponentInParent<Enemy>();
+        Enemy otherEnemy = otherSummonTriggerCollider.GetComponent<SummonTrigger>().Enemy;
+
+        bool onChangeState = (Enemy.CurrentState.GetType() == typeof(WarriorChasingPlayerState) || Enemy.CurrentState.GetType() == typeof(GoonChasingPlayerState))
+            && otherEnemy.CurrentState.GetType() == typeof(IdleState);
 
         // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя", то второму меняем состояние на "преследования"
-        if (_enemy.CurrentState.GetType() == typeof(ChasingPlayerState) && otherEnemy.CurrentState.GetType() == typeof(IdleState))
+        if (onChangeState)
         {
             otherEnemy.SetState<ChasingPlayerState>();
         }

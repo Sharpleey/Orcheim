@@ -1,5 +1,4 @@
 using UnityEngine;
-using static MessengerInternal;
 
 /// <summary>
 /// Класс отвечающий за нанесение врагом урона игроку, компонент устанавливается на объект с триггер колладером на оружие противника
@@ -19,6 +18,7 @@ public class EnemyWeaponTrigger : MonoBehaviour
         if(hitCollider.tag == "Player")
         {
             Messenger<int>.Broadcast(GlobalGameEvent.PLAYER_DAMAGED, _enemy.ActualDamage);
+            Debug.Log("PLAYER_DAMAGED " + _enemy.ActualDamage.ToString());
         }
     }
 }
