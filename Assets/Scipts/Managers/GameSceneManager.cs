@@ -67,14 +67,7 @@ public class GameSceneManager : MonoBehaviour, IGameManager
     {
 		_isGamePaused = isPaused;
 
-		//TODO 
-		if (_isGamePaused)
-		{
-			Time.timeScale = 0;
-			return;
-		}
-		
-		Time.timeScale = 1;
+		Time.timeScale = isPaused ? 0 : 1;
 	}
 
 	/// <summary>
