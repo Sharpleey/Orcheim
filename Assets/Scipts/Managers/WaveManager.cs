@@ -15,8 +15,8 @@ public class WaveManager : MonoBehaviour, IGameManager
 
     private bool _isFirstTriggerGame = false;
 
-    private IEnumerator _broadcastPreparingForWaveCoroutine;
-    private IEnumerator _broadcastBroadcastWaveIsComing;
+    private IEnumerator _coroutineBroadcastPreparingForWave;
+    private IEnumerator _coroutineBroadcastWaveIsComing;
 
     public void Startup()
     {
@@ -98,8 +98,8 @@ public class WaveManager : MonoBehaviour, IGameManager
     {
         if (!_isFirstTriggerGame)
         {
-            _broadcastPreparingForWaveCoroutine = BroadcastPreparingForWave(_delayToFirstBroadcastPreparingForWave);
-            StartCoroutine(_broadcastPreparingForWaveCoroutine);
+            _coroutineBroadcastPreparingForWave = BroadcastPreparingForWave(_delayToFirstBroadcastPreparingForWave);
+            StartCoroutine(_coroutineBroadcastPreparingForWave);
 
             _isFirstTriggerGame = true; //TODO
         }
@@ -107,8 +107,8 @@ public class WaveManager : MonoBehaviour, IGameManager
 
     private void PreparingForWave_EventHandler(int wave)
     {
-        _broadcastBroadcastWaveIsComing = BroadcastWaveIsComing(_delayToBroadcastWaveIsComing);
-        StartCoroutine(_broadcastBroadcastWaveIsComing);
+        _coroutineBroadcastWaveIsComing = BroadcastWaveIsComing(_delayToBroadcastWaveIsComing);
+        StartCoroutine(_coroutineBroadcastWaveIsComing);
     }
 
     private void WaveIsOver_EventHandler()

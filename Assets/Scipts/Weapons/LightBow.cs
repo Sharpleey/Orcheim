@@ -62,6 +62,10 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     // Объект в котором будем хранить клон стрелы, его же будем выстреливать
     private GameObject _cloneArrow;
+    private ProjectileArrow _cloneProjectileArrow;
+
+    private IEnumerator _coroutineReload;
+
     #endregion Private fields
 
     #region Mono
@@ -91,11 +95,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
         AttackModifaers[typeof(SlowArrow)] = GetComponent<SlowArrow>();
         AttackModifaers[typeof(Mjolnir)] = GetComponent<Mjolnir>();
 
-        //_defaultBowRotate = transform.rotation;
-
-        // Заряжаем
         SpawnArrow();
     }
+
     #endregion Mono
 
     #region Private methods
@@ -103,37 +105,77 @@ public class LightBow : MonoBehaviour, IBowWeapon
     {
         if (!_isLockControl)
         {
+            // TODO ----------------------------------------
             // ПКМ
+            // Idle -> Aiming
             if (Input.GetMouseButtonDown(1))
             {
-                //_animator.SetBool("Load", true);
-                //_isAiming = true;
-
-                //Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
-                //RaycastHit hit;
-
-                //if (Physics.Raycast(ray, out hit))
-                //{
-                //    _pointer.position = hit.point;
-                //    Debug.Log(hit.point);
-                //    transform.LookAt(hit.point);
-
-                //    transform.Rotate(0.0f, 0.0f, -90.0f);
-                //}
+                _animator.SetBool(HashAnimStringWeapon.IsIdle, false);
+                _animator.SetBool(HashAnimStringWeapon.IsAimingLoad, true);
             }
 
             // Отпустить ПКМ
+            // Aiming -> Idle
             if (Input.GetMouseButtonUp(1))
             {
-                //_animator.SetBool("Load", false);
-                //_isAiming = false;
+                _animator.SetBool(HashAnimStringWeapon.IsAimingLoad, false);
+                _animator.SetBool(HashAnimStringWeapon.IsIdle, true);
+            }
+
+            // Удерживание ПКМ + ЛКМ
+            // Aiming -> Shoot
+            if (Input.GetMouseButton(1) && Input.GetMouseButtonDown(0))
+            {
+                _animator.SetBool(HashAnimStringWeapon.IsAimingLoad, false);
+
+                ChargedShot();
+            }
+
+            // Idle -> Run
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                _animator.SetBool(HashAnimStringWeapon.IsIdle, false);
+                _animator.SetBool(HashAnimStringWeapon.IsRun, true);
+            }
+
+            // Run -> Idle
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                _animator.SetBool(HashAnimStringWeapon.IsRun, false);
+                _animator.SetBool(HashAnimStringWeapon.IsIdle, true);
+            }
+
+            // Run -> Sprint
+            if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                _animator.SetBool(HashAnimStringWeapon.IsRun, false);
+                _animator.SetBool(HashAnimStringWeapon.IsIdle, false);
+                _animator.SetBool(HashAnimStringWeapon.IsSprint, true);
+            }
+
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                _animator.SetBool(HashAnimStringWeapon.IsSprint, false);
+            }
+
+            // Sprint -> Run
+            if (Input.GetKeyUp(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
+            {
+                _animator.SetBool(HashAnimStringWeapon.IsRun, true);
+                _animator.SetBool(HashAnimStringWeapon.IsSprint, false);
+            }
+
+            // Sprint -> Idle
+            if (Input.GetKeyUp(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+            {
+                _animator.SetBool(HashAnimStringWeapon.IsIdle, true);
+                _animator.SetBool(HashAnimStringWeapon.IsSprint, false);
             }
 
             // ЛКМ
             if (Input.GetMouseButtonDown(0) && !_isReload)
             {
-                _animator.SetTrigger("FastShoot");
-                Shot();
+                FastShot();
             }
         }
     }
@@ -147,62 +189,40 @@ public class LightBow : MonoBehaviour, IBowWeapon
         _isLockControl = isPaused;
     }
 
-    private void Shot()
+    private void FastShot()
     {
-        // Запускаем стрелу
-        _cloneArrow.GetComponent<ProjectileArrow>().Launch(_shotForce);
-
-        StartCoroutine(Reload(TimeReloadShot));
+        _animator.SetTrigger(HashAnimStringWeapon.IsShoot);
     }
 
     private void ChargedShot()
     {
-        
+        _animator.SetTrigger(HashAnimStringWeapon.IsShoot);
+    }
+
+    private void ReleaseArrow()
+    {
+        //_isReload = true;
+        // Запускаем стрелу
+        _cloneProjectileArrow.Launch(_shotForce);
     }
 
     private void SpawnArrow()
     {
+        _isReload = true;
+
         _cloneArrow = Instantiate(_prefabArrow);
 
         _cloneArrow.transform.parent = _arrowSpawn.transform;
 
         _cloneArrow.transform.position = _arrowSpawn.position;
         _cloneArrow.transform.rotation = _arrowSpawn.rotation;
+        //_cloneArrow.transform.localScale = _arrowSpawn.lossyScale;
+
+        _cloneProjectileArrow = _cloneArrow.GetComponent<ProjectileArrow>();
 
         _cloneArrow.GetComponent<Rigidbody>().isKinematic = true;
 
-    }
-
-    private IEnumerator Reload(float timeReload)
-    {
-        _isReload = true;
-
-        // Ключевое слово yield указывает сопрограмме, когда следует остановиться.
-        yield return new WaitForSeconds(timeReload);
-
-        SpawnArrow();
-
         _isReload = false;
     }
-
-    //void Reload()
-    //{
-    //    Transform newProjectileInstance = Transform.Instantiate(projectile);
-
-    //    Rigidbody projectileRigidbody = newProjectileInstance.GetComponent<Rigidbody>();
-    //    if (projectileRigidbody != null)
-    //    {
-    //        projectileRigidbody.useGravity = false;
-    //    }
-
-    //    newProjectileInstance.parent = projectileParent;
-    //    newProjectileInstance.localPosition = originalPosition;
-    //    newProjectileInstance.localEulerAngles = originalEulerAngles;
-    //    newProjectileInstance.localScale = originalScale;
-
-    //    newProjectileInstance.GetComponent<MeshRenderer>().enabled = true;
-
-    //    projectiles.Insert(0, newProjectileInstance);
-    //}
     #endregion Private methods
 }

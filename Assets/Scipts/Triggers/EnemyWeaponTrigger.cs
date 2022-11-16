@@ -15,10 +15,11 @@ public class EnemyWeaponTrigger : MonoBehaviour
     {
         //PlayerCharacterController player = hitCollider.GetComponentInParent<PlayerCharacterController>();
 
-        if(hitCollider.tag == "Player")
+        Player player = hitCollider.GetComponent<Player>();
+
+        if (player)
         {
-            Messenger<int>.Broadcast(GlobalGameEvent.PLAYER_DAMAGED, _enemy.ActualDamage);
-            Debug.Log("PLAYER_DAMAGED " + _enemy.ActualDamage.ToString());
+            player.TakeDamage(_enemy.ActualDamage);
         }
     }
 }

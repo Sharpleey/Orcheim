@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HashAnimString
+public class HashAnimStringEnemy
 {
     #region Trigger
     public static int IsAttack_1 = Animator.StringToHash("isAttack_1");
@@ -24,6 +24,20 @@ public class HashAnimString
 
     //public static int GoonAttack_1 = Animator.StringToHash("Base Layer.GoonAttack_1");
     //public static int GoonAttack_2 = Animator.StringToHash("Base Layer.GoonAttack_2");
+    #endregion
+}
+
+public class HashAnimStringWeapon
+{
+    #region Trigger
+    public static int IsShoot = Animator.StringToHash("isShoot");
+    #endregion
+
+    #region Bool
+    public static int IsIdle = Animator.StringToHash("isIdle");
+    public static int IsAimingLoad = Animator.StringToHash("isAimingLoad");
+    public static int IsRun = Animator.StringToHash("isRun");
+    public static int IsSprint = Animator.StringToHash("isSprint");
     #endregion
 }
 

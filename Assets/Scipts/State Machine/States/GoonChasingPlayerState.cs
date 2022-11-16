@@ -25,7 +25,7 @@ public class GoonChasingPlayerState : ChasingPlayerState
         _timerCheckAlliesNearby = 0;
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimString.IsMovement, true);
+        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
     }
 
     public override void Update()
@@ -62,7 +62,7 @@ public class GoonChasingPlayerState : ChasingPlayerState
         base.Exit();
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimString.IsMovement, false);
+        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
     }
 
     private int GetCountAlliesNearby()

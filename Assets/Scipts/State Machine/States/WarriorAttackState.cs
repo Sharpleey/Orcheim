@@ -47,7 +47,7 @@ public class WarriorAttackState : State
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
         // Включаем анимацию
-        enemy.Animator.SetBool(HashAnimString.IsIdleAttack, true);
+        enemy.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, true);
     }
 
     public override void Update()
@@ -58,7 +58,7 @@ public class WarriorAttackState : State
         if (_timerAttack > _currentAttackFrequency)
         {
             // Включаем анимацию атаки, тем самым атакуем
-            enemy.Animator.SetTrigger(HashAnimString.IsAttack_1);
+            enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack_1);
 
             // Рандомизируем частоту атаки, делаем ее немного хаотичной
             _currentAttackFrequency = Random.Range(_attackFrequency - 0.8f, _attackFrequency + 0.8f);
@@ -89,7 +89,7 @@ public class WarriorAttackState : State
 
     public override void Exit()
     {
-        enemy.Animator.SetBool(HashAnimString.IsIdleAttack, false);
+        enemy.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, false);
     }
 
     /// <summary>

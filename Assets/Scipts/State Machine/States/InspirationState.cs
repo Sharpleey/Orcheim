@@ -9,7 +9,7 @@ public class InspirationState : State
         enemy.NavMeshAgent.isStopped = true;
 
         // ¬ключаем анимацию
-        enemy.Animator.SetTrigger(HashAnimString.IsInspiration);
+        enemy.Animator.SetTrigger(HashAnimStringEnemy.IsInspiration);
 
         enemy.IsBlockChangeState = true;
     }

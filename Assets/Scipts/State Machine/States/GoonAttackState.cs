@@ -19,7 +19,7 @@ public class GoonAttackState : State
 
     public GoonAttackState(Enemy enemy) : base(enemy)
     {
-        _hashAnimAttackTriggers = new int[2] { HashAnimString.IsAttack_1, HashAnimString.IsAttack_2 };
+        _hashAnimAttackTriggers = new int[2] { HashAnimStringEnemy.IsAttack_1, HashAnimStringEnemy.IsAttack_2 };
     }
 
     public override void Enter()

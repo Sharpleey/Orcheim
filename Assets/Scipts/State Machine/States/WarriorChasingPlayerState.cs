@@ -13,7 +13,7 @@ public class WarriorChasingPlayerState : ChasingPlayerState
         base.Enter();
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimString.IsMovement, true);
+        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
     }
 
     public override void Update()
@@ -33,6 +33,6 @@ public class WarriorChasingPlayerState : ChasingPlayerState
         base.Exit();
 
         // Задаем параметр анимации, выключаем анимацию для этого состояния
-        enemy.Animator.SetBool(HashAnimString.IsMovement, false);
+        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
     }
 }

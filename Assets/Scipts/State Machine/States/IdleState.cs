@@ -39,7 +39,7 @@ public class IdleState : State
 
         Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, SetChasingPlayerState);
 
-        enemy.Animator.SetBool(HashAnimString.IsIdle, true);
+        enemy.Animator.SetBool(HashAnimStringEnemy.IsIdle, true);
     }
 
     public override void Update()
@@ -72,7 +72,7 @@ public class IdleState : State
     {
         Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, SetChasingPlayerState);
 
-        enemy?.Animator?.SetBool(HashAnimString.IsIdle, false);
+        enemy?.Animator?.SetBool(HashAnimStringEnemy.IsIdle, false);
     }
 
     #region Private methods
