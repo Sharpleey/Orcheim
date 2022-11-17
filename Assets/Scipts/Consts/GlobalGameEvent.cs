@@ -14,4 +14,6 @@ public class GlobalGameEvent
     public const string PLAYER_DEAD = "PLAYER_DEAD";
 
     public const string GAME_OVER = "GAME_OVER";
+
+    public const string PLAY_AMBIENT = "PLAY_AMBIENT";
 }

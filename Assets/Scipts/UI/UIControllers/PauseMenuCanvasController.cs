@@ -120,7 +120,7 @@ public class PauseMenuCanvasController : MonoBehaviour
     public void OnClickButtonRestart()
     {
         Messenger.Broadcast(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM);
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.TEST_AI);
+        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.TEST_AI);
     }
 
     public void OnClickButtonExitMainMenu()
@@ -129,6 +129,6 @@ public class PauseMenuCanvasController : MonoBehaviour
         /// ѕроизводим сохранени€ данных перед выходом
         ///
         Messenger.Broadcast(GlobalGameEvent.GAME_OVER);
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.MAIN_MENU);
+        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.MAIN_MENU);
     }
 }

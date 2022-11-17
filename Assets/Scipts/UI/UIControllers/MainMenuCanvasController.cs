@@ -45,7 +45,7 @@ public class MainMenuCanvasController : MonoBehaviour
     public void OnClickTestSceneAI()
     {
         Messenger.Broadcast(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM);
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.TEST_AI);
+        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.TEST_AI);
     }
 
     private void ShowMenu(GameObject menu)

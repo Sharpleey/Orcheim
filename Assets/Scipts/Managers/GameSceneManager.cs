@@ -98,10 +98,12 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		// После загрузки происходит автоматический переход на сцену
 		//
 
-		// Если сцена загружена в режиме Orccheim
+		//TODO
+		// Если сцена загружена в режиме Orccheim 
 		if (_isLoadSceneGameModeOrccheim)
         {
 			Messenger.Broadcast(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM);
+			Messenger<MusicSound>.Broadcast(GlobalGameEvent.PLAY_AMBIENT, MusicSound.AmbientDay);
 
 			_isLoadSceneGameModeOrccheim = false;
 		}

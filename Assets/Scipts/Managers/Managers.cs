@@ -4,6 +4,12 @@ using UnityEngine;
 
 //Убеждаемся, что различные диспетчеры существуют.
 [RequireComponent(typeof(GameSceneManager))]
+[RequireComponent(typeof(WaveManager))]
+[RequireComponent(typeof(SpawnEnemyManager))]
+[RequireComponent(typeof(PlayerManager))]
+[RequireComponent(typeof(LootManager))]
+[RequireComponent(typeof(AudioManager))]
+
 
 public class Managers : MonoBehaviour
 {
@@ -14,6 +20,8 @@ public class Managers : MonoBehaviour
     public static SpawnEnemyManager SpawnEnemyManager { get; private set; }
     public static PlayerManager PlayerManager { get; private set; }
     public static LootManager LootManager { get; private set; }
+
+    public static AudioManager AudioManager { get; private set; }
 
     // Список диспетчеров, который просматривается в цикле во время стартовой последовательности.
     private List<IGameManager> _startSequence;
@@ -28,6 +36,7 @@ public class Managers : MonoBehaviour
         SpawnEnemyManager = GetComponent<SpawnEnemyManager>();
         PlayerManager = GetComponent<PlayerManager>();
         LootManager = GetComponent<LootManager>();
+        AudioManager = GetComponent<AudioManager>();
 
 
         _startSequence = new List<IGameManager>();
@@ -36,6 +45,7 @@ public class Managers : MonoBehaviour
         _startSequence.Add(SpawnEnemyManager);
         _startSequence.Add(PlayerManager);
         _startSequence.Add(LootManager);
+        _startSequence.Add(AudioManager);
 
         StartCoroutine(StartupManagers()); 
     }
@@ -77,7 +87,7 @@ public class Managers : MonoBehaviour
         
         Debug.Log("All managers started up");
 
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scenes.MAIN_MENU);
+        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.MAIN_MENU);
     }
 
 }
