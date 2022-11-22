@@ -26,6 +26,7 @@ public class SummonTrigger : MonoBehaviour
         // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя", то второму меняем состояние на "преследования"
         if (onChangeState)
         {
+            otherEnemy.AudioController.PlaySound(EnemySoundType.Confused);
             otherEnemy.SetState<ChasingPlayerState>();
         }
     }

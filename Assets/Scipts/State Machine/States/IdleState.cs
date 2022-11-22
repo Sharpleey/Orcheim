@@ -60,6 +60,7 @@ public class IdleState : State
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
             if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
             {
+                enemy.AudioController.PlaySound(EnemySoundType.Confused);
                 enemy.SetState<ChasingPlayerState>();
             }
 
