@@ -484,16 +484,9 @@ public abstract class Enemy : MonoBehaviour
             // Если игрок атаковал врага, изменяем состояние
             if (CurrentState.GetType() == typeof(IdleState))
             {
-                // Рассылаем событие, по сути являетс первым тригером для начала игры
-                try
-                {
-                    Messenger.Broadcast(WaveManager.Event.FIRST_TRIGGER_GAME);
-                }
-                catch
-                {
-                     
-                }
-
+               
+                Messenger.Broadcast(WaveManager.Event.FIRST_TRIGGER_GAME);
+     
                 // Изменяем состояние на преследование
                 SetState<ChasingPlayerState>();
             }
@@ -508,12 +501,12 @@ public abstract class Enemy : MonoBehaviour
                 HealthBarController.SetHealth(Health);
                 HealthBarController.ShowHealthBar();
             }
+        }
 
-            // Звук
-            if (AudioController && CurrentState.GetType() != typeof(DieState))
-            {
-                AudioController.PlaySound(EnemySoundType.Hit);
-            }
+        // Звук
+        if (AudioController && Health > 0)
+        {
+            AudioController.PlaySound(EnemySoundType.Hit);
         }
 
         if (Health <= 0)

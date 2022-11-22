@@ -57,6 +57,10 @@ public class WarriorAttackState : State
         _timerAttack += Time.deltaTime;
         if (_timerAttack > _currentAttackFrequency)
         {
+            //Воспроизводим звук
+            if (enemy.AudioController)
+                enemy.AudioController.PlaySound(EnemySoundType.Atttack);
+
             // Включаем анимацию атаки, тем самым атакуем
             enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack_1);
 

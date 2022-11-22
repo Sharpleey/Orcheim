@@ -26,6 +26,16 @@ public abstract class ChasingPlayerState : State
     /// </summary>
     protected float _timerUpdateDistance;
 
+    /// <summary>
+    /// Таймер воспроизведения звука рева противника
+    /// </summary>
+    protected float _timerAudioPlayback;
+
+    /// <summary>
+    /// Частота воспроизведения звука рева
+    /// </summary>
+    protected float _soundFrequency = 5f;
+
     protected NavMeshPath _navMeshPath = new NavMeshPath();
 
     public ChasingPlayerState(Enemy enemy) : base(enemy)
@@ -34,8 +44,9 @@ public abstract class ChasingPlayerState : State
     }
     public override void Enter()
     {
-        // Обнуляем таймер
+        // Обнуляем таймеры
         _timerUpdateDistance = 0.5f;
+        _timerAudioPlayback = 0;
 
         // Получаем Transform игрока для отслеживания его позиции
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
@@ -50,6 +61,8 @@ public abstract class ChasingPlayerState : State
     public override void Update()
     {
         _timerUpdateDistance += Time.deltaTime;
+        _timerAudioPlayback += Time.deltaTime;
+
         if (_timerUpdateDistance > 0.5f)
         {
             distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
@@ -74,6 +87,16 @@ public abstract class ChasingPlayerState : State
             // Обнуляем таймер
             _timerUpdateDistance = 0;
         }
+
+        if(_timerAudioPlayback >= _soundFrequency)
+        {
+            // Воспроизводим звук
+            if (enemy.AudioController)
+                enemy.AudioController.PlaySound(EnemySoundType.Agro);
+
+            // Обнуляем таймер
+            _timerAudioPlayback = 0;
+        }    
 
         // Рисуем линию от протиника до его цели
         //Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
