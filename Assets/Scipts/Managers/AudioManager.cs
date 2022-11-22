@@ -54,9 +54,9 @@ public class AudioManager : MonoBehaviour, IGameManager
 
     private void Awake()
     {
-        Messenger<AmbientAudioClip>.AddListener(Event.PLAY_AMBIENT, PlayAmbient);
-        Messenger<MusicAudioClip>.AddListener(Event.PLAY_MUSIC, PlayMusic);
-        Messenger<SFXAudioClip>.AddListener(Event.PLAY_SFX, PlaySFX);
+        Messenger<AmbientSoundName>.AddListener(Event.PLAY_AMBIENT, PlayAmbient);
+        Messenger<MusicSoundName>.AddListener(Event.PLAY_MUSIC, PlayMusic);
+        Messenger<SFXSoundName>.AddListener(Event.PLAY_SFX, PlaySFX);
         Messenger.AddListener(Event.STOP_AMBIENT, StopAmbient);
         Messenger.AddListener(Event.STOP_MUSIC, StopMusic);
         Messenger.AddListener(Event.STOP_ALL_SOUND_SOURCE, StopAllSoundSource);
@@ -65,9 +65,9 @@ public class AudioManager : MonoBehaviour, IGameManager
 
     private void OnDestroy()
     {
-        Messenger<AmbientAudioClip>.RemoveListener(Event.PLAY_AMBIENT, PlayAmbient);
-        Messenger<MusicAudioClip>.RemoveListener(Event.PLAY_MUSIC, PlayMusic);
-        Messenger<SFXAudioClip>.RemoveListener(Event.PLAY_SFX, PlaySFX);
+        Messenger<AmbientSoundName>.RemoveListener(Event.PLAY_AMBIENT, PlayAmbient);
+        Messenger<MusicSoundName>.RemoveListener(Event.PLAY_MUSIC, PlayMusic);
+        Messenger<SFXSoundName>.RemoveListener(Event.PLAY_SFX, PlaySFX);
         Messenger.RemoveListener(Event.STOP_AMBIENT, StopAmbient);
         Messenger.RemoveListener(Event.STOP_MUSIC, StopMusic);
         Messenger.RemoveListener(Event.STOP_ALL_SOUND_SOURCE, StopAllSoundSource);
@@ -86,7 +86,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     /// ћетод дл€ воспроизведени€ конкретной фоновой музыки из массива _ambientSounds
     /// </summary>
     /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
-    private void PlayAmbient(AmbientAudioClip nameAmbient)
+    private void PlayAmbient(AmbientSoundName nameAmbient)
     {
         Sound sound = Array.Find(_ambientSounds, x => x.name == nameAmbient);
 
@@ -106,7 +106,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     /// ћетод дл€ воспроизведени€ конкретной музыки из массива _musicSounds
     /// </summary>
     /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
-    private void PlayMusic(MusicAudioClip nameMusic)
+    private void PlayMusic(MusicSoundName nameMusic)
     {
         Sound sound = Array.Find(_musicSounds, x => x.name == nameMusic);
 
@@ -126,7 +126,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     /// ћетод дл€ воспроизведени€ конкретного звукового эффекта из массива _sfxSounds
     /// </summary>
     /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
-    private void PlaySFX(SFXAudioClip nameSFX)
+    private void PlaySFX(SFXSoundName nameSFX)
     {
         Sound sound = Array.Find(_sfxSounds, x => x.name == nameSFX);
 

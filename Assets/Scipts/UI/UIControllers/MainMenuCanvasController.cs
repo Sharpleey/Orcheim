@@ -16,7 +16,7 @@ public class MainMenuCanvasController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        Messenger<MusicAudioClip>.Broadcast(AudioManager.Event.PLAY_MUSIC, MusicAudioClip.MainMenuTheme);
+        Messenger<MusicSoundName>.Broadcast(AudioManager.Event.PLAY_MUSIC, MusicSoundName.MainMenuTheme);
     }
 
     private void OnDestroy()

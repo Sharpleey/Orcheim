@@ -148,7 +148,7 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		if (_isLoadSceneGameModeOrccheim)
         {
 			Messenger.Broadcast(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM);
-			Messenger<AmbientAudioClip>.Broadcast(AudioManager.Event.PLAY_AMBIENT, AmbientAudioClip.Day);
+			Messenger<AmbientSoundName>.Broadcast(AudioManager.Event.PLAY_AMBIENT, AmbientSoundName.Day);
 			//Messenger<MusicSound>.Broadcast(AudioManager.Event.PLAY, MusicSound.AmbientDay);
 
 			_isLoadSceneGameModeOrccheim = false;
