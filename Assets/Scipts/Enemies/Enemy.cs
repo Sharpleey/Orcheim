@@ -18,7 +18,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("State Settings")]
     [SerializeField] private String _curNammeState;
-    [SerializeField] private DefaultState _defaultState; 
+    [SerializeField] private TypeStartState _defaultState; 
 
     [Header("Summon Trigger")]
     [SerializeField] private BoxCollider _summonTrigger;
@@ -235,13 +235,14 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Первое стартовое состояние
     /// </summary>
-    public DefaultState DefaultState { get => _defaultState; set => _defaultState = value; }
+    public TypeStartState DefaultState { get => _defaultState; set => _defaultState = value; }
 
     public HitBoxesController HitBoxesController { get; private set; }
     public RagdollController RagdollController { get; private set; }
     public HealthBarController HealthBarController { get; private set; }
     public PopupDamageController PopupDamageController { get; private set; }
     public WeaponController WeaponController { get; private set; }
+    public EnemyAudioController AudioController { get; private set; }
     public DieEffectController DieEffectController { get; private set; }
     public BurningEffectController BurningEffectController { get; private set; }
     public IconEffectsController IconEffectsController { get; private set; }
@@ -307,6 +308,7 @@ public abstract class Enemy : MonoBehaviour
         HitBoxesController = GetComponent<HitBoxesController>();
         RagdollController = GetComponent<RagdollController>();
         WeaponController = GetComponent<WeaponController>();
+        AudioController = GetComponent<EnemyAudioController>();
 
         WeaponTriggerCollider = Weapon.GetComponentInChildren<CapsuleCollider>();
 
@@ -372,7 +374,7 @@ public abstract class Enemy : MonoBehaviour
     {
         switch(DefaultState)
         {
-            case DefaultState.ChasingPlayer:
+            case TypeStartState.ChasingPlayer:
                 SetState<ChasingPlayerState>();
                 break;
             default:
@@ -485,7 +487,7 @@ public abstract class Enemy : MonoBehaviour
                 // Рассылаем событие, по сути являетс первым тригером для начала игры
                 try
                 {
-                    Messenger.Broadcast(GlobalGameEvent.FIRST_TRIGGER_GAME);
+                    Messenger.Broadcast(WaveManager.Event.FIRST_TRIGGER_GAME);
                 }
                 catch
                 {
@@ -505,6 +507,12 @@ public abstract class Enemy : MonoBehaviour
             {
                 HealthBarController.SetHealth(Health);
                 HealthBarController.ShowHealthBar();
+            }
+
+            // Звук
+            if (AudioController && CurrentState.GetType() != typeof(DieState))
+            {
+                AudioController.PlaySound(EnemySoundType.Hit);
             }
         }
 

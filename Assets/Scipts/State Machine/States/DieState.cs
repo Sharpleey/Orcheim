@@ -15,7 +15,7 @@ public class DieState : State
 
         try
         {
-            Messenger.Broadcast(GlobalGameEvent.ENEMY_KILLED);
+            Messenger.Broadcast(SpawnEnemyManager.Event.ENEMY_KILLED);
         }
         catch
         {
@@ -42,6 +42,9 @@ public class DieState : State
 
         if (enemy.NavMeshAgent != null)
             enemy.NavMeshAgent.enabled = false;
+
+        if (enemy.AudioController)
+            enemy.AudioController.PlaySound(EnemySoundType.Dead);
     }
 
     /// <summary>
