@@ -20,7 +20,6 @@ public class Managers : MonoBehaviour
     public static SpawnEnemyManager SpawnEnemyManager { get; private set; }
     public static PlayerManager PlayerManager { get; private set; }
     public static LootManager LootManager { get; private set; }
-
     public static AudioManager AudioManager { get; private set; }
 
     // Список диспетчеров, который просматривается в цикле во время стартовой последовательности.
@@ -87,7 +86,7 @@ public class Managers : MonoBehaviour
         
         Debug.Log("All managers started up");
 
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.MAIN_MENU);
+        Messenger<string>.Broadcast(GameSceneManager.Event.SWITCH_TO_SCENE, GameSceneManager.Scene.MAIN_MENU);
     }
 
 }

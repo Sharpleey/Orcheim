@@ -37,7 +37,7 @@ public class IdleState : State
         // ѕолучаем Transform игрока дл€ отслеживани€ его позиции
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
-        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, SetChasingPlayerState);
+        Messenger<int>.AddListener(WaveManager.Event.WAVE_IN_COMMING, SetChasingPlayerState);
 
         enemy.Animator.SetBool(HashAnimStringEnemy.IsIdle, true);
     }
@@ -70,7 +70,7 @@ public class IdleState : State
 
     public override void Exit()
     {
-        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, SetChasingPlayerState);
+        Messenger<int>.RemoveListener(WaveManager.Event.WAVE_IN_COMMING, SetChasingPlayerState);
 
         enemy?.Animator?.SetBool(HashAnimStringEnemy.IsIdle, false);
     }

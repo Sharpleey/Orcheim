@@ -18,12 +18,12 @@ public class PauseMenuCanvasController : MonoBehaviour
 
     private void Awake()
     {
-        Messenger.AddListener(GlobalGameEvent.PLAYER_DEAD, PlayerDead_EventHandler);
+        Messenger.AddListener(PlayerManager.Event.PLAYER_DEAD, PlayerDead_EventHandler);
     }
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(GlobalGameEvent.PLAYER_DEAD, PlayerDead_EventHandler);
+        Messenger.RemoveListener(PlayerManager.Event.PLAYER_DEAD, PlayerDead_EventHandler);
     }
 
     private void Start()
@@ -53,7 +53,7 @@ public class PauseMenuCanvasController : MonoBehaviour
     {
         _isPaused = !_isPaused;
 
-        Messenger<bool>.Broadcast(GameSceneManagerEvent.PAUSE_GAME, _isPaused);
+        Messenger<bool>.Broadcast(GameSceneManager.Event.PAUSE_GAME, _isPaused);
 
         if (_isPaused)
         {
@@ -92,7 +92,7 @@ public class PauseMenuCanvasController : MonoBehaviour
     {
         _isPaused = true;
 
-        Messenger<bool>.Broadcast(GameSceneManagerEvent.PAUSE_GAME, _isPaused);
+        Messenger<bool>.Broadcast(GameSceneManager.Event.PAUSE_GAME, _isPaused);
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -119,8 +119,8 @@ public class PauseMenuCanvasController : MonoBehaviour
 
     public void OnClickButtonRestart()
     {
-        Messenger.Broadcast(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM);
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.TEST_AI);
+        Messenger.Broadcast(GameEvent.NEW_GAME_MODE_ORCCHEIM);
+        Messenger<string>.Broadcast(GameSceneManager.Event.SWITCH_TO_SCENE, GameSceneManager.Scene.TEST_AI);
     }
 
     public void OnClickButtonExitMainMenu()
@@ -128,7 +128,7 @@ public class PauseMenuCanvasController : MonoBehaviour
         ///
         /// ѕроизводим сохранени€ данных перед выходом
         ///
-        Messenger.Broadcast(GlobalGameEvent.GAME_OVER);
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.MAIN_MENU);
+        Messenger.Broadcast(GameEvent.GAME_OVER);
+        Messenger<string>.Broadcast(GameSceneManager.Event.SWITCH_TO_SCENE, GameSceneManager.Scene.MAIN_MENU);
     }
 }

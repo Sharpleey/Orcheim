@@ -17,21 +17,66 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 	private bool _isGamePaused;
 	private bool _isLoadSceneGameModeOrccheim;
 
+	public static class Event
+	{
+		#region Events for manager
+		/// <summary>
+		/// Сменить/загрузить сцену
+		/// </summary>
+		public const string SWITCH_TO_SCENE = "SWITCH_TO_SCENE";
+		/// <summary>
+		/// Поставить/снять игру с паузы
+		/// </summary>
+		public const string PAUSE_GAME = "PAUSE_GAME";
+		#endregion
+
+		#region Events broadcast by manager
+		/// <summary>
+		/// Начата загрузка сцены
+		/// </summary>
+		public const string STARTED_LOADING_SCENE = "STARTED_LOADING_SCENE";
+		/// <summary>
+		/// Cцена загружена
+		/// </summary>
+		public const string SCENE_LOADING_COMPLETE = "SCENE_LOADING_COMPLETE";
+		/// <summary>
+		/// Сцена загружена
+		/// </summary>
+		public const string SCENE_STARTED = "SCENE_STARTED";
+		#endregion
+	}
+
+	/// <summary>
+	/// Класс с константными значениями названий сцен
+	/// </summary>
+	public static class Scene
+	{
+		/// <summary>
+		/// Название сцены главного меню
+		/// </summary>
+		public const string MAIN_MENU = "MainMenu";
+
+		/// <summary>
+		/// Сцена теста механики волн
+		/// </summary>
+		public const string TEST_AI = "TestSceneController";
+	}
+
 	private void Awake()
 	{
-		Messenger<bool>.AddListener(GameSceneManagerEvent.PAUSE_GAME, PauseGame);
+		Messenger<bool>.AddListener(GameSceneManager.Event.PAUSE_GAME, PauseGame);
 
-		Messenger.AddListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
+		Messenger.AddListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
 
-		Messenger<string>.AddListener(GameSceneManagerEvent.SWITCH_TO_SCENE, SwitchToScene);
+		Messenger<string>.AddListener(GameSceneManager.Event.SWITCH_TO_SCENE, SwitchToScene);
 	}
 	private void OnDestroy()
 	{
-		Messenger<bool>.RemoveListener(GameSceneManagerEvent.PAUSE_GAME, PauseGame);
+		Messenger<bool>.RemoveListener(GameSceneManager.Event.PAUSE_GAME, PauseGame);
 
-		Messenger.RemoveListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
+		Messenger.RemoveListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim);
 
-		Messenger<string>.RemoveListener(GameSceneManagerEvent.SWITCH_TO_SCENE, SwitchToScene);
+		Messenger<string>.RemoveListener(GameSceneManager.Event.SWITCH_TO_SCENE, SwitchToScene);
 	}
 
 	public void Startup()
@@ -102,8 +147,9 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		// Если сцена загружена в режиме Orccheim 
 		if (_isLoadSceneGameModeOrccheim)
         {
-			Messenger.Broadcast(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM);
-			Messenger<MusicSound>.Broadcast(GlobalGameEvent.PLAY_AMBIENT, MusicSound.AmbientDay);
+			Messenger.Broadcast(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM);
+			Messenger<AmbientAudioClip>.Broadcast(AudioManager.Event.PLAY_AMBIENT, AmbientAudioClip.Day);
+			//Messenger<MusicSound>.Broadcast(AudioManager.Event.PLAY, MusicSound.AmbientDay);
 
 			_isLoadSceneGameModeOrccheim = false;
 		}

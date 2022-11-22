@@ -106,22 +106,33 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
 
     private bool _isSpawningEnemy;
 
+    public static class Event
+    {
+        #region Events for manager
+        public const string ENEMY_KILLED = "ENEMY_KILLED";
+        #endregion
+
+        #region Events broadcast by manager
+        public const string ENEMIES_REMAINING = "ENEMIES_REMAINING";
+        #endregion
+    }
+
     private void Awake()
     {
-        Messenger.AddListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger.AddListener(GlobalGameEvent.ENEMY_KILLED, CheckEnemiesRemaining);
-        Messenger.AddListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
+        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
+        Messenger<int>.AddListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
+        Messenger<int>.AddListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
+        Messenger.AddListener(Event.ENEMY_KILLED, CheckEnemiesRemaining);
+        Messenger.AddListener(GameEvent.GAME_OVER, GameOver_EventHandler);
     }
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.RemoveListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger.RemoveListener(GlobalGameEvent.ENEMY_KILLED, CheckEnemiesRemaining);
-        Messenger.RemoveListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
+        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
+        Messenger<int>.RemoveListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
+        Messenger<int>.RemoveListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
+        Messenger.RemoveListener(Event.ENEMY_KILLED, CheckEnemiesRemaining);
+        Messenger.RemoveListener(GameEvent.GAME_OVER, GameOver_EventHandler);
     }
 
     private void Update()
@@ -172,7 +183,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
 
         // Меняем состояние врага на преследование
         Enemy enemy = enemyOrc.GetComponent<Enemy>();
-        enemy.DefaultState = DefaultState.ChasingPlayer;
+        enemy.DefaultState = StartStateType .ChasingPlayer;
 
         Debug.Log("Spawn enemy " + enemy.GetType());
     }
@@ -283,7 +294,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
     {
         StartSpawnEnemies();
 
-        Messenger<int>.Broadcast(GlobalGameEvent.ENEMIES_REMAINING, EnemiesRemaining);
+        Messenger<int>.Broadcast(Event.ENEMIES_REMAINING, EnemiesRemaining);
     }
 
     private void GameOver_EventHandler()
@@ -296,13 +307,13 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
     {
         CountEnemyOnScene -= 1;
 
-        Messenger<int>.Broadcast(GlobalGameEvent.ENEMIES_REMAINING, EnemiesRemaining);
+        Messenger<int>.Broadcast(Event.ENEMIES_REMAINING, EnemiesRemaining);
 
         if(EnemiesRemaining == 0)
         {
             StopSpawnEnemies();
 
-            Messenger.Broadcast(GlobalGameEvent.WAVE_IS_OVER);
+            Messenger.Broadcast(WaveManager.Event.WAVE_IS_OVER);
         }
     }
 

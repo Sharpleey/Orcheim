@@ -25,22 +25,35 @@ public class WaveManager : MonoBehaviour, IGameManager
         Status = ManagerStatus.Started;
     }
 
+    public static class Event
+    {
+        #region Events for manager
+        public const string FIRST_TRIGGER_GAME = "FIRST_TRIGGER_GAME";
+        public const string WAVE_IS_OVER = "WAVE_IS_OVER";
+        #endregion
+
+        #region Events broadcast by manager
+        public const string PREPARING_FOR_WAVE = "PREPARING_FOR_WAVE";
+        public const string WAVE_IN_COMMING = "WAVE_IN_COMMING";
+        #endregion
+    }
+
     private void Awake()
     {
-        Messenger.AddListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim_EventHandler);
-        Messenger.AddListener(GlobalGameEvent.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger.AddListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger.AddListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
+        Messenger.AddListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim_EventHandler);
+        Messenger.AddListener(Event.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
+        Messenger<int>.AddListener(Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
+        Messenger.AddListener(Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger.AddListener(GameEvent.GAME_OVER, GameOver_EventHandler);
     }
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim_EventHandler);
-        Messenger.RemoveListener(GlobalGameEvent.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
-        Messenger<int>.RemoveListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger.RemoveListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger.RemoveListener(GlobalGameEvent.GAME_OVER, GameOver_EventHandler);
+        Messenger.RemoveListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim_EventHandler);
+        Messenger.RemoveListener(Event.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
+        Messenger<int>.RemoveListener(Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
+        Messenger.RemoveListener(Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger.RemoveListener(GameEvent.GAME_OVER, GameOver_EventHandler);
     }
 
     /// <summary>
@@ -72,7 +85,7 @@ public class WaveManager : MonoBehaviour, IGameManager
 
         yield return new WaitForSeconds(delay);
 
-        Messenger<int>.Broadcast(GlobalGameEvent.PREPARING_FOR_WAVE, _wave);
+        Messenger<int>.Broadcast(Event.PREPARING_FOR_WAVE, _wave);
     }
 
     /// <summary>
@@ -86,7 +99,8 @@ public class WaveManager : MonoBehaviour, IGameManager
 
         yield return new WaitForSeconds(delay);
 
-        Messenger<int>.Broadcast(GlobalGameEvent.WAVE_IN_COMMING, _wave);
+        Messenger<int>.Broadcast(Event.WAVE_IN_COMMING, _wave);
+        Messenger<SFXAudioClip>.Broadcast(AudioManager.Event.PLAY_SFX, SFXAudioClip.AlarmHorn);
     }
 
     private void NewGameModeOrccheim_EventHandler()

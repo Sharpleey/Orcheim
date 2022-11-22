@@ -18,7 +18,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("State Settings")]
     [SerializeField] private String _curNammeState;
-    [SerializeField] private TypeStartState _defaultState; 
+    [SerializeField] private StartStateType  _defaultState; 
 
     [Header("Summon Trigger")]
     [SerializeField] private BoxCollider _summonTrigger;
@@ -235,7 +235,7 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Первое стартовое состояние
     /// </summary>
-    public TypeStartState DefaultState { get => _defaultState; set => _defaultState = value; }
+    public StartStateType  DefaultState { get => _defaultState; set => _defaultState = value; }
 
     public HitBoxesController HitBoxesController { get; private set; }
     public RagdollController RagdollController { get; private set; }
@@ -374,7 +374,7 @@ public abstract class Enemy : MonoBehaviour
     {
         switch(DefaultState)
         {
-            case TypeStartState.ChasingPlayer:
+            case StartStateType .ChasingPlayer:
                 SetState<ChasingPlayerState>();
                 break;
             default:

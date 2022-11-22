@@ -72,12 +72,12 @@ public class PlayerCharacterController : MonoBehaviour
     {
         // Instance = this;
 
-        Messenger<bool>.AddListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
+        Messenger<bool>.AddListener(GameSceneManager.Event.PAUSE_GAME, LockControl);
     }
 
     private void OnDestroy()
     {
-        Messenger<bool>.RemoveListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
+        Messenger<bool>.RemoveListener(GameSceneManager.Event.PAUSE_GAME, LockControl);
     }
 
 

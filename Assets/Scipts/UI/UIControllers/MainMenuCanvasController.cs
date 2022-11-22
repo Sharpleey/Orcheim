@@ -8,13 +8,20 @@ public class MainMenuCanvasController : MonoBehaviour
     [SerializeField] private GameObject _scenes;
 
     private GameObject _activeMenu;
-    // Start is called before the first frame update
-    void Start()
+    
+    private void Start()
     {
         ShowMenu(_mainMenu);
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+
+        Messenger<MusicAudioClip>.Broadcast(AudioManager.Event.PLAY_MUSIC, MusicAudioClip.MainMenuTheme);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger.Broadcast(AudioManager.Event.STOP_MUSIC);
     }
 
     public void OnClickNewGame()
@@ -44,8 +51,8 @@ public class MainMenuCanvasController : MonoBehaviour
 
     public void OnClickTestSceneAI()
     {
-        Messenger.Broadcast(GlobalGameEvent.NEW_GAME_MODE_ORCCHEIM);
-        Messenger<string>.Broadcast(GameSceneManagerEvent.SWITCH_TO_SCENE, Scene.TEST_AI);
+        Messenger.Broadcast(GameEvent.NEW_GAME_MODE_ORCCHEIM);
+        Messenger<string>.Broadcast(GameSceneManager.Event.SWITCH_TO_SCENE, GameSceneManager.Scene.TEST_AI);
     }
 
     private void ShowMenu(GameObject menu)

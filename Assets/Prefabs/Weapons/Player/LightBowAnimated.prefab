@@ -1163,8 +1163,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5812279950464036858}
+  - component: {fileID: 2908841774902593284}
   - component: {fileID: 5812279950457030766}
   - component: {fileID: 915068687121806792}
+  - component: {fileID: 6954502073640963427}
   - component: {fileID: 5569950634224132355}
   - component: {fileID: 3507567679250600812}
   - component: {fileID: 7752570271599981700}
@@ -1193,6 +1195,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -54.77, y: -91.12, z: 0.938}
+--- !u!82 &2908841774902593284
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812279950464386752}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &5812279950457030766
 Animator:
   serializedVersion: 3
@@ -1230,6 +1328,34 @@ MonoBehaviour:
   _arrowSpawn: {fileID: 5812279950464058762}
   _camera: {fileID: 0}
   _shotForce: 16
+--- !u!114 &6954502073640963427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812279950464386752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504571ca129a76f47916f1e8f4fb9c67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bowStringLoadSounds:
+  - {fileID: 8300000, guid: 5ec3e0418558577468c5feea264f81c0, type: 3}
+  - {fileID: 8300000, guid: bf75fa5eaf2934148a82dd0f52400d7f, type: 3}
+  - {fileID: 8300000, guid: 2e6cd6feb3159bc4ab29d04c0c16a69d, type: 3}
+  - {fileID: 8300000, guid: a53c34cbc8bd9cf448e35ced98a1e602, type: 3}
+  - {fileID: 8300000, guid: 44b4716c117659d4ca4b11418eb7d9bc, type: 3}
+  - {fileID: 8300000, guid: 785ec1251ae811b468cb428a0f89363f, type: 3}
+  _bowShotSounds:
+  - {fileID: 8300000, guid: 2c3ac00c73b526a47a44c3e4f0a212bb, type: 3}
+  - {fileID: 8300000, guid: dedf828de7d21a248b2aa2b5bea9d33e, type: 3}
+  - {fileID: 8300000, guid: 989441a86e42f6f40a619e99b093cafb, type: 3}
+  - {fileID: 8300000, guid: 9e1de7d1860c5d840a8ba8a5799d0e86, type: 3}
+  - {fileID: 8300000, guid: 9bce252e27c639640bfea08952b4cbeb, type: 3}
+  - {fileID: 8300000, guid: 880a02ca4c2c5554fa9951f84e284f5e, type: 3}
+  - {fileID: 8300000, guid: bf8906bec56252145b8413ce4317765a, type: 3}
+  _bowAudioSource: {fileID: 2908841774902593284}
 --- !u!114 &5569950634224132355
 MonoBehaviour:
   m_ObjectHideFlags: 0

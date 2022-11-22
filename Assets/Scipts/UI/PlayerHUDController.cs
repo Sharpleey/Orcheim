@@ -16,21 +16,21 @@ public class PlayerHUDController : MonoBehaviour
 
     private void Awake()
     {
-        Messenger.AddListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.ENEMIES_REMAINING, SetTextEnemiesRemaining);
-        Messenger.AddListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.PLAYER_DAMAGED, PlayerDamaged_EventHandler);
+        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
+        Messenger<int>.AddListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
+        Messenger<int>.AddListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
+        Messenger<int>.AddListener(SpawnEnemyManager.Event.ENEMIES_REMAINING, SetTextEnemiesRemaining);
+        Messenger.AddListener(WaveManager.Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger<int>.AddListener(PlayerManager.Event.TAKE_DAMAGE, PlayerDamaged_EventHandler);
     }
     private void OnDestroy()
     {
-        Messenger.RemoveListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.RemoveListener(GlobalGameEvent.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.RemoveListener(GlobalGameEvent.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger<int>.RemoveListener(GlobalGameEvent.ENEMIES_REMAINING, SetTextEnemiesRemaining);
-        Messenger.RemoveListener(GlobalGameEvent.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger<int>.AddListener(GlobalGameEvent.PLAYER_DAMAGED, PlayerDamaged_EventHandler);
+        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
+        Messenger<int>.RemoveListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
+        Messenger<int>.RemoveListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
+        Messenger<int>.RemoveListener(SpawnEnemyManager.Event.ENEMIES_REMAINING, SetTextEnemiesRemaining);
+        Messenger.RemoveListener(WaveManager.Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
+        Messenger<int>.AddListener(PlayerManager.Event.TAKE_DAMAGE, PlayerDamaged_EventHandler);
     }
 
     private void Start()

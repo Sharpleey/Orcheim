@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DirectDamage))]
+[RequireComponent(typeof(AudioController))]
 public class LightBow : MonoBehaviour, IBowWeapon
 {
     #region Serialize fields
@@ -57,6 +58,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private bool _isLockControl = false;
 
     private Animator _animator;
+    private AudioController _audioController;
 
     private Quaternion _defaultBowRotate;
 
@@ -74,17 +76,18 @@ public class LightBow : MonoBehaviour, IBowWeapon
         Name = _name;
         TimeReloadShot = _timeReloadShot;
 
-        Messenger<bool>.AddListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
+        Messenger<bool>.AddListener(GameSceneManager.Event.PAUSE_GAME, LockControl);
     }
 
     private void OnDestroy()
     {
-        Messenger<bool>.RemoveListener(GameSceneManagerEvent.PAUSE_GAME, LockControl);
+        Messenger<bool>.RemoveListener(GameSceneManager.Event.PAUSE_GAME, LockControl);
     }
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _audioController = GetComponent<AudioController>();
 
         AttackModifaers = new Dictionary<Type, IModifier>();
 
@@ -173,7 +176,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             }
 
             // À Ã
-            if (Input.GetMouseButtonDown(0) && !_isReload)
+            if (Input.GetMouseButtonDown(0) && !_isReload && !Input.GetMouseButton(1))
             {
                 FastShot();
             }

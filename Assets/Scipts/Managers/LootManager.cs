@@ -8,6 +8,17 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private GameObject[] _chestSpawnZones;
 
+    public static class Event
+    {
+        #region Events for manager
+
+        #endregion
+
+        #region Events broadcast by manager
+
+        #endregion
+    }
+
     public void Startup()
     {
         Debug.Log("Loot manager starting...");
@@ -17,16 +28,16 @@ public class LootManager : MonoBehaviour, IGameManager
     // Start is called before the first frame update
     private void Start()
     {
-        Messenger.AddListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindChestSpawnZones);
-        Messenger.AddListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, ChestRespawn);
-        Messenger.AddListener(GlobalGameEvent.WAVE_IS_OVER, ChestRespawn);
+        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindChestSpawnZones);
+        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, ChestRespawn);
+        Messenger.AddListener(WaveManager.Event.WAVE_IS_OVER, ChestRespawn);
     }
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindChestSpawnZones);
-        Messenger.RemoveListener(GlobalGameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, ChestRespawn);
-        Messenger.RemoveListener(GlobalGameEvent.WAVE_IS_OVER, ChestRespawn);
+        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindChestSpawnZones);
+        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, ChestRespawn);
+        Messenger.RemoveListener(WaveManager.Event.WAVE_IS_OVER, ChestRespawn);
     }
 
     private void FindChestSpawnZones()
