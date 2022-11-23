@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09549af41255a3d46b8b500a63f93e23, type: 3}
+  m_Name: Lighting_Profile_EA03_SLPFP3
+  m_EditorClassIdentifier: 
+  mainCameraName: Camera1
+  objectName: LightingProfile
+  postProcessingProfile: {fileID: 0}
+  webGL_Mobile: 0
+  renderPath: 2
+  lightingMode: 1
+  bakedResolution: 10
+  lightSettings: 2
+  colorSpace: 0
+  skyBox: {fileID: 0}
+  ambientLight: 1
+  ambientColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 1}
+  skyColor: {r: 1, g: 0, b: 0, a: 1}
+  equatorColor: {r: 0, g: 1, b: 0.02520442, a: 1}
+  groundColor: {r: 0.8018868, g: 0.11725702, b: 0.73286563, a: 1}
+  sunColor: {r: 1, g: 1, b: 1, a: 1}
+  sunIntensity: 1.04
+  sunFlare: {fileID: 0}
+  indirectIntensity: 0
+  fogMode: 1
+  fogDistance: 1074.5
+  fogHeight: 201.76
+  fogHeightIntensity: 0.12
+  fogColor: {r: 0.20784312, g: 0.8666667, b: 0.84807646, a: 1}
+  fogIntensity: 1.1
+  bIntensity: 2.61
+  bThreshould: 0.34
+  bColor: {r: 0.9982662, g: 1, b: 0.7971698, a: 1}
+  dirtTexture: {fileID: 2800000, guid: a2960ffde020f27409e070d92fb2e00b, type: 3}
+  dirtIntensity: 1.8
+  mobileOptimizedBloom: 0
+  bRotation: 0.7
+  aoType: 1
+  aoRadius: 3.26
+  aoIntensity: 1.73
+  ambientOnly: 0
+  aoColor: {r: 0, g: 0, b: 0, a: 1}
+  aoQuality: 4
+  vLight: 1
+  vLightLevel: 1
+  lightsShadow: 1
+  lightProbesMode: 0
+  automaticLightmap: 0
+  dofRange: 100
+  dofBlur: 0
+  falloff: 100
+  dofQuality: 2
+  visualize: 0
+  afRange: 49.4
+  afBlur: 24.6
+  afSpeed: 56.6
+  afUpdate: 0
+  afRayLength: 10
+  afLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  exposureIntensity: 0.7
+  contrastValue: 0.423
+  temp: 83.6
+  colorMode: 0
+  saturation: -0.59
+  gamma: 0.103
+  colorGamma: {r: 0.4515397, g: 0.5977216, b: 0.6886792, a: 1}
+  colorLift: {r: 0.41344783, g: 0.48961532, b: 0.5377358, a: 1}
+  lut: {fileID: 0}
+  vignetteIntensity: 0.3
+  CA_Intensity: 0.108
+  mobileOptimizedChromattic: 0
+  ssrQuality: 5
+  ssrAtten: 1
+  ssrFade: 0.376
+  resolutionMode: 2
+  debugPass: 0
+  rayDistance: 91
+  screenFadeSize: 0.631
+  smoothnessRange: 1
+  shaftQuality: 2
+  shaftDistance: 0.44199997
+  shaftBlur: 6.91
+  shaftColor: {r: 0.83791924, g: 0.8584906, b: 0.34420612, a: 1}
+  eyeKeyValue: 0.063
+  aaMode: 2
+  translucency: 0.44
+  ambient: 1
+  shadows: 0.762
+  tranColor: {r: 1, g: 0.99296916, b: 0, a: 0}
+  windSpeed: 2.32
+  windScale: 12.6
+  CustomShader: Legacy Shaders/Transparent/Diffuse
+  snowAlbedo: {fileID: 0}
+  snowNormal: {fileID: 0}
+  snowIntensity: 2.17
+  customShaderSnow: Legacy Shaders/Diffuse
+  matType: 0
+  Ambient_Enabled: 1
+  Scene_Enabled: 0
+  Sun_Enabled: 1
+  VL_Enabled: 0
+  SunShaft_Enabled: 1
+  Fog_Enabled: 1
+  AutoFocus_Enabled: 1
+  DOF_Enabled: 0
+  Bloom_Enabled: 1
+  AA_Enabled: 1
+  AO_Enabled: 1
+  MotionBlur_Enabled: 0
+  Vignette_Enabled: 1
+  Chromattic_Enabled: 1
+  SSR_Enabled: 0
+  ST_SSR_Enabled: 0
+  ambientState: 1
+  sunState: 1
+  lightSettingsState: 1
+  cameraState: 1
+  profileState: 1
+  buildState: 1
+  vLightState: 1
+  sunShaftState: 1
+  fogState: 1
+  dofState: 1
+  autoFocusState: 1
+  colorState: 1
+  bloomState: 1
+  aaState: 1
+  aoState: 1
+  motionBlurState: 1
+  vignetteState: 1
+  chromatticState: 1
+  ssrState: 1
+  st_ssrState: 1
+  foliageState: 0
+  snowState: 0
+  OptionsState: 0
+  LightingBoxState: 1
