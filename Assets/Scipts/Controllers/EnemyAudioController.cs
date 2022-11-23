@@ -18,10 +18,10 @@ public class EnemyAudioController : MonoBehaviour
     [SerializeField] private EnemySoundPack[] _enemySoundPacks;
 
     /// <summary>
-    /// ¬оспроизвести случайный звук определенного типа
+    /// ¬оспроизвести случайный звук определенного типа c некоторой веро€тностью. ¬еро€тность определ€етс€ в классе EnemySoundPack
     /// </summary>
     /// <param name="enemySoundType">“ип звука EnemySoundType, который мы хотим воспроизвести</param>
-    public void PlaySound(EnemySoundType enemySoundType)
+    public void PlayRandomSoundWithProbability(EnemySoundType enemySoundType)
     {
         // ≈сли нет источника звуков
         if (!_enemyAudioSource)
@@ -40,8 +40,8 @@ public class EnemyAudioController : MonoBehaviour
             return;
         }
 
-        // ≈сли не выпал шанс воспроизвести зыук данного типа
-        if (!IsPlay(enemySoundPack.SoundPlaybackChance))
+        // ≈сли не выпал шанс воспроизвести звук данного типа
+        if (!IsPlay(enemySoundPack.SoundPlaybackProbability))
             return;
 
         // ¬ыбираем случайный звук из набора

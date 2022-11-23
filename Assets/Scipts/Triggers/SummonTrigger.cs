@@ -28,7 +28,7 @@ public class SummonTrigger : MonoBehaviour
         {
             // Воспроизводим звук
             if(otherEnemy.AudioController)
-                otherEnemy.AudioController.PlaySound(EnemySoundType.Confused);
+                otherEnemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
 
             otherEnemy.SetState<ChasingPlayerState>();
         }

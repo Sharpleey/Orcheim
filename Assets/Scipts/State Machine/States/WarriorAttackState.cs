@@ -59,7 +59,7 @@ public class WarriorAttackState : State
         {
             //Воспроизводим звук
             if (enemy.AudioController)
-                enemy.AudioController.PlaySound(EnemySoundType.Atttack);
+                enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Atttack);
 
             // Включаем анимацию атаки, тем самым атакуем
             enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack_1);

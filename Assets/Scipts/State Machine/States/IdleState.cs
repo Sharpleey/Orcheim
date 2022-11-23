@@ -62,7 +62,7 @@ public class IdleState : State
             {
                 // Воспроизводим звук
                 if(enemy.AudioController)
-                    enemy.AudioController.PlaySound(EnemySoundType.Confused);
+                    enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
 
                 enemy.SetState<ChasingPlayerState>();
             }

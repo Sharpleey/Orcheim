@@ -14,7 +14,7 @@ public class EnemySoundPack
     /// <summary>
     /// Шанс воспроизвежения звука
     /// </summary>
-    [SerializeField, Range(0, 100)] private int _soundPlaybackChance = 90;
+    [SerializeField, Range(0, 100)] private int _soundPlaybackProbability = 90;
 
     /// <summary>
     /// Набор звуков данного пака
@@ -34,6 +34,6 @@ public class EnemySoundPack
     /// <summary>
     /// Шанс воспроизведения звука из данного набора
     /// </summary>
-    public int SoundPlaybackChance => _soundPlaybackChance;
+    public int SoundPlaybackProbability => _soundPlaybackProbability;
 
 }

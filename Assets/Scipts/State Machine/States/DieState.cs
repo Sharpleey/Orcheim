@@ -44,7 +44,7 @@ public class DieState : State
             enemy.NavMeshAgent.enabled = false;
 
         if (enemy.AudioController)
-            enemy.AudioController.PlaySound(EnemySoundType.Dead);
+            enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Dead);
     }
 
     /// <summary>

@@ -92,7 +92,7 @@ public abstract class ChasingPlayerState : State
         {
             // Воспроизводим звук
             if (enemy.AudioController)
-                enemy.AudioController.PlaySound(EnemySoundType.Agro);
+                enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Agro);
 
             // Обнуляем таймер
             _timerAudioPlayback = 0;

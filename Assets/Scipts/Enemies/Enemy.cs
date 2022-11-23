@@ -506,7 +506,7 @@ public abstract class Enemy : MonoBehaviour
         // Звук
         if (AudioController && Health > 0)
         {
-            AudioController.PlaySound(EnemySoundType.Hit);
+            AudioController.PlayRandomSoundWithProbability(EnemySoundType.Hit);
         }
 
         if (Health <= 0)
