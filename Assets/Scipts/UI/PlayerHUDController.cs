@@ -78,7 +78,7 @@ public class PlayerHUDController : MonoBehaviour
     private void SetTextEnemiesRemaining(int enemiesRemaining)
     {
         if (_enemiesRemaining)
-            _enemiesRemaining.text = PlayerNotification.ENEMIES_REMAIMING + enemiesRemaining.ToString();
+            _enemiesRemaining.text = PlayerNotification.ENEMIES_REMAINING + enemiesRemaining.ToString();
     }
 
     private void SetTextHealthPlayer(int currentHealth, int maxHealth)

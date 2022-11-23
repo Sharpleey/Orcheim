@@ -10264,7 +10264,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1145480962}
-  - component: {fileID: 1145480961}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -10272,18 +10271,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1145480961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1145480960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8daf88765593eb41ae06e5c8a0aa138, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1145480962
 Transform:
   m_ObjectHideFlags: 0
@@ -19468,10 +19455,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 906737972923923812, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
-      propertyPath: m_fontStyle
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 906737973428818641, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
       propertyPath: m_Name
       value: HUD Canvas
@@ -19565,30 +19548,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1261317956733806365, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 1261317956733806365, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 1261317956733806365, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -80
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 1261317956733806365, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45
-      objectReference: {fileID: 0}
-    - target: {fileID: 5313554320284125157, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
-      propertyPath: m_text
-      value: 'Wave: 0
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 5313554320284125157, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
-      propertyPath: m_fontStyle
-      value: 1
+      value: -22.5
       objectReference: {fileID: 0}
     - target: {fileID: 8305915749719039208, guid: 3e173d19d6f2f8145a858da3cf692452, type: 3}
       propertyPath: m_AnchorMax.x
