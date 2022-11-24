@@ -503,9 +503,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &3494224609458185183
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1296,9 +1296,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &398155747074132325
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -4302,9 +4302,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &1320560677345655257
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -4595,9 +4595,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &7745704339622752645
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -5344,9 +5344,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &712996484381950610
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -5945,7 +5945,7 @@ MonoBehaviour:
   _enemyAudioSource: {fileID: 4262288253203092153}
   _enemySoundPacks:
   - _enemySoundType: 0
-    _soundPlaybackChance: 75
+    _soundPlaybackProbability: 90
     _audioClips:
     - {fileID: 8300000, guid: 93ebbf0534f2c4146b4184d76b4917fb, type: 3}
     - {fileID: 8300000, guid: 213552c79c7854a4cb058c7044d53857, type: 3}
@@ -5977,7 +5977,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: eb5aa5d1997043846bc62f4e4a8eabd9, type: 3}
     - {fileID: 8300000, guid: 0a8713138c489b1428f385537527d7d9, type: 3}
   - _enemySoundType: 1
-    _soundPlaybackChance: 100
+    _soundPlaybackProbability: 90
     _audioClips:
     - {fileID: 8300000, guid: 09de6b4bfb91fc04bb3b4ea411b3ccc2, type: 3}
     - {fileID: 8300000, guid: cb726e64c48a4ef4ba5f4cf94200f26b, type: 3}
@@ -5994,7 +5994,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9773d9592dfd2ab419ed1b3c2413cd59, type: 3}
     - {fileID: 8300000, guid: 4b6f84bf840d7d54fb10f9fccf21b6ea, type: 3}
   - _enemySoundType: 6
-    _soundPlaybackChance: 100
+    _soundPlaybackProbability: 90
     _audioClips:
     - {fileID: 8300000, guid: dbcf53cfe70a45141930f204c47d0eb2, type: 3}
     - {fileID: 8300000, guid: 5d26b79936725de4a9d6dd42fefd4516, type: 3}
@@ -6029,7 +6029,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7cf1674c14daa2341811071bab043ca0, type: 3}
     - {fileID: 8300000, guid: 31028fc250803074f9412f10c872ed50, type: 3}
   - _enemySoundType: 2
-    _soundPlaybackChance: 100
+    _soundPlaybackProbability: 90
     _audioClips:
     - {fileID: 8300000, guid: b09089b8ad242594c805e930280eff94, type: 3}
     - {fileID: 8300000, guid: 54cd39fadba069944809e93984557a04, type: 3}
@@ -6052,7 +6052,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: d5409a00d072a864991df9443acbd675, type: 3}
     - {fileID: 8300000, guid: 0a8713138c489b1428f385537527d7d9, type: 3}
   - _enemySoundType: 3
-    _soundPlaybackChance: 25
+    _soundPlaybackProbability: 90
     _audioClips:
     - {fileID: 8300000, guid: 33deb986f09a0164fb36e301a4a5098c, type: 3}
     - {fileID: 8300000, guid: 1ca63719d503a6d4ca154e550f96bb5f, type: 3}
@@ -6536,9 +6536,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &6215775668631057426
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -7216,9 +7216,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!1 &4422273262912395780
 GameObject:
   m_ObjectHideFlags: 0
@@ -8469,9 +8469,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &5472612985477004562
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -11598,9 +11598,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &5377725195321231836
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -11822,9 +11822,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &8516604756712804472
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -13543,9 +13543,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!144 &6981256091990721328
 CharacterJoint:
   m_ObjectHideFlags: 0

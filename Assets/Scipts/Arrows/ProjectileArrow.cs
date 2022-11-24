@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(BoxCollider))]
 
 public class ProjectileArrow : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class ProjectileArrow : MonoBehaviour
 	private Mjolnir _mjolnirMod;
 
 	private Rigidbody _arrowRigidbody;
-	private CapsuleCollider _arrowCollider;
+	private BoxCollider _arrowCollider;
 
 	private Enemy _currentHitEnemy;
 
@@ -49,7 +49,7 @@ public class ProjectileArrow : MonoBehaviour
 		_mjolnirMod = (Mjolnir)_bowAttackModifaers[typeof(Mjolnir)];
 
 		_arrowRigidbody = GetComponent<Rigidbody>();
-		_arrowCollider = GetComponent<CapsuleCollider>();
+		_arrowCollider = GetComponent<BoxCollider>();
 
 		_arrowCollider.isTrigger = false;
 	}
