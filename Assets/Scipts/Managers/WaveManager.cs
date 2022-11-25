@@ -100,7 +100,6 @@ public class WaveManager : MonoBehaviour, IGameManager
         yield return new WaitForSeconds(delay);
 
         Messenger<int>.Broadcast(Event.WAVE_IN_COMMING, _wave);
-        Messenger<SFXSoundName>.Broadcast(AudioManager.Event.PLAY_SFX, SFXSoundName.AlarmHorn);
     }
 
     private void NewGameModeOrccheim_EventHandler()

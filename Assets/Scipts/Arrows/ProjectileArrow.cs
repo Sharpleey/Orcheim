@@ -29,17 +29,23 @@ public class ProjectileArrow : MonoBehaviour
 
 	private Enemy _currentHitEnemy;
 
+	private LightBow _lightBow;
 	private Dictionary<Type, IModifier> _bowAttackModifaers = new Dictionary<Type, IModifier>();
+	private BowAudioController _bowAudioController;
+
 	#endregion Private fields
 
 	#region Mono
-    private void Start() 
+	private void Start() 
 	{
 		_isArrowInFlight = false;
 		_isBlockDamage = false;
 
+		_lightBow = GetComponentInParent<LightBow>();
+
 		// Получаем модификаторы атаки, установленные на луке
-		_bowAttackModifaers = GetComponentInParent<LightBow>().AttackModifaers;
+		_bowAttackModifaers = _lightBow.AttackModifaers;
+		_bowAudioController = _lightBow.AudioController;
 
 		_directDamageMod = (DirectDamage)_bowAttackModifaers[typeof(DirectDamage)];
 		_criticalDamageMod = (CriticalDamage)_bowAttackModifaers[typeof(CriticalDamage)];
@@ -91,6 +97,9 @@ public class ProjectileArrow : MonoBehaviour
 
 					// Наносим урон противнику
 					enemy.TakeHitboxDamage(damage, hitCollider, _directDamageMod.TypeDamage);
+
+					// Воспроизводим звук попадания
+					_bowAudioController.PlayHit();
 
 					// Поджигаем противника, если прокнуло
 					if (_fireArrowMod != null && _fireArrowMod.GetProcBurning())

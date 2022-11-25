@@ -314,6 +314,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
             StopSpawnEnemies();
 
             Messenger.Broadcast(WaveManager.Event.WAVE_IS_OVER);
+            Messenger<SoundType, string, float>.Broadcast(AudioManager.Event.PLAY_SOUND, SoundType.Sfx, "wave_is_over", 0);
         }
     }
 

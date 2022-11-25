@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 252820926003112643}
   - component: {fileID: 1878029558994811188}
   - component: {fileID: 1665138547911018493}
+  - component: {fileID: 1348433733499440278}
   m_Layer: 6
   m_Name: ProjectileArrow_2(Clone)
   m_TagString: Untagged
@@ -129,6 +130,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tracerEffect: {fileID: 8668977602194451222}
   _hitEffect: {fileID: 2184747282298638455, guid: e3cef86ae115b464f9895384cf8a5536, type: 3}
+--- !u!65 &1348433733499440278
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5309562759909503825}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5812279950464291116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,7 +1220,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1281,7 +1295,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1355,6 +1369,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9bce252e27c639640bfea08952b4cbeb, type: 3}
   - {fileID: 8300000, guid: 880a02ca4c2c5554fa9951f84e284f5e, type: 3}
   - {fileID: 8300000, guid: bf8906bec56252145b8413ce4317765a, type: 3}
+  _bowHitSoudns:
+  - {fileID: 8300000, guid: d9424042bdd131543ae9e12220a52faf, type: 3}
   _bowAudioSource: {fileID: 2908841774902593284}
 --- !u!114 &5569950634224132355
 MonoBehaviour:

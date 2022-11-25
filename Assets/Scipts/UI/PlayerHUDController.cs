@@ -55,7 +55,7 @@ public class PlayerHUDController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if(_playerNotification)
+        if (_playerNotification)
         {
             _playerNotification.text = text;
         }
@@ -120,6 +120,7 @@ public class PlayerHUDController : MonoBehaviour
     private void WaveIsComing_EventHandler(int wave)
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_COMING, 0));
+
         SetTextWaveCounter(wave);
     }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DirectDamage))]
-[RequireComponent(typeof(AudioController))]
+[RequireComponent(typeof(BowAudioController))]
 public class LightBow : MonoBehaviour, IBowWeapon
 {
     #region Serialize fields
@@ -49,6 +49,11 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// Словарь хранит модификаторы атаки установленные на луке
     /// </summary>
     public Dictionary<Type, IModifier> AttackModifaers { get; private set; }
+
+    /// <summary>
+    /// Аудиоконтроллер для воспроизведения звук лука
+    /// </summary>
+    public BowAudioController AudioController { get; private set; }
     #endregion Properties
 
     #region Private fields
@@ -58,7 +63,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private bool _isLockControl = false;
 
     private Animator _animator;
-    private AudioController _audioController;
 
     private Quaternion _defaultBowRotate;
 
@@ -87,7 +91,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        _audioController = GetComponent<AudioController>();
+        AudioController = GetComponent<BowAudioController>();
 
         AttackModifaers = new Dictionary<Type, IModifier>();
 
