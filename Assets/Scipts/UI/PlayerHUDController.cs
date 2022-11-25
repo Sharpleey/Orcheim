@@ -14,26 +14,26 @@ public class PlayerHUDController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _healthPlayer;
     [SerializeField] private Slider _healthSlider;
 
+    private PlayerManager _playerManager;
+
     private void Awake()
     {
-        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.AddListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.AddListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger<int>.AddListener(SpawnEnemyManager.Event.ENEMIES_REMAINING, SetTextEnemiesRemaining);
-        Messenger.AddListener(WaveManager.Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger<int>.AddListener(PlayerManager.Event.TAKE_DAMAGE, PlayerDamaged_EventHandler);
-    }
-    private void OnDestroy()
-    {
-        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.RemoveListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.RemoveListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger<int>.RemoveListener(SpawnEnemyManager.Event.ENEMIES_REMAINING, SetTextEnemiesRemaining);
-        Messenger.RemoveListener(WaveManager.Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger<int>.AddListener(PlayerManager.Event.TAKE_DAMAGE, PlayerDamaged_EventHandler);
+        GameSceneEventManager.OnGameMapStarded.AddListener(StartingNewGameModeOrccheim_EventHandler);
+        PlayerEventManager.OnPlayerDamaged.AddListener(PlayerDamaged_EventHandler);
+        WaveEventManager.OnPreparingForWave.AddListener(PreparingForWave_EventHandler);
+        WaveEventManager.OnWaveIsComing.AddListener(WaveIsComing_EventHandler);
+        WaveEventManager.OnWaveIsOver.AddListener(WaveIsOver_EventHandler);
+        SpawnEnemyEventManager.OnEnemiesRemaining.AddListener(SetTextEnemiesRemaining);
     }
 
     private void Start()
+    {
+        _playerManager = Managers.PlayerManager;
+
+        ClearAllText();
+    }
+
+    private void ClearAllText()
     {
         if (_playerNotification)
             _playerNotification.text = "";
@@ -94,9 +94,9 @@ public class PlayerHUDController : MonoBehaviour
             _healthSlider.maxValue = maxHealth;
             _healthSlider.value = currentHealth;
         }
-            
     }
 
+    #region Event handlers
     private void StartingNewGameModeOrccheim_EventHandler()
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.CLEAR_VILLAGE, 5));
@@ -131,14 +131,12 @@ public class PlayerHUDController : MonoBehaviour
 
     private void PlayerDamaged_EventHandler(int damage)
     {
-        try
+        if(_playerManager)
         {
-            SetTextHealthPlayer(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
-            SetValueHealthBar(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
+            SetTextHealthPlayer(_playerManager.Health, _playerManager.MaxHealth);
+            SetValueHealthBar(_playerManager.Health, _playerManager.MaxHealth);
         }
-        catch (Exception exeption)
-        {
-            Debug.Log(exeption.Message);
-        }
+       
     }
+    #endregion Event handlers
 }

@@ -163,44 +163,13 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
     private List<IModifier> _modifaers = new List<IModifier>();
 
-    /// <summary>
-    /// События для менеджера или транслируемые менеджером
-    /// </summary>
-    public static class Event
-    {
-        #region Events for manager
-        /// <summary>
-        /// Событие получение урона игроком
-        /// </summary>
-        public const string TAKE_DAMAGE = "PLAYER_TAKE_DAMAGE";
-        #endregion
-
-        #region Events broadcast by manager
-        /// <summary>
-        /// Событие смерти игрока
-        /// </summary>
-        public const string PLAYER_DEAD = "PLAYER_DEAD";
-        #endregion
-    }
-
     private void Awake()
     {
-        Messenger<int>.AddListener(Event.TAKE_DAMAGE, TakeDamage);
-        Messenger.AddListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, SetDefaultParameters);
-        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindPlayerSpawnZonesOnScene);
-        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, PlayerRespawn);
-        Messenger.AddListener(SpawnEnemyManager.Event.ENEMY_KILLED, UpdateCounterKills);
-        Messenger.AddListener(GameEvent.GAME_OVER, SetDefaultParameters);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger<int>.RemoveListener(Event.TAKE_DAMAGE, TakeDamage);
-        Messenger.RemoveListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, SetDefaultParameters);
-        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindPlayerSpawnZonesOnScene);
-        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, PlayerRespawn);
-        Messenger.RemoveListener(SpawnEnemyManager.Event.ENEMY_KILLED, UpdateCounterKills);
-        Messenger.RemoveListener(GameEvent.GAME_OVER, SetDefaultParameters);
+        GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
+        GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
+        PlayerEventManager.OnPlayerDamaged.AddListener(TakeDamage);
+        GlobalGameEventManager.OnEnemyKilled.AddListener(UpdateCounterKills);
+        GlobalGameEventManager.OnGameOver.AddListener(SetDefaultParameters);
     }
 
     public void Startup()
@@ -213,16 +182,23 @@ public class PlayerManager : MonoBehaviour, IGameManager
         Status = ManagerStatus.Started;
     }
 
-    public void TakeDamage(int damage)
+    /// <summary>
+    /// Метод для принятия урона игроком
+    /// </summary>
+    /// <param name="damage"></param>
+    private void TakeDamage(int damage)
     {
         _health -= damage;
 
         if (_health <=0)
         {
-            Messenger.Broadcast(Event.PLAYER_DEAD);
+            PlayerEventManager.PlayerDead();
         }
     }
 
+    /// <summary>
+    /// Метод для установки стандартных параметров игрока
+    /// </summary>
     private void SetDefaultParameters()
     {
         Debug.Log("Set default parameters for player");
@@ -237,6 +213,9 @@ public class PlayerManager : MonoBehaviour, IGameManager
         _modifaers = _modifaers = new List<IModifier>();
     }
 
+    /// <summary>
+    /// Метод поиска зон спавна игрока
+    /// </summary>
     private void FindPlayerSpawnZonesOnScene()
     {
         Debug.Log("Find player spawn zones on scene...");
@@ -246,6 +225,9 @@ public class PlayerManager : MonoBehaviour, IGameManager
         Debug.Log("Found: " + _playerSpawnZones.Length.ToString() + " zones");
     }
 
+    /// <summary>
+    /// Метод для возрождения игрока на случайном спавне
+    /// </summary>
     private void PlayerRespawn()
     {
         Debug.Log("Player respawn");
@@ -276,4 +258,17 @@ public class PlayerManager : MonoBehaviour, IGameManager
     {
         _kills++;
     }
+
+    #region EventHandlers
+    private void EventHandler_NewGame(GameMode gameMode)
+    {
+        SetDefaultParameters();
+    }
+
+    private void EventHandler_GameMapStarted()
+    {
+        FindPlayerSpawnZonesOnScene();
+        PlayerRespawn();
+    }
+    #endregion
 }

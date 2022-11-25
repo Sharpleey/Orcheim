@@ -484,8 +484,8 @@ public abstract class Enemy : MonoBehaviour
             // Если игрок атаковал врага, изменяем состояние
             if (CurrentState.GetType() == typeof(IdleState))
             {
-               
-                Messenger.Broadcast(WaveManager.Event.FIRST_TRIGGER_GAME);
+
+                WaveEventManager.StartingTrigger();
      
                 // Изменяем состояние на преследование
                 SetState<ChasingPlayerState>();

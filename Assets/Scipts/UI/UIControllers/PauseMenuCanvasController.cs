@@ -18,12 +18,7 @@ public class PauseMenuCanvasController : MonoBehaviour
 
     private void Awake()
     {
-        Messenger.AddListener(PlayerManager.Event.PLAYER_DEAD, PlayerDead_EventHandler);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger.RemoveListener(PlayerManager.Event.PLAYER_DEAD, PlayerDead_EventHandler);
+        PlayerEventManager.OnPlayerDead.AddListener(PlayerDead_EventHandler);
     }
 
     private void Start()
@@ -53,7 +48,7 @@ public class PauseMenuCanvasController : MonoBehaviour
     {
         _isPaused = !_isPaused;
 
-        Messenger<bool>.Broadcast(GameSceneManager.Event.PAUSE_GAME, _isPaused);
+        GlobalGameEventManager.PauseGame(_isPaused);
 
         if (_isPaused)
         {
@@ -92,7 +87,7 @@ public class PauseMenuCanvasController : MonoBehaviour
     {
         _isPaused = true;
 
-        Messenger<bool>.Broadcast(GameSceneManager.Event.PAUSE_GAME, _isPaused);
+        GlobalGameEventManager.PauseGame(_isPaused);
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -119,8 +114,9 @@ public class PauseMenuCanvasController : MonoBehaviour
 
     public void OnClickButtonRestart()
     {
-        Messenger.Broadcast(GameEvent.NEW_GAME_MODE_ORCCHEIM);
-        Messenger<string>.Broadcast(GameSceneManager.Event.SWITCH_TO_SCENE, GameSceneManager.Scene.TEST_AI);
+        GlobalGameEventManager.NewGame(GameMode.Orccheim);
+
+        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_1);
     }
 
     public void OnClickButtonExitMainMenu()
@@ -128,7 +124,8 @@ public class PauseMenuCanvasController : MonoBehaviour
         ///
         /// ѕроизводим сохранени€ данных перед выходом
         ///
-        Messenger.Broadcast(GameEvent.GAME_OVER);
-        Messenger<string>.Broadcast(GameSceneManager.Event.SWITCH_TO_SCENE, GameSceneManager.Scene.MAIN_MENU);
+        GlobalGameEventManager.GameOver();
+
+        Managers.GameSceneManager.SwitchToScene(SceneName.MAIN_MENU);
     }
 }

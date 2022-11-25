@@ -96,6 +96,6 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Messenger<int>.Broadcast(PlayerManager.Event.TAKE_DAMAGE, damage);
+        PlayerEventManager.PlayerDamaged(damage);
     }
 }

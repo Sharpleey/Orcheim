@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LootManager : MonoBehaviour, IGameManager
@@ -8,36 +6,17 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private GameObject[] _chestSpawnZones;
 
-    public static class Event
-    {
-        #region Events for manager
-
-        #endregion
-
-        #region Events broadcast by manager
-
-        #endregion
-    }
-
     public void Startup()
     {
         Debug.Log("Loot manager starting...");
 
         Status = ManagerStatus.Started;
     }
-    // Start is called before the first frame update
-    private void Start()
+    
+    private void Awake()
     {
-        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindChestSpawnZones);
-        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, ChestRespawn);
-        Messenger.AddListener(WaveManager.Event.WAVE_IS_OVER, ChestRespawn);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, FindChestSpawnZones);
-        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, ChestRespawn);
-        Messenger.RemoveListener(WaveManager.Event.WAVE_IS_OVER, ChestRespawn);
+        GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
+        WaveEventManager.OnWaveIsOver.AddListener(ChestRespawn);
     }
 
     private void FindChestSpawnZones()
@@ -53,4 +32,17 @@ public class LootManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Spawn chest");
     }
+
+    #region Event handlers
+    private void EventHandler_NewGame(GameMode gameMode)
+    {
+
+    }
+
+    private void EventHandler_GameMapStarted()
+    {
+        FindChestSpawnZones();
+        ChestRespawn();
+    }
+    #endregion
 }

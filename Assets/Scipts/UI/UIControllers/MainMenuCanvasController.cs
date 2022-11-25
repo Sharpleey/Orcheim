@@ -16,12 +16,7 @@ public class MainMenuCanvasController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        Messenger<SoundType, float>.Broadcast(AudioManager.Event.PLAY_RANDOM_SOUND, SoundType.MainMenuTheme, 0);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger.Broadcast(AudioManager.Event.STOP_ALL_SOUND_SOURCE);
+        Managers.AudioManager.PlayRandomSound(SoundType.MainMenuTheme);
     }
 
     public void OnClickNewGame()
@@ -51,8 +46,9 @@ public class MainMenuCanvasController : MonoBehaviour
 
     public void OnClickTestSceneAI()
     {
-        Messenger.Broadcast(GameEvent.NEW_GAME_MODE_ORCCHEIM);
-        Messenger<string>.Broadcast(GameSceneManager.Event.SWITCH_TO_SCENE, GameSceneManager.Scene.TEST_AI);
+        GlobalGameEventManager.NewGame(GameMode.Orccheim);
+
+        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_1);
     }
 
     private void ShowMenu(GameObject menu)

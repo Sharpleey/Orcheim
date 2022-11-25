@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class SpawnEnemyManager : MonoBehaviour, IGameManager
 {
@@ -106,33 +104,13 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
 
     private bool _isSpawningEnemy;
 
-    public static class Event
-    {
-        #region Events for manager
-        public const string ENEMY_KILLED = "ENEMY_KILLED";
-        #endregion
-
-        #region Events broadcast by manager
-        public const string ENEMIES_REMAINING = "ENEMIES_REMAINING";
-        #endregion
-    }
-
     private void Awake()
     {
-        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.AddListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.AddListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger.AddListener(Event.ENEMY_KILLED, CheckEnemiesRemaining);
-        Messenger.AddListener(GameEvent.GAME_OVER, GameOver_EventHandler);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, StartingNewGameModeOrccheim_EventHandler);
-        Messenger<int>.RemoveListener(WaveManager.Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger<int>.RemoveListener(WaveManager.Event.WAVE_IN_COMMING, WaveIsComing_EventHandler);
-        Messenger.RemoveListener(Event.ENEMY_KILLED, CheckEnemiesRemaining);
-        Messenger.RemoveListener(GameEvent.GAME_OVER, GameOver_EventHandler);
+        GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarded);
+        WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PreparingForWave);
+        WaveEventManager.OnWaveIsComing.AddListener(EventHandler_WaveIsComing);
+        GlobalGameEventManager.OnEnemyKilled.AddListener(CheckEnemiesRemaining);
+        GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
     }
 
     private void Update()
@@ -241,6 +219,7 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
             _maximumEnemiesOnScene += _incrementMaximumEnemiesOnScene;
         }
     }
+    
     /// <summary>
     /// Метод определяет максимальное кол-во врагов за волну в зависимости от номера волны
     /// </summary>
@@ -275,14 +254,29 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
         //}
     }
 
-    private void StartingNewGameModeOrccheim_EventHandler()
+    private void CheckEnemiesRemaining()
+    {
+        CountEnemyOnScene -= 1;
+
+        SpawnEnemyEventManager.EnemiesRemaining(EnemiesRemaining);
+
+        if (EnemiesRemaining == 0)
+        {
+            StopSpawnEnemies();
+
+            WaveEventManager.WaveIsOver();
+        }
+    }
+
+    #region Event handlers
+    private void EventHandler_GameMapStarded()
     {
         SetDefaultParameters();
         FindEnemySpawnZonesOnScene();
         FindEnemiesOnScene();
     }
 
-    private void PreparingForWave_EventHandler(int wave)
+    private void EventHandler_PreparingForWave(int wave)
     {
         UpdateValueMaximumEnemiesOnScene(wave);
         UpdateValueMaximumEnemiesOnWave(wave);
@@ -290,32 +284,17 @@ public class SpawnEnemyManager : MonoBehaviour, IGameManager
         FillPoolEnemies();
     }
 
-    private void WaveIsComing_EventHandler(int wave)
+    private void EventHandler_WaveIsComing(int wave)
     {
         StartSpawnEnemies();
 
-        Messenger<int>.Broadcast(Event.ENEMIES_REMAINING, EnemiesRemaining);
+        SpawnEnemyEventManager.EnemiesRemaining(EnemiesRemaining);
     }
 
-    private void GameOver_EventHandler()
+    private void EventHandler_GameOver()
     {
         StopSpawnEnemies();
         SetDefaultParameters();
     }
-
-    private void CheckEnemiesRemaining()
-    {
-        CountEnemyOnScene -= 1;
-
-        Messenger<int>.Broadcast(Event.ENEMIES_REMAINING, EnemiesRemaining);
-
-        if(EnemiesRemaining == 0)
-        {
-            StopSpawnEnemies();
-
-            Messenger.Broadcast(WaveManager.Event.WAVE_IS_OVER);
-            Messenger<SoundType, string, float>.Broadcast(AudioManager.Event.PLAY_SOUND, SoundType.Sfx, "wave_is_over", 0);
-        }
-    }
-
+    #endregion
 }

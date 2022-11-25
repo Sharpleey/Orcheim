@@ -80,12 +80,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
         Name = _name;
         TimeReloadShot = _timeReloadShot;
 
-        Messenger<bool>.AddListener(GameSceneManager.Event.PAUSE_GAME, LockControl);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger<bool>.RemoveListener(GameSceneManager.Event.PAUSE_GAME, LockControl);
+        GlobalGameEventManager.OnPauseGame.AddListener(LockControl);
     }
 
     private void Start()

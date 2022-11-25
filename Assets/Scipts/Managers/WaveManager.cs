@@ -11,7 +11,6 @@ public class WaveManager : MonoBehaviour, IGameManager
     [SerializeField] private int _delayToBroadcastPreparingForWave = 5;
 
     public ManagerStatus Status { get; private set; }
-    public int Wave => _wave;
 
     private bool _isFirstTriggerGame = false;
 
@@ -25,35 +24,13 @@ public class WaveManager : MonoBehaviour, IGameManager
         Status = ManagerStatus.Started;
     }
 
-    public static class Event
-    {
-        #region Events for manager
-        public const string FIRST_TRIGGER_GAME = "FIRST_TRIGGER_GAME";
-        public const string WAVE_IS_OVER = "WAVE_IS_OVER";
-        #endregion
-
-        #region Events broadcast by manager
-        public const string PREPARING_FOR_WAVE = "PREPARING_FOR_WAVE";
-        public const string WAVE_IN_COMMING = "WAVE_IN_COMMING";
-        #endregion
-    }
-
     private void Awake()
     {
-        Messenger.AddListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim_EventHandler);
-        Messenger.AddListener(Event.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
-        Messenger<int>.AddListener(Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger.AddListener(Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger.AddListener(GameEvent.GAME_OVER, GameOver_EventHandler);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger.RemoveListener(GameEvent.NEW_GAME_MODE_ORCCHEIM, NewGameModeOrccheim_EventHandler);
-        Messenger.RemoveListener(Event.FIRST_TRIGGER_GAME, FirstTriggerGame_EventHandler);
-        Messenger<int>.RemoveListener(Event.PREPARING_FOR_WAVE, PreparingForWave_EventHandler);
-        Messenger.RemoveListener(Event.WAVE_IS_OVER, WaveIsOver_EventHandler);
-        Messenger.RemoveListener(GameEvent.GAME_OVER, GameOver_EventHandler);
+        GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
+        WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PreparingForWave);
+        WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
+        WaveEventManager.OnStartWaveLogic.AddListener(EventHandler_StartWaveLogic);
+        GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
     }
 
     /// <summary>
@@ -85,7 +62,7 @@ public class WaveManager : MonoBehaviour, IGameManager
 
         yield return new WaitForSeconds(delay);
 
-        Messenger<int>.Broadcast(Event.PREPARING_FOR_WAVE, _wave);
+        WaveEventManager.PreparingForWave(_wave);
     }
 
     /// <summary>
@@ -99,15 +76,16 @@ public class WaveManager : MonoBehaviour, IGameManager
 
         yield return new WaitForSeconds(delay);
 
-        Messenger<int>.Broadcast(Event.WAVE_IN_COMMING, _wave);
+        WaveEventManager.WaveIsComing(_wave);
     }
 
-    private void NewGameModeOrccheim_EventHandler()
+    #region Event handlers
+    private void EventHandler_NewGame(GameMode gameMode)
     {
         SetDefaultParameters();
     }
 
-    private void FirstTriggerGame_EventHandler()
+    private void EventHandler_StartWaveLogic()
     {
         if (!_isFirstTriggerGame)
         {
@@ -118,21 +96,22 @@ public class WaveManager : MonoBehaviour, IGameManager
         }
     }
 
-    private void PreparingForWave_EventHandler(int wave)
+    private void EventHandler_PreparingForWave(int wave)
     {
         _coroutineBroadcastWaveIsComing = BroadcastWaveIsComing(_delayToBroadcastWaveIsComing);
         StartCoroutine(_coroutineBroadcastWaveIsComing);
     }
 
-    private void WaveIsOver_EventHandler()
+    private void EventHandler_WaveIsOver()
     {
         SetNumWave(_wave + 1);
         StartCoroutine(BroadcastPreparingForWave(_delayToBroadcastPreparingForWave));
     }
 
-    private void GameOver_EventHandler()
+    private void EventHandler_GameOver()
     {
         SetDefaultParameters();
         StopAllCoroutines();
     }
+    #endregion
 }

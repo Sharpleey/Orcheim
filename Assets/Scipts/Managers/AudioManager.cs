@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class AudioManager : MonoBehaviour, IGameManager
 {
@@ -9,65 +10,15 @@ public class AudioManager : MonoBehaviour, IGameManager
 
     public ManagerStatus Status { get; private set; }
 
-    public static class Event
-    {
-        #region Events for manager
-        /// <summary>
-        /// ¬ключаем воспроизведение определенной музыки/звука определенного типа
-        /// </summary>
-        public const string PLAY_SOUND = "PLAY_SOUND";
-
-        /// <summary>
-        /// ¬ключаем воспроизведение случайной музыки/звука определенного типа
-        /// </summary>
-        public const string PLAY_RANDOM_SOUND = "PLAY_RANDOM_SOUND";
-        
-        /// <summary>
-        /// —обытие дл€ остановки музыки/звука определенного типа
-        /// </summary>
-        public const string STOP_SOUND = "STOP_SOUND";
-
-        /// <summary>
-        /// —обытие дл€ оставноки всех источников звука AudioManager-а
-        /// </summary>
-        public const string STOP_ALL_SOUND_SOURCE = "STOP_ALL_SOUND_SOURCE";
-        #endregion
-
-        #region Events broadcast by manager
-
-        #endregion
-    }
-
     private void Awake()
     {
-        Messenger<SoundType, string, float>.AddListener(Event.PLAY_SOUND, PlaySound);
-        Messenger<SoundType, float>.AddListener(Event.PLAY_RANDOM_SOUND, PlayRandomSound);
-        Messenger<SoundType>.AddListener(Event.STOP_SOUND, StopSound);
-        Messenger.AddListener(Event.STOP_ALL_SOUND_SOURCE, StopAllSoundSource);
-
-        Messenger.AddListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, EventHandler_1);
-        Messenger<int>.AddListener(WaveManager.Event.PREPARING_FOR_WAVE, EventHandler_2);
-        Messenger<int>.AddListener(WaveManager.Event.WAVE_IN_COMMING, EventHandler_3);
-        Messenger.AddListener(WaveManager.Event.WAVE_IS_OVER, EventHandler_4);
-        Messenger.AddListener(GameEvent.GAME_OVER, StopAllSoundSource);
-
-        Messenger<bool>.AddListener(GameSceneManager.Event.PAUSE_GAME, PauseAllAudioSource);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger<SoundType, string, float>.RemoveListener(Event.PLAY_SOUND, PlaySound);
-        Messenger<SoundType, float>.RemoveListener(Event.PLAY_RANDOM_SOUND, PlayRandomSound);
-        Messenger<SoundType>.RemoveListener(Event.STOP_SOUND, StopSound);
-        Messenger.RemoveListener(Event.STOP_ALL_SOUND_SOURCE, StopAllSoundSource);
-
-        Messenger.RemoveListener(GameEvent.STARTING_NEW_GAME_MODE_ORCCHEIM, EventHandler_1);
-        Messenger<int>.RemoveListener(WaveManager.Event.PREPARING_FOR_WAVE, EventHandler_2);
-        Messenger<int>.RemoveListener(WaveManager.Event.WAVE_IN_COMMING, EventHandler_3);
-        Messenger.RemoveListener(WaveManager.Event.WAVE_IS_OVER, EventHandler_4);
-        Messenger.RemoveListener(GameEvent.GAME_OVER, StopAllSoundSource);
-
-        Messenger<bool>.RemoveListener(GameSceneManager.Event.PAUSE_GAME, PauseAllAudioSource);
+        GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
+        WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PrepareForWave);
+        WaveEventManager.OnWaveIsComing.AddListener(EventHandler_WaveIsComing);
+        WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
+        GlobalGameEventManager.OnPauseGame.AddListener(PauseAllAudioSource);
+        GlobalGameEventManager.OnGameOver.AddListener(StopAllSoundSource);
+        GameSceneEventManager.OnSceneLoadingStarted.AddListener(StopAllSoundSource);
     }
 
     public void Startup()
@@ -82,7 +33,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     /// ћетод дл€ воспроизведени€ конкретной фоновой музыки из массива _ambientSounds
     /// </summary>
     /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
-    private void PlaySound(SoundType soundType, string nameSound, float delay = 0)
+    public void PlaySound(SoundType soundType, string nameSound, float delay = 0)
     {
         // ѕолучаем звук из массива с определенным названием и типом
         Sound sound = Array.Find(_sounds, x => x.soundType == soundType && x.name == nameSound);
@@ -113,7 +64,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     /// ћетод дл€ воспроизведени€ конкретной музыки из массива _musicSounds
     /// </summary>
     /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
-    private void PlayRandomSound(SoundType soundType, float delay = 0)
+    public void PlayRandomSound(SoundType soundType, float delay = 0)
     {
         // ѕолучаем массив звуков определенного типа
         Sound[] sounds = Array.FindAll(_sounds, x => x.soundType == soundType);
@@ -165,7 +116,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     /// <summary>
     /// ћетод дл€ остановки всех источников звука AudioManager-а
     /// </summary>
-    private void StopAllSoundSource()
+    public void StopAllSoundSource()
     {
         _ambientSource.Stop();
         _musicSource.Stop();
@@ -224,6 +175,10 @@ public class AudioManager : MonoBehaviour, IGameManager
         audioSource.Stop();
     }
 
+    /// <summary>
+    /// ћетод дл€ постановки паузы или сн€ти€ с паузы источников звука
+    /// </summary>
+    /// <param name="isPause"></param>
     private void PauseAllAudioSource(bool isPause)
     {
         if (isPause)
@@ -245,25 +200,27 @@ public class AudioManager : MonoBehaviour, IGameManager
     }
 
     #region Event handlers
-    private void EventHandler_1()
+    private void EventHandler_GameMapStarted()
     {
         PlaySound(SoundType.Sfx, "new_message", 5);
+        PlayRandomSound(SoundType.AmbientMusic, 0);
     }
 
-    private void EventHandler_2(int wave)
+    private void EventHandler_PrepareForWave(int wave)
     {
         PlaySound(SoundType.Sfx, "new_message", 0);
     }
 
-    private void EventHandler_3(int wave)
+    private void EventHandler_WaveIsComing(int wave)
     {
         PlaySound(SoundType.Sfx, "alarm_horn", 0);
         PlayRandomSound(SoundType.CombatMusic, 8);
     }
 
-    private void EventHandler_4()
+    private void EventHandler_WaveIsOver()
     {
         PlaySound(SoundType.Sfx, "wave_is_over", 0);
+        StopSound(SoundType.CombatMusic);
     }
     #endregion
 }

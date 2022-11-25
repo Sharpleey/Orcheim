@@ -1,0 +1,62 @@
+using UnityEngine.Events;
+
+/// <summary>
+/// Менеджер глобальных событий происходящих в игре
+/// </summary>
+public class GlobalGameEventManager
+{
+    #region Events
+    /// <summary>
+    /// Событие постановки игры на паузу
+    /// </summary>
+    public static readonly UnityEvent<bool> OnPauseGame = new UnityEvent<bool>();
+
+    /// <summary>
+    /// События окончания игры
+    /// </summary>
+    public static readonly UnityEvent OnGameOver = new UnityEvent();
+
+    /// <summary>
+    /// Событие убийства врага
+    /// </summary>
+    public static readonly UnityEvent OnEnemyKilled = new UnityEvent();
+
+    public static readonly UnityEvent<GameMode> OnNewGame = new UnityEvent<GameMode>();
+
+    #endregion
+
+    #region Methods
+    /// <summary>
+    /// Метод отправки события OnPauseGame
+    /// </summary>
+    /// <param name="isPaused">Поставлена игра на паузу или нет</param>
+    public static void PauseGame(bool isPaused)
+    {
+        OnPauseGame.Invoke(isPaused);
+    }
+
+    /// <summary>
+    /// Метод отправки события OnGameOver
+    /// </summary>
+    public static void GameOver()
+    {
+        OnGameOver.Invoke();
+    }
+
+    /// <summary>
+    /// Метод отправки события OnEnemyKilled
+    /// </summary>
+    public static void EnemyKilled()
+    {
+        OnEnemyKilled.Invoke();
+    }
+
+    /// <summary>
+    /// Метод отправки события OnEnemyKilled
+    /// </summary>
+    public static void NewGame(GameMode gameMode)
+    {
+        OnNewGame.Invoke(gameMode);
+    }
+    #endregion
+}
