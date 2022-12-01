@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IBowWeapon : IWeapon
 {
-    float TimeReloadShot { get; }
+    //float TimeReload { get; }
 }

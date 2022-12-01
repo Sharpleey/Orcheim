@@ -373,7 +373,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60.000004
   orthographic: 0
@@ -705,6 +705,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b94b2cbc868404aa3dba12f85137a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxRunSpeed: 3.6
+  _maxSprintSpeed: 5
+  _maxAttackSpeed: 100
   _meleeWeapon: {fileID: 3043259281132300717}
   _rangeWeapon: {fileID: 766607151697802577}
 --- !u!1 &6680263040274784724

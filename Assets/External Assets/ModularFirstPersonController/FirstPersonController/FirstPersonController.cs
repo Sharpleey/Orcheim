@@ -133,6 +133,9 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    public bool IsSprinting => isSprinting;
+    public bool IsBlockSprint { get; set; }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -389,7 +392,7 @@ public class FirstPersonController : MonoBehaviour
             }
 
             // All movement calculations shile sprint is active
-            if (enableSprint && Input.GetKey(sprintKey) && Input.GetKey(KeyCode.W) && sprintRemaining > 0f && !isSprintCooldown)
+            if (enableSprint && !IsBlockSprint && Input.GetKey(sprintKey) && Input.GetKey(KeyCode.W) && sprintRemaining > 0f && !isSprintCooldown)
             {
                 targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
 
@@ -512,7 +515,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void HeadBob()
     {
-        if(isWalking)
+        if(isWalking && rb.velocity.magnitude >= 0.1f)
         {
             // Calculates HeadBob speed during sprint
             if(isSprinting)
@@ -527,7 +530,7 @@ public class FirstPersonController : MonoBehaviour
             // Calculates HeadBob speed during walking
             else
             {
-                timer += Time.deltaTime * bobSpeed;
+                timer += Time.deltaTime * (bobSpeed + walkSpeed) * speedReduction;
             }
             // Applies HeadBob movement
             joint.localPosition = new Vector3(jointOriginalPos.x + Mathf.Sin(timer) * bobAmount.x, jointOriginalPos.y + Mathf.Sin(timer) * bobAmount.y, jointOriginalPos.z + Mathf.Sin(timer) * bobAmount.z);

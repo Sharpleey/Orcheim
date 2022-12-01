@@ -30,14 +30,17 @@ public static class HashAnimStringEnemy
 public static class HashAnimStringWeapon
 {
     #region Trigger
-    public static int IsShoot = Animator.StringToHash("isShoot");
+    public static int IsFastShot = Animator.StringToHash("IsFastShot");
+    public static int IsAimingShot = Animator.StringToHash("IsAimingShot");
+    #endregion
+
+    #region Float
+    public static int PlayerSpeed = Animator.StringToHash("PlayerSpeed");
     #endregion
 
     #region Bool
-    public static int IsIdle = Animator.StringToHash("isIdle");
+    public static int IsSprint = Animator.StringToHash("IsSprint");
     public static int IsAimingLoad = Animator.StringToHash("isAimingLoad");
-    public static int IsRun = Animator.StringToHash("isRun");
-    public static int IsSprint = Animator.StringToHash("isSprint");
     #endregion
 }
 

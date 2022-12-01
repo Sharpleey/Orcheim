@@ -3,6 +3,8 @@ using UnityEngine;
 public class BowAudioController : MonoBehaviour
 {
     [SerializeField] private AudioClip[] _bowStringLoadSounds;
+    [SerializeField] private AudioClip[] _bowStringLoadedSounds;
+    [SerializeField] private AudioClip[] _bowStringUnloadSounds;
     [SerializeField] private AudioClip[] _bowShotSounds;
     [SerializeField] private AudioClip[] _bowHitSoudns;
 
@@ -24,5 +26,10 @@ public class BowAudioController : MonoBehaviour
     {
         int randSound = UnityEngine.Random.Range(0, _bowStringLoadSounds.Length);
         _bowAudioSource.PlayOneShot(_bowStringLoadSounds[randSound]);
+    }
+    public void PlayStringUnload()
+    {
+        int randSound = UnityEngine.Random.Range(0, _bowStringUnloadSounds.Length);
+        _bowAudioSource.PlayOneShot(_bowStringUnloadSounds[randSound]);
     }
 }

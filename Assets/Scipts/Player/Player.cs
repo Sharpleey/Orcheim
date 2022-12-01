@@ -4,26 +4,107 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    #region Serialize fields
+    [Header("Parameters")]
+    [SerializeField] private float _maxRunSpeed = 3.6f;
+    [SerializeField] private float _maxSprintSpeed = 5f;
+    [SerializeField] private int _maxAttackSpeed = 100;
+
+    [Header("Weapons")]
     [SerializeField] private GameObject _meleeWeapon;
     [SerializeField] private GameObject _rangeWeapon;
+    #endregion Serialize fields
 
-    //private Equipment _equipment;
-    //private Spell _spell;
+    #region Properties
+    /// <summary>
+    /// Максимальная скорость бега игрока
+    /// </summary>
+    public float MaxRunSpeed => _maxRunSpeed;
+    public float MaxSprintSpeed => _maxSprintSpeed;
+    public int MaxAttackSpeed { get => _maxAttackSpeed; private set =>  _maxAttackSpeed = value; }
 
     /// <summary>
-    /// Текущее состояние игрока
+    /// Текущая максимальная скорость бега игрока. Данный параметр изменяем под разные случаи
     /// </summary>
-    public State CurrentState { get; private protected set; }
+    public float CurrentMaxRunSpeed
+    {
+        get => _firstPersonController.walkSpeed;
+        set
+        {
+            _firstPersonController.walkSpeed = value;
+        }
+    }
 
     /// <summary>
-    /// Словарь для хранения состояний
+    /// Текущая максимальная скорость спринта игрока. Данный параметр изменяем под разные случаи
     /// </summary>
-    private Dictionary<Type, State> _states;
+    public float CurrentMaxSprintSpeed
+    {
+        get => _firstPersonController.sprintSpeed;
+        set
+        {
+            _firstPersonController.sprintSpeed = value;
+        }
+    }
 
-    private GameObject _usedWeapon;
+    public float CurrentMaxAttackSpeed
+    {
+        get => _currentMaxAttackSpeed;
+        private set
+        {
+            _currentMaxAttackSpeed = value;
+        }
+    }
 
+    /// <summary>
+    /// Актуальная скорость игрока
+    /// </summary>
+    public float ActualSpeed => _rigidbody.velocity.magnitude;
+    
+    /// <summary>
+    /// Состояние спринта
+    /// </summary>
+    public bool IsSprinting => _firstPersonController.IsSprinting;
+
+    public bool IsBlockSprint
+    {
+        set
+        {
+            _firstPersonController.IsBlockSprint = value;
+        }
+    }
+    
+    public bool IsBlockChangeWeapon { get; set; }
+
+    public Camera Camera { get; private set; }
+    #endregion Properties
+
+    #region Private fields
+    private float _currentMaxAttackSpeed;
+
+    private IWeapon _usedWeapon;
+    private GameObject _usedWeaponGameObj;
+
+    private Rigidbody _rigidbody;
+
+    /// <summary>
+    /// Контроллер передвижения
+    /// </summary>
+    private FirstPersonController _firstPersonController;
+    #endregion Private fields
+
+    #region Mono
     private void Start()
     {
+        _rigidbody = GetComponent<Rigidbody>();
+        _firstPersonController = GetComponent<FirstPersonController>();
+
+        Camera = GetComponentInChildren<Camera>();
+
+        CurrentMaxRunSpeed = _maxRunSpeed;
+        CurrentMaxSprintSpeed = _maxSprintSpeed;
+        CurrentMaxAttackSpeed = _maxAttackSpeed;
+
         _meleeWeapon?.SetActive(false);
         _rangeWeapon?.SetActive(false);
 
@@ -31,71 +112,45 @@ public class Player : MonoBehaviour
             ChangeWeapon(_rangeWeapon);
         else
             ChangeWeapon(_meleeWeapon);
+    
     }
 
     private void Update()
     {
-        if (CurrentState != null)
-            CurrentState.Update();
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (!IsBlockChangeWeapon)
         {
-            ChangeWeapon(_meleeWeapon);
-        }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                ChangeWeapon(_meleeWeapon);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ChangeWeapon(_rangeWeapon);
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                ChangeWeapon(_rangeWeapon);
+            }
         }
 
     }
+    #endregion Mono
 
+    #region Private methods
     private void ChangeWeapon(GameObject weapon)
     {
-        if (weapon == _usedWeapon)
+        if (weapon == _usedWeaponGameObj)
             return;
 
-        _usedWeapon?.SetActive(false);
-        _usedWeapon = weapon;
-        _usedWeapon.SetActive(true);
+        _usedWeaponGameObj?.SetActive(false);
+        _usedWeaponGameObj = weapon;
+        _usedWeaponGameObj.SetActive(true);
+
+        _usedWeapon = _usedWeaponGameObj.GetComponent<IWeapon>();
     }
+    #endregion Private methods
 
-    /// <summary>
-    /// Метод инициализирует состояния
-    /// </summary>
-    private void InitStates()
-    {
-        _states = new Dictionary<Type, State>();
-
-    }
-
-    /// <summary>
-    /// Метод обрабатывает переходы между состояниями. Он вызывает Exit для старого CurrentState перед заменой его ссылки на newState. В конце он вызывает Enter для newState.
-    /// </summary>
-    /// <typeparam name="T">Тип класса состояния</typeparam>
-    private void SetState<T>() where T : State
-    {
-        State newState;
-
-        try
-        {
-            newState = _states[typeof(T)];
-        }
-        catch
-        {
-            Debug.Log("Состояние " + typeof(T).ToString() + " отсутсвует!");
-            return;
-        }
-
-        if (CurrentState != null)
-            CurrentState.Exit();
-
-        CurrentState = newState;
-        CurrentState.Enter();
-    }
-
+    #region Public methods
     public void TakeDamage(int damage)
     {
         PlayerEventManager.PlayerDamaged(damage);
     }
+    #endregion Private methods
 }

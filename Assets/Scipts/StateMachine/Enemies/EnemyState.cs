@@ -1,0 +1,72 @@
+using UnityEngine;
+/// <summary>
+/// Базовый абстрактный класс, от которого наследуются все классы состояния
+/// </summary>
+public abstract class EnemyState: IState
+{
+    /// <summary>
+    /// Хранит ссылку основной объект класса противника со всеми параметрами и данными. Необходимо для разного рода взаимодействий
+    /// </summary>
+    protected Enemy enemy;
+
+    /// <summary>
+    /// Transform игрока для отслеживания его позиции
+    /// </summary>
+    protected Transform transformPlayer;
+
+    /// <summary>
+    /// Дистанция от врага до игрока
+    /// </summary>
+    protected float distanceEnemyToPlayer;
+
+    /// <summary>
+    /// Конструктор класса состояния, необходим для прокидывания связей с данными противника и машины состояний
+    /// </summary>
+    /// <param name="enemy">Данный и параметры противника</param>
+    /// <param name="stateMachineEnemy">Машина состоянйи противника</param>
+    protected EnemyState(Enemy enemy)
+    {
+        this.enemy = enemy;
+    }
+    /// <summary>
+    /// Метод вызываемый при входе в состояние
+    /// </summary>
+    public virtual void Enter()
+    {
+
+    }
+
+    /// <summary>
+    /// Данный метод необходимо вызвать в методе Update в классе наслдеованного от MonoBehaviour. Пищем логику, ту которую хотели бы выполнить в методе Update 
+    /// </summary>
+    public virtual void Update()
+    {
+
+    }
+
+    /// <summary>
+    /// Метод вызываемый при выходе из состояния
+    /// </summary>
+    public virtual void Exit()
+    {
+
+    }
+
+    /// <summary>
+    /// Метод получает и возвращает дистанцию от противника до игрока
+    /// </summary>
+    /// <returns>Vector3 дистанцию до игрока</returns>
+    protected float GetDistanceEnemyToPlayer()
+    {
+        return Vector3.Distance(enemy.transform.position, transformPlayer.position);
+    }
+
+    /// <summary>
+    /// Метод ищет игрока по тегу на сцене, получает его трансформ и возвращает его
+    /// </summary>
+    /// <returns>Transfrom игрока</returns>
+    protected Transform GetTransformPlayer()
+    {
+        return GameObject.FindGameObjectWithTag("Player")?.transform;
+    }
+}

@@ -8,18 +8,21 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: EA03_LPNP - Grass
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHABLEND_ON
+  m_Shader: {fileID: 4800000, guid: 087e759528234b64ab3d45c76b5d0abc, type: 3}
+  m_ShaderKeywords: _ALPHABLEND_ON _USE_GRADIENT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AO:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -40,6 +43,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Gradient:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 7a923d27811ae794cb78f4a26b73a520, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -49,6 +56,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicSmooth:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -76,7 +87,9 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
+    - _DisplaceAmount: 1.5
     - _DstBlend: 10
+    - _EdgeSize: 0.2
     - _EmissionScaleUI: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -84,6 +97,7 @@ Material:
     - _Metallic: 0.148
     - _Mode: 2
     - _NoiseScale: 0
+    - _NoiseStrength: 0.4
     - _NormalScale: 1.77
     - _OcclusionScale: 0
     - _OcclusionStrength: 1
@@ -92,9 +106,14 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _UVSec: 0
+    - _Use_Gradient: 1
     - _ZWrite: 0
+    - _cutoff: 0
     m_Colors:
     - _Color: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
+    - _EdgeColor1: {r: 1, g: 1, b: 1, a: 1}
+    - _Emission: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _NoiseAmount: {r: 0.02, g: 0, b: 0.02, a: 0.02}
+  m_BuildTextureStacks: []

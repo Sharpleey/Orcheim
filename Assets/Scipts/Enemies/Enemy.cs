@@ -255,7 +255,7 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Текущее состояние врага
     /// </summary>
-    public State CurrentState { get; private protected set; }
+    public EnemyState CurrentState { get; private protected set; }
 
     public GameObject Weapon => WeaponController.UsedWeapon;
     public CapsuleCollider WeaponTriggerCollider { get; private set; }
@@ -266,7 +266,7 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Словарь для хранения состояний
     /// </summary>
-    protected Dictionary<Type, State> _states;
+    protected Dictionary<Type, EnemyState> _states;
 
     private int _health = 0;
     private int _armor = 0;
@@ -361,7 +361,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     protected void InitStates()
     {
-        _states = new Dictionary<Type, State>();
+        _states = new Dictionary<Type, EnemyState>();
 
         _states[typeof(IdleState)] = new IdleState(this);
         _states[typeof(DieState)] = new DieState(this);
@@ -387,9 +387,9 @@ public abstract class Enemy : MonoBehaviour
     /// Метод обрабатывает переходы между состояниями. Он вызывает Exit для старого CurrentState перед заменой его ссылки на newState. В конце он вызывает Enter для newState.
     /// </summary>
     /// <typeparam name="T">Тип класса состояния</typeparam>
-    protected internal void SetState<T>() where T : State
+    protected internal void SetState<T>() where T : EnemyState
     {
-        State newState;
+        EnemyState newState;
 
         try
         {

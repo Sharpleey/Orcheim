@@ -1315,7 +1315,7 @@ Animator:
   m_GameObject: {fileID: 5812279950464386752}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4827695bb485b0d46b81c8d8c5eebaad, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2160b0e2bf007d54e93085e7ae6505ee, type: 2}
+  m_Controller: {fileID: 9100000, guid: 88cc6e4a4a39f044b9794009c27bc110, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1337,10 +1337,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\u041B\u0435\u0433\u043A\u0438\u0439 \u043B\u0443\u043A"
-  _timeReloadShot: 0.5
   _prefabArrow: {fileID: 1320454780443807860, guid: 5e483ede1b11c0e42ba461c99086a1b0, type: 3}
   _arrowSpawn: {fileID: 5812279950464058762}
-  _camera: {fileID: 0}
   _shotForce: 16
 --- !u!114 &6954502073640963427
 MonoBehaviour:
@@ -1361,6 +1359,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a53c34cbc8bd9cf448e35ced98a1e602, type: 3}
   - {fileID: 8300000, guid: 44b4716c117659d4ca4b11418eb7d9bc, type: 3}
   - {fileID: 8300000, guid: 785ec1251ae811b468cb428a0f89363f, type: 3}
+  _bowStringLoadedSounds:
+  - {fileID: 8300000, guid: aa25278b148082d4f9e86f27e1e74759, type: 3}
+  - {fileID: 8300000, guid: 37134a6bbc515e54e891c961dc9fe5b5, type: 3}
+  - {fileID: 8300000, guid: 0373219177e432e4288daa3f3c765add, type: 3}
+  - {fileID: 8300000, guid: 544f89f3f1bae47499b64478eb4b4f2b, type: 3}
+  - {fileID: 8300000, guid: 7cea517e72e2d9a4ca955567aee5f470, type: 3}
+  - {fileID: 8300000, guid: b571ae9705b410748b48267a59174c09, type: 3}
+  _bowStringUnloadSounds:
+  - {fileID: 8300000, guid: 4e90bacea313d854c9a9b43d51b63ff4, type: 3}
+  - {fileID: 8300000, guid: 7c2f3007041dc064db2f3a45246ef90a, type: 3}
+  - {fileID: 8300000, guid: 4dbd03457d3c9264c94cba6af4f4896d, type: 3}
   _bowShotSounds:
   - {fileID: 8300000, guid: 2c3ac00c73b526a47a44c3e4f0a212bb, type: 3}
   - {fileID: 8300000, guid: dedf828de7d21a248b2aa2b5bea9d33e, type: 3}
@@ -1368,7 +1377,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9e1de7d1860c5d840a8ba8a5799d0e86, type: 3}
   - {fileID: 8300000, guid: 9bce252e27c639640bfea08952b4cbeb, type: 3}
   - {fileID: 8300000, guid: 880a02ca4c2c5554fa9951f84e284f5e, type: 3}
-  - {fileID: 8300000, guid: bf8906bec56252145b8413ce4317765a, type: 3}
   _bowHitSoudns:
   - {fileID: 8300000, guid: d9424042bdd131543ae9e12220a52faf, type: 3}
   _bowAudioSource: {fileID: 2908841774902593284}

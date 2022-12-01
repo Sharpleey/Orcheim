@@ -8,17 +8,19 @@ using UnityEngine;
 public class LightBow : MonoBehaviour, IBowWeapon
 {
     #region Serialize fields
-    [Header("Weapon Settings")]
+    [Header("Weapon")]
     [SerializeField] private string _name = "Легкий лук";
-    [SerializeField] private float _timeReloadShot = 0.5f;
+    [SerializeField] private float _shotForce = 16; // Сила выстрела
 
-    [Header("Projectile Settings")]
+    [Header("Projectile")]
     //[SerializeField] private GameObject _selectedPrefabArrow; // Префаб для стрелы
     [SerializeField] private GameObject _prefabArrow; // Объект из которого будем делать дубликаты стрел, выстeпает в роле префаба
     [SerializeField] private Transform _arrowSpawn;
-    [SerializeField] private Camera _camera;
-    [SerializeField] private float _shotForce = 8; // Сила выстрела
 
+    [Header("AimingZoom")]
+    [SerializeField] private float _zoomFOV = 30f;
+    [SerializeField] private float _originalFOV = 60f;
+    [SerializeField] private float _zoomStepTime = 4f;
     #endregion Serialize fields
 
     #region Properties
@@ -26,25 +28,28 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// Название лука
     /// </summary>
     public string Name { get => _name; private set => _name = value; }
+
     /// <summary>
-    /// Время перезарядки в секундах
+    /// Состояние прицеливания, нятяжения тетевы
     /// </summary>
-    public float TimeReloadShot
-    {
-        get
-        {
-            return _timeReloadShot;
-        }
-        set
-        {
-            if (value < 0.1f)
-            {
-                _timeReloadShot = 0.1f;
-                return;
-            }
-            _timeReloadShot = value;
-        }
-    }
+    public bool IsAiming { get; private set; }
+
+    /// <summary>
+    /// Cостояние, когда тетива натянута
+    /// </summary>
+    public bool IsAimingLoaded { get; private set; }
+
+    /// <summary>
+    /// Состояние от начала до конца анимации перезарядки
+    /// </summary>
+    public bool IsReloading { get; private set; }
+    
+    /// <summary>
+    /// Состояние от начала анимации натягивания, до конца анимация пуска стрелы
+    /// </summary>
+    public bool IsFastShooting{ get; private set; }
+
+
     /// <summary>
     /// Словарь хранит модификаторы атаки установленные на луке
     /// </summary>
@@ -54,39 +59,41 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// Аудиоконтроллер для воспроизведения звук лука
     /// </summary>
     public BowAudioController AudioController { get; private set; }
+
+    /// <summary>
+    /// Аниматор лука
+    /// </summary>
+    public Animator Animator { get; private set; }
+
+    /// <summary>
+    /// Ссылка на компонент Player
+    /// </summary>
+    public Player Player { get; private set; }
     #endregion Properties
 
     #region Private fields
-    private bool _isAiming = false;
-    private bool _isReload = false;
+    private bool _isZoomed;
 
-    private bool _isLockControl = false;
-
-    private Animator _animator;
-
-    private Quaternion _defaultBowRotate;
+    private bool _isLockControl;
 
     // Объект в котором будем хранить клон стрелы, его же будем выстреливать
     private GameObject _cloneArrow;
     private ProjectileArrow _cloneProjectileArrow;
-
-    private IEnumerator _coroutineReload;
-
     #endregion Private fields
 
     #region Mono
     private void Awake()
     {
         Name = _name;
-        TimeReloadShot = _timeReloadShot;
 
-        GlobalGameEventManager.OnPauseGame.AddListener(LockControl);
+        GlobalGameEventManager.OnPauseGame.AddListener(SetLockControl);
     }
 
     private void Start()
     {
-        _animator = GetComponent<Animator>();
+        Animator = GetComponent<Animator>();
         AudioController = GetComponent<BowAudioController>();
+        Player = GetComponentInParent<Player>();
 
         AttackModifaers = new Dictionary<Type, IModifier>();
 
@@ -97,7 +104,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
         AttackModifaers[typeof(SlowArrow)] = GetComponent<SlowArrow>();
         AttackModifaers[typeof(Mjolnir)] = GetComponent<Mjolnir>();
 
-        SpawnArrow();
+        RespawnProjectile();
     }
 
     #endregion Mono
@@ -107,124 +114,263 @@ public class LightBow : MonoBehaviour, IBowWeapon
     {
         if (!_isLockControl)
         {
-            // TODO ----------------------------------------
-            // ПКМ
-            // Idle -> Aiming
-            if (Input.GetMouseButtonDown(1))
+            // Быстрый выстрел (Нажать ЛКМ)
+            if (!IsReloading && !IsFastShooting && !Player.IsSprinting && !IsAiming && Input.GetMouseButtonDown(0))
             {
-                _animator.SetBool(HashAnimStringWeapon.IsIdle, false);
-                _animator.SetBool(HashAnimStringWeapon.IsAimingLoad, true);
+                Animator.SetTrigger(HashAnimStringWeapon.IsFastShot);
             }
 
-            // Отпустить ПКМ
-            // Aiming -> Idle
-            if (Input.GetMouseButtonUp(1))
+            // Прицеливаемся (Нажать ПКМ)
+            if (!IsReloading && !IsFastShooting && !Player.IsSprinting && Input.GetMouseButtonDown(1))
             {
-                _animator.SetBool(HashAnimStringWeapon.IsAimingLoad, false);
-                _animator.SetBool(HashAnimStringWeapon.IsIdle, true);
+                Animator.SetBool(HashAnimStringWeapon.IsAimingLoad, true);
+
+                _isZoomed = true;
             }
 
-            // Удерживание ПКМ + ЛКМ
-            // Aiming -> Shoot
-            if (Input.GetMouseButton(1) && Input.GetMouseButtonDown(0))
+            // Выходим из прицеливания (Отпустить ПКМ)
+            if ((IsAiming || IsAimingLoaded) &&  Input.GetMouseButtonUp(1))
             {
-                _animator.SetBool(HashAnimStringWeapon.IsAimingLoad, false);
+                Animator.SetBool(HashAnimStringWeapon.IsAimingLoad, false);
 
-                ChargedShot();
+                _isZoomed = false;
+
+                SetAiming(0);
+                SetAimingLoaded(0);
             }
 
-            // Idle -> Run
-            if (Input.GetKeyDown(KeyCode.W))
+            // Прицельный выстрел (Удерживая ПКМ нажать ЛКМ)
+            if (IsAiming && IsAimingLoaded && Input.GetMouseButtonDown(0))
             {
-                _animator.SetBool(HashAnimStringWeapon.IsIdle, false);
-                _animator.SetBool(HashAnimStringWeapon.IsRun, true);
+                Animator.SetTrigger(HashAnimStringWeapon.IsAimingShot);
             }
 
-            // Run -> Idle
-            if (Input.GetKeyUp(KeyCode.W))
-            {
-                _animator.SetBool(HashAnimStringWeapon.IsRun, false);
-                _animator.SetBool(HashAnimStringWeapon.IsIdle, true);
-            }
+            Animator.SetFloat(HashAnimStringWeapon.PlayerSpeed, Player.ActualSpeed / Player.MaxRunSpeed);
+            Animator.SetBool(HashAnimStringWeapon.IsSprint, Player.IsSprinting);
 
-            // Run -> Sprint
-            if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                _animator.SetBool(HashAnimStringWeapon.IsRun, false);
-                _animator.SetBool(HashAnimStringWeapon.IsIdle, false);
-                _animator.SetBool(HashAnimStringWeapon.IsSprint, true);
-            }
+            AimingZoom();
+        }
+    }
 
-            if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                _animator.SetBool(HashAnimStringWeapon.IsSprint, false);
-            }
-
-            // Sprint -> Run
-            if (Input.GetKeyUp(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
-            {
-                _animator.SetBool(HashAnimStringWeapon.IsRun, true);
-                _animator.SetBool(HashAnimStringWeapon.IsSprint, false);
-            }
-
-            // Sprint -> Idle
-            if (Input.GetKeyUp(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
-            {
-                _animator.SetBool(HashAnimStringWeapon.IsIdle, true);
-                _animator.SetBool(HashAnimStringWeapon.IsSprint, false);
-            }
-
-            // ЛКМ
-            if (Input.GetMouseButtonDown(0) && !_isReload && !Input.GetMouseButton(1))
-            {
-                FastShot();
-            }
+    /// <summary>
+    /// Приближение камеры при причеливании
+    /// </summary>
+    private void AimingZoom()
+    {
+        // Lerps camera.fieldOfView to allow for a smooth transistion
+        if (_isZoomed)
+        {
+            Player.Camera.fieldOfView = Mathf.Lerp(Player.Camera.fieldOfView, _zoomFOV, _zoomStepTime * Time.deltaTime);
+        }
+        else if (!_isZoomed && !Player.IsSprinting)
+        {
+            Player.Camera.fieldOfView = Mathf.Lerp(Player.Camera.fieldOfView, _originalFOV, _zoomStepTime * Time.deltaTime);
         }
     }
 
     /// <summary>
     /// Метод блокирования управления
     /// </summary>
-    /// <param name="isPaused">Блокировать или не блокировать</param>
-    private void LockControl(bool isPaused)
+    /// <param name="isLock">Блокировать или не блокировать</param>
+    private void SetLockControl(bool isLock)
     {
-        _isLockControl = isPaused;
+        _isLockControl = isLock;
     }
 
-    private void FastShot()
+    /// <summary>
+    /// Метод устанавливает состояние IsAiming c помощью события в анимации
+    /// </summary>
+    /// <param name="animEventParam">1 = true, 0 = false</param>
+    private void SetAiming(int animEventParam)
     {
-        _animator.SetTrigger(HashAnimStringWeapon.IsShoot);
+        if (animEventParam == 1)
+        {
+            if (Player)
+            {
+                // Замедляем скорость бега игрока при прицеливании
+                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed * 0.5f;
+
+                // Блокируем игроку возможность спринтовать
+                Player.IsBlockSprint = true;
+
+                // Блокируем возможность сменить оружие
+                Player.IsBlockChangeWeapon = true;
+            }
+
+            if (Animator)
+            {
+                // Устанавливаем скорость стрельбы
+                Animator.speed = Player.CurrentMaxAttackSpeed / 100;
+            }
+
+            IsAiming = true;
+        }
+        else
+        {
+            if (Player)
+            {
+                // Возращаем скорость бега игрока в исходное состояние
+                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed;
+
+
+                // Разбокируем игроку возможность спринтовать
+                Player.IsBlockSprint = false;
+
+                // Разбокируем возможность сменить оружие
+                Player.IsBlockChangeWeapon = false;
+            }
+
+            if (Animator)
+            {
+                // Возращаем скорость аниматора в исходное состояние
+                Animator.speed = 1;
+            }
+
+            IsAiming = false;
+        }
     }
 
-    private void ChargedShot()
+    /// <summary>
+    /// Метод устанавливает состояние IsAimingLoaded c помощью события в анимации
+    /// </summary>
+    /// <param name="animEventParam">1 = true, 0 = false</param>
+    private void SetAimingLoaded(int animEventParam)
     {
-        _animator.SetTrigger(HashAnimStringWeapon.IsShoot);
+        if (animEventParam == 1)
+        {
+            IsAimingLoaded = true;
+        }
+        else
+        {
+            IsAimingLoaded = false;
+        }
     }
 
-    private void ReleaseArrow()
+    /// <summary>
+    /// Метод устанавливает состояние IsReloading c помощью события в анимации
+    /// </summary>
+    /// <param name="animEventParam">1 = true, 0 = false</param>
+    private void SetReloading(int animEventParam)
     {
-        //_isReload = true;
+        if (animEventParam == 1)
+        {
+            if (Player)
+            {
+                // Блокируем игроку возможность спринтовать
+                Player.IsBlockSprint = true;
+
+                // Блокируем возможность сменить оружие
+                Player.IsBlockChangeWeapon = true;
+            }
+
+            if (Animator)
+            {
+                // Устанавливаем скорость стрельбы
+                Animator.speed = Player.CurrentMaxAttackSpeed / 100;
+            }
+
+            IsReloading = true;
+        }
+        else
+        {
+            if (Player)
+            {
+                // Разблокируем игроку возможность спринтовать
+                Player.IsBlockSprint = false;
+
+                // Разблокируем игроку возможность сменить оружие
+                Player.IsBlockChangeWeapon = false;
+            }
+
+            if (Animator)
+            {
+                // Возращаем скорость аниматора в исходное состояние
+                Animator.speed = 1;
+            }
+
+            IsReloading = false;
+        }
+    }
+
+    /// <summary>
+    /// Метод устанавливает состояние IsFastShooting c помощью события в анимации
+    /// </summary>
+    /// <param name="animEventParam">1 = true, 0 = false</param>
+    private void SetFastShooting(int animEventParam)
+    {
+        if (animEventParam == 1)
+        {
+            if (Player)
+            {
+                // Замедляем скорость бега игрока при стрельбе
+                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed * 0.5f;
+
+                // Блокируем игроку возможность спринтовать
+                Player.IsBlockSprint = true;
+
+                // Блокируем возможность сменить оружие
+                Player.IsBlockChangeWeapon = true;
+            }
+
+            if (Animator)
+            {
+                // Устанавливаем скорость стрельбы
+                Animator.speed = Player.CurrentMaxAttackSpeed / 100;
+            }
+
+            IsFastShooting = true;
+        }
+        else
+        {
+            if (Player)
+            {
+                // Возращаем скорость бега игрока в исходное состояние
+                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed;
+
+                // Разблокируем игроку возможность спринтовать
+                Player.IsBlockSprint = false;
+
+                // Разблокируем игроку возможность сменить оружие
+                Player.IsBlockChangeWeapon = false;
+            }
+
+            if (Animator)
+            {
+                // Возращаем скорость аниматора в исходное состояние
+                Animator.speed = 1;
+            }
+
+            IsFastShooting = false;
+        }
+    }
+
+    /// <summary>
+    /// Метод выстрела
+    /// </summary>
+    private void Shot()
+    {
         // Запускаем стрелу
-        _cloneProjectileArrow.Launch(_shotForce);
+        if(_cloneProjectileArrow)
+        {
+            _cloneProjectileArrow?.Launch(_shotForce);
+        }
     }
 
-    private void SpawnArrow()
+    /// <summary>
+    /// Метод создает объект стрелы при перезарядке
+    /// </summary>
+    private void RespawnProjectile()
     {
-        _isReload = true;
-
         _cloneArrow = Instantiate(_prefabArrow);
 
         _cloneArrow.transform.parent = _arrowSpawn.transform;
 
         _cloneArrow.transform.position = _arrowSpawn.position;
         _cloneArrow.transform.rotation = _arrowSpawn.rotation;
-        //_cloneArrow.transform.localScale = _arrowSpawn.lossyScale;
 
         _cloneProjectileArrow = _cloneArrow.GetComponent<ProjectileArrow>();
 
         _cloneArrow.GetComponent<Rigidbody>().isKinematic = true;
-
-        _isReload = false;
     }
     #endregion Private methods
 }
