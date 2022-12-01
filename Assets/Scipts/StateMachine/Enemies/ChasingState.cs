@@ -4,7 +4,7 @@ using UnityEngine.AI;
 /// <summary>
 /// Ѕазовый абстрактный класс состо€ни€ преследовани€ противником игрока
 /// </summary>
-public abstract class ChasingPlayerState : EnemyState
+public abstract class ChasingState : EnemyState
 {
     /// <summary>
     /// –адиус генерации случайной точки на меше возле игрока
@@ -38,7 +38,7 @@ public abstract class ChasingPlayerState : EnemyState
 
     protected NavMeshPath _navMeshPath = new NavMeshPath();
 
-    public ChasingPlayerState(Enemy enemy) : base(enemy)
+    public ChasingState(Enemy enemy) : base(enemy)
     {
 
     }

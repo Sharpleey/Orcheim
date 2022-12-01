@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GoonChasingPlayerState : ChasingPlayerState
+public class GoonChasingState : ChasingState
 {
     /// <summary>
     /// Таймер проверки союзных существ
@@ -13,7 +13,7 @@ public class GoonChasingPlayerState : ChasingPlayerState
     /// </summary>
     private LayerMask collisionMask = 4096;
 
-    public GoonChasingPlayerState(Enemy enemy) : base(enemy)
+    public GoonChasingState(Enemy enemy) : base(enemy)
     {
 
     }

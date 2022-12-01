@@ -64,7 +64,7 @@ public class IdleState : EnemyState
                 if(enemy.AudioController)
                     enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
 
-                enemy.SetState<ChasingPlayerState>();
+                enemy.SetState<ChasingState>();
             }
 
             // Обнуляем таймер
@@ -102,7 +102,7 @@ public class IdleState : EnemyState
     /// <param name="wave"></param>
     private void SetChasingPlayerState(int wave)
     {
-        enemy.SetState<ChasingPlayerState>();
+        enemy.SetState<ChasingState>();
     }
     #endregion Private methods
 }

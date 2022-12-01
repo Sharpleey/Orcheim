@@ -375,7 +375,7 @@ public abstract class Enemy : MonoBehaviour
         switch(DefaultState)
         {
             case StartStateType .ChasingPlayer:
-                SetState<ChasingPlayerState>();
+                SetState<ChasingState>();
                 break;
             default:
                 SetState<IdleState>();
@@ -488,7 +488,7 @@ public abstract class Enemy : MonoBehaviour
                 WaveEventManager.StartingTrigger();
      
                 // Изменяем состояние на преследование
-                SetState<ChasingPlayerState>();
+                SetState<ChasingState>();
             }
 
             // Всплывающий дамаг

@@ -27,7 +27,7 @@ public class Goon : Enemy
     {
         base.InitStates();
 
-        _states[typeof(ChasingPlayerState)] = new GoonChasingPlayerState(this);
+        _states[typeof(ChasingState)] = new GoonChasingState(this);
         _states[typeof(GoonAttackState)] = new GoonAttackState(this);
         _states[typeof(InspirationState)] = new InspirationState(this);
     }

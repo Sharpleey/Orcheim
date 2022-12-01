@@ -49,7 +49,7 @@ public class GoonAttackState : EnemyState
         }
 
         if (!enemy.IsBlockChangeState)
-            enemy.SetState<ChasingPlayerState>();
+            enemy.SetState<ChasingState>();
 
     }
 

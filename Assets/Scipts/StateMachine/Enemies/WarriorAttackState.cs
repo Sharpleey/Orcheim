@@ -81,7 +81,7 @@ public class WarriorAttackState : EnemyState
             distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
             if (distanceEnemyToPlayer > enemy.AttackDistance && !enemy.IsBlockChangeState)
             {
-                enemy.SetState<ChasingPlayerState>();
+                enemy.SetState<ChasingState>();
             }
 
             _timerUpdateDistance = 0;

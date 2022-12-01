@@ -17,7 +17,7 @@ public class InspirationState : EnemyState
     public override void Update()
     {
         if (!enemy.IsBlockChangeState)
-            enemy.SetState<ChasingPlayerState>();
+            enemy.SetState<ChasingState>();
     }
 
     public override void Exit()

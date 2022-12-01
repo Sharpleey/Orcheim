@@ -17,7 +17,7 @@
     {
         base.InitStates();
 
-        _states[typeof(ChasingPlayerState)] = new WarriorChasingPlayerState(this);
+        _states[typeof(ChasingState)] = new WarriorChasingState(this);
         _states[typeof(WarriorAttackState)] = new WarriorAttackState(this);
     }
 }

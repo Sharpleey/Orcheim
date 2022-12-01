@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WarriorChasingPlayerState : ChasingPlayerState
+public class WarriorChasingState : ChasingState
 {
-    public WarriorChasingPlayerState(Enemy enemy) : base(enemy)
+    public WarriorChasingState(Enemy enemy) : base(enemy)
     {
 
     }
