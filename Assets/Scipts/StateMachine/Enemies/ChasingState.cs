@@ -118,7 +118,7 @@ public abstract class ChasingState : EnemyState
         // Изменяем дистанцию остановки протиника
         enemy.NavMeshAgent.stoppingDistance = 0f;
         // Изменияем цель противнику на новую случайную точку рядом с игроком
-        enemy.NavMeshAgent.SetDestination(_positionRandomPointNearPlayer);
+        enemy?.NavMeshAgent?.SetDestination(_positionRandomPointNearPlayer);
     }
 
     /// <summary>

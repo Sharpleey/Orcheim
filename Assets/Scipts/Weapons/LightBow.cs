@@ -183,7 +183,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// <param name="animEventParam">1 = true, 0 = false</param>
     private void SetAiming(int animEventParam)
     {
-        if (animEventParam == 1)
+        IsAiming = animEventParam == 1;
+
+        if (IsAiming)
         {
             if (Player)
             {
@@ -202,8 +204,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 // Устанавливаем скорость стрельбы
                 Animator.speed = Player.CurrentMaxAttackSpeed / 100;
             }
-
-            IsAiming = true;
         }
         else
         {
@@ -225,8 +225,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 // Возращаем скорость аниматора в исходное состояние
                 Animator.speed = 1;
             }
-
-            IsAiming = false;
         }
     }
 
@@ -236,14 +234,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// <param name="animEventParam">1 = true, 0 = false</param>
     private void SetAimingLoaded(int animEventParam)
     {
-        if (animEventParam == 1)
-        {
-            IsAimingLoaded = true;
-        }
-        else
-        {
-            IsAimingLoaded = false;
-        }
+        IsAimingLoaded = animEventParam == 1;
     }
 
     /// <summary>
@@ -252,7 +243,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// <param name="animEventParam">1 = true, 0 = false</param>
     private void SetReloading(int animEventParam)
     {
-        if (animEventParam == 1)
+        IsReloading = animEventParam == 1;
+
+        if (IsReloading)
         {
             if (Player)
             {
@@ -268,8 +261,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 // Устанавливаем скорость стрельбы
                 Animator.speed = Player.CurrentMaxAttackSpeed / 100;
             }
-
-            IsReloading = true;
         }
         else
         {
@@ -287,8 +278,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 // Возращаем скорость аниматора в исходное состояние
                 Animator.speed = 1;
             }
-
-            IsReloading = false;
         }
     }
 
@@ -298,7 +287,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// <param name="animEventParam">1 = true, 0 = false</param>
     private void SetFastShooting(int animEventParam)
     {
-        if (animEventParam == 1)
+        IsFastShooting = animEventParam == 1;
+
+        if (IsFastShooting)
         {
             if (Player)
             {
@@ -317,8 +308,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 // Устанавливаем скорость стрельбы
                 Animator.speed = Player.CurrentMaxAttackSpeed / 100;
             }
-
-            IsFastShooting = true;
         }
         else
         {
@@ -339,8 +328,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 // Возращаем скорость аниматора в исходное состояние
                 Animator.speed = 1;
             }
-
-            IsFastShooting = false;
         }
     }
 
