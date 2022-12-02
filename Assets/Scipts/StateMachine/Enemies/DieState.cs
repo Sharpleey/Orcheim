@@ -71,7 +71,7 @@ public class DieState : EnemyState
     /// Метод отвязывает оружие от модели противника и удаляет его со сцены через некоторое время 
     /// </summary>
     /// <returns></returns>
-    private void MakePhysicalWeapon()
+    private void MakePhysicalWeapon() //TODO Убрать
     {
         enemy.Weapon.transform.parent = null;
 

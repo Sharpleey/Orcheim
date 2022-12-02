@@ -37,9 +37,9 @@ public class IdleState : EnemyState
         // Получаем Transform игрока для отслеживания его позиции
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
-        WaveEventManager.OnWaveIsComing.AddListener(SetChasingPlayerState);
-
         enemy.Animator.SetBool(HashAnimStringEnemy.IsIdle, true);
+
+        WaveEventManager.OnWaveIsComing.AddListener(SetChasingState);
     }
 
     public override void Update()
@@ -76,7 +76,7 @@ public class IdleState : EnemyState
     {
         enemy?.Animator?.SetBool(HashAnimStringEnemy.IsIdle, false);
 
-        WaveEventManager.OnWaveIsComing.RemoveListener(SetChasingPlayerState);
+        WaveEventManager.OnWaveIsComing.RemoveListener(SetChasingState);
     }
 
     #region Private methods
@@ -102,7 +102,7 @@ public class IdleState : EnemyState
     /// Метод обработки события 
     /// </summary>
     /// <param name="wave"></param>
-    private void SetChasingPlayerState(int wave)
+    private void SetChasingState(int wave)
     {
         enemy.SetState<ChasingState>();
     }
