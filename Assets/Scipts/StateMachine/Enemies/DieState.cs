@@ -15,25 +15,25 @@ public class DieState : EnemyState
 
         GlobalGameEventManager.EnemyKilled();
 
-        if (enemy.Weapon != null)
+        if (enemy.Weapon)
             MakePhysicalWeapon();
 
-        if (enemy.RagdollController != null)
+        if (enemy.RagdollController)
             enemy.RagdollController.MakePhysical();
 
-        if (enemy.Animator != null)
+        if (enemy.Animator)
             enemy.Animator.enabled = false;
 
-        if (enemy.BurningEffectController != null)
+        if (enemy.BurningEffectController)
             enemy.BurningEffectController.enabled = false;
 
-        if (enemy.HealthBarController != null)
+        if (enemy.HealthBarController)
             enemy.HealthBarController.SetActiveHealthBar(false);
 
-        if (enemy.IconEffectsController != null)
+        if (enemy.IconEffectsController)
             enemy.IconEffectsController.DeactivateAllIcons();
 
-        if (enemy.NavMeshAgent != null)
+        if (enemy.NavMeshAgent)
             enemy.NavMeshAgent.enabled = false;
 
         if (enemy.AudioController)

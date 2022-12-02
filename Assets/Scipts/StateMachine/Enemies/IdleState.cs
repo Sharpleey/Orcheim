@@ -75,6 +75,8 @@ public class IdleState : EnemyState
     public override void Exit()
     {
         enemy?.Animator?.SetBool(HashAnimStringEnemy.IsIdle, false);
+
+        WaveEventManager.OnWaveIsComing.RemoveListener(SetChasingPlayerState);
     }
 
     #region Private methods
