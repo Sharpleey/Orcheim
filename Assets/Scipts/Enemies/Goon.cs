@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Goon : Enemy
@@ -32,7 +31,24 @@ public class Goon : Enemy
         _states[typeof(InspirationState)] = new InspirationState(this);
     }
 
-    public void CastWarcry()
+    /// <summary>
+    /// Метод для смены состояния из EventAnimation
+    /// </summary>
+    private void SetChasingState()
+    {
+        SetState<ChasingState>();
+    }
+
+    private IEnumerator ResetCooldown()
+    {
+        IsWarcryInCooldown = true;
+
+        yield return new WaitForSeconds(_cooldownWarcry);
+
+        IsWarcryInCooldown = false;
+    }
+
+    private void CastWarcry()
     {
         if (IsWarcryInCooldown)
             return;
@@ -43,14 +59,5 @@ public class Goon : Enemy
 
         // Ищем союзных существ в радиусе
         // Вешаем на них положительный эффект повышащий броню
-    }
-
-    private IEnumerator ResetCooldown()
-    {
-        IsWarcryInCooldown = true;
-
-        yield return new WaitForSeconds(_cooldownWarcry);
-
-        IsWarcryInCooldown = false;
     }
 }

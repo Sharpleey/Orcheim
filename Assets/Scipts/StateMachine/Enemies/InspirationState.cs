@@ -10,14 +10,6 @@ public class InspirationState : EnemyState
 
         // ¬ключаем анимацию
         enemy.Animator.SetTrigger(HashAnimStringEnemy.IsInspiration);
-
-        enemy.IsBlockChangeState = true;
-    }
-
-    public override void Update()
-    {
-        if (!enemy.IsBlockChangeState)
-            enemy.SetState<ChasingState>();
     }
 
     public override void Exit()

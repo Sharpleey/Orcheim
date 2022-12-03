@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class GoonAttackState : EnemyState
 {
-    private int[] _hashAnimAttackTriggers;
-
-    private int _curAnimAttackTrigger;
+    /// <summary>
+    /// Кол-во вариантов атак
+    /// </summary>
+    private int _attackVariantCount = 2;
 
     /// <summary>
     /// Скорость поворота врага к цели
@@ -19,7 +20,6 @@ public class GoonAttackState : EnemyState
 
     public GoonAttackState(Enemy enemy) : base(enemy)
     {
-        _hashAnimAttackTriggers = new int[2] { HashAnimStringEnemy.IsAttack, HashAnimStringEnemy.IsAttack };
     }
 
     public override void Enter()
@@ -30,14 +30,9 @@ public class GoonAttackState : EnemyState
         // Получаем transform игрока для использования его в дальнейшем
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
-        // Выбираем рандомную атаку
-        _curAnimAttackTrigger = _hashAnimAttackTriggers[Random.Range(0, _hashAnimAttackTriggers.Length)];
-
         // Включаем анимацию
-        enemy.Animator.SetTrigger(_curAnimAttackTrigger);
-
-        // Блокируем переход состояния. Разблокируем событием в анимации
-        enemy.IsBlockChangeState = true;
+        enemy.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
+        enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
     }
 
     public override void Update()
@@ -47,15 +42,6 @@ public class GoonAttackState : EnemyState
         {
             LookAtTarget();
         }
-
-        if (!enemy.IsBlockChangeState)
-            enemy.SetState<ChasingState>();
-
-    }
-
-    public override void Exit()
-    {
-
     }
 
     /// <summary>

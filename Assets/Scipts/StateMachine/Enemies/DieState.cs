@@ -55,7 +55,7 @@ public class DieState : EnemyState
                 enemy.WeaponController.MakeWeaponPhysical(false);
 
             // ׃האכÿול מבתוךü גנאדא סמ סצוםû
-            //enemy.DestroyEnemy();
+            enemy.DestroyEnemy();
         }
     }
 }

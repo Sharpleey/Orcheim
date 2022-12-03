@@ -3,7 +3,7 @@ using UnityEngine;
 public static class HashAnimStringEnemy
 {
     public static int IsAttack = Animator.StringToHash("IsAttack");
-    public static int IsInspiration = Animator.StringToHash("isInspiration");
+    public static int IsInspiration = Animator.StringToHash("IsInspiration");
 
 
     public static int IsIdle = Animator.StringToHash("IsIdle");
