@@ -2,20 +2,31 @@ using UnityEngine;
 
 public static class HashAnimStringEnemy
 {
-    #region Trigger
-    public static int IsAttack_1 = Animator.StringToHash("isAttack_1");
-    public static int IsAttack_2 = Animator.StringToHash("isAttack_2");
+    public static int IsAttack = Animator.StringToHash("IsAttack");
     public static int IsInspiration = Animator.StringToHash("isInspiration");
+
+
+    public static int IsIdle = Animator.StringToHash("IsIdle");
+    public static int IsMovement = Animator.StringToHash("IsMovement");
+    public static int IsIdleAttack = Animator.StringToHash("IsIdleAttack");
+
+    public static int IdleVariant = Animator.StringToHash("IdleVariant");
+    public static int AttackVariant = Animator.StringToHash("AttackVariant");
+
+    public static int Speed = Animator.StringToHash("Speed");
+
+    #region Trigger
+    //public static int IsAttack_1 = Animator.StringToHash("isAttack_1");
+    //public static int IsAttack_2 = Animator.StringToHash("isAttack_2");
     #endregion
 
     #region Bool
-    public static int IsIdleAttack = Animator.StringToHash("isIdleAttack");
-    public static int IsIdle = Animator.StringToHash("isIdle");
-    public static int IsMovement = Animator.StringToHash("isMovement");
+    //public static int IsIdleAttack = Animator.StringToHash("isIdleAttack");
+    //public static int IsIdle = Animator.StringToHash("isIdle");
+    //public static int IsMovement = Animator.StringToHash("isMovement");
     #endregion
 
     #region Float
-    public static int Speed = Animator.StringToHash("Speed");
     #endregion
 
     #region Animation

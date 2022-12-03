@@ -11,12 +11,10 @@ public class DieState : EnemyState
     }
     public override void Enter()
     {
-        base.Enter();
-
         GlobalGameEventManager.EnemyKilled();
 
-        if (enemy.Weapon)
-            MakePhysicalWeapon();
+        if (enemy.WeaponController)
+            enemy.WeaponController.MakeWeaponPhysical(true);
 
         if (enemy.RagdollController)
             enemy.RagdollController.MakePhysical();
@@ -40,42 +38,24 @@ public class DieState : EnemyState
             enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Dead);
     }
 
-    /// <summary>
-    /// Данный метод необходимо вызвать в методе Update в классе наслдеованного от MonoBehaviour. Пищем логику, ту которую хотели бы выполнить в методе Update 
-    /// </summary>
     public override void Update()
     {
-        base.Update();
-
         _timer += Time.deltaTime;
         if (_timer > 3 && enemy.DieEffectController != null && enemy.DieEffectController.enabled == false)
         {
-           enemy.DieEffectController.enabled = true;
+            enemy.DieEffectController.enabled = true;
         }
 
         if (_timer > 8)
         {
-            enemy.DestroyEnemyObjects();
+            // Производим действия перед удалением объекта врага
+
+            // Возращае оружие к объекту врага
+            if (enemy.WeaponController)
+                enemy.WeaponController.MakeWeaponPhysical(false);
+
+            // Удаляем объекь врага со сцены
+            //enemy.DestroyEnemy();
         }
-    }
-
-    /// <summary>
-    /// Метод вызываемый при выходе из состояния
-    /// </summary>
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    /// <summary>
-    /// Метод отвязывает оружие от модели противника и удаляет его со сцены через некоторое время 
-    /// </summary>
-    /// <returns></returns>
-    private void MakePhysicalWeapon() //TODO Убрать
-    {
-        enemy.Weapon.transform.parent = null;
-
-        Rigidbody rigidbodyWeapon = enemy.Weapon.GetComponent<Rigidbody>();
-        rigidbodyWeapon.isKinematic = false;
     }
 }

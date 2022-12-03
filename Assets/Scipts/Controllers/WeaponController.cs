@@ -7,17 +7,27 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     /// <summary>
+    /// –одительский объект, к которому прикрепл€етс€ оружие
+    /// </summary>
+    [SerializeField] private Transform _weaponPlace;
+
+    /// <summary>
     /// »спользуемое оружие. ћожно задать в инспеторе или если не задано выбираетс€ из массива с оружием
     /// </summary>
     [SerializeField] private GameObject _usedWeapon;
+
     /// <summary>
     /// ћассив оружи€, который может использовать данный тип врага
     /// </summary>
     [SerializeField] private GameObject[] _weapons;
 
-    public GameObject UsedWeapon => _usedWeapon;
+    private CapsuleCollider _usedWeaponTriggerCollider;
+    private Rigidbody _rigidbodyUsedWeapon;
 
-    private void Awake()
+    private Vector3 _weaponPositionOnWeaponPlace;
+    private Quaternion _weaponRotationOnWeaponPlace;
+
+    private void Start()
     {
         DisableWeapons();
 
@@ -34,18 +44,69 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     private void SetRandomWeapon()
     {
+        // ¬ыбираем и устанавливаем случайное оружие
         int indexWeapon = Random.Range(0, _weapons.Length);
-
         _usedWeapon = _weapons[indexWeapon];
 
+        // ƒелаем активным используемое оружие
         _usedWeapon.SetActive(true);
+
+        // ѕолучаем коллайдер оружи€ отвечаемый за нанесение урона
+        _usedWeaponTriggerCollider = _usedWeapon.GetComponentInChildren<CapsuleCollider>();
+
+        // ѕолучаем Rigidbody используемого оружи€ дл€ дальнейшего использовани€
+        _rigidbodyUsedWeapon = _usedWeapon.GetComponent<Rigidbody>();
+
+        // ƒелаем изначально коллайдер неактивным
+        if (_usedWeaponTriggerCollider)
+            _usedWeaponTriggerCollider.enabled = false;
     }
 
+    /// <summary>
+    /// ћетод делает не активными все оружи€
+    /// </summary>
     private void DisableWeapons()
     {
         foreach (GameObject weapon in _weapons)
         {
             weapon.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// ћетод дл€ событи€ анимации атаки. »спользуетс€ чтобы в определенные моменты атаки включать и отключать 
+    /// возможность нанесени€ врагом урона
+    /// </summary>
+    private void EnableDealingDamage(ObjectState state)
+    {
+        _usedWeaponTriggerCollider.enabled = state == ObjectState.Enabled;
+    }
+
+    /// <summary>
+    /// ћетод отв€зывает оружие от модели противника и делает его физичным или наоборот возращает оружие на место
+    /// </summary>
+    /// <param name="isMakePhysical">—делать физичным</param>
+    public void MakeWeaponPhysical(bool isMakePhysical)
+    {
+        if(isMakePhysical)
+        {
+            // «апоминаем позицию и поворот оружи€ до его отсоединени€ от врага
+            _weaponPositionOnWeaponPlace = _usedWeapon.transform.position;
+            _weaponRotationOnWeaponPlace = _usedWeapon.transform.rotation;
+
+            // ќтсоедин€ем оружие от врага  
+            _usedWeapon.transform.parent = null;
+
+            // ƒелаем его не статичным
+            _rigidbodyUsedWeapon.isKinematic = false;
+
+            return;
+        }
+
+        // ¬озращаем оружие на место
+        _usedWeapon.transform.parent = _weaponPlace;
+        _usedWeapon.transform.position = _weaponPositionOnWeaponPlace;
+        _usedWeapon.transform.rotation = _weaponRotationOnWeaponPlace;
+        _rigidbodyUsedWeapon.isKinematic = true;
     }
 }

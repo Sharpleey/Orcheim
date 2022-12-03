@@ -257,9 +257,6 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     public EnemyState CurrentState { get; private protected set; }
 
-    public GameObject Weapon => WeaponController.UsedWeapon;
-    public CapsuleCollider WeaponTriggerCollider { get; private set; }
-
     #endregion Properties
 
     #region Private fields
@@ -310,8 +307,6 @@ public abstract class Enemy : MonoBehaviour
         WeaponController = GetComponent<WeaponController>();
         AudioController = GetComponent<EnemyAudioController>();
 
-        WeaponTriggerCollider = Weapon.GetComponentInChildren<CapsuleCollider>();
-
         IconEffectsController = GetComponentInChildren<IconEffectsController>();
 
         BurningEffectController = GetComponentInChildren<BurningEffectController>();
@@ -321,10 +316,6 @@ public abstract class Enemy : MonoBehaviour
 
         Animator = GetComponent<Animator>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
-
-        // Отключаем коллайдер у оружия, чтобы нельзя было нанести урон раньше начала анмиации атаки
-        if (WeaponTriggerCollider)
-            WeaponTriggerCollider.enabled = false;
 
         // Делаем компонент неактивным, чтобы не началась анимация
         if (DieEffectController)
@@ -344,7 +335,7 @@ public abstract class Enemy : MonoBehaviour
     private void Update()
     {
         if (CurrentState != null)
-            CurrentState.Update();
+            CurrentState?.Update();
 
         // TODO когда будет больше эффектов переделать под машину состояний 
         if (_isBurning)
@@ -402,10 +393,11 @@ public abstract class Enemy : MonoBehaviour
         }
 
         if (CurrentState != null)
-            CurrentState.Exit();
+            CurrentState?.Exit();
 
         CurrentState = newState;
-        CurrentState.Enter();
+        CurrentState?.Enter();
+
         _curNammeState = CurrentState.GetType().ToString();
     }
 
@@ -448,15 +440,6 @@ public abstract class Enemy : MonoBehaviour
             if (IconEffectsController != null)
                 IconEffectsController.SetActiveIconSlowdown(false);
         }
-    }
-
-    /// <summary>
-    /// Метод для события анимации атаки. Используется чтобы в определенные моменты атаки включать и отключать 
-    /// возможность нанесения врагом урона
-    /// </summary>
-    private void SetEnableWeaponTriggerCollider(int param)
-    {
-        WeaponTriggerCollider.enabled = param == 1;
     }
 
     /// <summary>
@@ -575,11 +558,10 @@ public abstract class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Уничтожает объект оружия врага и его самого
+    /// Уничтожает объект врага
     /// </summary>
-    public void DestroyEnemyObjects()
+    public void DestroyEnemy()
     {
-        Destroy(Weapon);
         Destroy(gameObject);
     }
     #endregion Public methods
