@@ -55,9 +55,9 @@ public class IdleState : EnemyState
                 return;
             }
 
-            distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
-                
-            // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Игрок атаковал врага)
+            distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
+
+            // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Персонаж проивника увидил игрока перед собой)
             if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
             {
                 // Воспроизводим звук
@@ -96,15 +96,6 @@ public class IdleState : EnemyState
             }
         }
         return false;
-    }
-
-    /// <summary>
-    /// Метод обработки события 
-    /// </summary>
-    /// <param name="wave"></param>
-    private void SetChasingState(int wave)
-    {
-        enemy.SetState<ChasingState>();
     }
     #endregion Private methods
 }

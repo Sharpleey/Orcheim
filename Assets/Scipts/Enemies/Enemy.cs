@@ -356,6 +356,7 @@ public abstract class Enemy : MonoBehaviour
 
         _states[typeof(IdleState)] = new IdleState(this);
         _states[typeof(DieState)] = new DieState(this);
+        _states[typeof(PatrollingState)] = new PatrollingState(this);
     }
 
     /// <summary>
@@ -365,8 +366,11 @@ public abstract class Enemy : MonoBehaviour
     {
         switch(DefaultState)
         {
-            case StartStateType .ChasingPlayer:
+            case StartStateType.Chasing:
                 SetState<ChasingState>();
+                break;
+            case StartStateType.Patrolling:
+                SetState<PatrollingState>();
                 break;
             default:
                 SetState<IdleState>();
@@ -441,15 +445,6 @@ public abstract class Enemy : MonoBehaviour
                 IconEffectsController.SetActiveIconSlowdown(false);
         }
     }
-
-    /// <summary>
-    /// ћетод дл€ событи€ в анимации при окончани€ атаки 
-    /// </summary>
-    private void SetBlockChangeState(int param)
-    {
-        IsBlockChangeState = param == 1;
-    }
-
     #endregion Private methods
 
     #region Public methods
@@ -465,7 +460,7 @@ public abstract class Enemy : MonoBehaviour
             Health -= damage;
 
             // ≈сли игрок атаковал врага, измен€ем состо€ние
-            if (CurrentState.GetType() == typeof(IdleState))
+            if (CurrentState.GetType() == typeof(IdleState) || CurrentState.GetType() == typeof(PatrollingState))
             {
 
                 WaveEventManager.StartingTrigger();

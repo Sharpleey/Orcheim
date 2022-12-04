@@ -1,0 +1,9 @@
+/// <summary>
+/// Перечисление состояний, которые могут быть указаны в качестве стартового состояния противника
+/// </summary>
+public enum StartStateType 
+{
+   Idle,
+   Chasing,
+   Patrolling
+}

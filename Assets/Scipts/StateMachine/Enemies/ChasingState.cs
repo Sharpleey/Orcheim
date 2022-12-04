@@ -65,8 +65,8 @@ public abstract class ChasingState : EnemyState
 
         if (_timerUpdateDistance > 0.5f)
         {
-            distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
-            _distanceRandomPointToPlayer = GetDistanceRandomPointToPlayer();
+            distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
+            _distanceRandomPointToPlayer = Vector3.Distance(_positionRandomPointNearPlayer, transformPlayer.position);
 
             // Генерим новую случайную точку, если текущая случайная точка находится за пределом радиуса (_randomPointRadius) и если не проигрывается анимация атаки
             if (_distanceRandomPointToPlayer > _randomPointRadius)
@@ -168,15 +168,6 @@ public abstract class ChasingState : EnemyState
         }
 
         _positionRandomPointNearPlayer = randomPoint;
-    }
-
-    /// <summary>
-    /// Метод определяет дистанцию от случайной точки до игрока
-    /// </summary>
-    /// <returns>Дистанцию случайной точки до игрока</returns>
-    protected float GetDistanceRandomPointToPlayer()
-    {
-        return Vector3.Distance(_positionRandomPointNearPlayer, transformPlayer.position);
     }
 }   
 

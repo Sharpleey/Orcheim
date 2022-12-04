@@ -39,7 +39,7 @@ public class WarriorIdleAttackState : EnemyState
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
         // Определяем дистанцию до игрока
-        distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
+        distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
 
         // Включаем анимацию
         enemy.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, true);
@@ -63,7 +63,7 @@ public class WarriorIdleAttackState : EnemyState
         if (_timerUpdateDistance > 0.5f)
         {
             // Определяем дистанцию до игрока
-            distanceEnemyToPlayer = GetDistanceEnemyToPlayer();
+            distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
             if (distanceEnemyToPlayer > enemy.AttackDistance)
             {
                 enemy.SetState<ChasingState>();

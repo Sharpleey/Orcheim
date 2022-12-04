@@ -53,20 +53,20 @@ public abstract class EnemyState: IState
     }
 
     /// <summary>
-    /// Метод получает и возвращает дистанцию от противника до игрока
-    /// </summary>
-    /// <returns>Vector3 дистанцию до игрока</returns>
-    protected float GetDistanceEnemyToPlayer()
-    {
-        return Vector3.Distance(enemy.transform.position, transformPlayer.position);
-    }
-
-    /// <summary>
     /// Метод ищет игрока по тегу на сцене, получает его трансформ и возвращает его
     /// </summary>
     /// <returns>Transfrom игрока</returns>
     protected Transform GetTransformPlayer()
     {
         return GameObject.FindGameObjectWithTag("Player")?.transform;
+    }
+
+    /// <summary>
+    /// Метод для обработки события. Для смены состояния на преследование
+    /// </summary>
+    /// <param name="wave"></param>
+    protected void SetChasingState(int wave)
+    {
+        enemy.SetState<ChasingState>();
     }
 }

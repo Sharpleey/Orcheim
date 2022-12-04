@@ -21,9 +21,9 @@ public class SummonTrigger : MonoBehaviour
         Enemy otherEnemy = otherSummonTriggerCollider.GetComponent<SummonTrigger>().Enemy;
 
         bool onChangeState = (Enemy.CurrentState.GetType() == typeof(WarriorChasingState) || Enemy.CurrentState.GetType() == typeof(GoonChasingState))
-            && otherEnemy.CurrentState.GetType() == typeof(IdleState);
+            && (otherEnemy.CurrentState.GetType() == typeof(IdleState) || otherEnemy.CurrentState.GetType() == typeof(PatrollingState));
 
-        // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя", то второму меняем состояние на "преследования"
+        // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя" или "патрулирования", то второму меняем состояние на "преследования"
         if (onChangeState)
         {
             // Воспроизводим звук
