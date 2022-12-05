@@ -28,7 +28,7 @@ public class PatrollingState : EnemyState
     /// <summary>
     /// Радиус обнаружения, при котором в любом случае враг заметит игрока
     /// </summary>
-    private float _absoluteDetectionDistance = 6f;
+    private float _absoluteDetectionDistance = 4f;
 
     public PatrollingState(Enemy enemy) : base(enemy)
     {

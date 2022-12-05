@@ -203,7 +203,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     private void EventHandler_GameMapStarted()
     {
         PlaySound(SoundType.Sfx, "new_message", 5);
-        PlayRandomSound(SoundType.AmbientMusic, 0);
+        //PlayRandomSound(SoundType.AmbientMusic, 0);
     }
 
     private void EventHandler_PrepareForWave(int wave)

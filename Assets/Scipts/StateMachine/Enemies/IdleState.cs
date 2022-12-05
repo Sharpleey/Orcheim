@@ -18,7 +18,7 @@ public class IdleState : EnemyState
     /// <summary>
     /// Радиус обнаружения, при котором в любом случае враг заметит игрока
     /// </summary>
-    private float _absoluteDetectionDistance = 6f;
+    private float _absoluteDetectionDistance = 4f;
     
     /// <summary>
     /// Таймер обновления
