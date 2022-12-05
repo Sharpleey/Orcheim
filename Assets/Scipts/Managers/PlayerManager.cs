@@ -220,7 +220,7 @@ public class PlayerManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Find player spawn zones on scene...");
 
-        _playerSpawnZones = GameObject.FindGameObjectsWithTag("EnemySpawnZone");
+        _playerSpawnZones = GameObject.FindGameObjectsWithTag("PlayerSpawnZone");
 
         Debug.Log("Found: " + _playerSpawnZones.Length.ToString() + " zones");
     }
