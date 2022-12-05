@@ -44,11 +44,18 @@ public class MainMenuCanvasController : MonoBehaviour
         Application.Quit();
     }
 
-    public void OnClickTestSceneAI()
+    public void OnClickTestMap1()
     {
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
         Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_1);
+    }
+
+    public void OnClickTestMap2()
+    {
+        GlobalGameEventManager.NewGame(GameMode.Orccheim);
+
+        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_2);
     }
 
     private void ShowMenu(GameObject menu)

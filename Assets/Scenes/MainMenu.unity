@@ -1487,10 +1487,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Menu Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 2219817248944947543, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2219817249030639969, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1499,18 +1495,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3797774038945102078, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 827.6363
-      objectReference: {fileID: 0}
-    - target: {fileID: 3797774038945102078, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -169.18176
-      objectReference: {fileID: 0}
     - target: {fileID: 5318474323017950694, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
       propertyPath: m_text
-      value: "\u0421\u0446\u0435\u043D\u0430 \u0434\u043B\u044F \u0442\u0435\u0441\u0442\u0430
-        \u043C\u0435\u0445\u0430\u043D\u0438\u043A\u0438 \u0432\u043E\u043B\u043D\n"
+      value: TestMap1
       objectReference: {fileID: 0}
     - target: {fileID: 7293016409437866223, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
       propertyPath: m_fontColor.a
@@ -1531,6 +1518,14 @@ PrefabInstance:
     - target: {fileID: 7293016409437866223, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4285426268
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322967957840173026, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickTestMap1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9184478913403551803, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickTestMap2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 188d68812f941dd468fc0454ce54946b, type: 3}
