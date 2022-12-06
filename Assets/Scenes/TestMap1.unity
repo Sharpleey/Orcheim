@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.30789426, g: 0.31475464, b: 0.3490566, a: 1}
-  m_FogMode: 1
-  m_FogDensity: 0.008
+  m_FogColor: {r: 0.36078432, g: 0.5647059, b: 0.6784314, a: 1}
+  m_FogMode: 2
+  m_FogDensity: 0.004
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.1728818, g: 0.30014506, b: 0.3490566, a: 1}
@@ -27,18 +27,18 @@ RenderSettings:
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.46569064, g: 0.5074407, b: 0.6132076, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 9fdca995ac83917459d7ac1440ab8834, type: 2}
-  m_HaloStrength: 0.5
+  m_HaloStrength: 0.533
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
-  m_DefaultReflectionResolution: 256
+  m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 0.5
+  m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.19726828, g: 0.22190961, b: 0.25339738, a: 0.5}
+  m_IndirectSpecularColor: {r: 0.28173777, g: 0.31462997, b: 0.35666108, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -15204,10 +15204,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6420643424907513343, guid: d6b0ed60e636459478ce2d5e7a7ed7c3, type: 3}
-      propertyPath: sharedProfile
-      value: 
-      objectReference: {fileID: 11400000, guid: 6ad6e375628af194e88f25836d293c20, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6b0ed60e636459478ce2d5e7a7ed7c3, type: 3}
 --- !u!1 &1622177114
