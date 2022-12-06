@@ -15,7 +15,14 @@ public class WarriorAttackState : EnemyState
 
     public override void Enter()
     {
+        enemy.NavMeshAgent.isStopped = true;
+
         enemy.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
         enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
+    }
+
+    public override void Exit()
+    {
+        enemy.NavMeshAgent.isStopped = false;
     }
 }
