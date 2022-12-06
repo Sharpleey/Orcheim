@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class PauseMenuCanvasController : MonoBehaviour
@@ -114,9 +113,10 @@ public class PauseMenuCanvasController : MonoBehaviour
 
     public void OnClickButtonRestart()
     {
+        GlobalGameEventManager.GameOver();
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_1);
+        Managers.GameSceneManager.RestartScene();
     }
 
     public void OnClickButtonExitMainMenu()

@@ -18,6 +18,8 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 
 	private AsyncOperation _asyncOperationLoadingScene;
 
+	private Scene _currentScene;
+
 	private bool _isGamePaused;
 
 	private void Awake()
@@ -49,7 +51,17 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 			return;
         }
 
+		_currentScene = scene;
+
 		StartCoroutine(LoadAsyncScene(scene));
+	}
+
+	/// <summary>
+	/// Метод перезапускает текущую запущенную сцену
+	/// </summary>
+	public void RestartScene()
+    {
+		StartCoroutine(LoadAsyncScene(_currentScene));
 	}
 
 	/// <summary>
