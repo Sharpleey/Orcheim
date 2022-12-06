@@ -127,7 +127,7 @@ public abstract class ChasingState : EnemyState
     protected void MoveToPlayer()
     {
         // Изменяем дистанцию остановки протиника
-        enemy.NavMeshAgent.stoppingDistance = enemy.AttackDistance - 0.2f;
+        enemy.NavMeshAgent.stoppingDistance = enemy.AttackDistance - 0.5f;
         // Изменияем цель противнику на игрока
         enemy.NavMeshAgent.SetDestination(transformPlayer.position);
     }
