@@ -11,6 +11,8 @@ public class MainMenuCanvasController : MonoBehaviour
     
     private void Start()
     {
+        HideAll();
+
         ShowMenu(_mainMenu);
 
         Cursor.lockState = CursorLockMode.Confined;
@@ -58,10 +60,23 @@ public class MainMenuCanvasController : MonoBehaviour
         Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_2);
     }
 
+    public void OnClickTestPlane()
+    {
+        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_PLANE);
+    }
+
     private void ShowMenu(GameObject menu)
     {
         _activeMenu?.SetActive(false);
         _activeMenu = menu;
         _activeMenu?.SetActive(true);
+    }
+
+    private void HideAll()
+    {
+        _mainMenu?.SetActive(false);
+        _settings?.SetActive(false);
+        _load?.SetActive(false);
+        _scenes?.SetActive(false);
     }
 }
