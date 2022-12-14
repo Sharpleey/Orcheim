@@ -450,27 +450,43 @@ public abstract class Enemy : MonoBehaviour
         TakeDamage(damage, typeDamage);
     }
 
+    /// <summary>
+    /// Метод устанавливает/накладывает эффект на персонажа
+    /// </summary>
+    /// <param name="effect">Эффект, который хотим установить</param>
     public void SetEffect(Effect effect)
     {
+        // Если персонаж в состоянии смерти и эффект такого типа  уже установлен, то прерываем выполнение
         if (CurrentState.GetType() == typeof(DieState) || _activeEffects.ContainsKey(effect.GetType())) // 10
             return;
 
+        // Копируем эффект
         Effect newEffect = effect.DeepCopy(this); // 14
 
+        // Применяем эффект
         newEffect.Enable(); // 2
 
-        if (newEffect.Duration != 0)
+        // Если эффект иммет длительность, то запускаем корутину с таймером и с переодическим воздействием, если он есть
+        if (newEffect.Duration > 0)
             StartCoroutine(newEffect.CoroutineEffect); // 2700+
 
+        // Добавляем эффект в словарь для хранения
         _activeEffects.Add(newEffect.GetType(), newEffect); // 9
     }
 
+    /// <summary>
+    /// Метод снимает эффект установленный на персонаже
+    /// </summary>
+    /// <param name="effect">Эффект который хотим удалить, точнее тип эффекта</param>
     public void RemoveEffect(Effect effect)
     {
+        // Если данный тип эффекта содержится в словаре, то удаляем его
         if (_activeEffects.ContainsKey(effect.GetType()))
         {
+            // Удаляем изменения эффекта по окончанию эффекта или применяем, в зависимости, что эффект делает
             effect.Disable();
 
+            // Удаляем эффект из словаря
             _activeEffects.Remove(effect.GetType());
         }
     }

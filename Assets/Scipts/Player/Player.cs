@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     #region Serialize fields
     [Header("Parameters")]
+    [SerializeField] private int _avgDamage = 50;
     [SerializeField] private float _maxRunSpeed = 3.6f;
     [SerializeField] private float _maxSprintSpeed = 5f;
     [SerializeField] private int _maxAttackSpeed = 100;
@@ -16,12 +17,26 @@ public class Player : MonoBehaviour
     #endregion Serialize fields
 
     #region Properties
+    public int AvgDamage => _avgDamage;
     /// <summary>
     /// ћаксимальна€ скорость бега игрока
     /// </summary>
     public float MaxRunSpeed => _maxRunSpeed;
     public float MaxSprintSpeed => _maxSprintSpeed;
-    public int MaxAttackSpeed { get => _maxAttackSpeed; private set =>  _maxAttackSpeed = value; }
+    public int MaxAttackSpeed 
+    { 
+        get => _maxAttackSpeed; 
+        private set =>  _maxAttackSpeed = value; 
+    }
+
+    public int Damage
+    {
+        get
+        {
+            int range = (int)(AvgDamage * GeneralParameter.OFFSET_DAMAGE_HEALING);
+            return UnityEngine.Random.Range(AvgDamage - range, AvgDamage + range);
+        }
+    }
 
     /// <summary>
     /// “екуща€ максимальна€ скорость бега игрока. ƒанный параметр измен€ем под разные случаи
@@ -29,10 +44,7 @@ public class Player : MonoBehaviour
     public float CurrentMaxRunSpeed
     {
         get => _firstPersonController.walkSpeed;
-        set
-        {
-            _firstPersonController.walkSpeed = value;
-        }
+        set => _firstPersonController.walkSpeed = value;
     }
 
     /// <summary>
@@ -41,19 +53,13 @@ public class Player : MonoBehaviour
     public float CurrentMaxSprintSpeed
     {
         get => _firstPersonController.sprintSpeed;
-        set
-        {
-            _firstPersonController.sprintSpeed = value;
-        }
+        set => _firstPersonController.sprintSpeed = value;
     }
 
     public float CurrentMaxAttackSpeed
     {
         get => _currentMaxAttackSpeed;
-        private set
-        {
-            _currentMaxAttackSpeed = value;
-        }
+        private set => _currentMaxAttackSpeed = value;
     }
 
     /// <summary>
@@ -77,6 +83,8 @@ public class Player : MonoBehaviour
     public bool IsBlockChangeWeapon { get; set; }
 
     public Camera Camera { get; private set; }
+
+    public Dictionary<Type, AttackModifaer> AttackModifaers { get; private set; }
     #endregion Properties
 
     #region Private fields
@@ -96,6 +104,8 @@ public class Player : MonoBehaviour
     #region Mono
     private void Start()
     {
+        InitAttackModifaers();
+
         _rigidbody = GetComponent<Rigidbody>();
         _firstPersonController = GetComponent<FirstPersonController>();
 
@@ -134,6 +144,26 @@ public class Player : MonoBehaviour
     #endregion Mono
 
     #region Private methods
+    private void InitAttackModifaers()
+    {
+        AttackModifaers = new Dictionary<Type, AttackModifaer>();
+
+        AttackModifaers[typeof(FlameAttack)] = new FlameAttack();
+        AttackModifaers[typeof(SlowAttack)] = new SlowAttack();
+        AttackModifaers[typeof(CriticalAttack)] = new CriticalAttack();
+        AttackModifaers[typeof(PenetrationProjectile)] = new PenetrationProjectile();
+    }
+
+    public AttackModifaer GetAttackModifaer<T>() where T : AttackModifaer
+    {
+        Type type = typeof(T);
+
+        if(AttackModifaers.ContainsKey(type))
+            return AttackModifaers[type];
+
+        return null;
+    }
+
     private void ChangeWeapon(GameObject weapon)
     {
         if (weapon == _usedWeaponGameObj)

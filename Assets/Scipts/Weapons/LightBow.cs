@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(DirectDamage))]
 [RequireComponent(typeof(BowAudioController))]
 public class LightBow : MonoBehaviour, IBowWeapon
 {
@@ -14,7 +12,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
 
     [Header("Projectile")]
     //[SerializeField] private GameObject _selectedPrefabArrow; // Префаб для стрелы
-    [SerializeField] private GameObject _prefabArrow; // Объект из которого будем делать дубликаты стрел, выстeпает в роле префаба
+    [SerializeField] private GameObject _prefabArrow; // Объект из которого будем делать дубликаты стрел, выступает в роле префаба
     [SerializeField] private Transform _arrowSpawn;
 
     [Header("AimingZoom")]
@@ -48,12 +46,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// Состояние от начала анимации натягивания, до конца анимация пуска стрелы
     /// </summary>
     public bool IsFastShooting{ get; private set; }
-
-
-    /// <summary>
-    /// Словарь хранит модификаторы атаки установленные на луке
-    /// </summary>
-    public Dictionary<Type, IModifier> AttackModifaers { get; private set; }
 
     /// <summary>
     /// Аудиоконтроллер для воспроизведения звук лука
@@ -97,15 +89,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
         Animator = GetComponent<Animator>();
         AudioController = GetComponent<BowAudioController>();
         Player = GetComponentInParent<Player>();
-
-        AttackModifaers = new Dictionary<Type, IModifier>();
-
-        AttackModifaers[typeof(DirectDamage)] = GetComponent<DirectDamage>();
-        AttackModifaers[typeof(CriticalDamage)] = GetComponent<CriticalDamage>();
-        AttackModifaers[typeof(Penetration)] = GetComponent<Penetration>();
-        AttackModifaers[typeof(FireArrow)] = GetComponent<FireArrow>();
-        AttackModifaers[typeof(SlowArrow)] = GetComponent<SlowArrow>();
-        AttackModifaers[typeof(Mjolnir)] = GetComponent<Mjolnir>();
 
         RespawnProjectile();
     }
