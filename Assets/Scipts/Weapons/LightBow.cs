@@ -79,6 +79,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
     // Объект в котором будем хранить клон стрелы, его же будем выстреливать
     private GameObject _cloneArrow;
     private ProjectileArrow _cloneProjectileArrow;
+
+    public Flame Flame = new Flame();
+    public Slowdown Slowdown = new Slowdown();
     #endregion Private fields
 
     #region Mono

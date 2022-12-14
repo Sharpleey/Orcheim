@@ -12,7 +12,7 @@ public abstract class Enemy : MonoBehaviour
     #region Serialize fields
     [SerializeField, Min(100)] private int _maxHealth = 150;
     [SerializeField, Min(0)] private int _maxArmor = 0;
-    [SerializeField, Min(1)] private float _maxSpeed = 3.5f;
+    [SerializeField, Min(1)] private float _maxMovementSpeed = 3.5f;
     [SerializeField, Min(1)] private int _averageDamage = 25;
     [SerializeField, Min(1)] private float _attackDistance = 2.5f;
 
@@ -72,16 +72,16 @@ public abstract class Enemy : MonoBehaviour
     {
         get
         {
-            return _maxSpeed;
+            return _maxMovementSpeed;
         }
         set
         {
             if (value < 0.1f)
             {
-                _maxSpeed = 0.1f;
+                _maxMovementSpeed = 0.1f;
                 return;
             }
-            _maxSpeed = value;
+            _maxMovementSpeed = value;
         }
     }
 
@@ -162,23 +162,16 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     public int Health
     {
-        get
-        {
-            return _health;
-        }
+        get => _health;
         set
         {
-            if (value < 0)
+            _health = Mathf.Clamp(value, 0, _maxHealth);
+           
+            if (HealthBarController != null)
             {
-                _health = 0;
-                return;
+                HealthBarController.SetHealth(_health);
+                HealthBarController.ShowHealthBar();
             }
-            if (value > _maxHealth)
-            {
-                _health = _maxHealth;
-                return;
-            }
-            _health = value;
         }
     }
     
@@ -230,7 +223,7 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Флаг для блокировки изменения состояния
     /// </summary>
-    public bool IsBlockChangeState { get; set; }
+    //public bool IsBlockChangeState { get; set; }
 
     /// <summary>
     /// Первое стартовое состояние
@@ -257,6 +250,8 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     public EnemyState CurrentState { get; private protected set; }
 
+    //public List<Effect> ActiveEffects { get; private set; }
+
     #endregion Properties
 
     #region Private fields
@@ -264,6 +259,8 @@ public abstract class Enemy : MonoBehaviour
     /// Словарь для хранения состояний
     /// </summary>
     protected Dictionary<Type, EnemyState> _states;
+    protected Dictionary<Type, Effect> _activeEffects;
+
 
     private int _health = 0;
     private int _armor = 0;
@@ -278,7 +275,7 @@ public abstract class Enemy : MonoBehaviour
     private float _timerSlow = 0;
     private int _durationSlow = 0;
 
-    private Vector3 _position = Vector3.zero;
+    //private Vector3 _position = Vector3.zero;
     #endregion Private fields
 
     #region Mono
@@ -288,7 +285,7 @@ public abstract class Enemy : MonoBehaviour
         MaxArmor = _maxArmor;
         AverageDamage = _averageDamage;
         CurrentAverageDamage = _averageDamage;
-        MaxSpeed = _maxSpeed;
+        MaxSpeed = _maxMovementSpeed;
 
         Health = _maxHealth;
         Armor = _maxArmor;
@@ -300,6 +297,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected void Start()
     {
+        _activeEffects = new Dictionary<Type, Effect>();
         // Получаем контроллерыи компоненты
         // ---------------------------------------------------------------
         HitBoxesController = GetComponent<HitBoxesController>();
@@ -325,7 +323,7 @@ public abstract class Enemy : MonoBehaviour
             BurningEffectController.enabled = false;
 
         // Устанавливаем скорость для NavMeshAgent
-        Speed = _maxSpeed;
+        Speed = _maxMovementSpeed;
 
         // Устанавливаем максимальное и актуальное хп для полосы хп
         HealthBarController?.SetMaxHealth(MaxHealth);
@@ -336,13 +334,6 @@ public abstract class Enemy : MonoBehaviour
     {
         if (CurrentState != null)
             CurrentState?.Update();
-
-        // TODO когда будет больше эффектов переделать под машину состояний 
-        if (_isBurning)
-            Burning();
-
-        if (_isSlow)
-            Slowing();
     }
     #endregion Mono
 
@@ -404,47 +395,6 @@ public abstract class Enemy : MonoBehaviour
 
         _curNammeState = CurrentState.GetType().ToString();
     }
-
-    /// <summary>
-    /// Метод отвечает за эффект горения, его длительность и нанесения урона
-    /// </summary>
-    private void Burning()
-    {
-        if (_timerBurning < _durationBurning + 1)
-        {
-            _timerBurning += Time.deltaTime;
-        }
-        else
-        {
-            _timerBurning = 0;
-            _isBurning = false;
-            BurningEffectController.enabled = false;
-
-            if (IconEffectsController != null)
-                IconEffectsController.SetActiveIconBurning(false);
-        }
-    }
-    
-    /// <summary>
-    /// Метод отвечает за эффект замедления, его длительность
-    /// </summary>
-    private void Slowing()
-    {
-        if (_timerSlow < _durationSlow + 1)
-        {
-            _timerSlow += Time.deltaTime;
-        }
-        else
-        {
-            _timerSlow = 0;
-
-            Speed = MaxSpeed;
-            _isSlow = false;
-
-            if (IconEffectsController != null)
-                IconEffectsController.SetActiveIconSlowdown(false);
-        }
-    }
     #endregion Private methods
 
     #region Public methods
@@ -453,7 +403,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     /// <param name="damage">Значение принимаемого урона</param>
     /// <param name="typeDamage">Тип урона</param>
-    public virtual void TakeDamage(int damage, TypeDamage typeDamage)
+    public void TakeDamage(int damage, TypeDamage typeDamage)
     {
         if (Health > 0)
         {
@@ -472,13 +422,6 @@ public abstract class Enemy : MonoBehaviour
             // Всплывающий дамаг
             if (PopupDamageController != null)
                 PopupDamageController.ShowPopupDamage(damage, typeDamage);
-
-            // Полоска хп
-            if (HealthBarController != null)
-            {
-                HealthBarController.SetHealth(Health);
-                HealthBarController.ShowHealthBar();
-            }
         }
 
         // Звук
@@ -507,48 +450,28 @@ public abstract class Enemy : MonoBehaviour
         TakeDamage(damage, typeDamage);
     }
 
-    /// <summary>
-    /// Метод полжигает врага на некоторое время
-    /// </summary>
-    /// <param name="damagePerSecond">Значения урона в секунгду</param>
-    /// <param name="duration">Длительность горения</param>
-    /// <param name="typeDamage">Тип наносимого урона</param>
-    public void SetBurning(int damagePerSecond, int duration, TypeDamage typeDamage)
+    public void SetEffect(Effect effect)
     {
-        if (!_isBurning && CurrentState.GetType() != typeof(DieState))
-        {
-            _durationBurning = duration;
+        if (CurrentState.GetType() == typeof(DieState) || _activeEffects.ContainsKey(effect.GetType())) // 10
+            return;
 
-            BurningEffectController.DamagePerSecond = damagePerSecond;
-            BurningEffectController.TypeDamage = typeDamage;
+        Effect newEffect = effect.DeepCopy(this); // 14
 
-            _isBurning = true;
-            BurningEffectController.enabled = true;
+        newEffect.Enable(); // 2
 
-            // Включаем иконку горения над противником
-            if (IconEffectsController != null)
-                IconEffectsController.SetActiveIconBurning(true);
-        }
+        if (newEffect.Duration != 0)
+            StartCoroutine(newEffect.CoroutineEffect); // 2700+
+
+        _activeEffects.Add(newEffect.GetType(), newEffect); // 9
     }
-    
-    /// <summary>
-    /// Метод замедляет скорость передвижения противника на некоторое время
-    /// </summary>
-    /// <param name="slowdown">Значение замедления</param>
-    /// <param name="duration">Длительность эффекьа замедления</param>
-    public void SetSlowing(float slowdown, int duration)
+
+    public void RemoveEffect(Effect effect)
     {
-        if (!_isSlow && CurrentState.GetType() != typeof(DieState))
+        if (_activeEffects.ContainsKey(effect.GetType()))
         {
-            _durationSlow = duration;
+            effect.Disable();
 
-            Speed = MaxSpeed * (1f - slowdown);
-
-            _isSlow = true;
-
-            // Включаем иконку замедления над противником
-            if (IconEffectsController != null)
-                IconEffectsController.SetActiveIconSlowdown(true);
+            _activeEffects.Remove(effect.GetType());
         }
     }
 

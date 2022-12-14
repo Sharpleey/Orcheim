@@ -104,13 +104,13 @@ public class ProjectileArrow : MonoBehaviour
 					// Поджигаем противника, если прокнуло
 					if (_fireArrowMod != null && _fireArrowMod.GetProcBurning())
                     {
-						enemy.SetBurning(_fireArrowMod.DamagePerSecond, _fireArrowMod.Duration, _fireArrowMod.TypeDamage);
+						enemy.SetEffect(_lightBow.Flame);
                     }
 
 					// Замедляем противника, если прокнуло
 					if (_slowArrowMod != null && _slowArrowMod.GetProcSlowing())
 					{
-						enemy.SetSlowing(_slowArrowMod.Slowdown, _slowArrowMod.Duration);
+						enemy.SetEffect(_lightBow.Slowdown);
 					}
 				}
 
