@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Flame : Effect, IUnitDamage, IArmorUnitDecrease
@@ -22,7 +20,7 @@ public class Flame : Effect, IUnitDamage, IArmorUnitDecrease
         }
     }
     public bool IsArmorIgnore { get; } = false;
-    public TypeDamage TypeDamage { get; } = TypeDamage.Fire;
+    public DamageType TypeDamage { get; } = DamageType.Fire;
     public int ArmorDecrease { get; set; } = 1;
 
     public override void Enable()
@@ -31,6 +29,7 @@ public class Flame : Effect, IUnitDamage, IArmorUnitDecrease
         if (enemy.IconEffectsController)
             enemy.IconEffectsController.SetActiveIconBurning(true);
         
+        // Включаем визульный эффект горения
         if(enemy.BurningEffectController)
             enemy.BurningEffectController.enabled = true;
     }
@@ -46,6 +45,7 @@ public class Flame : Effect, IUnitDamage, IArmorUnitDecrease
         if (enemy.IconEffectsController)
             enemy.IconEffectsController.SetActiveIconBurning(false);
 
+        // Выключаем визульный эффект горения
         if (enemy.BurningEffectController)
             enemy.BurningEffectController.enabled = false;
     }

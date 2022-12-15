@@ -24,12 +24,12 @@ public class PopupDamageController : MonoBehaviour
     /// <summary>
     /// Цвет текста цифр урона для каждого из типов урона
     /// </summary>
-    public Dictionary<TypeDamage, Color> TYPE_DAMAGE_COLOR = new Dictionary<TypeDamage, Color>
+    public Dictionary<DamageType, Color> TYPE_DAMAGE_COLOR = new Dictionary<DamageType, Color>
     {
-        { TypeDamage.Physical, new Color(0.9f, 0.9f, 0.9f) },
-        { TypeDamage.Fire, new Color(0.81f, 0.32f, 0.07f) },
-        { TypeDamage.Bleeding, Color.red },
-        { TypeDamage.Poison, Color.green }
+        { DamageType.Physical, new Color(0.9f, 0.9f, 0.9f) },
+        { DamageType.Fire, new Color(0.81f, 0.32f, 0.07f) },
+        { DamageType.Bleeding, Color.red },
+        { DamageType.Poison, Color.green }
     };
     #endregion Public fields
 
@@ -39,7 +39,7 @@ public class PopupDamageController : MonoBehaviour
     /// </summary>
     /// <param name="damage">Значение урона</param>
     /// <param name="typeDamage">Тип получаемого урона (Необходимо для определения цвета текста урона)</param>
-    public void ShowPopupDamage(int damage, TypeDamage typeDamage)
+    public void ShowPopupDamage(int damage, DamageType typeDamage)
     {
         GameObject popupDamageText = Instantiate(_prefabPopupDamageText);
         popupDamageText.transform.SetParent(gameObject.transform, false);

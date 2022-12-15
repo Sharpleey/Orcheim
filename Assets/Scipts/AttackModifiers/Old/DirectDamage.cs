@@ -9,7 +9,7 @@ public class DirectDamage : MonoBehaviour ,IModifier
     [SerializeField] private string _description = "Наносит противнику урон при попадании";
 
     [SerializeField] [Range(1, 300)] private int _averageDamage = 25;
-    [SerializeField] private TypeDamage _typeDamage = TypeDamage.Physical;
+    [SerializeField] private DamageType _typeDamage = DamageType.Physical;
     #endregion Serialize fields
 
     #region Properties
@@ -39,7 +39,7 @@ public class DirectDamage : MonoBehaviour ,IModifier
     /// <summary>
     /// Тип урона
     /// </summary>
-    public TypeDamage TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
+    public DamageType TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
     
     /// <summary>
     /// Текущий (Используемый) средний урон. Изменяется при уменьшении урона при последующем пробитии (при включенном модификаторе Penetration) или других модах

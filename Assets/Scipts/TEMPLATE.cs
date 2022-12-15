@@ -18,5 +18,5 @@ public class TEMPLATE : MonoBehaviour
     #endregion Private methods
 
     #region Public methods
-    #endregion Private methods
+    #endregion Public methods
 }

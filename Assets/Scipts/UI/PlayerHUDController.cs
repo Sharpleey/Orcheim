@@ -28,7 +28,7 @@ public class PlayerHUDController : MonoBehaviour
 
     private void Start()
     {
-        _playerManager = Managers.PlayerManager;
+        _playerManager = PlayerManager.Instance;
 
         ClearAllText();
     }
@@ -101,14 +101,10 @@ public class PlayerHUDController : MonoBehaviour
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.CLEAR_VILLAGE, 5));
 
-        try
+        if(_playerManager)
         {
-            SetTextHealthPlayer(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
-            SetValueHealthBar(Managers.PlayerManager.Health, Managers.PlayerManager.MaxHealth);
-        }
-        catch (Exception exeption)
-        {
-            Debug.Log(exeption.Message);
+            SetTextHealthPlayer(_playerManager.Health, _playerManager.MaxHealth);
+            SetValueHealthBar(_playerManager.Health, _playerManager.MaxHealth);
         }
     }
 

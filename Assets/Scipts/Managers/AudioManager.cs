@@ -1,16 +1,50 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
+/// <summary>
+/// Менеджер отвечает за воспроизведение фоновых звуков, музыки и звуковых эффектов игры
+/// </summary>
 public class AudioManager : MonoBehaviour, IGameManager
 {
+    public static AudioManager Instance { get; private set; }
+
+    #region Serialize fields
+
     [SerializeField] private Sound[] _sounds;
 
     [SerializeField] private AudioSource _ambientSource, _musicSource, _sfxSource;
 
+    #endregion Serialize fields
+
+    #region Properties
+
     public ManagerStatus Status { get; private set; }
 
+    #endregion Properties
+
+    #region Mono
+
     private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+
+        AddListeners();
+
+      
+    }
+
+    #endregion Mono
+
+    #region Private methods
+
+    private void AddListeners()
     {
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PrepareForWave);
@@ -19,14 +53,6 @@ public class AudioManager : MonoBehaviour, IGameManager
         GlobalGameEventManager.OnPauseGame.AddListener(PauseAllAudioSource);
         GlobalGameEventManager.OnGameOver.AddListener(StopAllSoundSource);
         GameSceneEventManager.OnSceneLoadingStarted.AddListener(StopAllSoundSource);
-    }
-
-    public void Startup()
-    {
-        Debug.Log("Audio manager starting...");
-
-        // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
-        Status = ManagerStatus.Started;
     }
 
     /// <summary>
@@ -84,7 +110,7 @@ public class AudioManager : MonoBehaviour, IGameManager
 
         if(audioSource == null)
         {
-            Debug.Log("Sound source for this sound type is not assigned!");
+            Debug.Log("Sound source for this sound type " + soundType.ToString() + " is not assigned!");
             return;
         }
 
@@ -199,11 +225,24 @@ public class AudioManager : MonoBehaviour, IGameManager
        
     }
 
+    #endregion Private methods
+
+    #region Public methods
+
+    public void Startup()
+    {
+        Debug.Log("Audio manager starting...");
+
+        // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
+        Status = ManagerStatus.Started;
+    }
+
+    #endregion Public methods
+
     #region Event handlers
     private void EventHandler_GameMapStarted()
     {
         PlaySound(SoundType.Sfx, "new_message", 5);
-        //PlayRandomSound(SoundType.AmbientMusic, 0);
     }
 
     private void EventHandler_PrepareForWave(int wave)

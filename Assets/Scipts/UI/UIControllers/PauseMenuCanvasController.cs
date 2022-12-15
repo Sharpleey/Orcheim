@@ -10,6 +10,7 @@ public class PauseMenuCanvasController : MonoBehaviour
 
     private GameObject _activeMenu;
     private Canvas _canvas;
+    private GameSceneManager _gameSceneManager;
 
     [SerializeField] private KeyCode _pauseKey = KeyCode.Escape;
 
@@ -23,6 +24,8 @@ public class PauseMenuCanvasController : MonoBehaviour
     private void Start()
     {
         _canvas = GetComponent<Canvas>();
+
+        _gameSceneManager = GameSceneManager.Instance;
 
         _canvas.enabled = false;
 
@@ -116,7 +119,8 @@ public class PauseMenuCanvasController : MonoBehaviour
         GlobalGameEventManager.GameOver();
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        Managers.GameSceneManager.RestartScene();
+        if(_gameSceneManager)
+            _gameSceneManager.RestartScene();
     }
 
     public void OnClickButtonExitMainMenu()
@@ -126,6 +130,7 @@ public class PauseMenuCanvasController : MonoBehaviour
         ///
         GlobalGameEventManager.GameOver();
 
-        Managers.GameSceneManager.SwitchToScene(SceneName.MAIN_MENU);
+        if (_gameSceneManager)
+            _gameSceneManager.SwitchToScene(SceneName.MAIN_MENU);
     }
 }

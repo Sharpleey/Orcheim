@@ -11,13 +11,13 @@ public class FireArrow : MonoBehaviour, IModifier
     [SerializeField] [Range(10, 100)] private int _proc—hance = 25;
     [SerializeField] [Range(10, 50)] private int _damagePerSecond = 10;
     [SerializeField] [Range(3, 10)] private int _duration = 3;
-    [SerializeField] private TypeDamage _typeDamage = TypeDamage.Fire;
+    [SerializeField] private DamageType _typeDamage = DamageType.Fire;
     #endregion Serialize Fields
 
     #region Properties
     public string Name { get => _name; private set => _name = value; }
     public string Description { get => _description; private set => _description = value; }
-    public TypeDamage TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
+    public DamageType TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
     public int Proc—hance
     {
         get

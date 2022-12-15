@@ -12,13 +12,13 @@ public class Mjolnir : MonoBehaviour, IModifier
     [SerializeField] [Range(1, 300)] private int _damage = 20;
     [SerializeField] [Range(3, 10)] private int _maxTargetMjolnir = 3;
     [SerializeField] [Range(1.0f, 8.0f)] private float _radius = 2.5f;
-    [SerializeField] private TypeDamage _typeDamage = TypeDamage.Physical;
+    [SerializeField] private DamageType _typeDamage = DamageType.Physical;
     #endregion Serialize Fields
 
     #region Properties
     public string Name { get => _name; private set => _name = value; }
     public string Description { get => _description; private set => _description = value; }
-    public TypeDamage TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
+    public DamageType TypeDamage { get => _typeDamage; private set => _typeDamage = value; }
     public int Proc—hance
     {
         get

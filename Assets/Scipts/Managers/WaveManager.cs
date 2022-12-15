@@ -1,8 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Менеджер волн. Отвечает за основую логику, механику волн врагов. Контролирует номер волны и рассылает сообщения остальным менеджерам
+/// </summary>
 public class WaveManager : MonoBehaviour, IGameManager
 {
+    public static WaveManager Instance { get; private set; }
+
+    #region Serialize fields
+
     [SerializeField] private int _wave = 1;
 
     [Space(10)]
@@ -10,21 +17,43 @@ public class WaveManager : MonoBehaviour, IGameManager
     [SerializeField] private int _delayToBroadcastWaveIsComing = 10;
     [SerializeField] private int _delayToBroadcastPreparingForWave = 5;
 
+    #endregion Serialize fields
+
+    #region Properties
+
     public ManagerStatus Status { get; private set; }
+
+    #endregion Properties
+
+    #region Private fields
 
     private bool _isFirstTriggerGame = false;
 
     private IEnumerator _coroutineBroadcastPreparingForWave;
     private IEnumerator _coroutineBroadcastWaveIsComing;
 
-    public void Startup()
-    {
-        Debug.Log("Wave manager starting...");
+    #endregion Private fields
 
-        Status = ManagerStatus.Started;
+    #region Mono
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+
+        AddListeners();
     }
 
-    private void Awake()
+    #endregion Mono
+
+    #region Private methods
+
+    private void AddListeners()
     {
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PreparingForWave);
@@ -78,6 +107,20 @@ public class WaveManager : MonoBehaviour, IGameManager
 
         WaveEventManager.WaveIsComing(_wave);
     }
+
+    #endregion Private methods
+
+    #region Public methods
+
+    public void Startup()
+    {
+        Debug.Log("Wave manager starting...");
+
+        Status = ManagerStatus.Started;
+    }
+
+
+    #endregion Public methods
 
     #region Event handlers
     private void EventHandler_NewGame(GameMode gameMode)

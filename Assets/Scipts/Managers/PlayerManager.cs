@@ -1,10 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Менеджер отвечает за параметры и данные игрока. Возрождение игрока на сцене
+/// </summary>
 public class PlayerManager : MonoBehaviour, IGameManager
 {
+    public static PlayerManager Instance { get; private set; }
+
     #region Serialize Fields
+
     [Header("Player parameters")]
     [SerializeField] [Min(150)] private int _maxHealth = 150;
     [SerializeField] [Min(0)] private int _maxArmor = 0;
@@ -12,9 +17,11 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
     [Space(10)]
     [SerializeField] private GameObject _playerCharacterPrefab;
+
     #endregion Serialize Fields
 
     #region Properties
+
     public ManagerStatus Status { get; private set; }
 
     /// <summary>
@@ -22,19 +29,8 @@ public class PlayerManager : MonoBehaviour, IGameManager
     /// </summary>
     public int MaxHealth
     {
-        get
-        {
-            return _maxHealth;
-        }
-        set
-        {
-            if (value <= 0)
-            {
-                _maxHealth = 1;
-                return;
-            }
-            _maxHealth = value;
-        }
+        get => _maxHealth;
+        set => Mathf.Clamp(value, 1, int.MaxValue);
     }
 
     /// <summary>
@@ -42,19 +38,8 @@ public class PlayerManager : MonoBehaviour, IGameManager
     /// </summary>
     public int MaxArmor
     {
-        get
-        {
-            return _maxArmor;
-        }
-        private set
-        {
-            if (value < 0)
-            {
-                _maxArmor = 0;
-                return;
-            }
-            _maxArmor = value;
-        }
+        get => _maxArmor;
+        private set => Mathf.Clamp(value, 0, int.MaxValue);
     }
 
     /// <summary>
@@ -62,20 +47,8 @@ public class PlayerManager : MonoBehaviour, IGameManager
     /// </summary>
     public float MaxSpeed
     {
-        get
-        {
-            return _maxSpeed;
-        }
-        set
-        {
-            if (value < 0.1f)
-            {
-                _maxSpeed = 0.1f;
-                return;
-            }
-            float speed = UnityEngine.Random.Range(value - 0.4f, value + 0.4f);
-            _maxSpeed = speed;
-        }
+        get => _maxSpeed;
+        set => Mathf.Clamp(value, 0.1f, 32f);
     }
 
     /// <summary>
@@ -83,103 +56,85 @@ public class PlayerManager : MonoBehaviour, IGameManager
     /// </summary>
     public int Health
     {
-        get
-        {
-            return _health;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                _health = 0;
-                return;
-            }
-            if (value > _maxHealth)
-            {
-                _health = _maxHealth;
-                return;
-            }
-            _health = value;
-        }
+        get => _health;
+        set => Mathf.Clamp(value, 0, _maxHealth);
     }
+
+    private int _health;
 
     /// <summary>
     /// Актуальная броня игрока
     /// </summary>
     public int Armor
     {
-        get
-        {
-            return _armor;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                _armor = 0;
-                return;
-            }
-            if (value > _maxHealth)
-            {
-                _armor = _maxArmor;
-                return;
-            }
-            _armor = value;
-        }
+        get => _armor;
+        set => Mathf.Clamp(value, 0, _maxArmor);
     }
+
+    private int _armor;
 
     /// <summary>
     /// Актуальная скорость игрока, скорость передвижения в PlayerCharacterController
     /// </summary>
     public float Speed
     {
-        get
-        {
-            return _speed;
-        }
-        set
-        {
-            if (value < 0.1f)
-            {
-                _speed = 0.1f;
-                return;
-            }
-            _speed = value;
-        }
+        get => _speed;
+        set => Mathf.Clamp(value, 0.1f, _maxSpeed);
     }
+
+    private float _speed;
 
     #endregion Properties
 
+    #region Private fields
+
+    /// <summary>
+    /// Зоны возрождения игрока на сцене
+    /// </summary>
     private GameObject[] _playerSpawnZones;
-
-    private int _health;
-    private int _armor;
-    private float _speed;
-
-    private int _kills;
 
     private GameObject _playerCharacter;
     private PlayerCharacterController _playerCharacterController;
 
+    /// <summary>
+    /// Список модификаторов атака игшрока
+    /// </summary>
     private List<IModifier> _modifaers = new List<IModifier>();
 
+    #endregion Private fields
+
+    #region Mono
+
     private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+
+        AddListeners();
+    }
+
+    private void Start()
+    {
+        Startup();
+    }
+
+    #endregion Mono
+
+    #region Private methods
+
+    private void AddListeners()
     {
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
         PlayerEventManager.OnPlayerDamaged.AddListener(TakeDamage);
-        GlobalGameEventManager.OnEnemyKilled.AddListener(UpdateCounterKills);
+        //GlobalGameEventManager.OnEnemyKilled.AddListener(UpdateCounterKills);
         GlobalGameEventManager.OnGameOver.AddListener(SetDefaultParameters);
-    }
-
-    public void Startup()
-    {
-        Debug.Log("Player manager starting...");
-
-        SetDefaultParameters();
-
-        // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
-        Status = ManagerStatus.Started;
     }
 
     /// <summary>
@@ -206,8 +161,6 @@ public class PlayerManager : MonoBehaviour, IGameManager
         // Устанавливаем начальные значения характеристик (Здоровья и т.п.)
         _health = _maxHealth;
         _armor = _maxArmor;
-
-        _kills = 0;
 
         // Обнуляем список улучшений
         _modifaers = _modifaers = new List<IModifier>();
@@ -254,10 +207,21 @@ public class PlayerManager : MonoBehaviour, IGameManager
         //_playerCharacterController.Speed
     }
 
-    private void UpdateCounterKills()
+    #endregion Private methods
+
+    #region Public methods
+
+    public void Startup()
     {
-        _kills++;
+        Debug.Log("Player manager starting...");
+
+        SetDefaultParameters();
+
+        // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
+        Status = ManagerStatus.Started;
     }
+
+    #endregion Public methods
 
     #region EventHandlers
     private void EventHandler_NewGame(GameMode gameMode)

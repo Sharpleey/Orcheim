@@ -42,8 +42,8 @@ public class LoadingScreenController : MonoBehaviour
     private void Update()
     {
         // Заполянем полосу прогресса
-        if (_animator.enabled && Managers.GameSceneManager.AsyncOperationLoadingScene != null)
-            _imageProgressBar.fillAmount = Managers.GameSceneManager.AsyncOperationLoadingScene.progress;
+        if (_animator.enabled && GameSceneManager.Instance.AsyncOperationLoadingScene != null)
+            _imageProgressBar.fillAmount = GameSceneManager.Instance.AsyncOperationLoadingScene.progress;
     }
     #endregion Mono
 

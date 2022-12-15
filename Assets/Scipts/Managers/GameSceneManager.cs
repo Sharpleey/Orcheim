@@ -3,13 +3,28 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Менеджер отвечает за переключение сцен, перезагрузку сцен, паузу игры
+/// </summary>
 public class GameSceneManager : MonoBehaviour, IGameManager
 {
+	public static GameSceneManager Instance { get; private set; }
+
+	#region Serialize fields
+
 	[SerializeField] private Scene[] _scenes;
 
 	[SerializeField] private LoadingScreenController _loadingScreen;
 
+	#endregion Serialize fields
+
+	#region Properties
+
 	public ManagerStatus Status { get; private set; }
+
+	#endregion Properties
+
+	#region Private fields
 
 	/// <summary>
 	/// Свойство используется в LoadingScreenController для отображения значения прогресса
@@ -22,16 +37,105 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 
 	private bool _isGamePaused;
 
-	private void Awake()
+    #endregion Private fields
+
+    #region Mono
+
+    private void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+
+			DontDestroyOnLoad(gameObject);
+		}
+		else
+			Destroy(gameObject);
+
+		AddListeners();
+	}
+
+	#endregion Mono
+
+	#region Private methods
+
+	private void AddListeners()
 	{
 		GlobalGameEventManager.OnPauseGame.AddListener(PauseGame);
 	}
 
+	/// <summary>
+	/// Метод ставит игру на паузу
+	/// </summary>
+	/// <param name="isPaused">Поставить игру на паузу или нет</param>
+	private void PauseGame(bool isPaused)
+	{
+		_isGamePaused = isPaused;
+
+		Time.timeScale = isPaused ? 0 : 1;
+	}
+
+	/// <summary>
+	/// Метод для аминхронной загрузки сцены
+	/// </summary>
+	/// <param name="sceneName">Название сцены, на которую необходимо перейти</param>
+	/// <returns></returns>
+	private IEnumerator LoadAsyncScene(Scene scene)
+	{
+		// Показываем анимацию появления экрана загрузки
+		_loadingScreen.Show();
+
+		// Отправляем событие о начале загрузки новой сцены
+		GameSceneEventManager.SceneLoadingStarted();
+
+		// Останавливаем дальнейшее выполнение кода пока не окончена анимация показа экрана загрузки
+		while (_loadingScreen.IsShow)
+		{
+			yield return null;
+		}
+
+		// Загружаем сцену в асинхронном режиме
+		_asyncOperationLoadingScene = SceneManager.LoadSceneAsync(scene.name);
+
+		// Останавливаем дальнейшее выполнение кода, пока идет загрузка сцены
+		while (!_asyncOperationLoadingScene.isDone)
+		{
+			yield return null;
+		}
+
+		//
+		// После загрузки происходит автоматический переход на сцену
+		//
+
+		switch (scene.sceneType)
+		{
+			case SceneType.GameMap:
+				GameSceneEventManager.GameMapStarted();
+				break;
+			default:
+				GameSceneEventManager.SceneStarded();
+				break;
+
+		}
+
+		// Снимаем игру с паузы, если она была на паузе
+		if (_isGamePaused)
+			PauseGame(false);
+
+		// Плавное скрываем экрна загрузки
+		_loadingScreen.Hide();
+
+		// Обнуляем данные операции загрузки сцены
+		_asyncOperationLoadingScene = null;
+	}
+
+	#endregion Private methods
+
+	#region Public methods
+
 	public void Startup()
 	{
 		Debug.Log("Game Scene manager starting...");
-
-		_isGamePaused = false;
 
 		// any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
 		Status = ManagerStatus.Started;
@@ -64,68 +168,5 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		StartCoroutine(LoadAsyncScene(_currentScene));
 	}
 
-	/// <summary>
-	/// Метод ставит игру на паузу
-	/// </summary>
-	/// <param name="isPaused">Поставить игру на паузу или нет</param>
-	private void PauseGame(bool isPaused)
-    {
-		_isGamePaused = isPaused;
-
-		Time.timeScale = isPaused ? 0 : 1;
-	}
-
-	/// <summary>
-	/// Метод для аминхронной загрузки сцены
-	/// </summary>
-	/// <param name="sceneName">Название сцены, на которую необходимо перейти</param>
-	/// <returns></returns>
-	private IEnumerator LoadAsyncScene(Scene scene)
-	{
-		// Показываем анимацию появления экрана загрузки
-        _loadingScreen.Show();
-
-		// Отправляем событие о начале загрузки новой сцены
-		GameSceneEventManager.SceneLoadingStarted();
-
-		// Останавливаем дальнейшее выполнение кода пока не окончена анимация показа экрана загрузки
-        while (_loadingScreen.IsShow)
-        {
-			yield return null;
-		}
-
-		// Загружаем сцену в асинхронном режиме
-		_asyncOperationLoadingScene = SceneManager.LoadSceneAsync(scene.name);
-
-		// Останавливаем дальнейшее выполнение кода, пока идет загрузка сцены
-		while (!_asyncOperationLoadingScene.isDone)
-		{
-			yield return null;
-		}
-
-		//
-		// После загрузки происходит автоматический переход на сцену
-		//
-
-		switch (scene.sceneType)
-        {
-			case SceneType.GameMap:
-				GameSceneEventManager.GameMapStarted();
-				break;
-			default:
-				GameSceneEventManager.SceneStarded();
-				break;
-
-		}
-
-		// Снимаем игру с паузы, если она была на паузе
-		if (_isGamePaused)
-			PauseGame(false);
-
-		// Плавное скрываем экрна загрузки
-		_loadingScreen.Hide();
-
-		// Обнуляем данные операции загрузки сцены
-		_asyncOperationLoadingScene = null;
-	}
+	#endregion Public methods
 }

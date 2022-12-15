@@ -8,6 +8,8 @@ public class MainMenuCanvasController : MonoBehaviour
     [SerializeField] private GameObject _scenes;
 
     private GameObject _activeMenu;
+
+    private GameSceneManager _gameSceneManager;
     
     private void Start()
     {
@@ -18,7 +20,9 @@ public class MainMenuCanvasController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        Managers.AudioManager.PlayRandomSound(SoundType.MainMenuTheme);
+        _gameSceneManager = GameSceneManager.Instance;
+
+        AudioManager.Instance.PlayRandomSound(SoundType.MainMenuTheme);
     }
 
     public void OnClickNewGame()
@@ -50,19 +54,22 @@ public class MainMenuCanvasController : MonoBehaviour
     {
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_1);
+        if(_gameSceneManager)
+            _gameSceneManager.SwitchToScene(SceneName.TEST_MAP_1);
     }
 
     public void OnClickTestMap2()
     {
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_MAP_2);
+        if (_gameSceneManager)
+            _gameSceneManager.SwitchToScene(SceneName.TEST_MAP_2);
     }
 
     public void OnClickTestPlane()
     {
-        Managers.GameSceneManager.SwitchToScene(SceneName.TEST_PLANE);
+        if (_gameSceneManager)
+            _gameSceneManager.SwitchToScene(SceneName.TEST_PLANE);
     }
 
     private void ShowMenu(GameObject menu)
