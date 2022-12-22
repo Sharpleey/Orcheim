@@ -22,67 +22,18 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
     #region Properties
 
+    /// <summary>
+    /// Здоровье игрока
+    /// </summary>
+    public Health Health { get; private set; }
+    public Armor Armor { get; private set; }
+    public Damage Damage { get; private set; }
+    public MovementSpeed MovementSpeed { get; private set; }
+    public AttackSpeed AttackSpeed { get; private set; }
+
     public ManagerStatus Status { get; private set; }
 
-    /// <summary>
-    /// Максимальное значение здоровья игркока
-    /// </summary>
-    public int MaxHealth
-    {
-        get => _maxHealth;
-        set => Mathf.Clamp(value, 1, int.MaxValue);
-    }
 
-    /// <summary>
-    /// Максимальное значение брони игрока
-    /// </summary>
-    public int MaxArmor
-    {
-        get => _maxArmor;
-        private set => Mathf.Clamp(value, 0, int.MaxValue);
-    }
-
-    /// <summary>
-    /// Максимальное значение скорости передвижения игрока
-    /// </summary>
-    public float MaxSpeed
-    {
-        get => _maxSpeed;
-        set => Mathf.Clamp(value, 0.1f, 32f);
-    }
-
-    /// <summary>
-    /// Текущее значение здоровья игрока
-    /// </summary>
-    public int Health
-    {
-        get => _health;
-        set => Mathf.Clamp(value, 0, _maxHealth);
-    }
-
-    private int _health;
-
-    /// <summary>
-    /// Актуальная броня игрока
-    /// </summary>
-    public int Armor
-    {
-        get => _armor;
-        set => Mathf.Clamp(value, 0, _maxArmor);
-    }
-
-    private int _armor;
-
-    /// <summary>
-    /// Актуальная скорость игрока, скорость передвижения в PlayerCharacterController
-    /// </summary>
-    public float Speed
-    {
-        get => _speed;
-        set => Mathf.Clamp(value, 0.1f, _maxSpeed);
-    }
-
-    private float _speed;
 
     #endregion Properties
 
@@ -117,6 +68,7 @@ public class PlayerManager : MonoBehaviour, IGameManager
             Destroy(gameObject);
 
         AddListeners();
+        InitParameters();
     }
 
     private void Start()
@@ -128,11 +80,19 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
     #region Private methods
 
+    private void InitParameters()
+    {
+        Health = new Health(125, 25, "Здоровье");
+        Armor = new Armor(50, 5, "Броня");
+        Damage = new Damage(25, 5, DamageType.Physical, false, "Урон");
+        MovementSpeed = new MovementSpeed(3.5f, 0.1f, "Скорость передвижения");
+        AttackSpeed = new AttackSpeed(90, 10, "Скорость атаки");
+    }
+
     private void AddListeners()
     {
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
-        PlayerEventManager.OnPlayerDamaged.AddListener(TakeDamage);
         //GlobalGameEventManager.OnEnemyKilled.AddListener(UpdateCounterKills);
         GlobalGameEventManager.OnGameOver.AddListener(SetDefaultParameters);
     }
@@ -141,11 +101,25 @@ public class PlayerManager : MonoBehaviour, IGameManager
     /// Метод для принятия урона игроком
     /// </summary>
     /// <param name="damage"></param>
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage, DamageType damageType, bool isArmorIgnore)
     {
-        _health -= damage;
+        int damageValue = damage;
 
-        if (_health <=0)
+        if (!isArmorIgnore)
+        {
+            // Значение уменьшения урона
+            float increaseDamage = 1.0f - (Armor.ActualArmor / (100.0f + Armor.ActualArmor));
+
+            // Уменьшенный урон за счет брони
+            damageValue = (int)(damageValue * increaseDamage);
+        }
+       
+
+        Health.ActualHealth -= damageValue;
+
+        PlayerEventManager.PlayerDamaged(damageValue);
+
+        if (Health.ActualHealth <= 0)
         {
             PlayerEventManager.PlayerDead();
         }
@@ -159,8 +133,9 @@ public class PlayerManager : MonoBehaviour, IGameManager
         Debug.Log("Set default parameters for player");
 
         // Устанавливаем начальные значения характеристик (Здоровья и т.п.)
-        _health = _maxHealth;
-        _armor = _maxArmor;
+        Health.SetLevel(1);
+        Armor.SetLevel(1);
+        Damage.SetLevel(1);
 
         // Обнуляем список улучшений
         _modifaers = _modifaers = new List<IModifier>();

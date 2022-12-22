@@ -26,84 +26,29 @@ public abstract class Enemy : MonoBehaviour
 
     #region Properties
     /// <summary>
-    /// Максимальное значение здоровья противника
+    /// Здоровье персонажа противника
     /// </summary>
-    public int MaxHealth
-    {
-        get
-        {
-            return _maxHealth;
-        }
-        set
-        {
-            if (value <= 0)
-            {
-                _maxHealth = 1;
-                return;
-            }
-            _maxHealth = value;
-        }
-    }
-    
-    /// <summary>
-    /// Максимальное значение брони противника
-    /// </summary>
-    public int MaxArmor
-    {
-        get
-        {
-            return _maxArmor;
-        }
-        private set
-        {
-            if (value < 0)
-            {
-                _maxArmor = 0;
-                return;
-            }
-            _maxArmor = value;
-        }
-    }
+    public Health Health { get; private set; }
 
     /// <summary>
-    /// Максимальное значение скорости передвижения противника
+    /// Броня персонажа противника
     /// </summary>
-    public float MaxSpeed
-    {
-        get
-        {
-            return _maxMovementSpeed;
-        }
-        set
-        {
-            if (value < 0.1f)
-            {
-                _maxMovementSpeed = 0.1f;
-                return;
-            }
-            _maxMovementSpeed = value;
-        }
-    }
+    public Armor Armor { get; private set; }
 
     /// <summary>
-    /// Исходный средний урон. Изменять только при прокачке модификатора или в инспекторе
+    /// Урон персонажа противника
     /// </summary>
-    public int AverageDamage
-    {
-        get
-        {
-            return _averageDamage;
-        }
-        private set
-        {
-            if (value < 0)
-            {
-                _averageDamage = 0;
-                return;
-            }
-            _averageDamage = value;
-        }
-    }
+    public Damage Damage { get; private set; }
+
+    /// <summary>
+    /// Скорость передвижения персонажа противника
+    /// </summary>
+    public MovementSpeed MovementSpeed { get; private set; }
+
+    /// <summary>
+    /// Скорость атаки персонажа противника
+    /// </summary>
+    public AttackSpeed AttackSpeed { get; private set; }
 
     /// <summary>
     /// Дистанция атаки противника
@@ -124,106 +69,6 @@ public abstract class Enemy : MonoBehaviour
             _attackDistance = value;
         }
     }
-
-    /// <summary>
-    /// Текущий (Используемый) средний урон. Изменяется для уменьшении разными модификаторами
-    /// </summary>
-    public int CurrentAverageDamage
-    {
-        get
-        {
-            return _currentAverageDamage;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                _currentAverageDamage = 0;
-                return;
-            }
-            _currentAverageDamage = value;
-        }
-    }
-
-    /// <summary>
-    /// Урон с учетом разброса, данное значение используем при нанесении урона
-    /// </summary>
-    public int ActualDamage
-    {
-        get
-        {
-            int range = (int)(CurrentAverageDamage * GeneralParameter.OFFSET_DAMAGE_HEALING);
-            return UnityEngine.Random.Range(CurrentAverageDamage - range, CurrentAverageDamage + range);
-        }
-    }
-
-    /// <summary>
-    /// Текущее значение здоровья противника
-    /// </summary>
-    public int Health
-    {
-        get => _health;
-        set
-        {
-            _health = Mathf.Clamp(value, 0, _maxHealth);
-           
-            if (HealthBarController != null)
-            {
-                HealthBarController.SetHealth(_health);
-                HealthBarController.ShowHealthBar();
-            }
-        }
-    }
-    
-    /// <summary>
-    /// Актуальная броня противника
-    /// </summary>
-    public int Armor
-    {
-        get
-        {
-            return _armor;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                _armor = 0;
-                return;
-            }
-            if (value > _maxHealth)
-            {
-                _armor = _maxArmor;
-                return;
-            }
-            _armor = value;
-        }
-    }
-
-    /// <summary>
-    /// Актуальная скорость противника, скорость передвижения в NavMeshAgent
-    /// </summary>
-    public float Speed
-    {
-        get
-        {
-            return NavMeshAgent.velocity.magnitude;
-        }
-        set
-        {
-            if (value < 0.1f)
-            {
-                NavMeshAgent.speed = 0.1f;
-                return;
-            }
-            NavMeshAgent.speed = value;
-        }
-    }
-
-    /// <summary>
-    /// Флаг для блокировки изменения состояния
-    /// </summary>
-    //public bool IsBlockChangeState { get; set; }
 
     /// <summary>
     /// Первое стартовое состояние
@@ -250,45 +95,30 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     public EnemyState CurrentState { get; private protected set; }
 
-    //public List<Effect> ActiveEffects { get; private set; }
-
     #endregion Properties
 
     #region Private fields
+
     /// <summary>
     /// Словарь для хранения состояний
     /// </summary>
     protected Dictionary<Type, EnemyState> _states;
+
+    /// <summary>
+    /// Словарь для хранения эффект висящих на персонаже противника
+    /// </summary>
     protected Dictionary<Type, Effect> _activeEffects;
 
-
-    private int _health = 0;
-    private int _armor = 0;
-
-    private int _currentAverageDamage = 0;
-
-    private bool _isBurning = false;
-    private float _timerBurning = 0;
-    private int _durationBurning = 0;
-
-    private bool _isSlow = false;
-    private float _timerSlow = 0;
-    private int _durationSlow = 0;
-
-    //private Vector3 _position = Vector3.zero;
     #endregion Private fields
 
     #region Mono
     private void Awake()
     {
-        MaxHealth = _maxHealth;
-        MaxArmor = _maxArmor;
-        AverageDamage = _averageDamage;
-        CurrentAverageDamage = _averageDamage;
-        MaxSpeed = _maxMovementSpeed;
+        InitParameters();
 
-        Health = _maxHealth;
-        Armor = _maxArmor;
+
+        //MaxSpeed = _maxMovementSpeed;
+
 
         DefaultState = _defaultState;
 
@@ -323,11 +153,11 @@ public abstract class Enemy : MonoBehaviour
             BurningEffectController.enabled = false;
 
         // Устанавливаем скорость для NavMeshAgent
-        Speed = _maxMovementSpeed;
+        NavMeshAgent.speed = MovementSpeed.ActualSpeed;
 
         // Устанавливаем максимальное и актуальное хп для полосы хп
-        HealthBarController?.SetMaxHealth(MaxHealth);
-        HealthBarController?.SetHealth(Health);
+        HealthBarController?.SetMaxHealth(Health.MaxHealth);
+        HealthBarController?.SetHealth(Health.ActualHealth);
     }
     
     private void Update()
@@ -398,16 +228,41 @@ public abstract class Enemy : MonoBehaviour
     #endregion Private methods
 
     #region Public methods
+
+    private void InitParameters()
+    {
+        Health = new Health(80, 20);
+        Armor = new Armor(5, 2);
+        Damage = new Damage(25, 5, DamageType.Physical, false);
+        MovementSpeed = new MovementSpeed(3.5f);
+        AttackSpeed = new AttackSpeed(100);
+    }
+
     /// <summary>
     /// Метод получения урона персонажем
     /// </summary>
     /// <param name="damage">Значение принимаемого урона</param>
     /// <param name="typeDamage">Тип урона</param>
-    public void TakeDamage(int damage, DamageType typeDamage)
+    public void TakeDamage(int damage, DamageType damageType, bool isArmorIgnore, Collider hitbox = null)
     {
-        if (Health > 0)
+        if (Health.ActualHealth > 0)
         {
-            Health -= damage;
+            if(hitbox)
+            {
+                // Изменяем значение урона в зависимости от попадаемого хитбокса
+                damage = HitBoxesController.GetDamageValue(damage, hitbox);
+            }
+
+            if(!isArmorIgnore)
+            {
+                // Значение уменьшения урона
+                float increaseDamage = 1.0f - (Armor.ActualArmor / (100.0f + Armor.ActualArmor));
+
+                // Уменьшенный урон за счет брони
+                damage = (int)(damage * increaseDamage);
+            }
+
+            Health.ActualHealth -= damage;
 
             // Если игрок атаковал врага, изменяем состояние
             if (CurrentState.GetType() == typeof(IdleState) || CurrentState.GetType() == typeof(PatrollingState))
@@ -421,33 +276,27 @@ public abstract class Enemy : MonoBehaviour
 
             // Всплывающий дамаг
             if (PopupDamageController != null)
-                PopupDamageController.ShowPopupDamage(damage, typeDamage);
+                PopupDamageController.ShowPopupDamage(damage, damageType);
+
+            // Полоса здоровья
+            if (HealthBarController != null)
+            {
+                HealthBarController.SetHealth(Health.ActualHealth);
+                HealthBarController.ShowHealthBar();
+            }
+
+            // Звук
+            if (AudioController)
+            {
+                AudioController.PlayRandomSoundWithProbability(EnemySoundType.Hit);
+            }
         }
 
-        // Звук
-        if (AudioController && Health > 0)
-        {
-            AudioController.PlayRandomSoundWithProbability(EnemySoundType.Hit);
-        }
-
-        if (Health <= 0)
+        if (Health.ActualHealth <= 0)
         {
             if (CurrentState.GetType() != typeof(DieState))
                 SetState<DieState>();
         }
-    }
-    
-    /// <summary>
-    /// Получение урона через определенный хитбокс персонажа
-    /// </summary>
-    /// <param name="damage">Значение получаемого урона</param>
-    /// <param name="hitCollider">Хитбокс попадания</param>
-    /// <param name="typeDamage">Тип урона</param>
-    public void TakeHitboxDamage(int damage, Collider hitCollider, DamageType typeDamage)
-    {
-        // Получаем значение урона с учетом попадания в ту или иную часть тела
-        damage = HitBoxesController.GetDamageValue(damage, hitCollider);
-        TakeDamage(damage, typeDamage);
     }
 
     /// <summary>

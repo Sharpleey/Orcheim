@@ -12,7 +12,9 @@ public class Slowdown : Effect, IMovementSpeedPercentageDecrease, IAttackSpeedPe
 
     public override void Enable()
     {
-        enemy.Speed = enemy.MaxSpeed * (1f - MovementSpeedPercentageDecrease);
+        enemy.MovementSpeed.ActualSpeed = enemy.MovementSpeed.MaxSpeed * (1f - MovementSpeedPercentageDecrease);
+        enemy.NavMeshAgent.speed = enemy.MovementSpeed.ActualSpeed;
+
         //enemy.AttackSpeed = enemy.MaxAttackSpeed * (1f - AttackSpeedPercentageDecrease);
 
         // Включаем иконку замедления над противником
@@ -22,7 +24,9 @@ public class Slowdown : Effect, IMovementSpeedPercentageDecrease, IAttackSpeedPe
 
     public override void Disable()
     {
-        enemy.Speed = enemy.MaxSpeed;
+        enemy.MovementSpeed.ActualSpeed = enemy.MovementSpeed.MaxSpeed;
+        enemy.NavMeshAgent.speed = enemy.MovementSpeed.ActualSpeed;
+
         //enemy.AttackSpeed = enemy.MaxAttackSpeed;
 
         // Выключаем иконку замедления над противником

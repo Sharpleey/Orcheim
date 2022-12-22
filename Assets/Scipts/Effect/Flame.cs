@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Flame : Effect, IUnitDamage, IArmorUnitDecrease
+public class Flame : Effect, IArmorUnitDecrease
 {
     public override string Name => "√орение";
     public override string Description => "Ёффект наносит персонажу урон каждые...";
@@ -9,18 +9,8 @@ public class Flame : Effect, IUnitDamage, IArmorUnitDecrease
     public override float Duration { get; set; } = 3;
     public override float Frequency { get; set; } = 1f;
 
+    public Damage Damage { get; private set; } = new Damage(10, 2, DamageType.Fire, false, "”рон в секунду от горени€");
 
-    public int AvgDamage { get; set; } = 10;
-    public int Damage
-    {
-        get
-        {
-            int range = (int)(AvgDamage * GeneralParameter.OFFSET_DAMAGE_HEALING);
-            return Random.Range(AvgDamage - range, AvgDamage + range);
-        }
-    }
-    public bool IsArmorIgnore { get; } = false;
-    public DamageType TypeDamage { get; } = DamageType.Fire;
     public int ArmorDecrease { get; set; } = 1;
 
     public override void Enable()
@@ -36,7 +26,7 @@ public class Flame : Effect, IUnitDamage, IArmorUnitDecrease
 
     public override void Tick()
     {
-        enemy.TakeDamage(Damage, TypeDamage);
+        enemy.TakeDamage(Damage.ActualDamage, Damage.DamageType, Damage.IsArmorIgnore);
     }
 
     public override void Disable()

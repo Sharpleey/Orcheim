@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LootManager : MonoBehaviour, IGameManager
@@ -10,6 +11,8 @@ public class LootManager : MonoBehaviour, IGameManager
     #region Properties
 
     public ManagerStatus Status { get; private set; }
+
+    public List<IUpgratable> UpgradeParameters { get; set; } = new List<IUpgratable>();
 
     #endregion Properties
 

@@ -19,7 +19,7 @@ public class EnemyWeaponTrigger : MonoBehaviour
 
         if (player)
         {
-            player.TakeDamage(_enemy.ActualDamage);
+            PlayerManager.Instance.TakeDamage(_enemy.Damage.ActualDamage, _enemy.Damage.DamageType, _enemy.Damage.IsArmorIgnore);
         }
     }
 }

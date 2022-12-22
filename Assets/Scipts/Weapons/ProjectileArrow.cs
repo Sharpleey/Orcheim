@@ -32,7 +32,8 @@ public class ProjectileArrow : MonoBehaviour
 
 	private Enemy _currentHitEnemy;
 
-	private int _damage;
+	private Damage _playerDamage;
+	private int _valueDamage;
 	#endregion Private fields
 
 	#region Mono
@@ -43,7 +44,8 @@ public class ProjectileArrow : MonoBehaviour
 
 		_lightBow = GetComponentInParent<LightBow>();
 
-		_damage = _lightBow.Player.Damage;
+		_playerDamage = PlayerManager.Instance.Damage;
+		_valueDamage = _playerDamage.ActualDamage;
 
 		_flameAttack = (FlameAttack)_lightBow.Player.GetAttackModifaer<FlameAttack>();
 		_slowAttack = (SlowAttack)_lightBow.Player.GetAttackModifaer<SlowAttack>();
@@ -83,11 +85,11 @@ public class ProjectileArrow : MonoBehaviour
 			{
                 if (!_isBlockDamage)
                 {
-					int damage = _damage;
+					int damage = _valueDamage;
 
 					// Если (влючен мод на криты) и (Прокнул крит)
 					if (_criticalAttack != null && _criticalAttack.IsProc())
-						damage = (int)(_damage * _criticalAttack.DamageMultiplier); // Рассчитываем критический урон
+						damage = (int)(damage * _criticalAttack.DamageMultiplier); // Рассчитываем критический урон
 
 					// Поджигаем противника, если прокнуло
 					if (_flameAttack != null && _flameAttack.IsProc())
@@ -98,7 +100,7 @@ public class ProjectileArrow : MonoBehaviour
 						enemy.SetEffect(_slowAttack.Effect);
 
 					// Наносим урон противнику
-					enemy.TakeHitboxDamage(damage, hitCollider, DamageType.Physical);
+					enemy.TakeDamage(damage, _playerDamage.DamageType, _playerDamage.IsArmorIgnore, hitCollider);
 
 					// Воспроизводим звук попадания
 					_bowAudioController.PlayHit();
@@ -112,7 +114,7 @@ public class ProjectileArrow : MonoBehaviour
 					_penetrationProjectile.CurrentPenetration++;
 
 					// Уменьшаем урон с каждым пробитием
-					_damage = (int)(_damage * (1 - _penetrationProjectile.PenetrationDamageDecrease));
+					_valueDamage = (int)(_valueDamage * (1 - _penetrationProjectile.PenetrationDamageDecrease));
 
 					// Если число пробитий подошло к пределу, то удаляем стрелу
 					if (_penetrationProjectile.CurrentPenetration == _penetrationProjectile.MaxPenetrationCount)
@@ -148,7 +150,7 @@ public class ProjectileArrow : MonoBehaviour
 			_penetrationProjectile.CurrentPenetration = 0;
 
 			// Возвращаем исходный урон
-			_damage = _lightBow.Player.Damage;
+			_valueDamage = _playerDamage.ActualDamage;
 		}			
 
 		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.

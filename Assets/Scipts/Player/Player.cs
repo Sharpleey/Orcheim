@@ -17,88 +17,34 @@ public class Player : MonoBehaviour
     #endregion Serialize fields
 
     #region Properties
-    public int AvgDamage => _avgDamage;
-    /// <summary>
-    /// Максимальная скорость бега игрока
-    /// </summary>
-    public float MaxRunSpeed => _maxRunSpeed;
-    public float MaxSprintSpeed => _maxSprintSpeed;
-    public int MaxAttackSpeed 
-    { 
-        get => _maxAttackSpeed; 
-        private set =>  _maxAttackSpeed = value; 
-    }
 
-    public int Damage
-    {
-        get
-        {
-            int range = (int)(AvgDamage * GeneralParameter.OFFSET_DAMAGE_HEALING);
-            return UnityEngine.Random.Range(AvgDamage - range, AvgDamage + range);
-        }
-    }
-
-    /// <summary>
-    /// Текущая максимальная скорость бега игрока. Данный параметр изменяем под разные случаи
-    /// </summary>
-    public float CurrentMaxRunSpeed
-    {
-        get => _firstPersonController.walkSpeed;
-        set => _firstPersonController.walkSpeed = value;
-    }
-
-    /// <summary>
-    /// Текущая максимальная скорость спринта игрока. Данный параметр изменяем под разные случаи
-    /// </summary>
-    public float CurrentMaxSprintSpeed
-    {
-        get => _firstPersonController.sprintSpeed;
-        set => _firstPersonController.sprintSpeed = value;
-    }
-
-    public float CurrentMaxAttackSpeed
-    {
-        get => _currentMaxAttackSpeed;
-        private set => _currentMaxAttackSpeed = value;
-    }
-
-    /// <summary>
-    /// Актуальная скорость игрока
-    /// </summary>
-    public float ActualSpeed => _rigidbody.velocity.magnitude;
-    
     /// <summary>
     /// Состояние спринта
     /// </summary>
-    public bool IsSprinting => _firstPersonController.IsSprinting;
+    public bool IsSprinting => FirstPersonController.IsSprinting;
 
     public bool IsBlockSprint
     {
         set
         {
-            _firstPersonController.IsBlockSprint = value;
+            FirstPersonController.IsBlockSprint = value;
         }
     }
     
     public bool IsBlockChangeWeapon { get; set; }
 
     public Camera Camera { get; private set; }
+    public Rigidbody Rigidbody { get; private set; }
+    public FirstPersonController FirstPersonController { get; private set; }
 
     public Dictionary<Type, AttackModifaer> AttackModifaers { get; private set; }
     #endregion Properties
 
     #region Private fields
-    private float _currentMaxAttackSpeed;
 
     private IWeapon _usedWeapon;
     private GameObject _usedWeaponGameObj;
 
-    private Rigidbody _rigidbody;
-
-    /// <summary>
-    /// Контроллер передвижения
-    /// </summary>
-    private FirstPersonController _firstPersonController;
     #endregion Private fields
 
     #region Mono
@@ -106,14 +52,13 @@ public class Player : MonoBehaviour
     {
         InitAttackModifaers();
 
-        _rigidbody = GetComponent<Rigidbody>();
-        _firstPersonController = GetComponent<FirstPersonController>();
+        Rigidbody = GetComponent<Rigidbody>();
+        FirstPersonController = GetComponent<FirstPersonController>();
+
+        FirstPersonController.walkSpeed = PlayerManager.Instance.MovementSpeed.MaxSpeed;
+        FirstPersonController.sprintSpeed = PlayerManager.Instance.MovementSpeed.MaxSpeed * (1f + 0.18f);
 
         Camera = GetComponentInChildren<Camera>();
-
-        CurrentMaxRunSpeed = _maxRunSpeed;
-        CurrentMaxSprintSpeed = _maxSprintSpeed;
-        CurrentMaxAttackSpeed = _maxAttackSpeed;
 
         _meleeWeapon?.SetActive(false);
         _rangeWeapon?.SetActive(false);

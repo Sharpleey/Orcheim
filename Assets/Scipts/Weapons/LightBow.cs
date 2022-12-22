@@ -72,6 +72,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private GameObject _cloneArrow;
     private ProjectileArrow _cloneProjectileArrow;
 
+    private MovementSpeed _playerMovementSpeed;
+    private AttackSpeed _playerAttackSpeed;
+
     public Flame Flame = new Flame();
     public Slowdown Slowdown = new Slowdown();
     #endregion Private fields
@@ -89,6 +92,9 @@ public class LightBow : MonoBehaviour, IBowWeapon
         Animator = GetComponent<Animator>();
         AudioController = GetComponent<BowAudioController>();
         Player = GetComponentInParent<Player>();
+
+        _playerMovementSpeed = PlayerManager.Instance.MovementSpeed;
+        _playerAttackSpeed = PlayerManager.Instance.AttackSpeed;
 
         RespawnProjectile();
     }
@@ -131,7 +137,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 Animator.SetTrigger(HashAnimStringWeapon.IsAimingShot);
             }
 
-            Animator.SetFloat(HashAnimStringWeapon.PlayerSpeed, Player.ActualSpeed / Player.MaxRunSpeed);
+            Animator.SetFloat(HashAnimStringWeapon.PlayerSpeed, Player.Rigidbody.velocity.magnitude / _playerMovementSpeed.MaxSpeed);
             Animator.SetBool(HashAnimStringWeapon.IsSprint, Player.IsSprinting);
 
             AimingZoom();
@@ -176,7 +182,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Замедляем скорость бега игрока при прицеливании
-                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed * 0.5f;
+                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.ActualSpeed * 0.5f;
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
 
                 // Блокируем игроку возможность спринтовать
                 Player.IsBlockSprint = true;
@@ -188,7 +195,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Animator)
             {
                 // Устанавливаем скорость стрельбы
-                Animator.speed = Player.CurrentMaxAttackSpeed / 100;
+                Animator.speed = _playerAttackSpeed.ActualAttackSpeed / 100;
             }
         }
         else
@@ -196,7 +203,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Возращаем скорость бега игрока в исходное состояние
-                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed;
+                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.MaxSpeed;
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
 
 
                 // Разбокируем игроку возможность спринтовать
@@ -245,7 +253,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Animator)
             {
                 // Устанавливаем скорость стрельбы
-                Animator.speed = Player.CurrentMaxAttackSpeed / 100;
+                Animator.speed = _playerAttackSpeed.ActualAttackSpeed / 100;
             }
         }
         else
@@ -280,7 +288,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Замедляем скорость бега игрока при стрельбе
-                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed * 0.5f;
+                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.ActualSpeed * 0.5f;
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
 
                 // Блокируем игроку возможность спринтовать
                 Player.IsBlockSprint = true;
@@ -292,7 +301,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Animator)
             {
                 // Устанавливаем скорость стрельбы
-                Animator.speed = Player.CurrentMaxAttackSpeed / 100;
+                Animator.speed = _playerAttackSpeed.ActualAttackSpeed / 100;
             }
         }
         else
@@ -300,7 +309,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Возращаем скорость бега игрока в исходное состояние
-                Player.CurrentMaxRunSpeed = Player.MaxRunSpeed;
+                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.MaxSpeed;
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
 
                 // Разблокируем игроку возможность спринтовать
                 Player.IsBlockSprint = false;

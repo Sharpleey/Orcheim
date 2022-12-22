@@ -103,8 +103,8 @@ public class PlayerHUDController : MonoBehaviour
 
         if(_playerManager)
         {
-            SetTextHealthPlayer(_playerManager.Health, _playerManager.MaxHealth);
-            SetValueHealthBar(_playerManager.Health, _playerManager.MaxHealth);
+            SetTextHealthPlayer(_playerManager.Health.ActualHealth, _playerManager.Health.MaxHealth);
+            SetValueHealthBar(_playerManager.Health.ActualHealth, _playerManager.Health.MaxHealth);
         }
     }
 
@@ -129,8 +129,8 @@ public class PlayerHUDController : MonoBehaviour
     {
         if(_playerManager)
         {
-            SetTextHealthPlayer(_playerManager.Health, _playerManager.MaxHealth);
-            SetValueHealthBar(_playerManager.Health, _playerManager.MaxHealth);
+            SetTextHealthPlayer(_playerManager.Health.ActualHealth, _playerManager.Health.MaxHealth);
+            SetValueHealthBar(_playerManager.Health.ActualHealth, _playerManager.Health.MaxHealth);
         }
        
     }
