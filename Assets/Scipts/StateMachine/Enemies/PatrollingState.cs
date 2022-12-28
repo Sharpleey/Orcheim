@@ -120,7 +120,7 @@ public class PatrollingState : EnemyState
         Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
-        enemy.Animator.SetFloat(HashAnimStringEnemy.Speed, enemy.NavMeshAgent.velocity.magnitude / enemy.MovementSpeed.MaxSpeed);
+        enemy.Animator.SetFloat(HashAnimStringEnemy.Speed, enemy.NavMeshAgent.velocity.magnitude / (enemy.MovementSpeed.Max/100f));
     }
 
     public override void Exit()
@@ -128,8 +128,8 @@ public class PatrollingState : EnemyState
         enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
 
         // Возвращаем исходную скорость
-        enemy.MovementSpeed.ActualSpeed = enemy.MovementSpeed.MaxSpeed;
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.ActualSpeed;
+        enemy.MovementSpeed.Actual = enemy.MovementSpeed.Max;
+        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
 
         enemy.NavMeshAgent.angularSpeed = 360f;
 
@@ -188,8 +188,8 @@ public class PatrollingState : EnemyState
         _positionCurrentWayPoint = GetPointOnNavmesh(_positionCurrentWayPoint);
 
         // Меняем скорость, что сделать передвижение немного хаотично
-        enemy.MovementSpeed.ActualSpeed = enemy.MovementSpeed.MaxSpeed / 2 + Random.Range(-0.05f, 0.05f);
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.ActualSpeed;
+        enemy.MovementSpeed.Actual = (int)(enemy.MovementSpeed.Max / 2 + Random.Range(-0.05f, 0.05f));
+        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
 
         // Устанавливаем точку назначения персонажу противника на точку маршрута
         enemy?.NavMeshAgent?.SetDestination(_positionCurrentWayPoint);

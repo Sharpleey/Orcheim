@@ -1197,7 +1197,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3388719096244426822}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7499604847865752467}
+        m_TargetAssemblyTypeName: AwardsMenuController, Assembly-CSharp
+        m_MethodName: OnClickAward_3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3895416651011195748
 GameObject:
   m_ObjectHideFlags: 0
@@ -1837,13 +1849,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4620633751240033648}
+  - component: {fileID: 7499604847865752467}
   m_Layer: 5
-  m_Name: Upgrade Menu
+  m_Name: Awards Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4620633751240033648
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1868,6 +1881,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 70}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7499604847865752467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330478925314788820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af558f943ce9df1409168b53436930f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pauseMenuCanvasController: {fileID: 7236045072930384665}
+  _textButtonAward_1: {fileID: 5480382950317683118}
+  _textButtonAward_2: {fileID: 3486299615425173146}
+  _textButtonAward_3: {fileID: 1365203328606911461}
 --- !u!1 &5380218253429119840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2199,7 +2228,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6603727542960947481}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7499604847865752467}
+        m_TargetAssemblyTypeName: AwardsMenuController, Assembly-CSharp
+        m_MethodName: OnClickAward_2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6801240347751454562
 GameObject:
   m_ObjectHideFlags: 0
@@ -2794,6 +2835,7 @@ MonoBehaviour:
   _learn: {fileID: 8608316226184041471}
   _settings: {fileID: 7882538439503381790}
   _gameOverMenu: {fileID: 6801240347751454562}
+  _awardsMenu: {fileID: 5330478925314788820}
   _pauseKey: 27
 --- !u!1 &7882538437744014104
 GameObject:
@@ -4449,7 +4491,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1352141419014704360}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7499604847865752467}
+        m_TargetAssemblyTypeName: AwardsMenuController, Assembly-CSharp
+        m_MethodName: OnClickAward_1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &284439830675279542
 PrefabInstance:
   m_ObjectHideFlags: 0

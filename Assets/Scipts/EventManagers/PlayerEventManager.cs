@@ -12,6 +12,11 @@ public class PlayerEventManager
     /// Событие смерти игрока
     /// </summary>
     public static readonly UnityEvent OnPlayerDead = new UnityEvent();
+
+    /// <summary>
+    /// Событие повышения лвл игрока
+    /// </summary>
+    public static readonly UnityEvent<int> OnPlayerLevelUp = new UnityEvent<int>();
     #endregion
 
     #region Methods
@@ -30,6 +35,14 @@ public class PlayerEventManager
     public static void PlayerDead()
     {
         OnPlayerDead.Invoke();
+    }
+
+    /// <summary>
+    /// Вызов события повышения уровня игрока
+    /// </summary>
+    public static void PlayerLevelUp(int level)
+    {
+        OnPlayerLevelUp.Invoke(level);
     }
     #endregion
 }

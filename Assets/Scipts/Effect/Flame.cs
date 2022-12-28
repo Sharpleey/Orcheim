@@ -9,7 +9,7 @@ public class Flame : Effect, IArmorUnitDecrease
     public override float Duration { get; set; } = 3;
     public override float Frequency { get; set; } = 1f;
 
-    public Damage Damage { get; private set; } = new Damage(10, 2, DamageType.Fire, false, "Урон в секунду от горения");
+    public Damage Damage { get; private set; } = new Damage(10, 2, DamageType.Fire, false);
 
     public int ArmorDecrease { get; set; } = 1;
 
@@ -26,7 +26,7 @@ public class Flame : Effect, IArmorUnitDecrease
 
     public override void Tick()
     {
-        enemy.TakeDamage(Damage.ActualDamage, Damage.DamageType, Damage.IsArmorIgnore);
+        enemy.TakeDamage(Damage.Actual, Damage.DamageType, Damage.IsArmorIgnore);
     }
 
     public override void Disable()

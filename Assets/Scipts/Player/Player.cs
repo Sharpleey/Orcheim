@@ -55,8 +55,8 @@ public class Player : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody>();
         FirstPersonController = GetComponent<FirstPersonController>();
 
-        FirstPersonController.walkSpeed = PlayerManager.Instance.MovementSpeed.MaxSpeed;
-        FirstPersonController.sprintSpeed = PlayerManager.Instance.MovementSpeed.MaxSpeed * (1f + 0.18f);
+        FirstPersonController.walkSpeed = PlayerManager.Instance.MovementSpeed.Max/100f;
+        FirstPersonController.sprintSpeed = PlayerManager.Instance.MovementSpeed.Max * (1f + 0.18f)/100f;
 
         Camera = GetComponentInChildren<Camera>();
 

@@ -102,7 +102,7 @@ public abstract class ChasingState : EnemyState
         //Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
-        enemy.Animator.SetFloat(HashAnimStringEnemy.Speed, enemy.NavMeshAgent.velocity.magnitude/ enemy.MovementSpeed.MaxSpeed);
+        enemy.Animator.SetFloat(HashAnimStringEnemy.Speed, enemy.NavMeshAgent.velocity.magnitude / (enemy.MovementSpeed.Max/100f));
     }
 
     public override void Exit()

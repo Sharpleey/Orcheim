@@ -20,7 +20,7 @@ public class WarriorAttackState : EnemyState
         enemy.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
         enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
 
-        enemy.Animator.speed = enemy.AttackSpeed.ActualAttackSpeed / 100;
+        enemy.Animator.speed = enemy.AttackSpeed.Actual / 100f;
     }
 
     public override void Exit()

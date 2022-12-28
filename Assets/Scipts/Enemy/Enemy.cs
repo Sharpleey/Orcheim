@@ -116,10 +116,6 @@ public abstract class Enemy : MonoBehaviour
     {
         InitParameters();
 
-
-        //MaxSpeed = _maxMovementSpeed;
-
-
         DefaultState = _defaultState;
 
         SummonTrigger = _summonTrigger;
@@ -153,11 +149,11 @@ public abstract class Enemy : MonoBehaviour
             BurningEffectController.enabled = false;
 
         // Устанавливаем скорость для NavMeshAgent
-        NavMeshAgent.speed = MovementSpeed.ActualSpeed;
+        NavMeshAgent.speed = MovementSpeed.Actual/100f;
 
         // Устанавливаем максимальное и актуальное хп для полосы хп
-        HealthBarController?.SetMaxHealth(Health.MaxHealth);
-        HealthBarController?.SetHealth(Health.ActualHealth);
+        HealthBarController?.SetMaxHealth(Health.Max);
+        HealthBarController?.SetHealth(Health.Actual);
     }
     
     private void Update()
@@ -234,7 +230,7 @@ public abstract class Enemy : MonoBehaviour
         Health = new Health(80, 20);
         Armor = new Armor(5, 2);
         Damage = new Damage(25, 5, DamageType.Physical, false);
-        MovementSpeed = new MovementSpeed(3.5f);
+        MovementSpeed = new MovementSpeed(350);
         AttackSpeed = new AttackSpeed(100);
     }
 
@@ -245,7 +241,7 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="typeDamage">Тип урона</param>
     public void TakeDamage(int damage, DamageType damageType, bool isArmorIgnore, Collider hitbox = null)
     {
-        if (Health.ActualHealth > 0)
+        if (Health.Actual > 0)
         {
             if(hitbox)
             {
@@ -256,13 +252,13 @@ public abstract class Enemy : MonoBehaviour
             if(!isArmorIgnore)
             {
                 // Значение уменьшения урона
-                float increaseDamage = 1.0f - (Armor.ActualArmor / (100.0f + Armor.ActualArmor));
+                float increaseDamage = 1.0f - (Armor.Actual / (100.0f + Armor.Actual));
 
                 // Уменьшенный урон за счет брони
                 damage = (int)(damage * increaseDamage);
             }
 
-            Health.ActualHealth -= damage;
+            Health.Actual -= damage;
 
             // Если игрок атаковал врага, изменяем состояние
             if (CurrentState.GetType() == typeof(IdleState) || CurrentState.GetType() == typeof(PatrollingState))
@@ -281,7 +277,7 @@ public abstract class Enemy : MonoBehaviour
             // Полоса здоровья
             if (HealthBarController != null)
             {
-                HealthBarController.SetHealth(Health.ActualHealth);
+                HealthBarController.SetHealth(Health.Actual);
                 HealthBarController.ShowHealthBar();
             }
 
@@ -292,8 +288,10 @@ public abstract class Enemy : MonoBehaviour
             }
         }
 
-        if (Health.ActualHealth <= 0)
+        if (Health.Actual <= 0)
         {
+            //PlayerEventManager.PlayerLevelUp(1);
+
             if (CurrentState.GetType() != typeof(DieState))
                 SetState<DieState>();
         }

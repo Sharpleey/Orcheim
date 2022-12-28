@@ -70,23 +70,29 @@ public class PlayerManager : MonoBehaviour, IGameManager
         AddListeners();
         InitParameters();
     }
-
-    private void Start()
-    {
-        Startup();
-    }
-
     #endregion Mono
 
     #region Private methods
 
     private void InitParameters()
     {
-        Health = new Health(125, 25, "Здоровье");
-        Armor = new Armor(50, 5, "Броня");
-        Damage = new Damage(25, 5, DamageType.Physical, false, "Урон");
-        MovementSpeed = new MovementSpeed(3.5f, 0.1f, "Скорость передвижения");
-        AttackSpeed = new AttackSpeed(90, 10, "Скорость атаки");
+        Health = new Health(150, 25);
+        Armor = new Armor(0, 2);
+        Damage = new Damage(25, 5, DamageType.Physical, false);
+        MovementSpeed = new MovementSpeed(360, 10);
+        AttackSpeed = new AttackSpeed(100, 10);
+    }
+
+    private void AddParametersToUpgradeList()
+    {
+        if (LootManager.Instance)
+        {
+            LootManager.Instance.UpgradeParameters.Add(Health);
+            LootManager.Instance.UpgradeParameters.Add(Armor);
+            LootManager.Instance.UpgradeParameters.Add(Damage);
+            LootManager.Instance.UpgradeParameters.Add(MovementSpeed);
+            LootManager.Instance.UpgradeParameters.Add(AttackSpeed);
+        }
     }
 
     private void AddListeners()
@@ -108,18 +114,18 @@ public class PlayerManager : MonoBehaviour, IGameManager
         if (!isArmorIgnore)
         {
             // Значение уменьшения урона
-            float increaseDamage = 1.0f - (Armor.ActualArmor / (100.0f + Armor.ActualArmor));
+            float increaseDamage = 1.0f - (Armor.Actual / (100.0f + Armor.Actual));
 
             // Уменьшенный урон за счет брони
             damageValue = (int)(damageValue * increaseDamage);
         }
        
 
-        Health.ActualHealth -= damageValue;
+        Health.Actual -= damageValue;
 
         PlayerEventManager.PlayerDamaged(damageValue);
 
-        if (Health.ActualHealth <= 0)
+        if (Health.Actual <= 0)
         {
             PlayerEventManager.PlayerDead();
         }
@@ -136,6 +142,8 @@ public class PlayerManager : MonoBehaviour, IGameManager
         Health.SetLevel(1);
         Armor.SetLevel(1);
         Damage.SetLevel(1);
+        MovementSpeed.SetLevel(1);
+        AttackSpeed.SetLevel(1);
 
         // Обнуляем список улучшений
         _modifaers = _modifaers = new List<IModifier>();
@@ -191,6 +199,7 @@ public class PlayerManager : MonoBehaviour, IGameManager
         Debug.Log("Player manager starting...");
 
         SetDefaultParameters();
+        AddParametersToUpgradeList();
 
         // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
         Status = ManagerStatus.Started;

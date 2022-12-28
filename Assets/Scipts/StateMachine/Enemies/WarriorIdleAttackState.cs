@@ -36,7 +36,7 @@ public class WarriorIdleAttackState : EnemyState
         _timerUpdateDistance = 0.5f;
 
         // ќпредел€ем частоту атак в зависимости от скорости атаки
-        _attackFrequency = 3.5f /  (enemy.AttackSpeed.ActualAttackSpeed / 100);
+        _attackFrequency = 3.5f /  (enemy.AttackSpeed.Actual / 100f);
 
         // ѕолучаем transform игрока дл€ использовани€ его в дальнейшем
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();

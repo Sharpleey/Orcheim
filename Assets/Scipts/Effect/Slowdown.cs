@@ -12,8 +12,8 @@ public class Slowdown : Effect, IMovementSpeedPercentageDecrease, IAttackSpeedPe
 
     public override void Enable()
     {
-        enemy.MovementSpeed.ActualSpeed = enemy.MovementSpeed.MaxSpeed * (1f - MovementSpeedPercentageDecrease);
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.ActualSpeed;
+        enemy.MovementSpeed.Actual = (int)(enemy.MovementSpeed.Max * (1f - MovementSpeedPercentageDecrease));
+        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
 
         //enemy.AttackSpeed = enemy.MaxAttackSpeed * (1f - AttackSpeedPercentageDecrease);
 
@@ -24,8 +24,8 @@ public class Slowdown : Effect, IMovementSpeedPercentageDecrease, IAttackSpeedPe
 
     public override void Disable()
     {
-        enemy.MovementSpeed.ActualSpeed = enemy.MovementSpeed.MaxSpeed;
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.ActualSpeed;
+        enemy.MovementSpeed.Actual = enemy.MovementSpeed.Max;
+        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
 
         //enemy.AttackSpeed = enemy.MaxAttackSpeed;
 

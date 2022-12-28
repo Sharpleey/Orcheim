@@ -45,7 +45,7 @@ public class ProjectileArrow : MonoBehaviour
 		_lightBow = GetComponentInParent<LightBow>();
 
 		_playerDamage = PlayerManager.Instance.Damage;
-		_valueDamage = _playerDamage.ActualDamage;
+		_valueDamage = _playerDamage.Actual;
 
 		_flameAttack = (FlameAttack)_lightBow.Player.GetAttackModifaer<FlameAttack>();
 		_slowAttack = (SlowAttack)_lightBow.Player.GetAttackModifaer<SlowAttack>();
@@ -150,7 +150,7 @@ public class ProjectileArrow : MonoBehaviour
 			_penetrationProjectile.CurrentPenetration = 0;
 
 			// Возвращаем исходный урон
-			_valueDamage = _playerDamage.ActualDamage;
+			_valueDamage = _playerDamage.Actual;
 		}			
 
 		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.

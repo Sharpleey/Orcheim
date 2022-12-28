@@ -7,10 +7,10 @@ public class PauseMenuCanvasController : MonoBehaviour
     [SerializeField] private GameObject _learn;
     [SerializeField] private GameObject _settings;
     [SerializeField] private GameObject _gameOverMenu;
+    [SerializeField] private GameObject _awardsMenu;
 
     private GameObject _activeMenu;
     private Canvas _canvas;
-    private GameSceneManager _gameSceneManager;
 
     [SerializeField] private KeyCode _pauseKey = KeyCode.Escape;
 
@@ -19,13 +19,12 @@ public class PauseMenuCanvasController : MonoBehaviour
     private void Awake()
     {
         PlayerEventManager.OnPlayerDead.AddListener(PlayerDead_EventHandler);
+        PlayerEventManager.OnPlayerLevelUp.AddListener(PlayerLevelUp_EventHandler);
     }
 
     private void Start()
     {
         _canvas = GetComponent<Canvas>();
-
-        _gameSceneManager = GameSceneManager.Instance;
 
         _canvas.enabled = false;
 
@@ -46,7 +45,7 @@ public class PauseMenuCanvasController : MonoBehaviour
     /// <summary>
     /// Метод с помощью которого можно поставить игру на паузу и показать меню паузы
     /// </summary>
-    private void Pause()
+    public void Pause()
     {
         _isPaused = !_isPaused;
 
@@ -85,20 +84,6 @@ public class PauseMenuCanvasController : MonoBehaviour
         _gameOverMenu.SetActive(false);
     }
 
-    private void PlayerDead_EventHandler()
-    {
-        _isPaused = true;
-
-        GlobalGameEventManager.PauseGame(_isPaused);
-
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-
-        _canvas.enabled = true;
-
-        ShowMenu(_gameOverMenu);
-    }
-
     public void OnClickButtonLearn()
     {
         ShowMenu(_learn);
@@ -119,8 +104,8 @@ public class PauseMenuCanvasController : MonoBehaviour
         GlobalGameEventManager.GameOver();
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        if(_gameSceneManager)
-            _gameSceneManager.RestartScene();
+        if(GameSceneManager.Instance)
+            GameSceneManager.Instance.RestartScene();
     }
 
     public void OnClickButtonExitMainMenu()
@@ -130,7 +115,38 @@ public class PauseMenuCanvasController : MonoBehaviour
         ///
         GlobalGameEventManager.GameOver();
 
-        if (_gameSceneManager)
-            _gameSceneManager.SwitchToScene(SceneName.MAIN_MENU);
+        if (GameSceneManager.Instance)
+            GameSceneManager.Instance.SwitchToScene(SceneName.MAIN_MENU);
     }
+
+    #region Event handlers
+    private void PlayerDead_EventHandler()
+    {
+        _isPaused = true;
+
+        GlobalGameEventManager.PauseGame(_isPaused);
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
+        _canvas.enabled = true;
+
+        ShowMenu(_gameOverMenu);
+    }
+
+    private void PlayerLevelUp_EventHandler(int level)
+    {
+        _isPaused = true;
+
+        GlobalGameEventManager.PauseGame(_isPaused);
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
+        _canvas.enabled = true;
+
+        ShowMenu(_awardsMenu);
+    }
+
+    #endregion
 }

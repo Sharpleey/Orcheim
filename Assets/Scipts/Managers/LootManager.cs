@@ -12,7 +12,7 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public ManagerStatus Status { get; private set; }
 
-    public List<IUpgratable> UpgradeParameters { get; set; } = new List<IUpgratable>();
+    public List<UpgratableParameter> UpgradeParameters { get; set; } = new List<UpgratableParameter>();
 
     #endregion Properties
 
@@ -47,6 +47,7 @@ public class LootManager : MonoBehaviour, IGameManager
     {
 
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
+        GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
         WaveEventManager.OnWaveIsOver.AddListener(ChestRespawn);
     }
 
@@ -63,7 +64,6 @@ public class LootManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Spawn chest");
     }
-
     #endregion Private methods
 
     #region Public methods
@@ -73,6 +73,12 @@ public class LootManager : MonoBehaviour, IGameManager
         Debug.Log("Loot manager starting...");
 
         Status = ManagerStatus.Started;
+    }
+
+    public UpgratableParameter GetRandomUpgrade()
+    {
+        int randomIndex = Random.Range(0, UpgradeParameters.Count-1);
+        return UpgradeParameters[randomIndex];
     }
 
     #endregion Public methods
@@ -87,6 +93,11 @@ public class LootManager : MonoBehaviour, IGameManager
     {
         FindChestSpawnZones();
         ChestRespawn();
+    }
+
+    private void EventHandler_GameOver()
+    {
+        UpgradeParameters = new List<UpgratableParameter>();
     }
     #endregion
 }

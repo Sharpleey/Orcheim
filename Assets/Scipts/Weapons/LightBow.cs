@@ -137,7 +137,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
                 Animator.SetTrigger(HashAnimStringWeapon.IsAimingShot);
             }
 
-            Animator.SetFloat(HashAnimStringWeapon.PlayerSpeed, Player.Rigidbody.velocity.magnitude / _playerMovementSpeed.MaxSpeed);
+            Animator.SetFloat(HashAnimStringWeapon.PlayerSpeed, Player.Rigidbody.velocity.magnitude / (_playerMovementSpeed.Max/100f));
             Animator.SetBool(HashAnimStringWeapon.IsSprint, Player.IsSprinting);
 
             AimingZoom();
@@ -182,8 +182,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Замедляем скорость бега игрока при прицеливании
-                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.ActualSpeed * 0.5f;
-                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
+                _playerMovementSpeed.Actual = (int)(_playerMovementSpeed.Actual * 0.5f);
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.Actual/100f;
 
                 // Блокируем игроку возможность спринтовать
                 Player.IsBlockSprint = true;
@@ -195,7 +195,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Animator)
             {
                 // Устанавливаем скорость стрельбы
-                Animator.speed = _playerAttackSpeed.ActualAttackSpeed / 100;
+                Animator.speed = _playerAttackSpeed.Actual / 100f;
             }
         }
         else
@@ -203,8 +203,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Возращаем скорость бега игрока в исходное состояние
-                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.MaxSpeed;
-                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
+                _playerMovementSpeed.Actual = _playerMovementSpeed.Max;
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.Actual/100f;
 
 
                 // Разбокируем игроку возможность спринтовать
@@ -253,7 +253,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Animator)
             {
                 // Устанавливаем скорость стрельбы
-                Animator.speed = _playerAttackSpeed.ActualAttackSpeed / 100;
+                Animator.speed = _playerAttackSpeed.Actual / 100f;
             }
         }
         else
@@ -288,8 +288,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Замедляем скорость бега игрока при стрельбе
-                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.ActualSpeed * 0.5f;
-                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
+                _playerMovementSpeed.Actual = (int)(_playerMovementSpeed.Actual * 0.5f);
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.Actual / 100f;
 
                 // Блокируем игроку возможность спринтовать
                 Player.IsBlockSprint = true;
@@ -301,7 +301,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Animator)
             {
                 // Устанавливаем скорость стрельбы
-                Animator.speed = _playerAttackSpeed.ActualAttackSpeed / 100;
+                Animator.speed = _playerAttackSpeed.Actual / 100f;
             }
         }
         else
@@ -309,8 +309,8 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // Возращаем скорость бега игрока в исходное состояние
-                _playerMovementSpeed.ActualSpeed = _playerMovementSpeed.MaxSpeed;
-                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.ActualSpeed;
+                _playerMovementSpeed.Actual = _playerMovementSpeed.Max;
+                Player.FirstPersonController.walkSpeed = _playerMovementSpeed.Actual / 100f;
 
                 // Разблокируем игроку возможность спринтовать
                 Player.IsBlockSprint = false;
