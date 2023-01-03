@@ -36,7 +36,7 @@ public abstract class Effect : IItem, ICloneable
     /// <summary>
     /// Объект врага, над который производим изменения с помощью эффекта
     /// </summary>
-    protected Enemy enemy; //TODO Должо работать не только на Enemy
+    protected Unit unit; //TODO Должо работать не только на Enemy
 
     public Effect()
     {
@@ -46,12 +46,12 @@ public abstract class Effect : IItem, ICloneable
     /// <summary>
     /// Метод для глубокого копирования объекта эффекта
     /// </summary>
-    /// <param name="enemy">Для какого объекта врага будет устанавливаться данный эффекта</param>
+    /// <param name="unit">Для какого объекта врага будет устанавливаться данный эффекта</param>
     /// <returns>Копия эффекта</returns>
-    public Effect DeepCopy(Enemy enemy)
+    public Effect DeepCopy(Unit unit)
     {
         Effect other = (Effect)MemberwiseClone();
-        other.enemy = enemy;
+        other.unit = unit;
         other.CoroutineEffect = other.UpdateEffect();
         return other;
     }
@@ -103,6 +103,6 @@ public abstract class Effect : IItem, ICloneable
             }
         }
         
-        enemy.RemoveEffect(this);
+        unit.RemoveEffect(this);
     }
 }

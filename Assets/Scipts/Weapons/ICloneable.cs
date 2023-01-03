@@ -1,4 +1,4 @@
 public interface ICloneable
 {
-    Effect DeepCopy(Enemy enemy);
+    Effect DeepCopy(Unit unit);
 }

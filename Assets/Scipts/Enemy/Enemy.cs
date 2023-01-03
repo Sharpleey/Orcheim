@@ -79,7 +79,7 @@ public abstract class Enemy : MonoBehaviour
     public RagdollController RagdollController { get; private set; }
     public HealthBarController HealthBarController { get; private set; }
     public PopupDamageController PopupDamageController { get; private set; }
-    public WeaponController WeaponController { get; private set; }
+    public EnemyWeaponController WeaponController { get; private set; }
     public EnemyAudioController AudioController { get; private set; }
     public DieEffectController DieEffectController { get; private set; }
     public BurningEffectController BurningEffectController { get; private set; }
@@ -128,7 +128,7 @@ public abstract class Enemy : MonoBehaviour
         // ---------------------------------------------------------------
         HitBoxesController = GetComponent<HitBoxesController>();
         RagdollController = GetComponent<RagdollController>();
-        WeaponController = GetComponent<WeaponController>();
+        WeaponController = GetComponent<EnemyWeaponController>();
         AudioController = GetComponent<EnemyAudioController>();
 
         IconEffectsController = GetComponentInChildren<IconEffectsController>();
@@ -171,9 +171,9 @@ public abstract class Enemy : MonoBehaviour
     {
         _states = new Dictionary<Type, EnemyState>();
 
-        _states[typeof(IdleState)] = new IdleState(this);
-        _states[typeof(DieState)] = new DieState(this);
-        _states[typeof(PatrollingState)] = new PatrollingState(this);
+        //_states[typeof(IdleState)] = new IdleState(this);
+        //_states[typeof(DieState)] = new DieState(this);
+        //_states[typeof(PatrollingState)] = new PatrollingState(this);
     }
 
     /// <summary>
@@ -303,22 +303,22 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="effect">Эффект, который хотим установить</param>
     public void SetEffect(Effect effect)
     {
-        // Если персонаж в состоянии смерти и эффект такого типа  уже установлен, то прерываем выполнение
-        if (CurrentState.GetType() == typeof(DieState) || _activeEffects.ContainsKey(effect.GetType())) // 10
-            return;
+        //// Если персонаж в состоянии смерти и эффект такого типа  уже установлен, то прерываем выполнение
+        //if (CurrentState.GetType() == typeof(DieState) || _activeEffects.ContainsKey(effect.GetType())) // 10
+        //    return;
 
-        // Копируем эффект
-        Effect newEffect = effect.DeepCopy(this); // 14
+        //// Копируем эффект
+        //Effect newEffect = effect.DeepCopy(this); // 14
 
-        // Применяем эффект
-        newEffect.Enable(); // 2
+        //// Применяем эффект
+        //newEffect.Enable(); // 2
 
-        // Если эффект иммет длительность, то запускаем корутину с таймером и с переодическим воздействием, если он есть
-        if (newEffect.Duration > 0)
-            StartCoroutine(newEffect.CoroutineEffect); // 2700+
+        //// Если эффект иммет длительность, то запускаем корутину с таймером и с переодическим воздействием, если он есть
+        //if (newEffect.Duration > 0)
+        //    StartCoroutine(newEffect.CoroutineEffect); // 2700+
 
-        // Добавляем эффект в словарь для хранения
-        _activeEffects.Add(newEffect.GetType(), newEffect); // 9
+        //// Добавляем эффект в словарь для хранения
+        //_activeEffects.Add(newEffect.GetType(), newEffect); // 9
     }
 
     /// <summary>

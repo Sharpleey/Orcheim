@@ -6,44 +6,44 @@ using UnityEngine;
 public class DieState : EnemyState
 {
     private float _timer = 0;
-    public DieState(Enemy enemy) : base(enemy)
+    public DieState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
     }
     public override void Enter()
     {
         GlobalGameEventManager.EnemyKilled();
 
-        if (enemy.WeaponController)
-            enemy.WeaponController.MakeWeaponPhysical(true);
+        if (enemyUnit.WeaponController)
+            enemyUnit.WeaponController.MakeWeaponPhysical(true);
 
-        if (enemy.RagdollController)
-            enemy.RagdollController.MakePhysical();
+        if (enemyUnit.RagdollController)
+            enemyUnit.RagdollController.MakePhysical();
 
-        if (enemy.Animator)
-            enemy.Animator.enabled = false;
+        if (enemyUnit.Animator)
+            enemyUnit.Animator.enabled = false;
 
-        if (enemy.BurningEffectController)
-            enemy.BurningEffectController.enabled = false;
+        if (enemyUnit.BurningEffectController)
+            enemyUnit.BurningEffectController.enabled = false;
 
-        if (enemy.HealthBarController)
-            enemy.HealthBarController.SetActiveHealthBar(false);
+        if (enemyUnit.HealthBarController)
+            enemyUnit.HealthBarController.SetActiveHealthBar(false);
 
-        if (enemy.IconEffectsController)
-            enemy.IconEffectsController.DeactivateAllIcons();
+        if (enemyUnit.IconEffectsController)
+            enemyUnit.IconEffectsController.DeactivateAllIcons();
 
-        if (enemy.NavMeshAgent)
-            enemy.NavMeshAgent.enabled = false;
+        if (enemyUnit.NavMeshAgent)
+            enemyUnit.NavMeshAgent.enabled = false;
 
-        if (enemy.AudioController)
-            enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Dead);
+        if (enemyUnit.AudioController)
+            enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Dead);
     }
 
     public override void Update()
     {
         _timer += Time.deltaTime;
-        if (_timer > 3 && enemy.DieEffectController != null && enemy.DieEffectController.enabled == false)
+        if (_timer > 3 && enemyUnit.DieEffectController != null && enemyUnit.DieEffectController.enabled == false)
         {
-            enemy.DieEffectController.enabled = true;
+            enemyUnit.DieEffectController.enabled = true;
         }
 
         if (_timer > 8)
@@ -51,11 +51,11 @@ public class DieState : EnemyState
             // Производим действия перед удалением объекта врага
 
             // Возращае оружие к объекту врага
-            if (enemy.WeaponController)
-                enemy.WeaponController.MakeWeaponPhysical(false);
+            if (enemyUnit.WeaponController)
+                enemyUnit.WeaponController.MakeWeaponPhysical(false);
 
-            // Удаляем объекь врага со сцены
-            enemy.DestroyEnemy();
+            // Удаляем объект врага со сцены
+            enemyUnit.DestroyUnit();
         }
     }
 }

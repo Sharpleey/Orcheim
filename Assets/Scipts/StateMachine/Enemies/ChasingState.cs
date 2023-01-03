@@ -38,7 +38,7 @@ public abstract class ChasingState : EnemyState
 
     protected NavMeshPath _navMeshPath = new NavMeshPath();
 
-    public ChasingState(Enemy enemy) : base(enemy)
+    public ChasingState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
 
     }
@@ -65,7 +65,7 @@ public abstract class ChasingState : EnemyState
 
         if (_timerUpdateDistance > 0.5f)
         {
-            distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
+            distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
             _distanceRandomPointToPlayer = Vector3.Distance(_positionRandomPointNearPlayer, transformPlayer.position);
 
             // √енерим новую случайную точку, если текуща€ случайна€ точка находитс€ за пределом радиуса (_randomPointRadius) и если не проигрываетс€ анимаци€ атаки
@@ -91,8 +91,8 @@ public abstract class ChasingState : EnemyState
         if(_timerAudioPlayback >= _soundFrequency)
         {
             // ¬оспроизводим звук
-            if (enemy.AudioController)
-                enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Agro);
+            if (enemyUnit.AudioController)
+                enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Agro);
 
             // ќбнул€ем таймер
             _timerAudioPlayback = 0;
@@ -102,7 +102,7 @@ public abstract class ChasingState : EnemyState
         //Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
 
         // «адаем параметр анимации
-        enemy.Animator.SetFloat(HashAnimStringEnemy.Speed, enemy.NavMeshAgent.velocity.magnitude / (enemy.MovementSpeed.Max/100f));
+        enemyUnit.Animator.SetFloat(HashAnimStringEnemy.Speed, enemyUnit.NavMeshAgent.velocity.magnitude / (enemyUnit.MovementSpeed.Max/100f));
     }
 
     public override void Exit()
@@ -116,9 +116,9 @@ public abstract class ChasingState : EnemyState
     protected void MoveToRandomPointNearPlayer()
     {
         // »змен€ем дистанцию остановки протиника
-        enemy.NavMeshAgent.stoppingDistance = 0f;
+        enemyUnit.NavMeshAgent.stoppingDistance = 0f;
         // »змени€ем цель противнику на новую случайную точку р€дом с игроком
-        enemy?.NavMeshAgent?.SetDestination(_positionRandomPointNearPlayer);
+        enemyUnit?.NavMeshAgent?.SetDestination(_positionRandomPointNearPlayer);
     }
 
     /// <summary>
@@ -127,9 +127,9 @@ public abstract class ChasingState : EnemyState
     protected void MoveToPlayer()
     {
         // »змен€ем дистанцию остановки протиника
-        enemy.NavMeshAgent.stoppingDistance = enemy.AttackDistance - 0.5f;
+        enemyUnit.NavMeshAgent.stoppingDistance = enemyUnit.AttackDistance - 0.5f;
         // »змени€ем цель противнику на игрока
-        enemy.NavMeshAgent.SetDestination(transformPlayer.position);
+        enemyUnit.NavMeshAgent.SetDestination(transformPlayer.position);
     }
 
     /// <summary>

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WarriorChasingState : ChasingState
 {
-    public WarriorChasingState(Enemy enemy) : base(enemy)
+    public WarriorChasingState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
 
     }
@@ -13,7 +13,7 @@ public class WarriorChasingState : ChasingState
         base.Enter();
 
         // ¬ключаем анимацию дл€ этого состо€ни€, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
     }
 
     public override void Update()
@@ -21,10 +21,10 @@ public class WarriorChasingState : ChasingState
         base.Update();
 
         // ≈сли противник подошел на дистанцию атаки (_attackDistance), то измен€ем состо€ние
-        if (distanceEnemyToPlayer < enemy.AttackDistance)
+        if (distanceEnemyToPlayer < enemyUnit.AttackDistance)
         {
             // »змен€ем состо€ние на состо€ние атаки
-            enemy.SetState<WarriorAttackState>();
+            enemyUnit.SetState<WarriorAttackState>();
         }
     }
 
@@ -33,6 +33,6 @@ public class WarriorChasingState : ChasingState
         base.Exit();
 
         // «адаем параметр анимации, выключаем анимацию дл€ этого состо€ни€
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
     }
 }

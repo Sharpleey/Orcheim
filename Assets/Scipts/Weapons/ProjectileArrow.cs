@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -17,23 +15,14 @@ public class ProjectileArrow : MonoBehaviour
 	private bool _isArrowInFlight;
 	private bool _isBlockDamage;
 
-    #region AttackModifaers
-    //private Penetration _penetrationMod;
-    private FlameAttack _flameAttack;
-	private SlowAttack _slowAttack;
-	private CriticalAttack _criticalAttack;
-	private PenetrationProjectile _penetrationProjectile;
-	#endregion
-
 	private LightBow _lightBow;
 	private BowAudioController _bowAudioController;
 	private Rigidbody _arrowRigidbody;
 	private BoxCollider _arrowCollider;
 
-	private Enemy _currentHitEnemy;
+	private Unit _currentHitUnit;
 
-	private Damage _playerDamage;
-	private int _valueDamage;
+	private PlayerUnit _playerUnit;
 	#endregion Private fields
 
 	#region Mono
@@ -43,14 +32,7 @@ public class ProjectileArrow : MonoBehaviour
 		_isBlockDamage = false;
 
 		_lightBow = GetComponentInParent<LightBow>();
-
-		_playerDamage = PlayerManager.Instance.Damage;
-		_valueDamage = _playerDamage.Actual;
-
-		_flameAttack = (FlameAttack)_lightBow.Player.GetAttackModifaer<FlameAttack>();
-		_slowAttack = (SlowAttack)_lightBow.Player.GetAttackModifaer<SlowAttack>();
-		_criticalAttack = (CriticalAttack)_lightBow.Player.GetAttackModifaer<CriticalAttack>();
-		_penetrationProjectile = (PenetrationProjectile)_lightBow.Player.GetAttackModifaer<PenetrationProjectile>();
+		_playerUnit = _lightBow.PlayerUnit;
 
 		_arrowRigidbody = GetComponent<Rigidbody>();
 		_arrowCollider = GetComponent<BoxCollider>();
@@ -77,47 +59,33 @@ public class ProjectileArrow : MonoBehaviour
 	/// <param name="hitCollider">Коллайдер, с которым соприкоснулась стрела</param>
 	private void OnTriggerEnter(Collider hitCollider)
     {
-		Enemy enemy = hitCollider.GetComponentInParent<Enemy>();
+		Unit unit = hitCollider.GetComponentInParent<EnemyUnit>();
+
 		// Если мы попали в противника
-		if (enemy)
+		if (unit)
 		{
-			if (enemy != _currentHitEnemy)
+			if (unit != _currentHitUnit)
 			{
                 if (!_isBlockDamage)
                 {
-					int damage = _valueDamage;
-
-					// Если (влючен мод на криты) и (Прокнул крит)
-					if (_criticalAttack != null && _criticalAttack.IsProc())
-						damage = (int)(damage * _criticalAttack.DamageMultiplier); // Рассчитываем критический урон
-
-					// Поджигаем противника, если прокнуло
-					if (_flameAttack != null && _flameAttack.IsProc())
-						enemy.SetEffect(_flameAttack.Effect);
-
-					// Замедляем противника, если прокнуло
-					if (_slowAttack != null && _slowAttack.IsProc())
-						enemy.SetEffect(_slowAttack.Effect);
-
-					// Наносим урон противнику
-					enemy.TakeDamage(damage, _playerDamage.DamageType, _playerDamage.IsArmorIgnore, hitCollider);
+					_playerUnit.PerformAttack(unit, hitCollider);
 
 					// Воспроизводим звук попадания
 					_bowAudioController.PlayHit();
 
 					// Эффект попадания
-					GameObject hitObj = Instantiate(_hitEffect, transform.position, transform.rotation); //TODO Убрать Instantiate
+					GameObject hitObj = Instantiate(_hitEffect, transform.position, transform.rotation); //TODO Сделать через Pull objects
 				}
 
-				if (_penetrationProjectile != null)
+				if (_playerUnit.PenetrationProjectile != null)
                 {
-					_penetrationProjectile.CurrentPenetration++;
+					_playerUnit.PenetrationProjectile.CurrentPenetration++;
 
 					// Уменьшаем урон с каждым пробитием
-					_valueDamage = (int)(_valueDamage * (1 - _penetrationProjectile.PenetrationDamageDecrease));
+					_playerUnit.Damage.Actual = (int)(_playerUnit.Damage.Max * (1 - _playerUnit.PenetrationProjectile.PenetrationDamageDecrease));
 
 					// Если число пробитий подошло к пределу, то удаляем стрелу
-					if (_penetrationProjectile.CurrentPenetration == _penetrationProjectile.MaxPenetrationCount)
+					if (_playerUnit.PenetrationProjectile.CurrentPenetration == _playerUnit.PenetrationProjectile.MaxPenetrationCount)
                     {
 						_isBlockDamage = true;
 						StartCoroutine(DeleteProjectile(0));
@@ -130,8 +98,8 @@ public class ProjectileArrow : MonoBehaviour
 				}
 			}
 
-			if (enemy != _currentHitEnemy)
-				_currentHitEnemy = enemy;
+			if (unit != _currentHitUnit)
+				_currentHitUnit = unit;
 		}
 		else
 			StartCoroutine(DeleteProjectile(0));
@@ -144,13 +112,13 @@ public class ProjectileArrow : MonoBehaviour
 	/// <returns>Задержка (в секундах) до удаления объекта стрелы</returns>
 	private IEnumerator DeleteProjectile(int secondsBeforeDeletion)
     {
-		if (_penetrationProjectile != null)
+		if (_playerUnit.PenetrationProjectile != null)
         {
 			// Обнуляем кол-во пробитий
-			_penetrationProjectile.CurrentPenetration = 0;
+			_playerUnit.PenetrationProjectile.CurrentPenetration = 0;
 
 			// Возвращаем исходный урон
-			_valueDamage = _playerDamage.Actual;
+			_playerUnit.Damage.Actual = _playerUnit.Damage.Max;
 		}			
 
 		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.
@@ -162,7 +130,7 @@ public class ProjectileArrow : MonoBehaviour
 		_tracerEffect?.GetComponent<TracerEffectController>()?.DeleteTracer();
 
         // Удаляем объект со сцены и очищаем память
-        Destroy(gameObject);
+        Destroy(gameObject); //TODO Сделать через Pull objects
     }
 	#endregion Private methods
 

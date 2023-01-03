@@ -5,21 +5,19 @@ using UnityEngine;
 /// </summary>
 public class EnemyWeaponTrigger : MonoBehaviour
 {
-    private Enemy _enemy;
+    private EnemyUnit _enemyUnit;
     private void Start()
     {
-        _enemy = GetComponentInParent<Enemy>();
+        _enemyUnit = GetComponentInParent<EnemyUnit>();
     }
 
     private void OnTriggerEnter(Collider hitCollider)
     {
-        //PlayerCharacterController player = hitCollider.GetComponentInParent<PlayerCharacterController>();
+        PlayerUnit playerUnit = hitCollider.GetComponent<PlayerUnit>();
 
-        Player player = hitCollider.GetComponent<Player>();
-
-        if (player)
+        if (playerUnit)
         {
-            PlayerManager.Instance.TakeDamage(_enemy.Damage.Actual, _enemy.Damage.DamageType, _enemy.Damage.IsArmorIgnore);
+            _enemyUnit.PerformAttack(playerUnit);
         }
     }
 }

@@ -30,7 +30,7 @@ public class PatrollingState : EnemyState
     /// </summary>
     private float _absoluteDetectionDistance = 4f;
 
-    public PatrollingState(Enemy enemy) : base(enemy)
+    public PatrollingState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
     }
 
@@ -41,11 +41,11 @@ public class PatrollingState : EnemyState
         _timerUpdateDistance = 0;
 
         // ¬ключаем анимацию дл€ этого состо€ни€, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
 
         // »змен€ем дистанцию остановки протиника
-        enemy.NavMeshAgent.stoppingDistance = 0f;
-        enemy.NavMeshAgent.angularSpeed = 120f;
+        enemyUnit.NavMeshAgent.stoppingDistance = 0f;
+        enemyUnit.NavMeshAgent.angularSpeed = 120f;
 
         // ѕолучаем Transform игрока дл€ отслеживани€ его позиции
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
@@ -58,7 +58,7 @@ public class PatrollingState : EnemyState
         if (nearbyPatrolRoute == null)
         {
             // ≈сли не нашли маршрут дл€ патрулировани€ то мен€ем состо€ние
-            enemy.SetState<IdleState>();
+            enemyUnit.SetState<IdleState>();
 
             return;
         }
@@ -84,18 +84,18 @@ public class PatrollingState : EnemyState
             }
 
             // ѕолучаем дистанцию от персонажа противника до игрока
-            distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
+            distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
             // ѕолучаем дистанцию от персонажа противника до точки маршрута
-            _distanceEnemyToWayPoint = Vector3.Distance(enemy.transform.position, _positionCurrentWayPoint);
+            _distanceEnemyToWayPoint = Vector3.Distance(enemyUnit.transform.position, _positionCurrentWayPoint);
 
             // ћен€ем соссто€ние на преследеование, если (»грок в зоне абсолютной дистанции видимости) или (ѕерсонаж проивника увидил игрока перед собой)
             if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
             {
                 // ¬оспроизводим звук
-                if (enemy.AudioController)
-                    enemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
+                if (enemyUnit.AudioController)
+                    enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
 
-                enemy.SetState<ChasingState>();
+                enemyUnit.SetState<ChasingState>();
             }
 
 
@@ -117,24 +117,24 @@ public class PatrollingState : EnemyState
         }
 
         // –исуем линию от протиника до его цели
-        Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
+        Debug.DrawLine(enemyUnit.transform.position, enemyUnit.NavMeshAgent.destination, Color.yellow);
 
         // «адаем параметр анимации
-        enemy.Animator.SetFloat(HashAnimStringEnemy.Speed, enemy.NavMeshAgent.velocity.magnitude / (enemy.MovementSpeed.Max/100f));
+        enemyUnit.Animator.SetFloat(HashAnimStringEnemy.Speed, enemyUnit.NavMeshAgent.velocity.magnitude / (enemyUnit.MovementSpeed.Max/100f));
     }
 
     public override void Exit()
     {
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
 
         // ¬озвращаем исходную скорость
-        enemy.MovementSpeed.Actual = enemy.MovementSpeed.Max;
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
+        enemyUnit.MovementSpeed.Actual = enemyUnit.MovementSpeed.Max;
+        enemyUnit.NavMeshAgent.speed = enemyUnit.MovementSpeed.Actual/100f;
 
-        enemy.NavMeshAgent.angularSpeed = 360f;
+        enemyUnit.NavMeshAgent.angularSpeed = 360f;
 
         // »змен€ем дистанцию остановки противника
-        enemy.NavMeshAgent.stoppingDistance = enemy.AttackDistance - 0.2f;
+        enemyUnit.NavMeshAgent.stoppingDistance = enemyUnit.AttackDistance - 0.2f;
 
         WaveEventManager.OnWaveIsComing.RemoveListener(SetChasingState);
     }
@@ -164,7 +164,7 @@ public class PatrollingState : EnemyState
             Transform wayPoint = patrolRoute.WayPoints[0];
 
             // ќпредел€ем дистаници€ от персонажа противника до первой точки маршрута
-            float distance = Vector3.Distance(enemy.transform.position, wayPoint.position);
+            float distance = Vector3.Distance(enemyUnit.transform.position, wayPoint.position);
 
             if(distance <= distanceNearbyPatrolRoute)
             {
@@ -188,11 +188,11 @@ public class PatrollingState : EnemyState
         _positionCurrentWayPoint = GetPointOnNavmesh(_positionCurrentWayPoint);
 
         // ћен€ем скорость, что сделать передвижение немного хаотично
-        enemy.MovementSpeed.Actual = (int)(enemy.MovementSpeed.Max / 2 + Random.Range(-0.05f, 0.05f));
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
+        enemyUnit.MovementSpeed.Actual = (int)(enemyUnit.MovementSpeed.Max / 2 + Random.Range(-0.05f, 0.05f));
+        enemyUnit.NavMeshAgent.speed = enemyUnit.MovementSpeed.Actual/100f;
 
         // ”станавливаем точку назначени€ персонажу противника на точку маршрута
-        enemy?.NavMeshAgent?.SetDestination(_positionCurrentWayPoint);
+        enemyUnit?.NavMeshAgent?.SetDestination(_positionCurrentWayPoint);
     }
 
 
@@ -222,11 +222,11 @@ public class PatrollingState : EnemyState
     /// <returns></returns>
     private bool IsPlayerInSight()
     {
-        float realAngle = Vector3.Angle(enemy.transform.forward, transformPlayer.position - enemy.transform.position);
+        float realAngle = Vector3.Angle(enemyUnit.transform.forward, transformPlayer.position - enemyUnit.transform.position);
         RaycastHit hit;
-        if (Physics.Raycast(enemy.transform.position, transformPlayer.position - enemy.transform.position, out hit, _viewDetectionDistance))
+        if (Physics.Raycast(enemyUnit.transform.position, transformPlayer.position - enemyUnit.transform.position, out hit, _viewDetectionDistance))
         {
-            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemy.transform.position, transformPlayer.position) <= _viewDetectionDistance && hit.transform == transformPlayer.transform)
+            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemyUnit.transform.position, transformPlayer.position) <= _viewDetectionDistance && hit.transform == transformPlayer.transform)
             {
                 return true;
             }

@@ -1,35 +1,45 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Менеджер отвечает за параметры и данные игрока. Возрождение игрока на сцене
 /// </summary>
-public class PlayerManager : MonoBehaviour, IGameManager
+public class PlayerManager : MonoBehaviour, IGameManager, IPlayerUnitParameters, IUsesAttackModifiers
 {
     public static PlayerManager Instance { get; private set; }
 
     #region Serialize Fields
 
-    [Header("Player parameters")]
-    [SerializeField] [Min(150)] private int _maxHealth = 150;
-    [SerializeField] [Min(0)] private int _maxArmor = 0;
-    [SerializeField] [Min(2)] private float _maxSpeed = 4f;
+    [Header("Конфиг с параметрами")]
+    [SerializeField] PlayerUnitConfig _playerUnitConfig;
 
-    [Space(10)]
+    [Header("Префаб игрока") , Space(10)]
     [SerializeField] private GameObject _playerCharacterPrefab;
 
     #endregion Serialize Fields
 
     #region Properties
 
-    /// <summary>
-    /// Здоровье игрока
-    /// </summary>
+    private int _level;
+    public int Level
+    {
+        get => _level;
+        protected set => _level = Mathf.Clamp(value, 1, int.MaxValue);
+    }
+
     public Health Health { get; private set; }
     public Armor Armor { get; private set; }
     public Damage Damage { get; private set; }
     public MovementSpeed MovementSpeed { get; private set; }
     public AttackSpeed AttackSpeed { get; private set; }
+    public int Gold { get; private set; }
+    public int Experience { get; private set; }
+
+    public CriticalAttack CriticalAttack { get; private set; }
+    public FlameAttack FlameAttack { get; private set; }
+    public SlowAttack SlowAttack { get; private set; }
+    public PenetrationProjectile PenetrationProjectile { get; private set; }
 
     public ManagerStatus Status { get; private set; }
 
@@ -46,11 +56,6 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
     private GameObject _playerCharacter;
     private PlayerCharacterController _playerCharacterController;
-
-    /// <summary>
-    /// Список модификаторов атака игшрока
-    /// </summary>
-    private List<IModifier> _modifaers = new List<IModifier>();
 
     #endregion Private fields
 
@@ -73,26 +78,16 @@ public class PlayerManager : MonoBehaviour, IGameManager
     #endregion Mono
 
     #region Private methods
-
-    private void InitParameters()
-    {
-        Health = new Health(150, 25);
-        Armor = new Armor(0, 2);
-        Damage = new Damage(25, 5, DamageType.Physical, false);
-        MovementSpeed = new MovementSpeed(360, 10);
-        AttackSpeed = new AttackSpeed(100, 10);
-    }
-
     private void AddParametersToUpgradeList()
     {
-        if (LootManager.Instance)
-        {
-            LootManager.Instance.UpgradeParameters.Add(Health);
-            LootManager.Instance.UpgradeParameters.Add(Armor);
-            LootManager.Instance.UpgradeParameters.Add(Damage);
-            LootManager.Instance.UpgradeParameters.Add(MovementSpeed);
-            LootManager.Instance.UpgradeParameters.Add(AttackSpeed);
-        }
+        //if (LootManager.Instance)
+        //{
+        //    LootManager.Instance.UpgradeParameters.Add(Health);
+        //    LootManager.Instance.UpgradeParameters.Add(Armor);
+        //    LootManager.Instance.UpgradeParameters.Add(Damage);
+        //    LootManager.Instance.UpgradeParameters.Add(MovementSpeed);
+        //    LootManager.Instance.UpgradeParameters.Add(AttackSpeed);
+        //}
     }
 
     private void AddListeners()
@@ -101,34 +96,6 @@ public class PlayerManager : MonoBehaviour, IGameManager
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
         //GlobalGameEventManager.OnEnemyKilled.AddListener(UpdateCounterKills);
         GlobalGameEventManager.OnGameOver.AddListener(SetDefaultParameters);
-    }
-
-    /// <summary>
-    /// Метод для принятия урона игроком
-    /// </summary>
-    /// <param name="damage"></param>
-    public void TakeDamage(int damage, DamageType damageType, bool isArmorIgnore)
-    {
-        int damageValue = damage;
-
-        if (!isArmorIgnore)
-        {
-            // Значение уменьшения урона
-            float increaseDamage = 1.0f - (Armor.Actual / (100.0f + Armor.Actual));
-
-            // Уменьшенный урон за счет брони
-            damageValue = (int)(damageValue * increaseDamage);
-        }
-       
-
-        Health.Actual -= damageValue;
-
-        PlayerEventManager.PlayerDamaged(damageValue);
-
-        if (Health.Actual <= 0)
-        {
-            PlayerEventManager.PlayerDead();
-        }
     }
 
     /// <summary>
@@ -145,8 +112,10 @@ public class PlayerManager : MonoBehaviour, IGameManager
         MovementSpeed.SetLevel(1);
         AttackSpeed.SetLevel(1);
 
-        // Обнуляем список улучшений
-        _modifaers = _modifaers = new List<IModifier>();
+        CriticalAttack = null;
+        FlameAttack = null;
+        SlowAttack = null;
+        PenetrationProjectile = null;
     }
 
     /// <summary>
@@ -174,7 +143,7 @@ public class PlayerManager : MonoBehaviour, IGameManager
             return;
         }
 
-        int numSpawn = Random.Range(0, _playerSpawnZones.Length);
+        int numSpawn = UnityEngine.Random.Range(0, _playerSpawnZones.Length);
         GameObject spawn = _playerSpawnZones[numSpawn];
 
         _playerCharacter = GameObject.FindGameObjectWithTag("Player");
@@ -187,7 +156,6 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
         _playerCharacter.transform.position = new Vector3(spawn.transform.position.x, spawn.transform.position.y + 1f, spawn.transform.position.z);
         _playerCharacter.transform.rotation = spawn.transform.rotation;
-        //_playerCharacterController.Speed
     }
 
     #endregion Private methods
@@ -203,6 +171,24 @@ public class PlayerManager : MonoBehaviour, IGameManager
 
         // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
         Status = ManagerStatus.Started;
+    }
+
+    public void InitParameters()
+    {
+        if(!_playerUnitConfig)
+        {
+            Debug.Log("Конфиг игрока не задан в инспекторе!");
+            return;
+        }
+
+        Level = _playerUnitConfig.Level;
+
+        Health = new Health(_playerUnitConfig.DefaultHealth, _playerUnitConfig.HealthIncreasePerLevel, _playerUnitConfig.HealthMaxLevel);
+        Armor = new Armor(_playerUnitConfig.DefaultArmor, _playerUnitConfig.ArmorIncreasePerLevel, _playerUnitConfig.ArmorMaxLevel);
+        Damage = new Damage(_playerUnitConfig.DefaultDamage, _playerUnitConfig.DamageIncreasePerLevel, maxLevel: _playerUnitConfig.DamageMaxLevel);
+        MovementSpeed = new MovementSpeed(_playerUnitConfig.DefaultMovementSpeed, _playerUnitConfig.MovementSpeedIncreasePerLevel, _playerUnitConfig.MovementSpeedMaxLevel);
+        AttackSpeed = new AttackSpeed(_playerUnitConfig.DefaultAttackSpeed, _playerUnitConfig.AttackSpeedIncreasePerLevel, _playerUnitConfig.AttackSpeedMaxLevel);
+        Gold = _playerUnitConfig.Gold;
     }
 
     #endregion Public methods

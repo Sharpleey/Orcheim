@@ -18,8 +18,9 @@ public class GoonAttackState : EnemyState
     private float _timerRotateToPlayer;
 
 
-    public GoonAttackState(Enemy enemy) : base(enemy)
+    public GoonAttackState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
+
     }
 
     public override void Enter()
@@ -31,8 +32,8 @@ public class GoonAttackState : EnemyState
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
         // ¬ключаем анимацию
-        enemy.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
-        enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
+        enemyUnit.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
+        enemyUnit.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
     }
 
     public override void Update()
@@ -49,7 +50,7 @@ public class GoonAttackState : EnemyState
     /// </summary>
     private void LookAtTarget()
     {
-        Vector3 direction = -(enemy.transform.position - transformPlayer.position);
-        enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
+        Vector3 direction = -(enemyUnit.transform.position - transformPlayer.position);
+        enemyUnit.transform.rotation = Quaternion.Lerp(enemyUnit.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
     }
 }

@@ -566,7 +566,8 @@ GameObject:
   - component: {fileID: 3512530769563270090}
   - component: {fileID: 1787978091447473738}
   - component: {fileID: 3512530769563270091}
-  - component: {fileID: 4700431806267053925}
+  - component: {fileID: 2971994708051827069}
+  - component: {fileID: 8165710898422588289}
   m_Layer: 8
   m_Name: PlayerCharacter_2
   m_TagString: Player
@@ -693,7 +694,7 @@ MonoBehaviour:
   joint: {fileID: 3512530768544524247}
   bobSpeed: 12
   bobAmount: {x: 0.01, y: 0.02, z: 0}
---- !u!114 &4700431806267053925
+--- !u!114 &2971994708051827069
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -702,15 +703,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3512530769563270081}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1b94b2cbc868404aa3dba12f85137a6, type: 3}
+  m_Script: {fileID: 11500000, guid: dbf6617ca5dfa154482230b82f08df0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _avgDamage: 50
-  _maxRunSpeed: 3.6
-  _maxSprintSpeed: 5
-  _maxAttackSpeed: 100
   _meleeWeapon: {fileID: 3043259281132300717}
   _rangeWeapon: {fileID: 766607151697802577}
+  _keyCodeMeleeWeapon: 49
+  _keyCodeRangeWeapon: 50
+--- !u!114 &8165710898422588289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3512530769563270081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168d5c9f4d4322542bcaa4c76b8cadb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitConfig: {fileID: 0}
 --- !u!1 &6680263040274784724
 GameObject:
   m_ObjectHideFlags: 0

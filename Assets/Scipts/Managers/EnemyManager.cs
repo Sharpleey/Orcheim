@@ -165,10 +165,10 @@ public class EnemyManager : MonoBehaviour, IGameManager
         GameObject enemyOrc = Instantiate(_prefabEnemy, spawn.transform.position, Quaternion.identity);
 
         // Меняем состояние врага на преследование
-        Enemy enemy = enemyOrc.GetComponent<Enemy>();
-        enemy.DefaultState = StartStateType .Chasing;
+        EnemyUnit enemyUnit = enemyOrc.GetComponent<EnemyUnit>();
+        enemyUnit.DefaultState = StartStateType.Chasing;
 
-        Debug.Log("Spawn enemy " + enemy.GetType());
+        Debug.Log("Spawn enemy " + enemyUnit.GetType());
     }
 
     /// <summary>

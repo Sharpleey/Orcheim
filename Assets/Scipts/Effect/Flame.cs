@@ -15,28 +15,39 @@ public class Flame : Effect, IArmorUnitDecrease
 
     public override void Enable()
     {
-        // Включаем иконку горения над противником
-        if (enemy.IconEffectsController)
-            enemy.IconEffectsController.SetActiveIconBurning(true);
-        
-        // Включаем визульный эффект горения
-        if(enemy.BurningEffectController)
-            enemy.BurningEffectController.enabled = true;
+        EnemyUnit? enemyUnit = unit as EnemyUnit;
+
+        if(enemyUnit)
+        {
+            // Включаем иконку горения над противником
+            if (enemyUnit.IconEffectsController)
+                enemyUnit.IconEffectsController.SetActiveIconBurning(true);
+
+            // Включаем визульный эффект горения
+            if (enemyUnit.BurningEffectController)
+                enemyUnit.BurningEffectController.enabled = true;
+        }
+       
     }
 
     public override void Tick()
     {
-        enemy.TakeDamage(Damage.Actual, Damage.DamageType, Damage.IsArmorIgnore);
+        unit.TakeDamage(Damage);
     }
 
     public override void Disable()
     {
-        // Выключаем иконку горения над противником
-        if (enemy.IconEffectsController)
-            enemy.IconEffectsController.SetActiveIconBurning(false);
+        EnemyUnit? enemyUnit = unit as EnemyUnit;
 
-        // Выключаем визульный эффект горения
-        if (enemy.BurningEffectController)
-            enemy.BurningEffectController.enabled = false;
+        if (enemyUnit)
+        {
+            // Выключаем иконку горения над противником
+            if (enemyUnit.IconEffectsController)
+                enemyUnit.IconEffectsController.SetActiveIconBurning(false);
+
+            // Выключаем визульный эффект горения
+            if (enemyUnit.BurningEffectController)
+                enemyUnit.BurningEffectController.enabled = false;
+        }
     }
 }

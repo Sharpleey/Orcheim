@@ -6,21 +6,21 @@ using UnityEngine;
 /// </summary>
 public class SummonTrigger : MonoBehaviour
 {
-    public Enemy Enemy { get; private set; }
+    public EnemyUnit EnemyUnit { get; private set; }
 
     private void Awake()
     {
-        Enemy = GetComponentInParent<Enemy>();
+        EnemyUnit = GetComponentInParent<EnemyUnit>();
     }
     private void OnTriggerExit(Collider otherSummonTriggerCollider)  
     {
         // Если текущее состояние "покоя", то ничего не делаем
-        if (Enemy.CurrentState.GetType() == typeof(IdleState))
+        if (EnemyUnit.CurrentState.GetType() == typeof(IdleState))
             return;
 
-        Enemy otherEnemy = otherSummonTriggerCollider.GetComponent<SummonTrigger>().Enemy;
+        EnemyUnit otherEnemy = otherSummonTriggerCollider.GetComponent<SummonTrigger>().EnemyUnit;
 
-        bool onChangeState = (Enemy.CurrentState.GetType() == typeof(WarriorChasingState) || Enemy.CurrentState.GetType() == typeof(GoonChasingState))
+        bool onChangeState = (EnemyUnit.CurrentState.GetType() == typeof(WarriorChasingState) || EnemyUnit.CurrentState.GetType() == typeof(GoonChasingState))
             && (otherEnemy.CurrentState.GetType() == typeof(IdleState) || otherEnemy.CurrentState.GetType() == typeof(PatrollingState));
 
         // Если персонаж в состоянии "преследования" и другой персонаж (рядом стоящий) в состоянии "покоя" или "патрулирования", то второму меняем состояние на "преследования"

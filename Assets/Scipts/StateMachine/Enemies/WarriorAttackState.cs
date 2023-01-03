@@ -9,24 +9,24 @@ public class WarriorAttackState : EnemyState
     /// </summary>
     private int _attackVariantCount = 5;
 
-    public WarriorAttackState(Enemy enemy) : base(enemy)
+    public WarriorAttackState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
     }
 
     public override void Enter()
     {
-        enemy.NavMeshAgent.isStopped = true;
+        enemyUnit.NavMeshAgent.isStopped = true;
 
-        enemy.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
-        enemy.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
+        enemyUnit.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
+        enemyUnit.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
 
-        enemy.Animator.speed = enemy.AttackSpeed.Actual / 100f;
+        enemyUnit.Animator.speed = enemyUnit.AttackSpeed.Actual / 100f;
     }
 
     public override void Exit()
     {
-        enemy.NavMeshAgent.isStopped = false;
+        enemyUnit.NavMeshAgent.isStopped = false;
 
-        enemy.Animator.speed = 1f;
+        enemyUnit.Animator.speed = 1f;
     }
 }

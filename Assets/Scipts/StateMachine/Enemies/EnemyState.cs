@@ -7,7 +7,7 @@ public abstract class EnemyState: IState
     /// <summary>
     /// Хранит ссылку основной объект класса противника со всеми параметрами и данными. Необходимо для разного рода взаимодействий
     /// </summary>
-    protected Enemy enemy;
+    protected EnemyUnit enemyUnit;
 
     /// <summary>
     /// Transform игрока для отслеживания его позиции
@@ -22,11 +22,10 @@ public abstract class EnemyState: IState
     /// <summary>
     /// Конструктор класса состояния, необходим для прокидывания связей с данными противника и машины состояний
     /// </summary>
-    /// <param name="enemy">Данный и параметры противника</param>
-    /// <param name="stateMachineEnemy">Машина состоянйи противника</param>
-    protected EnemyState(Enemy enemy)
+    /// <param name="enemyUnit">Данный и параметры противника</param>
+    protected EnemyState(EnemyUnit enemyUnit)
     {
-        this.enemy = enemy;
+        this.enemyUnit = enemyUnit;
     }
     /// <summary>
     /// Метод вызываемый при входе в состояние
@@ -67,6 +66,6 @@ public abstract class EnemyState: IState
     /// <param name="wave"></param>
     protected void SetChasingState(int wave)
     {
-        enemy.SetState<ChasingState>();
+        enemyUnit.SetState<ChasingState>();
     }
 }

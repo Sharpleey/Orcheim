@@ -17,6 +17,10 @@ public class EnemyUnitConfig : UnitConfig
     [Tooltip("Прирост стоимости за уровень юнита")]
     [SerializeField, Min(0)] private int _increaseExp;
 
+    [Header("Дистанция атаки юнита")]
+    [Tooltip("Дистанция атаки")]
+    [SerializeField] private float _attackDistance;
+
     [Header("Название и описание юнита врага")]
     [Tooltip("Название")]
     [SerializeField] private string _name;
@@ -44,5 +48,19 @@ public class EnemyUnitConfig : UnitConfig
     /// Увеличение награды в виде опыта за уровень юнита
     /// </summary>
     public int IncreaseExperience => _increaseExp;
+
+    /// <summary>
+    /// Дистанция атаки
+    /// </summary>
+    public float AttackDistance => _attackDistance;
+
+    /// <summary>
+    /// Название юнита
+    /// </summary>
+    public string Name => _name;
+    /// <summary>
+    /// Описанрие юнита врага
+    /// </summary>
+    public string Description => _description;
     #endregion Properties
 }

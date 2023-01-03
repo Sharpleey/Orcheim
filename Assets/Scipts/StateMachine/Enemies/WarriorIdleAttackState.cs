@@ -25,7 +25,7 @@ public class WarriorIdleAttackState : EnemyState
     /// </summary>
     private float _timerUpdateDistance;
 
-    public WarriorIdleAttackState(Enemy enemy) : base(enemy)
+    public WarriorIdleAttackState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
 
     }
@@ -36,16 +36,16 @@ public class WarriorIdleAttackState : EnemyState
         _timerUpdateDistance = 0.5f;
 
         // Определяем частоту атак в зависимости от скорости атаки
-        _attackFrequency = 3.5f /  (enemy.AttackSpeed.Actual / 100f);
+        _attackFrequency = 3.5f /  (enemyUnit.AttackSpeed.Actual / 100f);
 
         // Получаем transform игрока для использования его в дальнейшем
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
         // Определяем дистанцию до игрока
-        distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
+        distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
 
         // Включаем анимацию
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, true);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, true);
     }
 
     public override void Update()
@@ -55,7 +55,7 @@ public class WarriorIdleAttackState : EnemyState
         _timerAttack += Time.deltaTime;
         if (_timerAttack > _attackFrequency)
         {
-            enemy.SetState<WarriorAttackState>();
+            enemyUnit.SetState<WarriorAttackState>();
         }
         // -------------------------------------------------------------------------------
 
@@ -66,10 +66,10 @@ public class WarriorIdleAttackState : EnemyState
         if (_timerUpdateDistance > 0.5f)
         {
             // Определяем дистанцию до игрока
-            distanceEnemyToPlayer = Vector3.Distance(enemy.transform.position, transformPlayer.position);
-            if (distanceEnemyToPlayer > enemy.AttackDistance)
+            distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
+            if (distanceEnemyToPlayer > enemyUnit.AttackDistance)
             {
-                enemy.SetState<ChasingState>();
+                enemyUnit.SetState<ChasingState>();
             }
 
             _timerUpdateDistance = 0;
@@ -81,7 +81,7 @@ public class WarriorIdleAttackState : EnemyState
 
     public override void Exit()
     {
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, false);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, false);
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public class WarriorIdleAttackState : EnemyState
     /// </summary>
     private void LookAtTarget()
     {
-        Vector3 direction = -(enemy.transform.position - transformPlayer.position);
-        enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
+        Vector3 direction = -(enemyUnit.transform.position - transformPlayer.position);
+        enemyUnit.transform.rotation = Quaternion.Lerp(enemyUnit.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
     }
 }

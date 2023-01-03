@@ -13,7 +13,7 @@ public class GoonChasingState : ChasingState
     /// </summary>
     private LayerMask collisionMask = 4096;
 
-    public GoonChasingState(Enemy enemy) : base(enemy)
+    public GoonChasingState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
 
     }
@@ -25,7 +25,7 @@ public class GoonChasingState : ChasingState
         _timerCheckAlliesNearby = 0;
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
     }
 
     public override void Update()
@@ -40,9 +40,9 @@ public class GoonChasingState : ChasingState
             int countAlliesNearby = GetCountAlliesNearby();
 
             // Если их больше 2х, то кастуем баф
-            if (countAlliesNearby > 2 && !((Goon)enemy).IsWarcryInCooldown)
+            if (countAlliesNearby > 2 && !((Goon)enemyUnit).IsWarcryInCooldown)
             {
-                enemy.SetState<InspirationState>();
+                enemyUnit.SetState<InspirationState>();
             }
 
             // Обнуляем таймер
@@ -50,10 +50,10 @@ public class GoonChasingState : ChasingState
         }
 
         // Если противник подошел на дистанцию атаки (_attackDistance), то изменяем состояние
-        if (distanceEnemyToPlayer < enemy.AttackDistance)
+        if (distanceEnemyToPlayer < enemyUnit.AttackDistance)
         {
             // Изменяем состояние на состояние атаки
-            enemy.SetState<GoonAttackState>();
+            enemyUnit.SetState<GoonAttackState>();
         }
     }
 
@@ -62,12 +62,12 @@ public class GoonChasingState : ChasingState
         base.Exit();
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
-        enemy.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
+        enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
     }
 
     private int GetCountAlliesNearby()
     {
-        Vector3 center = enemy.transform.position;
+        Vector3 center = enemyUnit.transform.position;
         float radius = 8;
 
         Collider[] hitColliders = Physics.OverlapSphere(center, radius, collisionMask);

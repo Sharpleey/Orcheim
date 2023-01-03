@@ -12,25 +12,40 @@ public class Slowdown : Effect, IMovementSpeedPercentageDecrease, IAttackSpeedPe
 
     public override void Enable()
     {
-        enemy.MovementSpeed.Actual = (int)(enemy.MovementSpeed.Max * (1f - MovementSpeedPercentageDecrease));
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
+        unit.MovementSpeed.Actual = (int)(unit.MovementSpeed.Max * (1f - MovementSpeedPercentageDecrease));
+        unit.AttackSpeed.Actual = (int)(unit.AttackSpeed.Max * (1f - AttackSpeedPercentageDecrease));
 
-        //enemy.AttackSpeed = enemy.MaxAttackSpeed * (1f - AttackSpeedPercentageDecrease);
 
-        // Включаем иконку замедления над противником
-        if (enemy.IconEffectsController != null)
-            enemy.IconEffectsController.SetActiveIconSlowdown(true);
+        EnemyUnit? enemyUnit = unit as EnemyUnit;
+
+        if(enemyUnit)
+        {
+            if(enemyUnit.NavMeshAgent)
+                enemyUnit.NavMeshAgent.speed = unit.MovementSpeed.Actual / 100f;
+
+            if(enemyUnit.IconEffectsController)
+                enemyUnit.IconEffectsController.SetActiveIconSlowdown(true);
+
+        }
+
+
     }
 
     public override void Disable()
     {
-        enemy.MovementSpeed.Actual = enemy.MovementSpeed.Max;
-        enemy.NavMeshAgent.speed = enemy.MovementSpeed.Actual/100f;
+        unit.MovementSpeed.Actual = unit.MovementSpeed.Max;
+        unit.AttackSpeed.Actual = unit.AttackSpeed.Max;
 
-        //enemy.AttackSpeed = enemy.MaxAttackSpeed;
+        EnemyUnit? enemyUnit = unit as EnemyUnit;
 
-        // Выключаем иконку замедления над противником
-        if (enemy.IconEffectsController != null)
-            enemy.IconEffectsController.SetActiveIconSlowdown(false);
+        if (enemyUnit)
+        {
+            if (enemyUnit.NavMeshAgent)
+                enemyUnit.NavMeshAgent.speed = unit.MovementSpeed.Actual / 100f;
+
+            if (enemyUnit.IconEffectsController)
+                enemyUnit.IconEffectsController.SetActiveIconSlowdown(false);
+
+        }
     }
 }
