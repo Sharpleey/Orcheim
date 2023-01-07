@@ -34,9 +34,12 @@ public abstract class Effect : IItem, ICloneable
     public IEnumerator CoroutineEffect { get; private set; }
 
     /// <summary>
-    /// Объект врага, над который производим изменения с помощью эффекта
+    /// Объект юнита, над который производим изменения с помощью эффекта
     /// </summary>
-    protected Unit unit; //TODO Должо работать не только на Enemy
+    protected Unit unit;
+
+    protected EnemyUnit enemyUnit;
+    protected PlayerUnit playerUnit;
 
     public Effect()
     {
@@ -61,7 +64,8 @@ public abstract class Effect : IItem, ICloneable
     /// </summary>
     public virtual void Enable()
     {
-
+        enemyUnit = unit as EnemyUnit;
+        playerUnit = unit as PlayerUnit;
     }
 
     /// <summary>
@@ -77,7 +81,8 @@ public abstract class Effect : IItem, ICloneable
     /// </summary>
     public virtual void Disable()
     {
-
+        EnemyUnit? enemyUnit = unit as EnemyUnit;
+        PlayerUnit? playerUnit = unit as PlayerUnit;
     }
 
     /// <summary>

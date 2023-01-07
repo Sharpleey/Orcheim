@@ -69,6 +69,18 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         MovementSpeed = new MovementSpeed(_unitConfig.DefaultMovementSpeed, _unitConfig.MovementSpeedIncreasePerLevel, _unitConfig.MovementSpeedMaxLevel);
         AttackSpeed = new AttackSpeed(_unitConfig.DefaultAttackSpeed, _unitConfig.AttackSpeedIncreasePerLevel, _unitConfig.AttackSpeedMaxLevel);
 
+        if (_unitConfig.OnCriticalAttack)
+            CriticalAttack = new CriticalAttack();
+
+        if (_unitConfig.OnFlameAttack)
+            FlameAttack = new FlameAttack();
+
+        if (_unitConfig.OnSlowAttack)
+            SlowAttack = new SlowAttack();
+
+        if (_unitConfig.OnPenetrationProjectile)
+            PenetrationProjectile = new PenetrationProjectile();
+
         ActiveEffects = new Dictionary<Type, Effect>();
     }
 
@@ -106,6 +118,9 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     public virtual void SetEffect(Effect effect)
     {
+        if (ActiveEffects.ContainsKey(effect.GetType()))
+            return;
+
         // Копируем эффект
         Effect newEffect = effect.DeepCopy(this); // 14
 

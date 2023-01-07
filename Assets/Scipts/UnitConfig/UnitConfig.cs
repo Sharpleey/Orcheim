@@ -48,6 +48,16 @@ public abstract class UnitConfig : ScriptableObject
     [Tooltip("Максимальный уровень улучшения")]
     [SerializeField, Min(1)] private int _attackSpeedMaxLevel = 100;
 
+    [Header("Модификаторы атаки")]
+    [Tooltip("Критические атаки")]
+    [SerializeField] private bool _onCriticalAttack;
+    [Tooltip("Поджигающая атака")]
+    [SerializeField] private bool _onFlameAttack;
+    [Tooltip("Замедляющая атака")]
+    [SerializeField] private bool _onSlowAttack;
+    [Tooltip("Проникающий снаряд")]
+    [SerializeField] private bool _onPenetrationProjectile;
+
     #endregion Fields
 
     #region Properties
@@ -121,6 +131,11 @@ public abstract class UnitConfig : ScriptableObject
     /// Максимальный уровень улучшения скорости атаки
     /// </summary>
     public int AttackSpeedMaxLevel => _attackSpeedMaxLevel;
+
+    public bool OnCriticalAttack => _onCriticalAttack;
+    public bool OnFlameAttack => _onFlameAttack;
+    public bool OnSlowAttack => _onSlowAttack;
+    public bool OnPenetrationProjectile => _onPenetrationProjectile;
 
     #endregion Properties
 }

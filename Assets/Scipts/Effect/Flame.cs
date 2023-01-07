@@ -15,9 +15,9 @@ public class Flame : Effect, IArmorUnitDecrease
 
     public override void Enable()
     {
-        EnemyUnit? enemyUnit = unit as EnemyUnit;
+        base.Enable();
 
-        if(enemyUnit)
+        if (enemyUnit)
         {
             // Включаем иконку горения над противником
             if (enemyUnit.IconEffectsController)
@@ -26,6 +26,11 @@ public class Flame : Effect, IArmorUnitDecrease
             // Включаем визульный эффект горения
             if (enemyUnit.BurningEffectController)
                 enemyUnit.BurningEffectController.enabled = true;
+        }
+
+        if(playerUnit)
+        {
+            //TODO Реализовать действие эффекта на игрока
         }
        
     }
@@ -37,8 +42,6 @@ public class Flame : Effect, IArmorUnitDecrease
 
     public override void Disable()
     {
-        EnemyUnit? enemyUnit = unit as EnemyUnit;
-
         if (enemyUnit)
         {
             // Выключаем иконку горения над противником
@@ -48,6 +51,11 @@ public class Flame : Effect, IArmorUnitDecrease
             // Выключаем визульный эффект горения
             if (enemyUnit.BurningEffectController)
                 enemyUnit.BurningEffectController.enabled = false;
+        }
+
+        if (playerUnit)
+        {
+            //TODO Реализовать действие эффекта на игрока
         }
     }
 }

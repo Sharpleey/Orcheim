@@ -12,31 +12,30 @@ public class Slowdown : Effect, IMovementSpeedPercentageDecrease, IAttackSpeedPe
 
     public override void Enable()
     {
+        base.Enable();
+
         unit.MovementSpeed.Actual = (int)(unit.MovementSpeed.Max * (1f - MovementSpeedPercentageDecrease));
         unit.AttackSpeed.Actual = (int)(unit.AttackSpeed.Max * (1f - AttackSpeedPercentageDecrease));
 
-
-        EnemyUnit? enemyUnit = unit as EnemyUnit;
-
-        if(enemyUnit)
+        if (enemyUnit)
         {
             if(enemyUnit.NavMeshAgent)
                 enemyUnit.NavMeshAgent.speed = unit.MovementSpeed.Actual / 100f;
 
             if(enemyUnit.IconEffectsController)
                 enemyUnit.IconEffectsController.SetActiveIconSlowdown(true);
-
         }
 
-
+        if (playerUnit)
+        {
+            //TODO Реализовать действие эффекта на игрока
+        }
     }
 
     public override void Disable()
     {
         unit.MovementSpeed.Actual = unit.MovementSpeed.Max;
         unit.AttackSpeed.Actual = unit.AttackSpeed.Max;
-
-        EnemyUnit? enemyUnit = unit as EnemyUnit;
 
         if (enemyUnit)
         {
@@ -46,6 +45,11 @@ public class Slowdown : Effect, IMovementSpeedPercentageDecrease, IAttackSpeedPe
             if (enemyUnit.IconEffectsController)
                 enemyUnit.IconEffectsController.SetActiveIconSlowdown(false);
 
+        }
+
+        if (playerUnit)
+        {
+            //TODO Реализовать действие эффекта на игрока
         }
     }
 }
