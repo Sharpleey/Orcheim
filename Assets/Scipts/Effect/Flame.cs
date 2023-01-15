@@ -1,17 +1,47 @@
-using UnityEngine;
 
-public class Flame : Effect, IArmorUnitDecrease
+public class Flame : Effect
 {
     public override string Name => "Горение";
-    public override string Description => "Эффект наносит персонажу урон каждые...";
+    public override string Description => $"Эффект, каждые {Frequency} сек. в течении {Duration.Actual} секунд наносит {Damage.Max} урона, снижает броню цели на {ArmorDecrease.ValueOfModify}";
+    public Damage Damage { get; private set; }
+    public ParameterModifier ArmorDecrease { get; private set; }
 
-    public override EffectType EffectType => EffectType.Negative;
-    public override float Duration { get; set; } = 3;
-    public override float Frequency { get; set; } = 1f;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="damageFlame">Урон от горения за тик</param>
+    /// <param name="increaseDamageFlamePerLevel">Прирост урона от горения за уровень</param>
+    /// <param name="armorDecrease">Уменьшение брони юнита за тик</param>
+    /// <param name="increaseArmorDecreasePerLevel">Прирост значения уменьшения брони за уровень</param>
+    /// <param name="durationEffect">Длительность эффекта в секундах</param>
+    /// <param name="increaseDurationEffectPerLevel">Прирост длительности за уровень улучшения параметра</param>
+    public Flame(
+        int damageFlame = 10, int increaseDamageFlamePerLevel = 2, int levelDamageFlame = 1, 
+        int armorDecrease = 1, int increaseArmorDecreasePerLevel = 1, int levelArmorDecrease = 1, 
+        int durationEffect = 3, int increaseDurationEffectPerLevel = 1, int levelDurationEffect = 1)
+    {
+        Damage = new Damage(
+            defaultValue: damageFlame,
+            increaseValuePerLevel: increaseDamageFlamePerLevel,
+            level: levelDamageFlame);
 
-    public Damage Damage { get; private set; } = new Damage(10, 2, DamageType.Fire, false);
+        ArmorDecrease = new ParameterModifier(
+            valueOfModify: armorDecrease,
+            parameterModifierType: ParameterModifierType.Decrease,
+            increaseValuePerLevel: increaseArmorDecreasePerLevel,
+            level: levelArmorDecrease);
 
-    public int ArmorDecrease { get; set; } = 1;
+        Duration = new Duration(
+            defaultValue: durationEffect,
+            increaseValuePerLevel: increaseDurationEffectPerLevel,
+            level: levelDurationEffect);
+
+        EffectType = EffectType.Negative;
+
+        Damage.UpgradeDescription = $"Урон за тик +{Damage.IncreaseValuePerLevel} (Текущий {Damage.Max})";
+        ArmorDecrease.UpgradeDescription = $"Снижение брони за тик +{ArmorDecrease.IncreaseValuePerLevel} (Текущий {ArmorDecrease.ValueOfModify})";
+        Duration.UpgradeDescription = $"Длительность эффекта {Name} +{Duration.IncreaseValuePerLevel} сек. (Текущая {Duration.Max})";
+    }
 
     public override void Enable()
     {

@@ -2,68 +2,24 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(FirstPersonController))]
-[RequireComponent(typeof(PlayerWeaponController))]
-public class PlayerUnit : Unit, IPlayerUnitParameters
+public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 {
     #region Properties
 
-    public int Gold { get; private set; }
-    public int Experience { get; private set; }
-
-    public Camera Camera { get; private set; }
-    public Rigidbody Rigidbody { get; private set; }
-
-    public FirstPersonController FirstPersonController { get; private set; }
-    public PlayerWeaponController WeaponController  { get; private set; }
+    public int Gold { get; protected set; }
+    public int Experience { get; protected set; }
 
     #endregion Properties
-
-    #region Private methods
-
-    protected override void InitControllers()
-    {
-        Rigidbody = GetComponent<Rigidbody>();
-        Camera = GetComponentInChildren<Camera>();
-
-        WeaponController = GetComponent<PlayerWeaponController>();
-        FirstPersonController = GetComponent<FirstPersonController>();
-    }
-
-    protected override void InitControllersParameters()
-    {
-        FirstPersonController.walkSpeed = MovementSpeed.Max / 100f;
-        FirstPersonController.sprintSpeed = MovementSpeed.Max * (1f + 0.18f) / 100f; //TODO спринт сделать как способность
-    }
-
-    #endregion Private methods
 
     #region Public methods
 
     public override void InitParameters()
     {
-        if (PlayerManager.Instance)
-        {
-            Level = PlayerManager.Instance.Level;
-
-            Health = PlayerManager.Instance.Health;
-            Armor = PlayerManager.Instance.Armor;
-            Damage = PlayerManager.Instance.Damage;
-            MovementSpeed = PlayerManager.Instance.MovementSpeed;
-            AttackSpeed = PlayerManager.Instance.AttackSpeed;
-            Gold = PlayerManager.Instance.Gold; //TODO Это не ссылочный тип, поэтому над что-то придумать
-
-            ActiveEffects = new Dictionary<Type, Effect>();
-
-            return;
-        }
-
         base.InitParameters();
 
         PlayerUnitConfig? playerUnitConfig = _unitConfig as PlayerUnitConfig;
 
-        if (playerUnitConfig)
+        if (playerUnitConfig != null)
         {
             Gold = playerUnitConfig.Gold;
         }
@@ -92,6 +48,65 @@ public class PlayerUnit : Unit, IPlayerUnitParameters
         if (Health.Actual <= 0)
         {
             PlayerEventManager.PlayerDead();
+        }
+    }
+
+    public override void SetAttackModifier(AttackModifier attackModifier)
+    {
+        CriticalAttack? criticalAttack = attackModifier as CriticalAttack;
+        if (criticalAttack != null)
+        {
+            CriticalAttack = criticalAttack;
+
+            //
+            // Добавление параметров модификатора в пул наград
+            //
+
+            return;
+        }
+
+        FlameAttack? flameAttack = attackModifier as FlameAttack;
+        if (flameAttack != null)
+        {
+            FlameAttack = flameAttack;
+
+            if (LootManager.Instance)
+            {
+                LootManager.Instance.AddAwardAttackModifierUpgrade(FlameAttack.Name, FlameAttack.Сhance);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(FlameAttack.Name, FlameAttack.Effect.Damage);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(FlameAttack.Name, FlameAttack.Effect.Duration);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(FlameAttack.Name, FlameAttack.Effect.ArmorDecrease);
+            }
+
+            return;
+        }
+
+        SlowAttack? slowAttack = attackModifier as SlowAttack;
+        if (slowAttack != null)
+        {
+            SlowAttack = slowAttack;
+
+            if (LootManager.Instance)
+            {
+                LootManager.Instance.AddAwardAttackModifierUpgrade(SlowAttack.Name, SlowAttack.Сhance);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(SlowAttack.Name, SlowAttack.Effect.MovementSpeedPercentageDecrease);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(SlowAttack.Name, SlowAttack.Effect.AttackSpeedPercentageDecrease);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(SlowAttack.Name, SlowAttack.Effect.Duration);
+            }
+
+            return;
+        }
+
+        PenetrationProjectile? penetrationProjectile = attackModifier as PenetrationProjectile;
+        if (penetrationProjectile != null)
+        {
+            PenetrationProjectile = penetrationProjectile;
+
+            //
+            // Добавление параметров модификатора в пул наград
+            //
+
+            return;
         }
     }
 

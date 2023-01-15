@@ -28,6 +28,15 @@ public class Damage : UnitParameter
     /// </summary>
     public DamageType DamageType { get; private set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="defaultValue">Начальный урон</param>
+    /// <param name="increaseValuePerLevel">Прирост урона за уровень улучшения параметра</param>
+    /// <param name="damageType">Тип урона</param>
+    /// <param name="isArmorIgnore">Игнорирование брони юнита при нанесении урона</param>
+    /// <param name="maxLevel">Максимальный уровень улучшение параметра</param>
+    /// <param name="level">Создать параметр данного уровня</param>
     public Damage(int defaultValue, int increaseValuePerLevel = 0, DamageType damageType = DamageType.Physical, bool isArmorIgnore = false, int maxLevel = int.MaxValue, int level = 1) : base(defaultValue, increaseValuePerLevel, maxLevel, level)
     {
         DamageType = damageType;

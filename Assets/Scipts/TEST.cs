@@ -22,8 +22,8 @@ public class TEST : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(center, radius, collisionMask);
         foreach (var hitCollider in hitColliders)
         {
-            Enemy enemy = hitCollider.GetComponent<Enemy>();
-            enemy.SetState<ChasingState>();
+            EnemyUnit enemyUnit = hitCollider.GetComponent<EnemyUnit>();
+            enemyUnit.SetState<ChasingState>();
         }
     }
 }

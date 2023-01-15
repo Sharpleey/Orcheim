@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public interface IProcable
 {
-    public int Proc—hance { get; set; }
+    public Proc—hance —hance { get; }
 
-    public bool IsProc();
+    public bool IsProc { get; }
 }

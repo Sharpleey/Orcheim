@@ -193,6 +193,37 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         base.SetEffect(effect);
     }
 
+    public override void SetAttackModifier(AttackModifier attackModifier)
+    {
+        CriticalAttack? criticalAttack = attackModifier as CriticalAttack;
+        if (criticalAttack != null)
+        {
+            CriticalAttack = criticalAttack;
+            return;
+        }
+
+        FlameAttack? flameAttack = attackModifier as FlameAttack;
+        if (flameAttack != null)
+        {
+            FlameAttack = flameAttack;
+            return;
+        }
+
+        SlowAttack? slowAttack = attackModifier as SlowAttack;
+        if (slowAttack != null)
+        {
+            SlowAttack = slowAttack;
+            return;
+        }
+
+        PenetrationProjectile? penetrationProjectile = attackModifier as PenetrationProjectile;
+        if (penetrationProjectile != null)
+        {
+            PenetrationProjectile = penetrationProjectile;
+            return;
+        }
+    }
+
     public override void TakeDamage(Damage damage, Collider hitBox = null)
     {
         if (Health.Actual > 0)
@@ -251,6 +282,16 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
             if (CurrentState.GetType() != typeof(DieState))
                 SetState<DieState>();
         }
+    }
+
+    public override void LevelUp(int levelUp = 1)
+    {
+        base.LevelUp(levelUp);
+    }
+
+    public override void SetLevel(int newLevel)
+    {
+        base.SetLevel(newLevel);
     }
 
     /// <summary>

@@ -1,7 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public abstract class Effect : IItem, ICloneable
+/// <summary>
+/// Абстрактный класс эффекта
+/// </summary>
+public abstract class Effect : INaming, ICloneable
 {
     /// <summary>
     /// Название эффекта
@@ -16,17 +19,17 @@ public abstract class Effect : IItem, ICloneable
     /// <summary>
     /// Тип эффекта, положительный или негативный
     /// </summary>
-    public abstract EffectType EffectType { get; }
-    
+    public EffectType EffectType { get; protected set; }
+
     /// <summary>
     /// Длительность эффекта, если хотим сделать эффект без длительности, то не переопределяем
     /// </summary>
-    public virtual float Duration { get; set; }
-    
+    public Duration Duration { get; protected set; } = null;
+
     /// <summary>
     /// Частота действия эффекта, по умолчанию эффект действует каждый 1 сек.
     /// </summary>
-    public virtual float Frequency { get; set; } = 1f;
+    public float Frequency { get; protected set; } = 1f;
 
     /// <summary>
     /// Корутина отвечающая за переодичность эффекта, запускается в объекте на котором установлен эффект
@@ -40,11 +43,6 @@ public abstract class Effect : IItem, ICloneable
 
     protected EnemyUnit enemyUnit;
     protected PlayerUnit playerUnit;
-
-    public Effect()
-    {
-        
-    }
 
     /// <summary>
     /// Метод для глубокого копирования объекта эффекта
@@ -81,8 +79,7 @@ public abstract class Effect : IItem, ICloneable
     /// </summary>
     public virtual void Disable()
     {
-        EnemyUnit? enemyUnit = unit as EnemyUnit;
-        PlayerUnit? playerUnit = unit as PlayerUnit;
+
     }
 
     /// <summary>
@@ -93,7 +90,6 @@ public abstract class Effect : IItem, ICloneable
     {
         float duration = 0;
 
-
         while (true)
         {
             Tick();
@@ -102,7 +98,7 @@ public abstract class Effect : IItem, ICloneable
 
             duration += Frequency;
 
-            if (duration >= Duration)
+            if (duration >= Duration.Actual)
             {
                 break;
             }

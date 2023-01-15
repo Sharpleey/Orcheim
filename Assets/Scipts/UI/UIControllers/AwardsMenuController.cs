@@ -33,13 +33,13 @@ public class AwardsMenuController : MonoBehaviour
             return;
         }
 
-        award_1 = LootManager.Instance.GetRandomUpgrade();
-        award_2 = LootManager.Instance.GetRandomUpgrade();
-        award_3 = LootManager.Instance.GetRandomUpgrade();
+        //award_1 = LootManager.Instance.GetRandomUpgrade();
+        //award_2 = LootManager.Instance.GetRandomUpgrade();
+        //award_3 = LootManager.Instance.GetRandomUpgrade();
 
-        _textButtonAward_1.text = award_1.GetType().ToString();
-        _textButtonAward_2.text = award_2.GetType().ToString();
-        _textButtonAward_3.text = award_3.GetType().ToString();
+        //_textButtonAward_1.text = award_1.GetType().ToString();
+        //_textButtonAward_2.text = award_2.GetType().ToString();
+        //_textButtonAward_3.text = award_3.GetType().ToString();
     }
 
     public void OnClickAward_1()

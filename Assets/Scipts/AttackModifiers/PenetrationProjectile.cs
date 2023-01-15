@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Класс модификатора атаки, позволяющий пробивать врагов насквозь
 /// </summary>
-public class PenetrationProjectile : AttackModifaer
+public class PenetrationProjectile : AttackModifier
 {
     public override string Name => "Пробивающий снаряд";
 

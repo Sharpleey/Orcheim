@@ -31,6 +31,11 @@ public abstract class UpgratableParameter
         protected set => _increaseValuePerLevel = Mathf.Clamp(value, 0, float.MaxValue);
     }
 
+    /// <summary>
+    /// Описание улучшения параметра
+    /// </summary>
+    public string UpgradeDescription { get; set; }
+
     #endregion Properties
 
     #region Private fields
@@ -40,6 +45,13 @@ public abstract class UpgratableParameter
     private float _increaseValuePerLevel;
 
     #endregion Private fields
+
+    public UpgratableParameter(int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1)
+    {
+        IncreaseValuePerLevel = increaseValuePerLevel;
+        Level = level;
+        MaxLevel = maxLevel;
+    }
 
 
     /// <summary>

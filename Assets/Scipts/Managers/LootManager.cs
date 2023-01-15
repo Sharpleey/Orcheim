@@ -12,7 +12,9 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public ManagerStatus Status { get; private set; }
 
-    public List<UpgratableParameter> UpgradeParameters { get; set; } = new List<UpgratableParameter>();
+    public List<AwardAttackModifaer> AwardsAttackModifaers { get; private set; }
+    public List<AwardAttackModifierUpgrade> AwardsAttackModifiersUpgrade { get; private set; }
+
 
     #endregion Properties
 
@@ -45,10 +47,30 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private void AddListeners()
     {
-
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
         GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
         WaveEventManager.OnWaveIsOver.AddListener(ChestRespawn);
+    }
+
+    private void InitAward()
+    {
+        // Инициализируем список
+        AwardsAttackModifaers = new List<AwardAttackModifaer>();
+
+        AddAwardAttackModifaer(new CriticalAttack());
+        AddAwardAttackModifaer(new FlameAttack());
+        AddAwardAttackModifaer(new SlowAttack());
+        AddAwardAttackModifaer(new PenetrationProjectile());
+    }
+
+    public void AddAwardAttackModifaer(AttackModifier attackModifaer)
+    {
+        AwardsAttackModifaers.Add(new AwardAttackModifaer(attackModifaer.Name, attackModifaer.Description, attackModifaer));
+    }
+
+    public void AddAwardAttackModifierUpgrade(string name, UpgratableParameter upgratableParameter)
+    {
+        AwardsAttackModifiersUpgrade.Add(new AwardAttackModifierUpgrade(name, upgratableParameter.UpgradeDescription, upgratableParameter));
     }
 
     private void FindChestSpawnZones()
@@ -75,11 +97,11 @@ public class LootManager : MonoBehaviour, IGameManager
         Status = ManagerStatus.Started;
     }
 
-    public UpgratableParameter GetRandomUpgrade()
-    {
-        int randomIndex = Random.Range(0, UpgradeParameters.Count-1);
-        return UpgradeParameters[randomIndex];
-    }
+    //public UpgratableParameter GetRandomUpgrade()
+    //{
+    //    //int randomIndex = Random.Range(0, UpgradeParameters.Count-1);
+    //    //return UpgradeParameters[randomIndex];
+    //}
 
     #endregion Public methods
 
@@ -97,7 +119,7 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private void EventHandler_GameOver()
     {
-        UpgradeParameters = new List<UpgratableParameter>();
+        //UpgradeParameters = new List<UpgratableParameter>();
     }
     #endregion
 }

@@ -32,7 +32,7 @@ public class ProjectileArrow : MonoBehaviour
 		_isBlockDamage = false;
 
 		_lightBow = GetComponentInParent<LightBow>();
-		_playerUnit = _lightBow.PlayerUnit;
+		_playerUnit = _lightBow.Player;
 
 		_arrowRigidbody = GetComponent<Rigidbody>();
 		_arrowCollider = GetComponent<BoxCollider>();

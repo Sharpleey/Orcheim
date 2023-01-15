@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable, IUsesAttackModifiers, IUnitParameters,IInfluenceOfEffects
+public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable, IUsesAttackModifiers, IUnitParameters, IInfluenceOfEffects
 {
     #region Serialize fields
 
@@ -34,6 +33,8 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     public FlameAttack FlameAttack { get; protected set; }
     public SlowAttack SlowAttack { get; protected set; }
     public PenetrationProjectile PenetrationProjectile { get; protected set; }
+
+    public Dictionary<Type, AttackModifier> AttackModifaers { get; protected set; }
     #endregion
 
     public Dictionary<Type, Effect> ActiveEffects { get; protected set; }
@@ -61,6 +62,12 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     public virtual void InitParameters()
     {
+        if(!_unitConfig)
+        {
+            Debug.Log("Юнит конфиг не задан в инспекторе!");
+            return;
+        }
+
         Level = _unitConfig.Level;
 
         Health = new Health(_unitConfig.DefaultHealth, _unitConfig.HealthIncreasePerLevel, _unitConfig.HealthMaxLevel);
@@ -69,27 +76,20 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         MovementSpeed = new MovementSpeed(_unitConfig.DefaultMovementSpeed, _unitConfig.MovementSpeedIncreasePerLevel, _unitConfig.MovementSpeedMaxLevel);
         AttackSpeed = new AttackSpeed(_unitConfig.DefaultAttackSpeed, _unitConfig.AttackSpeedIncreasePerLevel, _unitConfig.AttackSpeedMaxLevel);
 
-        if (_unitConfig.OnCriticalAttack)
-            CriticalAttack = new CriticalAttack();
-
-        if (_unitConfig.OnFlameAttack)
-            FlameAttack = new FlameAttack();
-
-        if (_unitConfig.OnSlowAttack)
-            SlowAttack = new SlowAttack();
-
-        if (_unitConfig.OnPenetrationProjectile)
-            PenetrationProjectile = new PenetrationProjectile();
-
         ActiveEffects = new Dictionary<Type, Effect>();
     }
 
-    public void LevelUp(int levelUp = 1)
+    public virtual void InitAttackModifiers()
+    {
+
+    }
+
+    public virtual void LevelUp(int levelUp = 1)
     {
         Level += levelUp;
     }
 
-    public void SetLevel(int newLevel)
+    public virtual void SetLevel(int newLevel)
     {
         Level = newLevel;
     }
@@ -97,17 +97,17 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     {
         Damage damage = Damage.Copy();
 
-        if (CriticalAttack != null && CriticalAttack.IsProc())
+        if (CriticalAttack != null && CriticalAttack.IsProc)
         {
             damage.Actual = (int)(damage.Max * CriticalAttack.DamageMultiplier);
         }
 
-        if (FlameAttack != null && FlameAttack.IsProc())
+        if (FlameAttack != null && FlameAttack.IsProc)
         {
             attackedUnit.SetEffect(FlameAttack.Effect);
         }
 
-        if (SlowAttack != null && SlowAttack.IsProc())
+        if (SlowAttack != null && SlowAttack.IsProc)
         {
             attackedUnit.SetEffect(SlowAttack.Effect);
         }
@@ -128,7 +128,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         newEffect.Enable(); // 2
 
         // Если эффект иммет длительность, то запускаем корутину с таймером и с переодическим воздействием, если он есть
-        if (newEffect.Duration > 0)
+        if (newEffect.Duration != null)
             StartCoroutine(newEffect.CoroutineEffect); // 2700+
 
         // Добавляем эффект в словарь для хранения
@@ -163,6 +163,8 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     /// Метод инициализации параметров конроллеров юнита
     /// </summary>
     protected abstract void InitControllersParameters();
+
+    public abstract void SetAttackModifier(AttackModifier attackModifier);
 
     #endregion Abstract methods
 }

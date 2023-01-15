@@ -41,13 +41,18 @@ public abstract class UnitParameter : UpgratableParameter
 
     #endregion Private fields
 
-    public UnitParameter(int defaultValue, int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1)
+    /// <summary>
+    /// Конструктор абстрактного класса параметра юнита
+    /// </summary>
+    /// <param name="defaultValue">Начальное значение параметра</param>
+    /// <param name="increaseValuePerLevel">Прирост значения за уровень</param>
+    /// <param name="maxLevel">Максимальный уровень улучшения параметра</param>
+    /// <param name="level">Текущий уровень улучшения параметра</param>
+    public UnitParameter(int defaultValue, int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) : base (increaseValuePerLevel, maxLevel, level)
     {
         Default = defaultValue;
-        IncreaseValuePerLevel = increaseValuePerLevel;
-        MaxLevel = maxLevel;
 
-        SetLevel(level);
+        SetLevel(Level);
     }
 
     public override void Upgrade(int levelUp = 1)
