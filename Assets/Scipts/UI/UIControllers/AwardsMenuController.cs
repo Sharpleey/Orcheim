@@ -9,9 +9,9 @@ public class AwardsMenuController : MonoBehaviour
     [SerializeField] TextMeshProUGUI _textButtonAward_2;
     [SerializeField] TextMeshProUGUI _textButtonAward_3;
 
-    private UpgratableParameter award_1;
-    private UpgratableParameter award_2;
-    private UpgratableParameter award_3;
+    private Upgratable award_1;
+    private Upgratable award_2;
+    private Upgratable award_3;
 
     private void Awake()
     {

@@ -24,7 +24,7 @@ public abstract class Effect : INaming, ICloneable
     /// <summary>
     /// Длительность эффекта, если хотим сделать эффект без длительности, то не переопределяем
     /// </summary>
-    public Duration Duration { get; protected set; } = null;
+    public Parameter Duration { get; protected set; } = null;
 
     /// <summary>
     /// Частота действия эффекта, по умолчанию эффект действует каждый 1 сек.
@@ -42,7 +42,7 @@ public abstract class Effect : INaming, ICloneable
     protected Unit unit;
 
     protected EnemyUnit enemyUnit;
-    protected PlayerUnit playerUnit;
+    protected Player player;
 
     /// <summary>
     /// Метод для глубокого копирования объекта эффекта
@@ -63,7 +63,7 @@ public abstract class Effect : INaming, ICloneable
     public virtual void Enable()
     {
         enemyUnit = unit as EnemyUnit;
-        playerUnit = unit as PlayerUnit;
+        player = unit as Player;
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public abstract class Effect : INaming, ICloneable
 
             duration += Frequency;
 
-            if (duration >= Duration.Actual)
+            if (duration >= Duration.Value)
             {
                 break;
             }

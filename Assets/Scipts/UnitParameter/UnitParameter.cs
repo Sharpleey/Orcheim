@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class UnitParameter : UpgratableParameter
+public class UnitParameter : Upgratable
 {
     #region Properties
 

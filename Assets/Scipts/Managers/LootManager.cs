@@ -12,8 +12,8 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public ManagerStatus Status { get; private set; }
 
-    public List<AwardAttackModifaer> AwardsAttackModifaers { get; private set; }
-    public List<AwardAttackModifierUpgrade> AwardsAttackModifiersUpgrade { get; private set; }
+    public List<AwardAttackModifaer> AwardsAttackModifaers { get; private set; } = new List<AwardAttackModifaer>();
+    public List<AwardAttackModifierUpgrade> AwardsAttackModifiersUpgrade { get; private set; } = new List<AwardAttackModifierUpgrade>();
 
 
     #endregion Properties
@@ -54,9 +54,6 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private void InitAward()
     {
-        // Инициализируем список
-        AwardsAttackModifaers = new List<AwardAttackModifaer>();
-
         AddAwardAttackModifaer(new CriticalAttack());
         AddAwardAttackModifaer(new FlameAttack());
         AddAwardAttackModifaer(new SlowAttack());
@@ -68,7 +65,7 @@ public class LootManager : MonoBehaviour, IGameManager
         AwardsAttackModifaers.Add(new AwardAttackModifaer(attackModifaer.Name, attackModifaer.Description, attackModifaer));
     }
 
-    public void AddAwardAttackModifierUpgrade(string name, UpgratableParameter upgratableParameter)
+    public void AddAwardAttackModifierUpgrade(string name, Upgratable upgratableParameter)
     {
         AwardsAttackModifiersUpgrade.Add(new AwardAttackModifierUpgrade(name, upgratableParameter.UpgradeDescription, upgratableParameter));
     }

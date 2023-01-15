@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public abstract class ProcableAttackModifier : AttackModifier, IProcable
+public abstract class ProcableAttackModifier : AttackModifier
 {
     /// <summary>
     /// Шанс прока модификатора
     /// </summary>
-    public ProcСhance Сhance { get; protected set; }
+    public Parameter Сhance { get; protected set; }
 
     /// <summary>
     /// Прокнул модификатор или нет
@@ -13,6 +13,6 @@ public abstract class ProcableAttackModifier : AttackModifier, IProcable
     /// <returns>true/false</returns>
     public bool IsProc
     {
-        get => Random.Range(0, 100) <= Сhance.Actual;
+        get => Random.Range(0, 100) <= Сhance.Value;
     }
 }

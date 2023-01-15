@@ -46,6 +46,8 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     {
         InitParameters();
 
+        InitAttackModifiers();
+
         SetLevel(Level);
     }
 
@@ -81,7 +83,23 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     public virtual void InitAttackModifiers()
     {
+        if (!_unitConfig)
+        {
+            Debug.Log("Юнит конфиг не задан в инспекторе!");
+            return;
+        }
 
+        if (_unitConfig.OnCriticalAttack)
+            SetAttackModifier(new CriticalAttack());
+
+        if (_unitConfig.OnFlameAttack)
+            SetAttackModifier(new FlameAttack());
+
+        if (_unitConfig.OnSlowAttack)
+            SetAttackModifier(new SlowAttack());
+
+        if (_unitConfig.OnPenetrationProjectile)
+            SetAttackModifier(new PenetrationProjectile());
     }
 
     public virtual void LevelUp(int levelUp = 1)
@@ -99,7 +117,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
         if (CriticalAttack != null && CriticalAttack.IsProc)
         {
-            damage.Actual = (int)(damage.Max * CriticalAttack.DamageMultiplier);
+            damage.Actual = (int)(damage.Max * CriticalAttack.DamageMultiplier.Value/100f);
         }
 
         if (FlameAttack != null && FlameAttack.IsProc)

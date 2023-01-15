@@ -2,9 +2,9 @@
 public class Flame : Effect
 {
     public override string Name => "Горение";
-    public override string Description => $"Эффект, каждые {Frequency} сек. в течении {Duration.Actual} секунд наносит {Damage.Max} урона, снижает броню цели на {ArmorDecrease.ValueOfModify}";
+    public override string Description => $"Эффект, каждые {Frequency} сек. в течении {Duration.Value} секунд наносит {Damage.Max} урона, снижает броню цели на {ArmorDecrease.Value}";
     public Damage Damage { get; private set; }
-    public ParameterModifier ArmorDecrease { get; private set; }
+    public Parameter ArmorDecrease { get; private set; }
 
     /// <summary>
     /// 
@@ -23,15 +23,15 @@ public class Flame : Effect
         Damage = new Damage(
             defaultValue: damageFlame,
             increaseValuePerLevel: increaseDamageFlamePerLevel,
-            level: levelDamageFlame);
+            level: levelDamageFlame,
+            damageType: DamageType.Fire);
 
-        ArmorDecrease = new ParameterModifier(
-            valueOfModify: armorDecrease,
-            parameterModifierType: ParameterModifierType.Decrease,
+        ArmorDecrease = new Parameter(
+            defaultValue: armorDecrease,
             increaseValuePerLevel: increaseArmorDecreasePerLevel,
             level: levelArmorDecrease);
 
-        Duration = new Duration(
+        Duration = new Parameter(
             defaultValue: durationEffect,
             increaseValuePerLevel: increaseDurationEffectPerLevel,
             level: levelDurationEffect);
@@ -39,8 +39,8 @@ public class Flame : Effect
         EffectType = EffectType.Negative;
 
         Damage.UpgradeDescription = $"Урон за тик +{Damage.IncreaseValuePerLevel} (Текущий {Damage.Max})";
-        ArmorDecrease.UpgradeDescription = $"Снижение брони за тик +{ArmorDecrease.IncreaseValuePerLevel} (Текущий {ArmorDecrease.ValueOfModify})";
-        Duration.UpgradeDescription = $"Длительность эффекта {Name} +{Duration.IncreaseValuePerLevel} сек. (Текущая {Duration.Max})";
+        ArmorDecrease.UpgradeDescription = $"Снижение брони за тик +{ArmorDecrease.IncreaseValuePerLevel} (Текущий {ArmorDecrease.Value})";
+        Duration.UpgradeDescription = $"Длительность эффекта {Name} +{Duration.IncreaseValuePerLevel} сек. (Текущая {Duration.Value})";
     }
 
     public override void Enable()
@@ -58,7 +58,7 @@ public class Flame : Effect
                 enemyUnit.BurningEffectController.enabled = true;
         }
 
-        if(playerUnit)
+        if(player)
         {
             //TODO Реализовать действие эффекта на игрока
         }
@@ -67,7 +67,11 @@ public class Flame : Effect
 
     public override void Tick()
     {
+        // Эффект наносит урон за один тик
         unit.TakeDamage(Damage);
+
+        // Уменьшение брони за один тик
+        unit.Armor.Actual -= ArmorDecrease.Value;
     }
 
     public override void Disable()
@@ -83,7 +87,7 @@ public class Flame : Effect
                 enemyUnit.BurningEffectController.enabled = false;
         }
 
-        if (playerUnit)
+        if (player)
         {
             //TODO Реализовать действие эффекта на игрока
         }

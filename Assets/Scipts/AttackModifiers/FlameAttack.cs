@@ -5,9 +5,7 @@
 public class FlameAttack : ProcableAttackModifier
 {
     public override string Name => "Поджигающая атака";
-    public override string Description => $"Атаки c шансом {Сhance.Actual}% накладывают на цель эффект {Effect.Name}\n{Effect.Description}";
-
-    
+    public override string Description => $"Атаки c шансом {Сhance.Value}% накладывают на цель эффект {Effect.Name}\n{Effect.Description}";
 
     /// <summary>
     /// Эффект, который накладывает модификатор на юнита
@@ -35,13 +33,13 @@ public class FlameAttack : ProcableAttackModifier
         int armorDecrease = 1, int increaseArmorDecreasePerLevel = 1, int levelArmorDecrease = 1, 
         int durationEffect = 3, int increaseDurationEffectPerLevel = 1, int levelDurationEffect = 1)
     {
-        Сhance = new ProcСhance(defaultValue: procChance, increaseValuePerLevel: increaseProcChancePerLevel, level: levelProcChance);
+        Сhance = new Parameter(defaultValue: procChance, increaseValuePerLevel: increaseProcChancePerLevel, level: levelProcChance, maxLevel: 18);
 
         Effect = new Flame( //TODO Реализовать через конфиги
             damageFlame: damageFlame, increaseDamageFlamePerLevel: increaseDamageFlamePerLevel, levelDamageFlame: levelDamageFlame,
             armorDecrease: armorDecrease, increaseArmorDecreasePerLevel: increaseArmorDecreasePerLevel, levelArmorDecrease: levelArmorDecrease,
             durationEffect: durationEffect, increaseDurationEffectPerLevel: increaseDurationEffectPerLevel, levelDurationEffect: levelDurationEffect);
 
-        Сhance.UpgradeDescription = $"Шанс наложить эффект +{Сhance.IncreaseValuePerLevel}% (Текущий {Сhance.Max}%)";
+        Сhance.UpgradeDescription = $"Шанс наложить эффект +{Сhance.IncreaseValuePerLevel}% (Текущий {Сhance.Value}%)";
     }
 }

@@ -71,12 +71,12 @@ public class PlayerManager : PlayerUnit , IGameManager
 
     protected override void InitControllers()
     {
-        throw new NotImplementedException(); //TODO
+        //TODO
     }
 
     protected override void InitControllersParameters()
     {
-        throw new NotImplementedException(); //TODO
+        //TODO
     }
 
     /// <summary>

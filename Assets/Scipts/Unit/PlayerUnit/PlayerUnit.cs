@@ -72,6 +72,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 
             if (LootManager.Instance)
             {
+                // Добавление параметров модификатора в пул наград
                 LootManager.Instance.AddAwardAttackModifierUpgrade(FlameAttack.Name, FlameAttack.Сhance);
                 LootManager.Instance.AddAwardAttackModifierUpgrade(FlameAttack.Name, FlameAttack.Effect.Damage);
                 LootManager.Instance.AddAwardAttackModifierUpgrade(FlameAttack.Name, FlameAttack.Effect.Duration);
@@ -88,6 +89,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 
             if (LootManager.Instance)
             {
+                // Добавление параметров модификатора в пул наград
                 LootManager.Instance.AddAwardAttackModifierUpgrade(SlowAttack.Name, SlowAttack.Сhance);
                 LootManager.Instance.AddAwardAttackModifierUpgrade(SlowAttack.Name, SlowAttack.Effect.MovementSpeedPercentageDecrease);
                 LootManager.Instance.AddAwardAttackModifierUpgrade(SlowAttack.Name, SlowAttack.Effect.AttackSpeedPercentageDecrease);

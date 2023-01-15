@@ -2,13 +2,13 @@
 
 public class AwardAttackModifierUpgrade : Award
 {
-    public UpgratableParameter Parameter { get; private set; }
+    public Upgratable UpgratableParameter { get; private set; }
 
-    public AwardAttackModifierUpgrade(string name, string description, UpgratableParameter parameter)
+    public AwardAttackModifierUpgrade(string name, string description, Upgratable parameter)
     {
         TypeName = "Улучшения модификатора атаки";
         Name = name;
         Description = description;
-        Parameter = parameter;
+        UpgratableParameter = parameter;
     }
 }

@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Тестовый класс
+/// </summary>
 public class TEST : MonoBehaviour
 {
     [SerializeField] private LayerMask collisionMask = 4096;
