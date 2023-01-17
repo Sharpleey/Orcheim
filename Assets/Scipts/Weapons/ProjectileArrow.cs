@@ -82,10 +82,10 @@ public class ProjectileArrow : MonoBehaviour
 					_playerUnit.PenetrationProjectile.CurrentPenetration++;
 
 					// Уменьшаем урон с каждым пробитием
-					_playerUnit.Damage.Actual = (int)(_playerUnit.Damage.Max * (1 - _playerUnit.PenetrationProjectile.PenetrationDamageDecrease));
+					_playerUnit.Damage.Actual = (int)(_playerUnit.Damage.Max * (1 - _playerUnit.PenetrationProjectile.PenetrationDamageDecrease.Value/100f));
 
 					// Если число пробитий подошло к пределу, то удаляем стрелу
-					if (_playerUnit.PenetrationProjectile.CurrentPenetration == _playerUnit.PenetrationProjectile.MaxPenetrationCount)
+					if (_playerUnit.PenetrationProjectile.CurrentPenetration == _playerUnit.PenetrationProjectile.MaxPenetrationCount.Value)
                     {
 						_isBlockDamage = true;
 						StartCoroutine(DeleteProjectile(0));

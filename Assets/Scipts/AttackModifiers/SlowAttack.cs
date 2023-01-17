@@ -5,7 +5,7 @@
 public class SlowAttack : ProcableAttackModifier
 {
     public override string Name => "Замедляющая атака";
-    public override string Description => "Атаки накладывают на цель эффект Slowdown";
+    public override string Description => $"Атаки c шансом {Сhance.Value}% накладывают на цель эффект {Effect.Name}\n{Effect.Description}";
 
     /// <summary>
     /// Эффект, который отвечает за замедление

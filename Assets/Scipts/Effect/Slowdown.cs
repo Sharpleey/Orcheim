@@ -2,7 +2,7 @@
 public class Slowdown : Effect
 {
     public override string Name => "«амедление";
-    public override string Description => $"Ёффект замедл€ет цель на ";
+    public override string Description => $"Ёффект на {Duration.Value} cек. замедл€ет цели скорость атаки на {AttackSpeedPercentageDecrease.Value}% и скорость передвижени€ на {MovementSpeedPercentageDecrease.Value}%";
 
     public Parameter MovementSpeedPercentageDecrease { get; set; }
     public Parameter AttackSpeedPercentageDecrease { get; set; }

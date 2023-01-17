@@ -58,9 +58,12 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         {
             CriticalAttack = criticalAttack;
 
-            //
-            // Добавление параметров модификатора в пул наград
-            //
+            if (LootManager.Instance)
+            {
+                // Добавление параметров модификатора в пул наград
+                LootManager.Instance.AddAwardAttackModifierUpgrade(CriticalAttack.Name, CriticalAttack.Сhance);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(CriticalAttack.Name, CriticalAttack.DamageMultiplier);
+            }
 
             return;
         }
@@ -104,9 +107,12 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         {
             PenetrationProjectile = penetrationProjectile;
 
-            //
-            // Добавление параметров модификатора в пул наград
-            //
+            if (LootManager.Instance)
+            {
+                // Добавление параметров модификатора в пул наград
+                LootManager.Instance.AddAwardAttackModifierUpgrade(PenetrationProjectile.Name, PenetrationProjectile.MaxPenetrationCount);
+                LootManager.Instance.AddAwardAttackModifierUpgrade(PenetrationProjectile.Name, PenetrationProjectile.PenetrationDamageDecrease);
+            }
 
             return;
         }

@@ -8,25 +8,17 @@ public class PenetrationProjectile : AttackModifier
 {
     public override string Name => "Пробивающий снаряд";
 
-    public override string Description => "Cнаряд пробивает несколько целей и наносит урон уменьщающийся с каждым пробитием";
+    public override string Description => $"Cнаряд пробивает несколько ({MaxPenetrationCount.Value}) целей и наносит урон уменьщающийся на {PenetrationDamageDecrease.Value}% с каждым пробитием";
 
     /// <summary>
     /// Максимальное кол-во пробиваемый целей
     /// </summary>
-    public int MaxPenetrationCount
-    {
-        get => _maxPenetrationCount;
-        set => _maxPenetrationCount = Mathf.Clamp(value, 2, 10);
-    }
+    public Parameter MaxPenetrationCount { get; private set; }
 
     /// <summary>
     /// Уменьшение урона с каждым пробитием
     /// </summary>
-    public float PenetrationDamageDecrease
-    {
-        get => _penetrationDamageDecrease;
-        set => _penetrationDamageDecrease = Mathf.Clamp(value, 0, 0.9f);
-    }
+    public Parameter PenetrationDamageDecrease { get; private set; }
 
     /// <summary>
     /// Текущее кол-во пробитых снарядом целей
@@ -34,11 +26,20 @@ public class PenetrationProjectile : AttackModifier
     public int CurrentPenetration
     {
         get => _currentPenetration;
-        set => _currentPenetration = Mathf.Clamp(value, 0, _maxPenetrationCount);
+        set => _currentPenetration = Mathf.Clamp(value, 0, MaxPenetrationCount.Value);
     }
-
-    private int _maxPenetrationCount = 2;
-    private float _penetrationDamageDecrease = 0.5f;
     private int _currentPenetration = 0;
+
+    public PenetrationProjectile(
+        int defaultValueMaxPenetrationCount = 2, int increaseMaxPenetrationCountPerLevel = 1, int maxLevelPenetrationCount = 1,
+        int defaultValuePenetrationDamageDecrease = 50, int decreasePenetrationDamageDecreasePerLevel = 5, int levelPenetrationDamageDecrease = 1, int maxLevelPenetrationDamageDecrease = 10)
+    {
+        MaxPenetrationCount = new Parameter(defaultValue: defaultValueMaxPenetrationCount, increaseValuePerLevel: increaseMaxPenetrationCountPerLevel, level: maxLevelPenetrationCount);
+
+        PenetrationDamageDecrease = new Parameter(defaultValue: defaultValuePenetrationDamageDecrease, increaseValuePerLevel: decreasePenetrationDamageDecreasePerLevel, maxLevel: maxLevelPenetrationDamageDecrease, level: levelPenetrationDamageDecrease);
+
+        MaxPenetrationCount.UpgradeDescription = $"Число пробиваемые целей +{MaxPenetrationCount.Value} (Текущее значение: {MaxPenetrationCount.Value})";
+        PenetrationDamageDecrease.UpgradeDescription = $"Уменьшение урона с каждым пробитием -{PenetrationDamageDecrease.Value}% (Текущее уменьшение {PenetrationDamageDecrease.Value}%)";
+    }
 }
 
