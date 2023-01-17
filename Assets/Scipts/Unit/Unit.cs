@@ -90,7 +90,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         }
 
         if (_unitConfig.OnCriticalAttack)
-            SetAttackModifier(new CriticalAttack(defaultValueDamageMultiplier: 200));
+            SetAttackModifier(new CriticalAttack());
 
         if (_unitConfig.OnFlameAttack)
             SetAttackModifier(new FlameAttack());
