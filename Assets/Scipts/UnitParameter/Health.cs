@@ -13,6 +13,7 @@ public class Health : UnitParameter
 
     public Health(int defaultValue, int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) : base(defaultValue, increaseValuePerLevel, maxLevel, level)
     {
-        
+        Name = "Здоровье";
+        UpgradeDescription = $"Увеличение здоровья +{IncreaseValuePerLevel} (Текущее значение {Actual})";
     }
 }

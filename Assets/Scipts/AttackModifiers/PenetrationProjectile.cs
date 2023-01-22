@@ -8,7 +8,7 @@ public class PenetrationProjectile : AttackModifier
 {
     public override string Name => "ѕробивающий снар€д";
 
-    public override string Description => $"Cнар€д пробивает несколько ({MaxPenetrationCount.Value}) целей и наносит урон уменьщающийс€ на {PenetrationDamageDecrease.Value}% с каждым пробитием";
+    public override string Description => $"—нар€д пробивает несколько ({MaxPenetrationCount.Value}) целей и наносит урон уменьщающийс€ на {PenetrationDamageDecrease.Value}% с каждым пробитием";
 
     /// <summary>
     /// ћаксимальное кол-во пробиваемый целей

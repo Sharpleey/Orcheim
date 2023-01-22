@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PlayerUnit : Unit, IPlayerUnitParameters
@@ -10,6 +8,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     public int Experience { get; protected set; }
 
     #endregion Properties
+
 
     #region Public methods
 
@@ -22,6 +21,36 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         if (playerUnitConfig != null)
         {
             Gold = playerUnitConfig.Gold;
+        }
+
+        // Добавляем параметры в пул наград
+        if (LootManager.Instance)
+        {
+            LootManager.Instance.AddAwardPlayerStatUpgrade(Health.Name, Health);
+            LootManager.Instance.AddAwardPlayerStatUpgrade(Armor.Name, Armor);
+            LootManager.Instance.AddAwardPlayerStatUpgrade(Damage.Name, Damage);
+            LootManager.Instance.AddAwardPlayerStatUpgrade(MovementSpeed.Name, MovementSpeed);
+            LootManager.Instance.AddAwardPlayerStatUpgrade(AttackSpeed.Name, AttackSpeed);
+        }
+    }
+
+    public override void InitAttackModifiers()
+    {
+        base.InitAttackModifiers();
+
+        if(LootManager.Instance)
+        {
+            if (!_unitConfig.OnCriticalAttack)
+                LootManager.Instance.AddAwardAttackModifier(CriticalAttack);
+
+            if (!_unitConfig.OnFlameAttack)
+                LootManager.Instance.AddAwardAttackModifier(FlameAttack);
+
+            if (!_unitConfig.OnSlowAttack)
+                LootManager.Instance.AddAwardAttackModifier(SlowAttack);
+
+            if (!_unitConfig.OnPenetrationProjectile)
+                LootManager.Instance.AddAwardAttackModifier(PenetrationProjectile);
         }
     }
 
@@ -51,13 +80,14 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         }
     }
 
-    public override void SetAttackModifier(AttackModifier attackModifier)
+    public override void SetActiveAttackModifier(AttackModifier attackModifier)
     {
+        base.SetActiveAttackModifier(attackModifier);
+
         CriticalAttack? criticalAttack = attackModifier as CriticalAttack;
+
         if (criticalAttack != null)
         {
-            CriticalAttack = criticalAttack;
-
             if (LootManager.Instance)
             {
                 // Добавление параметров модификатора в пул наград
@@ -71,7 +101,6 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         FlameAttack? flameAttack = attackModifier as FlameAttack;
         if (flameAttack != null)
         {
-            FlameAttack = flameAttack;
 
             if (LootManager.Instance)
             {
@@ -88,8 +117,6 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         SlowAttack? slowAttack = attackModifier as SlowAttack;
         if (slowAttack != null)
         {
-            SlowAttack = slowAttack;
-
             if (LootManager.Instance)
             {
                 // Добавление параметров модификатора в пул наград
@@ -105,7 +132,6 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         PenetrationProjectile? penetrationProjectile = attackModifier as PenetrationProjectile;
         if (penetrationProjectile != null)
         {
-            PenetrationProjectile = penetrationProjectile;
 
             if (LootManager.Instance)
             {

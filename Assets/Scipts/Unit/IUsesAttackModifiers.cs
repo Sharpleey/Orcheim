@@ -4,11 +4,6 @@
 /// </summary>
 public interface IUsesAttackModifiers
 {
-    /// <summary>
-    /// Словарь используемых юнитом модификаторов атак
-    /// </summary>
-    //public Dictionary<Type, AttackModifaer> AttackModifaers { get; }
-
     CriticalAttack CriticalAttack { get; }
     FlameAttack FlameAttack { get; }
     SlowAttack SlowAttack { get; }
@@ -18,7 +13,7 @@ public interface IUsesAttackModifiers
     /// Метод устанавливает модификатор атаки на юнита
     /// </summary>
     /// <param name="attackModifier"></param>
-    public void SetAttackModifier(AttackModifier attackModifier);
+    public void SetActiveAttackModifier(AttackModifier attackModifier);
     
     /// <summary>
     /// Метод инициализирует модификаторы атак из конфиг файла

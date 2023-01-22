@@ -14,7 +14,7 @@ public class PlayerHUDController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _healthPlayer;
     [SerializeField] private Slider _healthSlider;
 
-    private PlayerManager _playerManager;
+    private PlayerUnit _playerUnit;
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class PlayerHUDController : MonoBehaviour
 
     private void Start()
     {
-        _playerManager = PlayerManager.Instance;
+        _playerUnit = PlayerManager.Instance.PlayerUnit;
 
         ClearAllText();
     }
@@ -101,10 +101,10 @@ public class PlayerHUDController : MonoBehaviour
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.CLEAR_VILLAGE, 5));
 
-        if(_playerManager)
+        if(_playerUnit)
         {
-            SetTextHealthPlayer(_playerManager.Health.Actual, _playerManager.Health.Max);
-            SetValueHealthBar(_playerManager.Health.Actual, _playerManager.Health.Max);
+            SetTextHealthPlayer(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+            SetValueHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
         }
     }
 
@@ -127,10 +127,10 @@ public class PlayerHUDController : MonoBehaviour
 
     private void PlayerDamaged_EventHandler(int damage)
     {
-        if(_playerManager)
+        if(_playerUnit)
         {
-            SetTextHealthPlayer(_playerManager.Health.Actual, _playerManager.Health.Max);
-            SetValueHealthBar(_playerManager.Health.Actual, _playerManager.Health.Max);
+            SetTextHealthPlayer(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+            SetValueHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
         }
        
     }

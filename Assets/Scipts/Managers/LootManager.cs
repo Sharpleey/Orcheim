@@ -6,6 +6,7 @@ public class LootManager : MonoBehaviour, IGameManager
     public static LootManager Instance { get; private set; }
 
     #region Serialize fields
+
     #endregion Serialize fields
 
     #region Properties
@@ -14,6 +15,7 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public List<AwardAttackModifaer> AwardsAttackModifaers { get; private set; } = new List<AwardAttackModifaer>();
     public List<AwardAttackModifierUpgrade> AwardsAttackModifiersUpgrade { get; private set; } = new List<AwardAttackModifierUpgrade>();
+    public List<AwardPlayerStatsUpgrade> AwardsPlayerStatsUpgrade { get; private set; } = new List<AwardPlayerStatsUpgrade>();
 
 
     #endregion Properties
@@ -38,7 +40,6 @@ public class LootManager : MonoBehaviour, IGameManager
             Destroy(gameObject);
 
         AddListeners();
-
     }
 
     #endregion Mono
@@ -47,27 +48,10 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private void AddListeners()
     {
+        GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
         GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
         WaveEventManager.OnWaveIsOver.AddListener(ChestRespawn);
-    }
-
-    private void InitAward()
-    {
-        AddAwardAttackModifaer(new CriticalAttack());
-        AddAwardAttackModifaer(new FlameAttack());
-        AddAwardAttackModifaer(new SlowAttack());
-        AddAwardAttackModifaer(new PenetrationProjectile());
-    }
-
-    public void AddAwardAttackModifaer(AttackModifier attackModifaer)
-    {
-        AwardsAttackModifaers.Add(new AwardAttackModifaer(attackModifaer.Name, attackModifaer.Description, attackModifaer));
-    }
-
-    public void AddAwardAttackModifierUpgrade(string name, Upgratable upgratableParameter)
-    {
-        AwardsAttackModifiersUpgrade.Add(new AwardAttackModifierUpgrade(name, upgratableParameter.UpgradeDescription, upgratableParameter));
     }
 
     private void FindChestSpawnZones()
@@ -94,11 +78,81 @@ public class LootManager : MonoBehaviour, IGameManager
         Status = ManagerStatus.Started;
     }
 
-    //public UpgratableParameter GetRandomUpgrade()
-    //{
-    //    //int randomIndex = Random.Range(0, UpgradeParameters.Count-1);
-    //    //return UpgradeParameters[randomIndex];
-    //}
+    public void AddAwardAttackModifier(AttackModifier attackModifaer)
+    {
+        AwardsAttackModifaers.Add(new AwardAttackModifaer(attackModifaer.Name, attackModifaer.Description, attackModifaer));
+    }
+
+    public void RemoveAwardAttackModifier(AwardAttackModifaer award)
+    {
+        AwardsAttackModifaers.Remove(award);
+    }
+
+    public void AddAwardAttackModifierUpgrade(string name, Upgratable upgratableParameter)
+    {
+        AwardsAttackModifiersUpgrade.Add(new AwardAttackModifierUpgrade(name, upgratableParameter.UpgradeDescription, upgratableParameter));
+    }
+
+    public void AddAwardPlayerStatUpgrade(string name, Upgratable upgratableParameter)
+    {
+        AwardsPlayerStatsUpgrade.Add(new AwardPlayerStatsUpgrade(name, upgratableParameter.UpgradeDescription, upgratableParameter));
+    }
+
+    public AwardAttackModifaer GetRandomAwardAttackModifaer()
+    {
+        if (AwardsAttackModifaers.Count == 0)
+            return null;
+
+        int indexAward = Random.Range(0, AwardsAttackModifaers.Count);
+        return AwardsAttackModifaers[indexAward];
+    }
+
+    public AwardAttackModifierUpgrade GetRandomAwardAttackModifaerUpgrade()
+    {
+        if (AwardsAttackModifiersUpgrade.Count == 0)
+            return null;
+
+        int indexAward = Random.Range(0, AwardsAttackModifiersUpgrade.Count);
+        return AwardsAttackModifiersUpgrade[indexAward];
+    }
+
+    public AwardPlayerStatsUpgrade GetRandomAwardPlayerStatsUpgrade()
+    {
+        if (AwardsPlayerStatsUpgrade.Count == 0)
+            return null;
+
+        int indexAward = Random.Range(0, AwardsPlayerStatsUpgrade.Count);
+        return AwardsPlayerStatsUpgrade[indexAward];
+    }
+
+    // TODO Переделать это дерьмо
+    public Award GetRandomAward()
+    {
+        Award award = null;
+
+        while(award == null)
+        {
+            Debug.Log("!");
+
+            int indexTypeAward = Random.Range(1, 4);
+
+            switch (indexTypeAward)
+            {
+                case 1:
+                    award = GetRandomAwardAttackModifaer();
+                    break;
+                case 2:
+                    award = GetRandomAwardAttackModifaerUpgrade();
+                    break;
+                case 3:
+                    award = GetRandomAwardPlayerStatsUpgrade();
+                    break;
+
+            }
+        }
+
+        return award;
+    }
 
     #endregion Public methods
 
@@ -116,7 +170,9 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private void EventHandler_GameOver()
     {
-        //UpgradeParameters = new List<UpgratableParameter>();
+        AwardsAttackModifaers = new List<AwardAttackModifaer>();
+        AwardsAttackModifiersUpgrade = new List<AwardAttackModifierUpgrade>();
+        AwardsPlayerStatsUpgrade = new List<AwardPlayerStatsUpgrade>();
     }
     #endregion
 }

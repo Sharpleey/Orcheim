@@ -6,7 +6,7 @@ public class AwardAttackModifierUpgrade : Award
 
     public AwardAttackModifierUpgrade(string name, string description, Upgratable parameter)
     {
-        TypeName = "Улучшения модификатора атаки";
+        TypeName = "Улучшение модификатора атаки";
         Name = name;
         Description = description;
         UpgratableParameter = parameter;

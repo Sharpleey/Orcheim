@@ -5,7 +5,7 @@
 public class FlameAttack : ProcableAttackModifier
 {
     public override string Name => "Поджигающая атака";
-    public override string Description => $"Атаки c шансом {Сhance.Value}% накладывают на цель эффект {Effect.Name}\n{Effect.Description}";
+    public override string Description => $"Атаки с шансом {Сhance.Value}% накладывают на цель эффект {Effect.Name}\n{Effect.Description}";
 
     /// <summary>
     /// Эффект, который накладывает модификатор на юнита
@@ -27,14 +27,12 @@ public class FlameAttack : ProcableAttackModifier
     /// <param name="durationEffect"></param>
     /// <param name="increaseDurationEffectPerLevel"></param>
     /// <param name="levelDurationEffect"></param>
-    public FlameAttack(
-        int procChance = 10, int increaseProcChancePerLevel = 5, int levelProcChance = 1, 
+    public FlameAttack(bool isActive = false,
+        int procChance = 10, int increaseProcChancePerLevel = 5, int levelProcChance = 1, int maxLevelProcChance = 18,
         int damageFlame = 10, int increaseDamageFlamePerLevel = 2, int levelDamageFlame = 1, 
         int armorDecrease = 1, int increaseArmorDecreasePerLevel = 1, int levelArmorDecrease = 1, 
-        int durationEffect = 3, int increaseDurationEffectPerLevel = 1, int levelDurationEffect = 1)
+        int durationEffect = 3, int increaseDurationEffectPerLevel = 1, int levelDurationEffect = 1) : base(isActive, procChance, increaseProcChancePerLevel, levelProcChance, maxLevelProcChance)
     {
-        Сhance = new Parameter(defaultValue: procChance, increaseValuePerLevel: increaseProcChancePerLevel, level: levelProcChance, maxLevel: 18);
-
         Effect = new Flame( //TODO Реализовать через конфиги
             damageFlame: damageFlame, increaseDamageFlamePerLevel: increaseDamageFlamePerLevel, levelDamageFlame: levelDamageFlame,
             armorDecrease: armorDecrease, increaseArmorDecreasePerLevel: increaseArmorDecreasePerLevel, levelArmorDecrease: levelArmorDecrease,

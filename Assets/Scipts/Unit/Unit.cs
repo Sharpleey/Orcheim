@@ -83,6 +83,11 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     public virtual void InitAttackModifiers()
     {
+        CriticalAttack = new CriticalAttack();
+        FlameAttack = new FlameAttack();
+        SlowAttack = new SlowAttack();
+        PenetrationProjectile = new PenetrationProjectile();
+
         if (!_unitConfig)
         {
             Debug.Log("Юнит конфиг не задан в инспекторе!");
@@ -90,16 +95,16 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         }
 
         if (_unitConfig.OnCriticalAttack)
-            SetAttackModifier(new CriticalAttack());
+            SetActiveAttackModifier(CriticalAttack);
 
         if (_unitConfig.OnFlameAttack)
-            SetAttackModifier(new FlameAttack());
+            SetActiveAttackModifier(FlameAttack);
 
         if (_unitConfig.OnSlowAttack)
-            SetAttackModifier(new SlowAttack());
+            SetActiveAttackModifier(SlowAttack);
 
         if (_unitConfig.OnPenetrationProjectile)
-            SetAttackModifier(new PenetrationProjectile());
+            SetActiveAttackModifier(PenetrationProjectile);
     }
 
     public virtual void LevelUp(int levelUp = 1)
@@ -115,17 +120,17 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     {
         Damage damage = Damage.Copy();
 
-        if (CriticalAttack != null && CriticalAttack.IsProc)
+        if (CriticalAttack.IsActive && CriticalAttack.IsProc)
         {
             damage.Actual = (int)(damage.Max * CriticalAttack.DamageMultiplier.Value/100f);
         }
 
-        if (FlameAttack != null && FlameAttack.IsProc)
+        if (FlameAttack.IsActive && FlameAttack.IsProc)
         {
             attackedUnit.SetEffect(FlameAttack.Effect);
         }
 
-        if (SlowAttack != null && SlowAttack.IsProc)
+        if (SlowAttack.IsActive && SlowAttack.IsProc)
         {
             attackedUnit.SetEffect(SlowAttack.Effect);
         }
@@ -166,6 +171,11 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         }
     }
 
+    public virtual void SetActiveAttackModifier(AttackModifier attackModifier)
+    {
+        attackModifier.IsActive = true;
+    }
+
     #endregion Public methods
 
     #region Abstract methods
@@ -181,8 +191,6 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     /// Метод инициализации параметров конроллеров юнита
     /// </summary>
     protected abstract void InitControllersParameters();
-
-    public abstract void SetAttackModifier(AttackModifier attackModifier);
 
     #endregion Abstract methods
 }

@@ -77,7 +77,7 @@ public class ProjectileArrow : MonoBehaviour
 					GameObject hitObj = Instantiate(_hitEffect, transform.position, transform.rotation); //TODO Сделать через Pull objects
 				}
 
-				if (_playerUnit.PenetrationProjectile != null)
+				if (_playerUnit.PenetrationProjectile.IsActive)
                 {
 					_playerUnit.PenetrationProjectile.CurrentPenetration++;
 
@@ -112,7 +112,7 @@ public class ProjectileArrow : MonoBehaviour
 	/// <returns>Задержка (в секундах) до удаления объекта стрелы</returns>
 	private IEnumerator DeleteProjectile(int secondsBeforeDeletion)
     {
-		if (_playerUnit.PenetrationProjectile != null)
+		if (_playerUnit.PenetrationProjectile.IsActive)
         {
 			// Обнуляем кол-во пробитий
 			_playerUnit.PenetrationProjectile.CurrentPenetration = 0;

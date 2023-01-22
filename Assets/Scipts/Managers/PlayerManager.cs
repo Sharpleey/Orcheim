@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Менеджер отвечает за параметры и данные игрока. Возрождение игрока на сцене
 /// </summary>
-public class PlayerManager : PlayerUnit , IGameManager
+public class PlayerManager : MonoBehaviour, IGameManager
 {
     public static PlayerManager Instance { get; private set; }
 
@@ -20,6 +20,8 @@ public class PlayerManager : PlayerUnit , IGameManager
 
     public ManagerStatus Status { get; private set; }
 
+    public PlayerUnit PlayerUnit { get; private set; }
+
     #endregion Properties
 
     #region Private fields
@@ -30,13 +32,12 @@ public class PlayerManager : PlayerUnit , IGameManager
     private GameObject[] _playerSpawnZones;
 
     private GameObject _playerCharacter;
-    private PlayerCharacterController _playerCharacterController;
 
     #endregion Private fields
 
     #region Mono
 
-    protected override void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -48,13 +49,6 @@ public class PlayerManager : PlayerUnit , IGameManager
             Destroy(gameObject);
 
         AddListeners();
-
-        base.Awake();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
     }
 
     #endregion Mono
@@ -69,39 +63,12 @@ public class PlayerManager : PlayerUnit , IGameManager
         GlobalGameEventManager.OnGameOver.AddListener(SetDefaultParameters);
     }
 
-    protected override void InitControllers()
-    {
-        //TODO
-    }
-
-    protected override void InitControllersParameters()
-    {
-        //TODO
-    }
-
     /// <summary>
     /// Метод для установки стандартных параметров игрока
     /// </summary>
     private void SetDefaultParameters()
     {
         Debug.Log("Set default parameters for player");
-
-        // Устанавливаем начальные значения характеристик (Здоровья и т.п.)
-        Level = 1;
-
-        Health.SetLevel(Level);
-        Armor.SetLevel(Level);
-        Damage.SetLevel(Level);
-        MovementSpeed.SetLevel(Level);
-        AttackSpeed.SetLevel(Level);
-
-        Gold = 0;
-        Experience = 0;
-
-        CriticalAttack = null;
-        FlameAttack = null;
-        SlowAttack = null;
-        PenetrationProjectile = null;
     }
 
     /// <summary>
@@ -137,11 +104,12 @@ public class PlayerManager : PlayerUnit , IGameManager
         if (_playerCharacter == null)
         {
             _playerCharacter = Instantiate(_playerCharacterPrefab);
-            _playerCharacterController = GetComponent<PlayerCharacterController>();
         }
 
         _playerCharacter.transform.position = new Vector3(spawn.transform.position.x, spawn.transform.position.y + 1f, spawn.transform.position.z);
         _playerCharacter.transform.rotation = spawn.transform.rotation;
+
+        PlayerUnit = _playerCharacter.GetComponent<PlayerUnit>();
     }
 
     #endregion Private methods
@@ -151,8 +119,6 @@ public class PlayerManager : PlayerUnit , IGameManager
     public void Startup()
     {
         Debug.Log("Player manager starting...");
-
-        SetDefaultParameters();
 
         // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
         Status = ManagerStatus.Started;

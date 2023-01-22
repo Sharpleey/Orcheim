@@ -16,31 +16,6 @@ public class Player : PlayerUnit
     #endregion Properties
 
     #region Private methods
-
-    public override void InitParameters()
-    {
-        // Если игра запускается в обычном режиме со всеми менеджарами, то все данные берутся из менеджера игрока, т.е. мы будем работать с данными игрока, которые хранятся в менеджере
-        if(PlayerManager.Instance)
-        {
-            Level = PlayerManager.Instance.Level; //TODO ссылочный тип???
-
-            Health = PlayerManager.Instance.Health;
-            Armor = PlayerManager.Instance.Armor;
-            Damage = PlayerManager.Instance.Damage;
-            MovementSpeed = PlayerManager.Instance.MovementSpeed;
-            AttackSpeed = PlayerManager.Instance.AttackSpeed;
-
-            Gold = PlayerManager.Instance.Gold; //TODO ссылочный тип???
-            Experience = PlayerManager.Instance.Experience; //TODO ссылочный тип???
-
-            ActiveEffects = PlayerManager.Instance.ActiveEffects;
-
-            return;
-        }
-
-        base.InitParameters();
-    }
-
     protected override void InitControllers()
     {
         Rigidbody = GetComponent<Rigidbody>();

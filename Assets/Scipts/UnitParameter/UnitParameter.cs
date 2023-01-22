@@ -5,6 +5,11 @@ public class UnitParameter : Upgratable
     #region Properties
 
     /// <summary>
+    /// Название параметра юнита
+    /// </summary>
+    public string Name { get; protected set; }
+
+    /// <summary>
     /// Начальное значение параметра
     /// </summary>
     public virtual int Default
