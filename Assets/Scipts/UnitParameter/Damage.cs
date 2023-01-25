@@ -39,10 +39,10 @@ public class Damage : UnitParameter
     /// <param name="level">Создать параметр данного уровня</param>
     public Damage(int defaultValue, int increaseValuePerLevel = 0, DamageType damageType = DamageType.Physical, bool isArmorIgnore = false, int maxLevel = int.MaxValue, int level = 1) : base(defaultValue, increaseValuePerLevel, maxLevel, level)
     {
-        Name = "Урон";
+        Name = HashUnitParameterString.DAMAGE;
+        UpgradeDescription = HashUnitParameterString.DAMAGE_UPGRADE_DESCRIPTION;
         DamageType = damageType;
         IsArmorIgnore = isArmorIgnore;
-        UpgradeDescription = "Увеличение урона +{0} (Текущее значение {1})";
     }
 
     public Damage Copy()
