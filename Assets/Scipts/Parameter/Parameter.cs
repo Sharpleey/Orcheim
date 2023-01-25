@@ -19,6 +19,12 @@ public class Parameter : Upgratable
         set => _upgradeDescription = value;
     }
 
+    public override float IncreaseValuePerLevel 
+    { 
+        get => _increaseValuePerLevel;
+        protected set => _increaseValuePerLevel = Mathf.Clamp(value, -100, float.MaxValue);
+    }
+
     #endregion Properties
 
     #region Private fields
