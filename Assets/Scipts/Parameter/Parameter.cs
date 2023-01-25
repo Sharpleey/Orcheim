@@ -5,13 +5,13 @@ using UnityEngine;
 /// </summary>
 public class Parameter : Upgratable
 {
+    #region Properties
+
     public int Value
     {
         get => _value;
         protected set => _value = Mathf.Clamp(value, 0, int.MaxValue);
     }
-
-    private int _value;
 
     public override string UpgradeDescription 
     {
@@ -19,24 +19,37 @@ public class Parameter : Upgratable
         set => _upgradeDescription = value;
     }
 
+    #endregion Properties
+
+    #region Private fields
+
+    private int _value;
+    private int _defaultValue;
+
+    #endregion Private fields
+
     public Parameter(int defaultValue, int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) :base(increaseValuePerLevel, maxLevel, level)
     {
-        Value = defaultValue;
+        _defaultValue = defaultValue;
+        Value = _defaultValue;
 
         SetLevel(Level);
     }
 
+    #region Public methods
     public override void Upgrade(int levelUp = 1)
     {
         base.Upgrade(levelUp);
 
-        Value += (int)IncreaseValuePerLevel * (Level - 1);
+        Value = _defaultValue + (int)IncreaseValuePerLevel * (Level - 1);
     }
 
     public override void SetLevel(int newLevel)
     {
         base.SetLevel(newLevel);
 
-        Value += (int)IncreaseValuePerLevel * (Level - 1);
+        Value = _defaultValue + (int)IncreaseValuePerLevel * (Level - 1);
     }
+
+    #endregion Public methods
 }
