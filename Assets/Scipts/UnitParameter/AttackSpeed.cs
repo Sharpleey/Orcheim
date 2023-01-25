@@ -23,6 +23,6 @@ public class AttackSpeed : UnitParameter
     public AttackSpeed(int defaultValue, int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) : base(defaultValue, increaseValuePerLevel, maxLevel, level)
     {
         Name = "Скорость атаки";
-        UpgradeDescription = $"Увеличение cкорости атаки +{IncreaseValuePerLevel} (Текущее значение {Actual})";
+        UpgradeDescription = "Увеличение cкорости атаки +{0} (Текущее значение {1})";
     }
 }

@@ -4,8 +4,8 @@
 /// </summary>
 public class CriticalAttack : ProcableAttackModifier
 {
-    public override string Name => "Критическая атака";
-    public override string Description => $"Атаки с шансом {Сhance.Value}% могут нанести {DamageMultiplier.Value}% урона";
+    public override string Name => HashAttackModString.CRITICAL_ATTACK_NAME;
+    public override string Description => string.Format(HashAttackModString.CRITICAL_ATTACK_DESCRIPTION, Chance.Value, DamageMultiplier.Value);  
 
     /// <summary>
     /// Множитель урона критической атаки
@@ -18,7 +18,7 @@ public class CriticalAttack : ProcableAttackModifier
     {
         DamageMultiplier = new Parameter(defaultValue: defaultValueDamageMultiplier, increaseValuePerLevel: increaseDamageMultiplierPerLevel, level: levelDamageMultiplier);
 
-        Сhance.UpgradeDescription = $"Шанс нанести {DamageMultiplier.Value}% урона  +{Сhance.IncreaseValuePerLevel}% (Текущий {Сhance.Value}%)";
-        DamageMultiplier.UpgradeDescription = $"Множитель критического урона  +{DamageMultiplier.IncreaseValuePerLevel}% (Текущий {DamageMultiplier.Value}%)";
+        Chance.UpgradeDescription = HashAttackModString.CRITICAL_ATTACK_CHANCE_UPGRADE_DESCRIPTION;
+        DamageMultiplier.UpgradeDescription = HashAttackModString.CRITICAL_ATTACK_DAMAGEMULTIPLY_UPGRADE_DESCRIPTION;
     }
 }

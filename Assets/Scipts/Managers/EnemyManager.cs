@@ -1,6 +1,7 @@
 using UnityEngine;
 
 /// <summary>
+/// (P.S. In progress)
 /// Менеджер врагов отвечает за спавн различных типов врагов на сцене. Контролирует кол-во врагов на сцене.
 /// </summary>
 public class EnemyManager : MonoBehaviour, IGameManager

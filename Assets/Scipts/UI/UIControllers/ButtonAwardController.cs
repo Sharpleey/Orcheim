@@ -9,10 +9,16 @@ public class ButtonAwardController : MonoBehaviour
     [Header("Контроллер игрового меню")]
     [SerializeField] private GameMenuCanvasController _gameMenuCanvasController;
 
+    [Header("Цвет для разных типов наград")]
+    [SerializeField] private Color _colorAwardAttackModifaer;
+    [SerializeField] private Color _colorAwardAttackModifierUpgrade;
+    [SerializeField] private Color _colorAwardPlayerStatsUpgrade;
+
     [Space(10)]
     [SerializeField] private TextMeshProUGUI _textTypeNameAward;
     [SerializeField] private TextMeshProUGUI _textNameAward;
     [SerializeField] private TextMeshProUGUI _textDescriptionAward;
+    [SerializeField] private TextMeshProUGUI _textLevelUpgrade;
 
     #endregion Serialize fields
 
@@ -29,24 +35,41 @@ public class ButtonAwardController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (LootManager.Instance)
-        {
-            _award = LootManager.Instance.GetRandomAward();
+        _award = LootManager.Instance?.GetRandomAward();
 
-            if (_textTypeNameAward)
-                _textTypeNameAward.text = _award.TypeName;
-            if (_textNameAward)
-                _textNameAward.text = _award.Name;
-            if (_textDescriptionAward)
-                _textDescriptionAward.text = _award.Description;
-        }
-        else
+        _textTypeNameAward.text = _award?.TypeName;
+        _textNameAward.text = _award?.Name;
+        _textLevelUpgrade.text = "";
+
+        // TODO Переделать
+        if (_textDescriptionAward)
         {
-            if (_textDescriptionAward)
+            if (_award is AwardAttackModifaer awardAttackModifaer)
             {
-                _textDescriptionAward.text = "LootManager is not found!";
+                _textDescriptionAward.text = awardAttackModifaer?.AttackModifier.Description;
+                _textTypeNameAward.color = _colorAwardAttackModifaer;
+            }
+
+            if (_award is AwardAttackModifierUpgrade awardAttackModifierUpgrade)
+            {
+                _textDescriptionAward.text = awardAttackModifierUpgrade?.UpgratableParameter?.UpgradeDescription;
+                _textLevelUpgrade.text = $"Уровень {awardAttackModifierUpgrade?.UpgratableParameter?.Level + 1}";
+
+                _textTypeNameAward.color = _colorAwardAttackModifierUpgrade;
+                _textLevelUpgrade.color = _colorAwardAttackModifierUpgrade;
+            }
+
+            if (_award is AwardPlayerStatsUpgrade awardPlayerStatsUpgrade)
+            {
+                _textDescriptionAward.text = awardPlayerStatsUpgrade?.UpgratableParameter?.UpgradeDescription;
+                _textLevelUpgrade.text = $"Уровень {awardPlayerStatsUpgrade?.UpgratableParameter?.Level + 1}";
+
+                _textTypeNameAward.color = _colorAwardPlayerStatsUpgrade;
+                _textLevelUpgrade.color = _colorAwardPlayerStatsUpgrade;
             }
         }
+
+         
     }
     #endregion Mono
 
@@ -55,70 +78,34 @@ public class ButtonAwardController : MonoBehaviour
 
     #region Public methods
 
+    /// <summary>
+    /// TODO Переделать
+    /// </summary>
     public void OnClickAward()
     {
-        if(!PlayerManager.Instance)
-        {
-            Debug.Log("PlayerManager is not found!");
-
-            if(_gameMenuCanvasController)
-            {
-                _gameMenuCanvasController.Pause(false);
-                _gameMenuCanvasController.ShowCanvas(false);
-            }
-            return;
-        }
-
-        AwardAttackModifaer? awardAttackModifaer = _award as AwardAttackModifaer;
-
-        if(awardAttackModifaer != null)
+        if(_award is AwardAttackModifaer awardAttackModifaer)
         {
             // Добавляем модификатор атаки игроку
-            PlayerManager.Instance.PlayerUnit.SetActiveAttackModifier(awardAttackModifaer.AttackModifier);
+            PlayerManager.Instance?.PlayerUnit?.SetActiveAttackModifier(awardAttackModifaer.AttackModifier);
 
             // Удаляем модификатор атаки из пула наград
-            LootManager.Instance.RemoveAwardAttackModifier(awardAttackModifaer);
-
-            if (_gameMenuCanvasController)
-            {
-                _gameMenuCanvasController.Pause(false);
-                _gameMenuCanvasController.ShowCanvas(false);
-            }
-
-            return;
+            LootManager.Instance?.RemoveAwardAttackModifier(awardAttackModifaer);
         }
 
-        AwardAttackModifierUpgrade? awardAttackModifierUpgrade = _award as AwardAttackModifierUpgrade;
-
-        if(awardAttackModifierUpgrade != null)
+        if(_award is AwardAttackModifierUpgrade awardAttackModifierUpgrade)
         {
             // Улучшаем параметр модификатора атаки
             awardAttackModifierUpgrade.UpgratableParameter.Upgrade();
-
-            if (_gameMenuCanvasController)
-            {
-                _gameMenuCanvasController.Pause(false);
-                _gameMenuCanvasController.ShowCanvas(false);
-            }
-
-            return;
         }
 
-        AwardPlayerStatsUpgrade? awardPlayerStatsUpgrade = _award as AwardPlayerStatsUpgrade;
-
-        if (awardPlayerStatsUpgrade != null)
+        if (_award is AwardPlayerStatsUpgrade awardPlayerStatsUpgrade)
         {
             // Улучшаем параметр модификатора атаки
             awardPlayerStatsUpgrade.UpgratableParameter.Upgrade();
-
-            if (_gameMenuCanvasController)
-            {
-                _gameMenuCanvasController.Pause(false);
-                _gameMenuCanvasController.ShowCanvas(false);
-            }
-
-            return;
         }
+
+        _gameMenuCanvasController?.Pause(false);
+        _gameMenuCanvasController?.ShowCanvas(false);
     }
 
     #endregion Public methods

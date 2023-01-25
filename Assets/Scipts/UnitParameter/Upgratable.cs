@@ -34,7 +34,7 @@ public abstract class Upgratable
     /// <summary>
     /// Описание улучшения параметра
     /// </summary>
-    public string UpgradeDescription { get; set; }
+    public virtual string UpgradeDescription { get => _upgradeDescription; set => _upgradeDescription = value; }
 
     #endregion Properties
 
@@ -43,6 +43,7 @@ public abstract class Upgratable
     private int _maxLevel;
     private int _level;
     private float _increaseValuePerLevel;
+    protected string _upgradeDescription;
 
     #endregion Private fields
 

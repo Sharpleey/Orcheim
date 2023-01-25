@@ -9,11 +9,10 @@ public class AwardAttackModifaer : Award
     /// </summary>
     public AttackModifier AttackModifier { get; private set; }
 
-    public AwardAttackModifaer(string name, string description, AttackModifier attackModifaer)
+    public AwardAttackModifaer(string name, AttackModifier attackModifaer)
     {
         TypeName = "Модификатор атаки";
         Name = name;
-        Description = description;
         AttackModifier = attackModifaer;
     }
 

@@ -1,8 +1,8 @@
 
 public class Slowdown : Effect
 {
-    public override string Name => "Замедление";
-    public override string Description => $"Эффект на {Duration.Value} cек. замедляет цели скорость атаки на {AttackSpeedPercentageDecrease.Value}% и скорость передвижения на {MovementSpeedPercentageDecrease.Value}%";
+    public override string Name => HashEffectString.SLOWDOWN_NAME;
+    public override string Description => string.Format(HashEffectString.SLOWDOWN_DESCRIPTION, Duration.Value, AttackSpeedPercentageDecrease.Value, MovementSpeedPercentageDecrease.Value);
 
     public Parameter MovementSpeedPercentageDecrease { get; set; }
     public Parameter AttackSpeedPercentageDecrease { get; set; }
@@ -31,9 +31,9 @@ public class Slowdown : Effect
 
         EffectType = EffectType.Negative;
 
-        MovementSpeedPercentageDecrease.UpgradeDescription = $"Замедление скорости передвижения цели +{MovementSpeedPercentageDecrease.IncreaseValuePerLevel}% (Текущее {MovementSpeedPercentageDecrease.Value}%)";
-        AttackSpeedPercentageDecrease.UpgradeDescription = $"Замедление скорости атаки цели +{AttackSpeedPercentageDecrease.IncreaseValuePerLevel}% (Текущее {AttackSpeedPercentageDecrease.Value}%)";
-        Duration.UpgradeDescription = $"Длительность эффекта {Name} +{Duration.IncreaseValuePerLevel} сек. (Текущая {Duration.Value})";
+        MovementSpeedPercentageDecrease.UpgradeDescription = HashEffectString.SLOWDOWN_MOVEMENT_SPEED_PERCENTAGE_DECREASE_UPGRADE_DESCRIPTION;
+        AttackSpeedPercentageDecrease.UpgradeDescription = HashEffectString.SLOWDOWN_ATTACK_SPEED_PERCENTAGE_DECREASE_UPGRADE_DESCRIPTION;
+        Duration.UpgradeDescription = HashEffectString.SLOWDOWN_DURATION_UPGRADE_DESCRIPTION;
     }
 
     public override void Enable()

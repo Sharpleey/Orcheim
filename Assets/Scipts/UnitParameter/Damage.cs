@@ -42,7 +42,7 @@ public class Damage : UnitParameter
         Name = "Урон";
         DamageType = damageType;
         IsArmorIgnore = isArmorIgnore;
-        UpgradeDescription = $"Увеличение урона +{IncreaseValuePerLevel} (Текущее значение {Actual})";
+        UpgradeDescription = "Увеличение урона +{0} (Текущее значение {1})";
     }
 
     public Damage Copy()

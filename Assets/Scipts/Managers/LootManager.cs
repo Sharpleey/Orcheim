@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (P.S. In progress)
+/// ћенеджер отвечает за зоны спавна сундуков с наградами, непосредственно за спавн этих сундуков в случаных местах. 
+/// ќтвечает за выдачу наград игроку из сундкуков или иных способов, например за получение уровн€ игроком
+/// </summary>
 public class LootManager : MonoBehaviour, IGameManager
 {
     public static LootManager Instance { get; private set; }
@@ -80,7 +85,7 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public void AddAwardAttackModifier(AttackModifier attackModifaer)
     {
-        AwardsAttackModifaers.Add(new AwardAttackModifaer(attackModifaer.Name, attackModifaer.Description, attackModifaer));
+        AwardsAttackModifaers.Add(new AwardAttackModifaer(attackModifaer.Name, attackModifaer));
     }
 
     public void RemoveAwardAttackModifier(AwardAttackModifaer award)
@@ -90,12 +95,12 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public void AddAwardAttackModifierUpgrade(string name, Upgratable upgratableParameter)
     {
-        AwardsAttackModifiersUpgrade.Add(new AwardAttackModifierUpgrade(name, upgratableParameter.UpgradeDescription, upgratableParameter));
+        AwardsAttackModifiersUpgrade.Add(new AwardAttackModifierUpgrade(name, upgratableParameter));
     }
 
     public void AddAwardPlayerStatUpgrade(string name, Upgratable upgratableParameter)
     {
-        AwardsPlayerStatsUpgrade.Add(new AwardPlayerStatsUpgrade(name, upgratableParameter.UpgradeDescription, upgratableParameter));
+        AwardsPlayerStatsUpgrade.Add(new AwardPlayerStatsUpgrade(name, upgratableParameter));
     }
 
     public AwardAttackModifaer GetRandomAwardAttackModifaer()
@@ -126,14 +131,16 @@ public class LootManager : MonoBehaviour, IGameManager
     }
 
     // TODO ѕеределать это дерьмо
+    /// <summary>
+    /// ћетод возвращает случайную награду
+    /// </summary>
+    /// <returns></returns>
     public Award GetRandomAward()
     {
         Award award = null;
 
         while(award == null)
         {
-            Debug.Log("!");
-
             int indexTypeAward = Random.Range(1, 4);
 
             switch (indexTypeAward)

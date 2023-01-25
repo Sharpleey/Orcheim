@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
+/// (P.S. In progress)
 /// Менеджер волн. Отвечает за основую логику, механику волн врагов. Контролирует номер волны и рассылает сообщения остальным менеджерам
 /// </summary>
 public class WaveManager : MonoBehaviour, IGameManager

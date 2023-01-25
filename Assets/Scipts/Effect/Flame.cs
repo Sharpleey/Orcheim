@@ -1,8 +1,8 @@
 
 public class Flame : Effect
 {
-    public override string Name => "Горение";
-    public override string Description => $"Эффект, каждые {Frequency} сек. в течении {Duration.Value} секунд наносит {Damage.Max} урона, снижает броню цели на {ArmorDecrease.Value}";
+    public override string Name => HashEffectString.FLAME_NAME;
+    public override string Description => string.Format(HashEffectString.FLAME_DESCRIPTION, Frequency, Duration.Value, Damage.Max, ArmorDecrease.Value);
     public Damage Damage { get; private set; }
     public Parameter ArmorDecrease { get; private set; }
 
@@ -38,9 +38,9 @@ public class Flame : Effect
 
         EffectType = EffectType.Negative;
 
-        Damage.UpgradeDescription = $"Урон за тик +{Damage.IncreaseValuePerLevel} (Текущий {Damage.Max})";
-        ArmorDecrease.UpgradeDescription = $"Снижение брони за тик +{ArmorDecrease.IncreaseValuePerLevel} (Текущий {ArmorDecrease.Value})";
-        Duration.UpgradeDescription = $"Длительность эффекта {Name} +{Duration.IncreaseValuePerLevel} сек. (Текущая {Duration.Value})";
+        Damage.UpgradeDescription = HashEffectString.FLAME_DAMAGE_UPGRADE_DESCRIPTION;
+        ArmorDecrease.UpgradeDescription = HashEffectString.FLAME_ARMOR_DECREASE_UPGRADE_DESCRIPTION;
+        Duration.UpgradeDescription = HashEffectString.FLAME_DURATION_UPGRADE_DESCRIPTION;
     }
 
     public override void Enable()

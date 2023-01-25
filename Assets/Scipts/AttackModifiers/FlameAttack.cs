@@ -4,8 +4,8 @@
 /// </summary>
 public class FlameAttack : ProcableAttackModifier
 {
-    public override string Name => "Поджигающая атака";
-    public override string Description => $"Атаки с шансом {Сhance.Value}% накладывают на цель эффект {Effect.Name}\n{Effect.Description}";
+    public override string Name => HashAttackModString.FLAME_ATTACK_NAME;
+    public override string Description => string.Format(HashAttackModString.FLAME_ATTACK_DESCRIPTION, Chance.Value, Effect.Name, Effect.Description);
 
     /// <summary>
     /// Эффект, который накладывает модификатор на юнита
@@ -38,6 +38,6 @@ public class FlameAttack : ProcableAttackModifier
             armorDecrease: armorDecrease, increaseArmorDecreasePerLevel: increaseArmorDecreasePerLevel, levelArmorDecrease: levelArmorDecrease,
             durationEffect: durationEffect, increaseDurationEffectPerLevel: increaseDurationEffectPerLevel, levelDurationEffect: levelDurationEffect);
 
-        Сhance.UpgradeDescription = $"Шанс наложить эффект +{Сhance.IncreaseValuePerLevel}% (Текущий {Сhance.Value}%)";
+        Chance.UpgradeDescription = HashAttackModString.FLAME_ATTACK_CHANCE_UPGRADE_DESCRIPTION;
     }
 }

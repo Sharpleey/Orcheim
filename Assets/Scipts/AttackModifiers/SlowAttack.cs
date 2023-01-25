@@ -4,8 +4,8 @@
 /// </summary>
 public class SlowAttack : ProcableAttackModifier
 {
-    public override string Name => "Замедляющая атака";
-    public override string Description => $"Атаки с шансом {Сhance.Value}% накладывают на цель эффект {Effect.Name}\n{Effect.Description}";
+    public override string Name => HashAttackModString.SLOW_ATTACK_NAME;
+    public override string Description => string.Format(HashAttackModString.SLOW_ATTACK_DESCRIPTION, Chance.Value, Effect.Name, Effect.Description);
 
     /// <summary>
     /// Эффект, который отвечает за замедление
@@ -22,5 +22,7 @@ public class SlowAttack : ProcableAttackModifier
             defaultMovementSpeedPercentageDecrease: defaultMovementSpeedPercentageDecrease, increaseMovementSpeedPercentageDecrease: increaseMovementSpeedPercentageDecrease, levelMovementSpeedPercentageDecrease: levelMovementSpeedPercentageDecrease,
             defaultAttackSpeedPercentageDecrease: defaultAttackSpeedPercentageDecrease, increaseAttackSpeedPercentageDecrease: increaseAttackSpeedPercentageDecrease, levelAttackSpeedPercentageDecrease: levelAttackSpeedPercentageDecrease,
             durationEffect: durationEffect, increaseDurationEffectPerLevel: increaseDurationEffectPerLevel, levelDurationEffect: levelDurationEffect);
+
+        Chance.UpgradeDescription = HashAttackModString.SLOW_ATTACK_CHANCE_UPGRADE_DESCRIPTION;
     }
 }

@@ -13,6 +13,12 @@ public class Parameter : Upgratable
 
     private int _value;
 
+    public override string UpgradeDescription 
+    {
+        get => string.Format(_upgradeDescription, IncreaseValuePerLevel, Value);
+        set => _upgradeDescription = value;
+    }
+
     public Parameter(int defaultValue, int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) :base(increaseValuePerLevel, maxLevel, level)
     {
         Value = defaultValue;

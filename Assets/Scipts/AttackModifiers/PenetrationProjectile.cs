@@ -6,9 +6,9 @@ using UnityEngine;
 /// </summary>
 public class PenetrationProjectile : AttackModifier
 {
-    public override string Name => "Пробивающий снаряд";
+    public override string Name => HashAttackModString.PENETRATION_PROJECTILE_NAME;
 
-    public override string Description => $"Снаряд пробивает несколько ({MaxPenetrationCount.Value}) целей и наносит урон уменьщающийся на {PenetrationDamageDecrease.Value}% с каждым пробитием";
+    public override string Description => string.Format(HashAttackModString.PENETRATION_PROJECTILE_DESCRIPTION, MaxPenetrationCount.Value, PenetrationDamageDecrease.Value);
 
     /// <summary>
     /// Максимальное кол-во пробиваемый целей
@@ -32,14 +32,14 @@ public class PenetrationProjectile : AttackModifier
 
     public PenetrationProjectile(
         int defaultValueMaxPenetrationCount = 2, int increaseMaxPenetrationCountPerLevel = 1, int maxLevelPenetrationCount = 1,
-        int defaultValuePenetrationDamageDecrease = 50, int decreasePenetrationDamageDecreasePerLevel = 5, int levelPenetrationDamageDecrease = 1, int maxLevelPenetrationDamageDecrease = 10)
+        int defaultValuePenetrationDamageDecrease = 50, int decreasePenetrationDamageDecreasePerLevel = -5, int levelPenetrationDamageDecrease = 1, int maxLevelPenetrationDamageDecrease = 10)
     {
         MaxPenetrationCount = new Parameter(defaultValue: defaultValueMaxPenetrationCount, increaseValuePerLevel: increaseMaxPenetrationCountPerLevel, level: maxLevelPenetrationCount);
 
         PenetrationDamageDecrease = new Parameter(defaultValue: defaultValuePenetrationDamageDecrease, increaseValuePerLevel: decreasePenetrationDamageDecreasePerLevel, maxLevel: maxLevelPenetrationDamageDecrease, level: levelPenetrationDamageDecrease);
 
-        MaxPenetrationCount.UpgradeDescription = $"Число пробиваемые целей +{MaxPenetrationCount.Value} (Текущее значение: {MaxPenetrationCount.Value})";
-        PenetrationDamageDecrease.UpgradeDescription = $"Уменьшение урона с каждым пробитием -{PenetrationDamageDecrease.Value}% (Текущее уменьшение {PenetrationDamageDecrease.Value}%)";
+        MaxPenetrationCount.UpgradeDescription = HashAttackModString.PENETRATION_PROJECTILE_MAX_COUNT_UPGRADE_DESCRIPTION;
+        PenetrationDamageDecrease.UpgradeDescription = HashAttackModString.PENETRATION_DAMAGE_DECREASE_COUNT_UPGRADE_DESCRIPTION;
     }
 }
 

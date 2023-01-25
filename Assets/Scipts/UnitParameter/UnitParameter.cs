@@ -36,6 +36,12 @@ public class UnitParameter : Upgratable
         set => _actual = Mathf.Clamp(value, 0, _max);
     }
 
+    public override string UpgradeDescription
+    {
+        get => string.Format(_upgradeDescription, IncreaseValuePerLevel, Max);
+        set => _upgradeDescription = value;
+    }
+
     #endregion Properties
 
     #region Private fields

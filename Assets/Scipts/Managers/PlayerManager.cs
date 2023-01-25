@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Менеджер отвечает за параметры и данные игрока. Возрождение игрока на сцене
+/// (P.S. In progress)
+/// Менеджер отвечает за параметры и данные игрока. ?? Возрождение игрока на сцене ??
 /// </summary>
 public class PlayerManager : MonoBehaviour, IGameManager
 {
