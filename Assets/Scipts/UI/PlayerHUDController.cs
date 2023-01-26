@@ -28,9 +28,15 @@ public class PlayerHUDController : MonoBehaviour
 
     private void Start()
     {
-        _playerUnit = PlayerManager.Instance.PlayerUnit;
+        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
 
         ClearAllText();
+
+        if (_playerUnit)
+        {
+            SetTextHealthPlayer(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+            SetValueHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+        }
     }
 
     private void ClearAllText()
@@ -100,12 +106,6 @@ public class PlayerHUDController : MonoBehaviour
     private void StartingNewGameModeOrccheim_EventHandler()
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.CLEAR_VILLAGE, 5));
-
-        if(_playerUnit)
-        {
-            SetTextHealthPlayer(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-            SetValueHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-        }
     }
 
     private void PreparingForWave_EventHandler(int wave)
