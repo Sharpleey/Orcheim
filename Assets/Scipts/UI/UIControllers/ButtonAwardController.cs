@@ -95,13 +95,13 @@ public class ButtonAwardController : MonoBehaviour
         if(_award is AwardAttackModifierUpgrade awardAttackModifierUpgrade)
         {
             // Улучшаем параметр модификатора атаки
-            awardAttackModifierUpgrade.UpgratableParameter.Upgrade();
+            awardAttackModifierUpgrade.UpgratableParameter.LevelUp();
         }
 
         if (_award is AwardPlayerStatsUpgrade awardPlayerStatsUpgrade)
         {
             // Улучшаем параметр модификатора атаки
-            awardPlayerStatsUpgrade.UpgratableParameter.Upgrade();
+            awardPlayerStatsUpgrade.UpgratableParameter.LevelUp();
         }
 
         _gameMenuCanvasController?.Pause(false);

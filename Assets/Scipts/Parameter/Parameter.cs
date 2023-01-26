@@ -43,12 +43,6 @@ public class Parameter : Upgratable
     }
 
     #region Public methods
-    public override void Upgrade(int levelUp = 1)
-    {
-        base.Upgrade(levelUp);
-
-        Value = _defaultValue + (int)IncreaseValuePerLevel * (Level - 1);
-    }
 
     public override void SetLevel(int newLevel)
     {

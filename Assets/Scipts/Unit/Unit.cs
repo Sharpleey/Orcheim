@@ -110,6 +110,8 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     public virtual void LevelUp(int levelUp = 1)
     {
         Level += levelUp;
+
+        SetLevel(Level);
     }
 
     public virtual void SetLevel(int newLevel)

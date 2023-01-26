@@ -59,9 +59,11 @@ public abstract class Upgratable
     /// Улучшить параметр на уровень или несколько уровней
     /// </summary>
     /// <param name="levelUp">Значение, на сколько уровней улучшить параметр (По умолчанию на 1)</param>
-    public virtual void Upgrade(int levelUp = 1)
+    public virtual void LevelUp(int levelUp = 1)
     {
         Level += levelUp;
+
+        SetLevel(Level);
     }
 
     /// <summary>

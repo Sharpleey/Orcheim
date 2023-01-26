@@ -66,14 +66,6 @@ public class UnitParameter : Upgratable
         SetLevel(Level);
     }
 
-    public override void Upgrade(int levelUp = 1)
-    {
-        base.Upgrade(levelUp);
-
-        Max = Default + (int)IncreaseValuePerLevel * (Level - 1);
-        Actual = Max;
-    }
-
     public override void SetLevel(int newLevel)
     {
         base.SetLevel(newLevel);
