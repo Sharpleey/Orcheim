@@ -248,8 +248,6 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
 
             if (CurrentState.GetType() != typeof(DieState))
             {
-                PlayerEventManager.PlayerLevelUp(1); //TODO Для теста
-
                 SetState<DieState>();
             }
         }

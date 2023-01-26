@@ -93,7 +93,8 @@ public class ButtonAwardController : MonoBehaviour
             awardPlayerStatsUpgrade.UpgratableParameter.LevelUp();
         }
 
-        _gameMenuCanvasController?.Pause(false);
+        GlobalGameEventManager.PauseGame(false);
+
         _gameMenuCanvasController?.ShowCanvas(false);
     }
 

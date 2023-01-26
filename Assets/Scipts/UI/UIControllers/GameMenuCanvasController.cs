@@ -37,24 +37,18 @@ public class GameMenuCanvasController : MonoBehaviour
         {
             if(!_canvas.enabled)
             {
-                Pause(true);
+                GlobalGameEventManager.PauseGame(true);
+
                 ShowCanvas(true);
                 ShowMenu(_pauseMenu);
 
                 return;
             }
 
-            Pause(false);
+            GlobalGameEventManager.PauseGame(false);
+
             ShowCanvas(false);
         }
-    }
-
-    /// <summary>
-    /// Метод с помощью которого можно поставить игру на паузу и показать меню паузы
-    /// </summary>
-    public void Pause(bool isPause)
-    {
-        GlobalGameEventManager.PauseGame(isPause);
     }
 
     private void ShowMenu(GameObject menu)
@@ -70,6 +64,7 @@ public class GameMenuCanvasController : MonoBehaviour
         _learn.SetActive(false);
         _settings.SetActive(false);
         _gameOverMenu.SetActive(false);
+        _awardsMenu.SetActive(false);
     }
 
     public void ShowCanvas(bool isShowCanvas)
@@ -128,14 +123,16 @@ public class GameMenuCanvasController : MonoBehaviour
     #region Event handlers
     private void EventHandlerPlayerDead()
     {
-        Pause(true);
+        GlobalGameEventManager.PauseGame(true);
+
         ShowCanvas(true);
         ShowMenu(_gameOverMenu);
     }
 
     private void EventHandlerPlayerLevelUp(int level)
     {
-        Pause(true);
+        GlobalGameEventManager.PauseGame(true);
+
         ShowCanvas(true);
         ShowMenu(_awardsMenu);
     }
