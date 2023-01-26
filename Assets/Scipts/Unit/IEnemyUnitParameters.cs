@@ -9,10 +9,10 @@ public interface IEnemyUnitParameters : IUnitParameters
     /// <summary>
     /// Стоимость за убиство в золоте
     /// </summary>
-    public CostInGold CostInGold { get; }
+    public Parameter CostInGold { get; }
 
     /// <summary>
     /// Стоимость за убийство в опыте
     /// </summary>
-    public CostInExp CostInExp { get; }
+    public Parameter CostInExp { get; }
 }

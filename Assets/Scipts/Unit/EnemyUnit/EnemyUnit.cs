@@ -22,8 +22,8 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     #region Properties
 
     public float AttackDistance { get; private set; }
-    public CostInGold CostInGold { get; private set; }
-    public CostInExp CostInExp { get; private set; }
+    public Parameter CostInGold { get; private set; }
+    public Parameter CostInExp { get; private set; }
 
     public BoxCollider SummonTrigger { get => _summonTrigger; private set => _summonTrigger = value; }
 
@@ -174,11 +174,10 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         DefaultState = _defaultState; //?? надо ли
         SummonTrigger = _summonTrigger; //?? надо ли
 
-        EnemyUnitConfig? enemyUnitConfig = _unitConfig as EnemyUnitConfig;
-        if(enemyUnitConfig)
+        if(_unitConfig is EnemyUnitConfig enemyUnitConfig)
         {
-            CostInGold = new CostInGold(enemyUnitConfig.Gold, enemyUnitConfig.IncreaseGold);
-            CostInExp = new CostInExp(enemyUnitConfig.Experience, enemyUnitConfig.IncreaseExperience);
+            CostInGold = new Parameter(enemyUnitConfig.Gold, enemyUnitConfig.IncreaseGold);
+            CostInExp = new Parameter(enemyUnitConfig.Experience, enemyUnitConfig.IncreaseExperience);
 
             AttackDistance = enemyUnitConfig.AttackDistance;
         }
