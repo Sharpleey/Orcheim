@@ -22,20 +22,17 @@ public class ButtonAwardController : MonoBehaviour
 
     #endregion Serialize fields
 
-    #region Properties
-    #endregion Properties
-
     #region Private fields
 
     private Award _award;
 
     #endregion Private fields
 
-    #region Mono
+    #region Public methods
 
-    private void OnEnable()
+    public void SetAward(Award award)
     {
-        _award = LootManager.Instance?.GetRandomAward();
+        _award = award;
 
         _textTypeNameAward.text = _award?.TypeName;
         _textNameAward.text = _award?.Name;
@@ -68,15 +65,7 @@ public class ButtonAwardController : MonoBehaviour
                 _textLevelUpgrade.color = _colorAwardPlayerStatsUpgrade;
             }
         }
-
-         
     }
-    #endregion Mono
-
-    #region Private methods
-    #endregion Private methods
-
-    #region Public methods
 
     /// <summary>
     /// TODO Переделать

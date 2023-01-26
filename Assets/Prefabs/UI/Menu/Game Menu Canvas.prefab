@@ -2872,7 +2872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4620633751240033648
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2910,6 +2910,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseMenuCanvasController: {fileID: 7236045072930384665}
+  _buttonAwardControllers:
+  - {fileID: 2713248732930683741}
+  - {fileID: 2747849160943369329}
+  - {fileID: 8533948497215314610}
 --- !u!1 &5380218253429119840
 GameObject:
   m_ObjectHideFlags: 0
@@ -4627,6 +4631,7 @@ MonoBehaviour:
   _gameOverMenu: {fileID: 6801240347751454562}
   _awardsMenu: {fileID: 5330478925314788820}
   _showGameMenuKey: 27
+  _canvas: {fileID: 7882538437726425610}
 --- !u!1 &7882538437744014104
 GameObject:
   m_ObjectHideFlags: 0

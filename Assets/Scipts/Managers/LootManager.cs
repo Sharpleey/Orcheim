@@ -3,6 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// (P.S. In progress)
+/// (TODO) Сделать нормальный алгоритм случайных наград.
 /// Менеджер отвечает за зоны спавна сундуков с наградами, непосредственно за спавн этих сундуков в случаных местах. 
 /// Отвечает за выдачу наград игроку из сундкуков или иных способов, например за получение уровня игроком
 /// </summary>
@@ -159,6 +160,21 @@ public class LootManager : MonoBehaviour, IGameManager
         }
 
         return award;
+    }
+
+    public List<Award> GetListRandomAwards(int countAward)
+    {
+        List<Award> awards = new List<Award>();
+
+        while(awards.Count != countAward)
+        {
+            Award award = GetRandomAward();
+
+            if (!awards.Contains(award))
+                awards.Add(award);
+        }
+
+        return awards;
     }
 
     #endregion Public methods

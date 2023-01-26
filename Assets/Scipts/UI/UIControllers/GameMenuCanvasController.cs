@@ -9,9 +9,8 @@ public class GameMenuCanvasController : MonoBehaviour
     [SerializeField] private GameObject _gameOverMenu;
     [SerializeField] private GameObject _awardsMenu;
 
+    [Space]
     [SerializeField] private KeyCode _showGameMenuKey = KeyCode.Escape;
-
-    public bool IsCanvasShowed { get => _canvas.enabled; }
 
     private GameObject _activeMenu;
     private Canvas _canvas;
@@ -36,7 +35,7 @@ public class GameMenuCanvasController : MonoBehaviour
     {
         if (Input.GetKeyDown(_showGameMenuKey))
         {
-            if(!IsCanvasShowed)
+            if(!_canvas.enabled)
             {
                 Pause(true);
                 ShowCanvas(true);
