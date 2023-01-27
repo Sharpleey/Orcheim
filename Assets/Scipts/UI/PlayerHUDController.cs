@@ -10,7 +10,7 @@ public class PlayerHUDController : MonoBehaviour
 
     [Header("Wave info")]
     //[SerializeField] private TextMeshProUGUI _waveCounter;
-    [SerializeField] private TextMeshProUGUI _enemiesRemaining;
+    //[SerializeField] private TextMeshProUGUI _enemiesRemaining;
 
     [Header("Health Bar")]
     [SerializeField] private TextMeshProUGUI _healthPlayer;
@@ -37,7 +37,7 @@ public class PlayerHUDController : MonoBehaviour
         WaveEventManager.OnPreparingForWave.AddListener(PreparingForWave_EventHandler);
         WaveEventManager.OnWaveIsComing.AddListener(WaveIsComing_EventHandler);
         WaveEventManager.OnWaveIsOver.AddListener(WaveIsOver_EventHandler);
-        SpawnEnemyEventManager.OnEnemiesRemaining.AddListener(SetTextEnemiesRemaining);
+        //SpawnEnemyEventManager.OnEnemiesRemaining.AddListener(SetTextEnemiesRemaining);
     }
 
     private void Start()
@@ -62,8 +62,8 @@ public class PlayerHUDController : MonoBehaviour
             _notification.text = "";
         //if (_waveCounter)
         //    _waveCounter.text = "";
-        if (_enemiesRemaining)
-            _enemiesRemaining.text = "";
+        //if (_enemiesRemaining)
+        //    _enemiesRemaining.text = "";
         if (_healthPlayer)
             _healthPlayer.text = "";
         if (_armorPlayer)
@@ -100,15 +100,15 @@ public class PlayerHUDController : MonoBehaviour
     //        _waveCounter.text = PlayerNotification.WAVE_COUNTER + wave.ToString();
     //}
 
-    /// <summary>
-    /// Метод устанавливает текст для счетчика оставшихся врагов на волне
-    /// </summary>
-    /// <param name="enemiesRemaining">Кол-во оставшихся врагов</param>
-    private void SetTextEnemiesRemaining(int enemiesRemaining)
-    {
-        if (_enemiesRemaining)
-            _enemiesRemaining.text = PlayerNotification.ENEMIES_REMAINING + enemiesRemaining.ToString();
-    }
+    ///// <summary>
+    ///// Метод устанавливает текст для счетчика оставшихся врагов на волне
+    ///// </summary>
+    ///// <param name="enemiesRemaining">Кол-во оставшихся врагов</param>
+    //private void SetTextEnemiesRemaining(int enemiesRemaining)
+    //{
+    //    if (_enemiesRemaining)
+    //        _enemiesRemaining.text = PlayerNotification.ENEMIES_REMAINING + enemiesRemaining.ToString();
+    //}
 
     private void SetTextHealthBar(int currentHealth, int maxHealth)
     {

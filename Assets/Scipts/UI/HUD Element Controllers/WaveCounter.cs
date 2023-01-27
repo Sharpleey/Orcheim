@@ -11,7 +11,7 @@ public class WaveCounter : MonoBehaviour
 
     private void Awake()
     {
-        WaveEventManager.OnWaveIsComing.AddListener(SetTextWaveCounter);
+        WaveEventManager.OnWaveIsComing.AddListener(SetValueWaveCounter);
     }
 
     private void Start()
@@ -21,10 +21,10 @@ public class WaveCounter : MonoBehaviour
     }
 
     /// <summary>
-    /// Метод устанавлиает текст для счетчика волн
+    /// Метод устанавлиает значение для счетчика волн, выводя его в виде текста
     /// </summary>
     /// <param name="wave">Номер волны</param>
-    private void SetTextWaveCounter(int wave)
+    private void SetValueWaveCounter(int wave)
     {
         if (_waveValueText)
             _waveValueText.text = wave.ToString();
