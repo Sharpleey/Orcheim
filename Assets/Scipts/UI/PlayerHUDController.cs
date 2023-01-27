@@ -2,17 +2,31 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System;
 
 public class PlayerHUDController : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _playerNotification;
+    [Header("Notification")]
+    [SerializeField] private TextMeshProUGUI _notification;
+
+    [Header("Wave info")]
     [SerializeField] private TextMeshProUGUI _waveCounter;
     [SerializeField] private TextMeshProUGUI _enemiesRemaining;
 
     [Header("Health Bar")]
     [SerializeField] private TextMeshProUGUI _healthPlayer;
     [SerializeField] private Slider _healthSlider;
+
+    [Header("Armor")]
+    [SerializeField] private TextMeshProUGUI _armorPlayer;
+
+    [Header("Experience")]
+    [SerializeField] private TextMeshProUGUI _experiencePlayer;
+
+    [Header("Gold")]
+    [SerializeField] private TextMeshProUGUI _goldPlayer;
+
+    [Header("Level")]
+    [SerializeField] private TextMeshProUGUI _levelPlayer;
 
     private PlayerUnit _playerUnit;
 
@@ -34,21 +48,32 @@ public class PlayerHUDController : MonoBehaviour
 
         if (_playerUnit)
         {
-            SetTextHealthPlayer(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-            SetValueHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+            SetTextHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+            SetTextArmor(_playerUnit.Armor.Actual);
+            SetTextGold(_playerUnit.Gold);
+            SetTextExperience(_playerUnit.Experience);
+            SetTextLevel(_playerUnit.Level);
         }
     }
 
     private void ClearAllText()
     {
-        if (_playerNotification)
-            _playerNotification.text = "";
+        if (_notification)
+            _notification.text = "";
         if (_waveCounter)
             _waveCounter.text = "";
         if (_enemiesRemaining)
             _enemiesRemaining.text = "";
         if (_healthPlayer)
             _healthPlayer.text = "";
+        if (_armorPlayer)
+            _armorPlayer.text = "";
+        if (_experiencePlayer)
+            _experiencePlayer.text = "";
+        if (_goldPlayer)
+            _goldPlayer.text = "";
+        if (_levelPlayer)
+            _levelPlayer.text = "";
     }
 
     /// <summary>
@@ -61,10 +86,8 @@ public class PlayerHUDController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (_playerNotification)
-        {
-            _playerNotification.text = text;
-        }
+        if (_notification)
+            _notification.text = text;
     }
 
     /// <summary>
@@ -87,19 +110,45 @@ public class PlayerHUDController : MonoBehaviour
             _enemiesRemaining.text = PlayerNotification.ENEMIES_REMAINING + enemiesRemaining.ToString();
     }
 
-    private void SetTextHealthPlayer(int currentHealth, int maxHealth)
+    private void SetTextHealthBar(int currentHealth, int maxHealth)
     {
         if (_healthPlayer)
             _healthPlayer.text = currentHealth.ToString() + "/" + maxHealth.ToString();
+
+        SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
     }
 
-    private void SetValueHealthBar(int currentHealth, int maxHealth)
+    private void SetValueHealthBarSlider(int currentHealth, int maxHealth)
     {
         if (_healthSlider)
         {
             _healthSlider.maxValue = maxHealth;
             _healthSlider.value = currentHealth;
         }
+    }
+
+    private void SetTextArmor(int armor)
+    {
+        if(_armorPlayer)
+            _armorPlayer.text = armor.ToString();
+    }
+
+    private void SetTextLevel(int level)
+    {
+        if (_levelPlayer)
+            _levelPlayer.text = level.ToString();
+    }
+
+    private void SetTextGold(int gold)
+    {
+        if (_goldPlayer)
+            _goldPlayer.text = gold.ToString();
+    }
+
+    private void SetTextExperience(int experience)
+    {
+        if (_experiencePlayer)
+            _experiencePlayer.text = experience.ToString();
     }
 
     #region Event handlers
@@ -129,8 +178,8 @@ public class PlayerHUDController : MonoBehaviour
     {
         if(_playerUnit)
         {
-            SetTextHealthPlayer(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-            SetValueHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+            SetTextHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+            SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
         }
        
     }
