@@ -9,7 +9,7 @@ public class PlayerHUDController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _notification;
 
     [Header("Wave info")]
-    [SerializeField] private TextMeshProUGUI _waveCounter;
+    //[SerializeField] private TextMeshProUGUI _waveCounter;
     [SerializeField] private TextMeshProUGUI _enemiesRemaining;
 
     [Header("Health Bar")]
@@ -60,8 +60,8 @@ public class PlayerHUDController : MonoBehaviour
     {
         if (_notification)
             _notification.text = "";
-        if (_waveCounter)
-            _waveCounter.text = "";
+        //if (_waveCounter)
+        //    _waveCounter.text = "";
         if (_enemiesRemaining)
             _enemiesRemaining.text = "";
         if (_healthPlayer)
@@ -90,15 +90,15 @@ public class PlayerHUDController : MonoBehaviour
             _notification.text = text;
     }
 
-    /// <summary>
-    /// Метод устанавлиает текст для счетчика волн
-    /// </summary>
-    /// <param name="wave">Номер волны</param>
-    private void SetTextWaveCounter(int wave)
-    {
-        if (_waveCounter)
-            _waveCounter.text = PlayerNotification.WAVE_COUNTER + wave.ToString();
-    }
+    ///// <summary>
+    ///// Метод устанавлиает текст для счетчика волн
+    ///// </summary>
+    ///// <param name="wave">Номер волны</param>
+    //private void SetTextWaveCounter(int wave)
+    //{
+    //    if (_waveCounter)
+    //        _waveCounter.text = PlayerNotification.WAVE_COUNTER + wave.ToString();
+    //}
 
     /// <summary>
     /// Метод устанавливает текст для счетчика оставшихся врагов на волне
@@ -166,7 +166,7 @@ public class PlayerHUDController : MonoBehaviour
     {
         StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_COMING, 0));
 
-        SetTextWaveCounter(wave);
+        //SetTextWaveCounter(wave);
     }
 
     private void WaveIsOver_EventHandler()
