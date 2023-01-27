@@ -19,7 +19,7 @@ public class GlobalGameEventManager
     /// <summary>
     /// Событие убийства врага
     /// </summary>
-    public static readonly UnityEvent OnEnemyKilled = new UnityEvent();
+    public static readonly UnityEvent<EnemyUnit> OnEnemyKilled = new UnityEvent<EnemyUnit>();
 
     public static readonly UnityEvent<GameMode> OnNewGame = new UnityEvent<GameMode>();
 
@@ -46,9 +46,9 @@ public class GlobalGameEventManager
     /// <summary>
     /// Метод отправки события OnEnemyKilled
     /// </summary>
-    public static void EnemyKilled()
+    public static void EnemyKilled(EnemyUnit enemyUnit)
     {
-        OnEnemyKilled.Invoke();
+        OnEnemyKilled.Invoke(enemyUnit);
     }
 
     /// <summary>

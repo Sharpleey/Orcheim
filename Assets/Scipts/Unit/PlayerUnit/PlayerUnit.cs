@@ -22,18 +22,10 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 
     #endregion Mono
 
-    #region Public methods
-
-    public override void InitParameters()
+    #region Private methods
+    private void AddListeners()
     {
-        base.InitParameters();
-
-        PlayerUnitConfig? playerUnitConfig = _unitConfig as PlayerUnitConfig;
-
-        if (playerUnitConfig != null)
-        {
-            Gold = playerUnitConfig.Gold;
-        }
+        GlobalGameEventManager.OnEnemyKilled.AddListener(EventHandler_EnemyKilled);
     }
 
     private void AddParametersToPoolAwards()
@@ -58,6 +50,22 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 
         if (!_unitConfig.OnPenetrationProjectile)
             LootManager.Instance?.AddAwardAttackModifier(PenetrationProjectile);
+    }
+
+    #endregion Private methods
+
+    #region Public methods
+
+    public override void InitParameters()
+    {
+        base.InitParameters();
+
+        PlayerUnitConfig? playerUnitConfig = _unitConfig as PlayerUnitConfig;
+
+        if (playerUnitConfig != null)
+        {
+            Gold = playerUnitConfig.Gold;
+        }
     }
 
     public override void TakeDamage(Damage damage, Collider hitBox = null)
@@ -131,4 +139,14 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     }
 
     #endregion Public methods
+
+    #region Event Handlers
+
+    private void EventHandler_EnemyKilled(EnemyUnit enemyUnit)
+    {
+        Experience += enemyUnit.CostInExp.Value;
+        Gold += enemyUnit.CostInGold.Value;
+    }
+
+    #endregion Event Handlers
 }

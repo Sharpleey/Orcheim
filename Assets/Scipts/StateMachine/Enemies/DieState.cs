@@ -11,7 +11,7 @@ public class DieState : EnemyState
     }
     public override void Enter()
     {
-        GlobalGameEventManager.EnemyKilled();
+        GlobalGameEventManager.EnemyKilled(enemyUnit);
 
         enemyUnit?.WeaponController.MakeWeaponPhysical(true);
         enemyUnit?.RagdollController.MakePhysical();

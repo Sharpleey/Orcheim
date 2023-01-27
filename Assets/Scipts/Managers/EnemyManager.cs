@@ -260,7 +260,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
         //}
     }
 
-    private void CheckEnemiesRemaining()
+    private void CheckEnemiesRemaining(EnemyUnit enemyUnit)
     {
         CountEnemyOnScene -= 1;
 

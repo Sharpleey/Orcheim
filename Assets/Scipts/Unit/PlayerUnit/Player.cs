@@ -16,6 +16,7 @@ public class Player : PlayerUnit
     #endregion Properties
 
     #region Private methods
+
     protected override void InitControllers()
     {
         Rigidbody = GetComponent<Rigidbody>();
