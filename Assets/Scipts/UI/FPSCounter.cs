@@ -1,30 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Cчетчик кадров
+/// </summary>
 public class FPSCounter : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _fpsText;
+    [Header("Частота обновления счетчика")]
+    [SerializeField, Range(0.1f, 1f)] private float _rateUpdateFps = 0.25f;
+
+    [Header("Текст вывода значения")]
+    [SerializeField] private TextMeshProUGUI _fpsValueText;
 
     private int _fps;
-
     private float _timer = 0;
 
-    // Update is called once per frame
     void Update()
     {
         _timer += Time.unscaledDeltaTime;
-        if(_timer > 0.25f)
+
+        if(_timer > _rateUpdateFps)
         {
             _fps = (int)(1f / Time.unscaledDeltaTime);
-            SetFpsText(_fps.ToString());
+
+            _fpsValueText.text = _fps.ToString();
+
             _timer = 0;
         }
-    }
-
-    private void SetFpsText(string fps)
-    {
-        _fpsText.text = "FPS: " + fps;
     }
 }
