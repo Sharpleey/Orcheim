@@ -1,5 +1,5 @@
 
-public class SceneName
+public class HashSceneNameString
 {
     public const string MAIN_MENU = "MainMenu";
     public const string TEST_MAP_1 = "TestMap1";

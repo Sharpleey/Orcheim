@@ -117,7 +117,7 @@ public class GameMenuCanvasController : MonoBehaviour
         GlobalGameEventManager.GameOver();
 
         if (GameSceneManager.Instance)
-            GameSceneManager.Instance.SwitchToScene(SceneName.MAIN_MENU);
+            GameSceneManager.Instance.SwitchToScene(HashSceneNameString.MAIN_MENU);
     }
 
     #region Event handlers

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Скрипт UI  элемента: Счетчик оставшихся врагов
+/// Скрипт HUD элемента: Счетчик оставшихся врагов
 /// </summary>
 public class EnemiesRemainingCounter : MonoBehaviour
 {

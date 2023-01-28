@@ -32,11 +32,11 @@ public class PlayerHUDController : MonoBehaviour
 
     private void Awake()
     {
-        GameSceneEventManager.OnGameMapStarded.AddListener(StartingNewGameModeOrccheim_EventHandler);
+        //GameSceneEventManager.OnGameMapStarded.AddListener(StartingNewGameModeOrccheim_EventHandler);
         PlayerEventManager.OnPlayerDamaged.AddListener(PlayerDamaged_EventHandler);
-        WaveEventManager.OnPreparingForWave.AddListener(PreparingForWave_EventHandler);
-        WaveEventManager.OnWaveIsComing.AddListener(WaveIsComing_EventHandler);
-        WaveEventManager.OnWaveIsOver.AddListener(WaveIsOver_EventHandler);
+        //WaveEventManager.OnPreparingForWave.AddListener(PreparingForWave_EventHandler);
+        //WaveEventManager.OnWaveIsComing.AddListener(WaveIsComing_EventHandler);
+        //WaveEventManager.OnWaveIsOver.AddListener(WaveIsOver_EventHandler);
         //SpawnEnemyEventManager.OnEnemiesRemaining.AddListener(SetTextEnemiesRemaining);
     }
 
@@ -58,8 +58,8 @@ public class PlayerHUDController : MonoBehaviour
 
     private void ClearAllText()
     {
-        if (_notification)
-            _notification.text = "";
+        //if (_notification)
+        //    _notification.text = "";
         //if (_waveCounter)
         //    _waveCounter.text = "";
         //if (_enemiesRemaining)
@@ -76,19 +76,19 @@ public class PlayerHUDController : MonoBehaviour
             _levelPlayer.text = "";
     }
 
-    /// <summary>
-    /// Вывод оповещения с задержкой на экран игрока
-    /// </summary>
-    /// <param name="text">Текст оповещения</param>
-    /// <param name="delay">Задержка в секундах</param>
-    /// <returns></returns>
-    private IEnumerator SetTextPlayerNotificationWithDelay(string text, float delay)
-    {
-        yield return new WaitForSeconds(delay);
+    ///// <summary>
+    ///// Вывод оповещения с задержкой на экран игрока
+    ///// </summary>
+    ///// <param name="text">Текст оповещения</param>
+    ///// <param name="delay">Задержка в секундах</param>
+    ///// <returns></returns>
+    //private IEnumerator SetTextPlayerNotificationWithDelay(string text, float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
 
-        if (_notification)
-            _notification.text = text;
-    }
+    //    if (_notification)
+    //        _notification.text = text;
+    //}
 
     ///// <summary>
     ///// Метод устанавлиает текст для счетчика волн
@@ -151,28 +151,28 @@ public class PlayerHUDController : MonoBehaviour
             _experiencePlayer.text = experience.ToString();
     }
 
-    #region Event handlers
-    private void StartingNewGameModeOrccheim_EventHandler()
-    {
-        StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.CLEAR_VILLAGE, 5));
-    }
+    //#region Event handlers
+    //private void StartingNewGameModeOrccheim_EventHandler()
+    //{
+    //    StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.CLEAR_VILLAGE, 5));
+    //}
 
-    private void PreparingForWave_EventHandler(int wave)
-    {
-        StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.PREPARING_FOR_WAVE, 0));
-    }
+    //private void PreparingForWave_EventHandler(int wave)
+    //{
+    //    StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.PREPARING_FOR_WAVE, 0));
+    //}
 
-    private void WaveIsComing_EventHandler(int wave)
-    {
-        StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_COMING, 0));
+    //private void WaveIsComing_EventHandler(int wave)
+    //{
+    //    StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_COMING, 0));
 
-        //SetTextWaveCounter(wave);
-    }
+    //    //SetTextWaveCounter(wave);
+    //}
 
-    private void WaveIsOver_EventHandler()
-    {
-        StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_OVER, 0));
-    }
+    //private void WaveIsOver_EventHandler()
+    //{
+    //    StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_OVER, 0));
+    //}
 
     private void PlayerDamaged_EventHandler(int damage)
     {
@@ -183,5 +183,5 @@ public class PlayerHUDController : MonoBehaviour
         }
        
     }
-    #endregion Event handlers
+    //#endregion Event handlers
 }
