@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Скрипт UI  элемента: Счетчик волн
+/// Скрипт HUD элемента: Счетчик волн
 /// </summary>
 public class WaveCounter : MonoBehaviour
 {

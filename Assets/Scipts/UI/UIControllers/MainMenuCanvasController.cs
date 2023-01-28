@@ -55,7 +55,7 @@ public class MainMenuCanvasController : MonoBehaviour
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
         if(_gameSceneManager)
-            _gameSceneManager.SwitchToScene(SceneName.TEST_MAP_1);
+            _gameSceneManager.SwitchToScene(HashSceneNameString.TEST_MAP_1);
     }
 
     public void OnClickTestMap2()
@@ -63,13 +63,13 @@ public class MainMenuCanvasController : MonoBehaviour
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
         if (_gameSceneManager)
-            _gameSceneManager.SwitchToScene(SceneName.TEST_MAP_2);
+            _gameSceneManager.SwitchToScene(HashSceneNameString.TEST_MAP_2);
     }
 
     public void OnClickTestPlane()
     {
         if (_gameSceneManager)
-            _gameSceneManager.SwitchToScene(SceneName.TEST_PLANE);
+            _gameSceneManager.SwitchToScene(HashSceneNameString.TEST_PLANE);
     }
 
     private void ShowMenu(GameObject menu)

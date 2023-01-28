@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Cчетчик кадров
+/// Скрипт HUD элемента: Cчетчик кадров
 /// </summary>
 public class FPSCounter : MonoBehaviour
 {

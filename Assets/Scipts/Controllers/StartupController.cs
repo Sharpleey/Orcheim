@@ -72,6 +72,6 @@ public class StartupController : MonoBehaviour
 
         Debug.Log("All managers started up");
 
-        _gameSceneManager.SwitchToScene(SceneName.MAIN_MENU);
+        _gameSceneManager.SwitchToScene(HashSceneNameString.MAIN_MENU);
     }
 }
