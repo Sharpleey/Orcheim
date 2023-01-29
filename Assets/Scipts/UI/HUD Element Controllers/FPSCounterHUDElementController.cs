@@ -4,7 +4,7 @@ using TMPro;
 /// <summary>
 /// Скрипт HUD элемента: Cчетчик кадров
 /// </summary>
-public class FPSCounter : MonoBehaviour
+public class FPSCounterHUDElementController : MonoBehaviour
 {
     [Header("Частота обновления счетчика")]
     [SerializeField, Range(0.1f, 1f)] private float _rateUpdateFps = 0.25f;

@@ -86,6 +86,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
             Health.Actual -= damageValue;
 
             PlayerEventManager.PlayerDamaged(damageValue);
+            PlayerEventManager.PlayerHealthChanged();
         }
 
         if (Health.Actual <= 0)

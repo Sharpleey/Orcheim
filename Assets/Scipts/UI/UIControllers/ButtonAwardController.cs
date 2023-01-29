@@ -89,8 +89,13 @@ public class ButtonAwardController : MonoBehaviour
 
         if (_award is AwardPlayerStatsUpgrade awardPlayerStatsUpgrade)
         {
-            // Улучшаем параметр модификатора атаки
+            // Улучшаем параметр игрока
             awardPlayerStatsUpgrade.UpgratableParameter.LevelUp();
+
+            if(awardPlayerStatsUpgrade.UpgratableParameter is Health)
+            {
+                PlayerEventManager.PlayerHealthChanged();
+            }
         }
 
         GlobalGameEventManager.PauseGame(false);

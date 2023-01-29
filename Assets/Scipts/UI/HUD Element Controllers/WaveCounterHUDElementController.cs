@@ -4,7 +4,7 @@ using TMPro;
 /// <summary>
 /// Скрипт HUD элемента: Счетчик волн
 /// </summary>
-public class WaveCounter : MonoBehaviour
+public class WaveCounterHUDElementController : MonoBehaviour
 {
     [Header("Текст вывода значения")]
     [SerializeField] private TextMeshProUGUI _waveValueText;

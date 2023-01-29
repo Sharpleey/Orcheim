@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Скрипт HUD элемента: Счетчик оставшихся врагов
 /// </summary>
-public class EnemiesRemainingCounter : MonoBehaviour
+public class EnemiesRemainingHUDElementController : MonoBehaviour
 {
     [Header("Текст вывода значения")]
     [SerializeField] private TextMeshProUGUI _enemiesRemainingValueText;

@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class PlayerHUDController : MonoBehaviour
 {
-    [Header("Notification")]
-    [SerializeField] private TextMeshProUGUI _notification;
+    //[Header("Notification")]
+    //[SerializeField] private TextMeshProUGUI _notification;
 
-    [Header("Wave info")]
+    //[Header("Wave info")]
     //[SerializeField] private TextMeshProUGUI _waveCounter;
     //[SerializeField] private TextMeshProUGUI _enemiesRemaining;
 
-    [Header("Health Bar")]
-    [SerializeField] private TextMeshProUGUI _healthPlayer;
-    [SerializeField] private Slider _healthSlider;
+    //[Header("Health Bar")]
+    //[SerializeField] private TextMeshProUGUI _healthPlayer;
+    //[SerializeField] private Slider _healthSlider;
 
     [Header("Armor")]
     [SerializeField] private TextMeshProUGUI _armorPlayer;
@@ -28,12 +28,12 @@ public class PlayerHUDController : MonoBehaviour
     [Header("Level")]
     [SerializeField] private TextMeshProUGUI _levelPlayer;
 
-    private PlayerUnit _playerUnit;
+    //private PlayerUnit _playerUnit;
 
     private void Awake()
     {
         //GameSceneEventManager.OnGameMapStarded.AddListener(StartingNewGameModeOrccheim_EventHandler);
-        PlayerEventManager.OnPlayerDamaged.AddListener(PlayerDamaged_EventHandler);
+        //PlayerEventManager.OnPlayerDamaged.AddListener(PlayerDamaged_EventHandler);
         //WaveEventManager.OnPreparingForWave.AddListener(PreparingForWave_EventHandler);
         //WaveEventManager.OnWaveIsComing.AddListener(WaveIsComing_EventHandler);
         //WaveEventManager.OnWaveIsOver.AddListener(WaveIsOver_EventHandler);
@@ -42,18 +42,18 @@ public class PlayerHUDController : MonoBehaviour
 
     private void Start()
     {
-        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
+        //_playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
 
         ClearAllText();
 
-        if (_playerUnit)
-        {
-            SetTextHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-            SetTextArmor(_playerUnit.Armor.Actual);
-            SetTextGold(_playerUnit.Gold);
-            SetTextExperience(_playerUnit.Experience);
-            SetTextLevel(_playerUnit.Level);
-        }
+        //if (_playerUnit)
+        //{
+        //    //SetTextHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+        //    //SetTextArmor(_playerUnit.Armor.Actual);
+        //    //SetTextGold(_playerUnit.Gold);
+        //    //SetTextExperience(_playerUnit.Experience);
+        //    //SetTextLevel(_playerUnit.Level);
+        //}
     }
 
     private void ClearAllText()
@@ -64,8 +64,8 @@ public class PlayerHUDController : MonoBehaviour
         //    _waveCounter.text = "";
         //if (_enemiesRemaining)
         //    _enemiesRemaining.text = "";
-        if (_healthPlayer)
-            _healthPlayer.text = "";
+        //if (_healthPlayer)
+        //    _healthPlayer.text = "";
         if (_armorPlayer)
             _armorPlayer.text = "";
         if (_experiencePlayer)
@@ -110,22 +110,22 @@ public class PlayerHUDController : MonoBehaviour
     //        _enemiesRemaining.text = PlayerNotification.ENEMIES_REMAINING + enemiesRemaining.ToString();
     //}
 
-    private void SetTextHealthBar(int currentHealth, int maxHealth)
-    {
-        if (_healthPlayer)
-            _healthPlayer.text = currentHealth.ToString() + "/" + maxHealth.ToString();
+    //private void SetTextHealthBar(int currentHealth, int maxHealth)
+    //{
+    //    if (_healthPlayer)
+    //        _healthPlayer.text = currentHealth.ToString() + "/" + maxHealth.ToString();
 
-        SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-    }
+    //    SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+    //}
 
-    private void SetValueHealthBarSlider(int currentHealth, int maxHealth)
-    {
-        if (_healthSlider)
-        {
-            _healthSlider.maxValue = maxHealth;
-            _healthSlider.value = currentHealth;
-        }
-    }
+    //private void SetValueHealthBarSlider(int currentHealth, int maxHealth)
+    //{
+    //    if (_healthSlider)
+    //    {
+    //        _healthSlider.maxValue = maxHealth;
+    //        _healthSlider.value = currentHealth;
+    //    }
+    //}
 
     private void SetTextArmor(int armor)
     {
@@ -174,14 +174,14 @@ public class PlayerHUDController : MonoBehaviour
     //    StartCoroutine(SetTextPlayerNotificationWithDelay(PlayerNotification.WAVE_IS_OVER, 0));
     //}
 
-    private void PlayerDamaged_EventHandler(int damage)
-    {
-        if(_playerUnit)
-        {
-            SetTextHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-            SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-        }
+    //private void PlayerDamaged_EventHandler(int damage)
+    //{
+    //    if(_playerUnit)
+    //    {
+    //        SetTextHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+    //        SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+    //    }
        
-    }
+    //}
     //#endregion Event handlers
 }

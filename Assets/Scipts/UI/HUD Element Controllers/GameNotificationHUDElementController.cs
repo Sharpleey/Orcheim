@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Скрипт HUD элемента: Игровые оповещения
 /// </summary>
-public class GameNotification : MonoBehaviour
+public class GameNotificationHUDElementController : MonoBehaviour
 {
     [Header("Текст для вывода сообщения")]
     [SerializeField] private TextMeshProUGUI _gameNotificationText;
