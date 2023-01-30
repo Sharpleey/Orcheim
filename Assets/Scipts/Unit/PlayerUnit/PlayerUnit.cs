@@ -5,7 +5,14 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     #region Properties
 
     public int Gold { get; protected set; }
-    public int Experience { get; protected set; }
+    
+    private int _experience;
+    public int Experience 
+    { 
+        get => _experience; 
+        protected set => _experience = Mathf.Clamp(value, 0, int.MaxValue);
+    }
+    public int ExperienceForNextLevel => ((Level + 1) - 1) * (((Level + 1) - 2) * 75 + 200);
 
     #endregion Properties
 
@@ -18,6 +25,8 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         AddParametersToPoolAwards();
 
         AddAttackModifiersToPoolAwards();
+
+        AddListeners();
     }
 
     #endregion Mono
@@ -139,13 +148,40 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         }
     }
 
+    public override void LevelUp(int levelUp = 1)
+    {
+        base.LevelUp(levelUp);
+
+        PlayerEventManager.PlayerLevelUp();
+    }
+
+    public void AddExperience(int newExp)
+    {
+        int delta = newExp - (ExperienceForNextLevel - Experience);
+
+        if(delta >= 0)
+        {
+            Experience = ExperienceForNextLevel;
+
+            LevelUp();
+
+            AddExperience(delta);
+
+        }
+
+        Experience += newExp;
+
+        PlayerEventManager.PlayerExperienceChanged();
+    }
+
     #endregion Public methods
 
     #region Event Handlers
 
     private void EventHandler_EnemyKilled(EnemyUnit enemyUnit)
     {
-        Experience += enemyUnit.CostInExp.Value;
+        AddExperience(enemyUnit.CostInExp.Value);
+
         Gold += enemyUnit.CostInGold.Value;
     }
 

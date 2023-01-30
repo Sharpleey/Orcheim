@@ -19,8 +19,8 @@ public class PlayerHUDController : MonoBehaviour
     [Header("Armor")]
     [SerializeField] private TextMeshProUGUI _armorPlayer;
 
-    [Header("Experience")]
-    [SerializeField] private TextMeshProUGUI _experiencePlayer;
+    //[Header("Experience")]
+    //[SerializeField] private TextMeshProUGUI _experiencePlayer;
 
     [Header("Gold")]
     [SerializeField] private TextMeshProUGUI _goldPlayer;
@@ -68,8 +68,8 @@ public class PlayerHUDController : MonoBehaviour
         //    _healthPlayer.text = "";
         if (_armorPlayer)
             _armorPlayer.text = "";
-        if (_experiencePlayer)
-            _experiencePlayer.text = "";
+        //if (_experiencePlayer)
+        //    _experiencePlayer.text = "";
         if (_goldPlayer)
             _goldPlayer.text = "";
         if (_levelPlayer)
@@ -145,11 +145,11 @@ public class PlayerHUDController : MonoBehaviour
             _goldPlayer.text = gold.ToString();
     }
 
-    private void SetTextExperience(int experience)
-    {
-        if (_experiencePlayer)
-            _experiencePlayer.text = experience.ToString();
-    }
+    //private void SetTextExperience(int experience)
+    //{
+    //    if (_experiencePlayer)
+    //        _experiencePlayer.text = experience.ToString();
+    //}
 
     //#region Event handlers
     //private void StartingNewGameModeOrccheim_EventHandler()

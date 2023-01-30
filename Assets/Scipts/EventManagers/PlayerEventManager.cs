@@ -16,7 +16,7 @@ public class PlayerEventManager
     /// <summary>
     /// Событие повышения лвл игрока
     /// </summary>
-    public static readonly UnityEvent<int> OnPlayerLevelUp = new UnityEvent<int>();
+    public static readonly UnityEvent OnPlayerLevelUp = new UnityEvent();
 
     public static readonly UnityEvent OnPlayerHealthChanged = new UnityEvent();
 
@@ -25,8 +25,6 @@ public class PlayerEventManager
     public static readonly UnityEvent OnPlayerGoldChanged = new UnityEvent();
 
     public static readonly UnityEvent OnPlayerExperienceChanged = new UnityEvent();
-
-    public static readonly UnityEvent OnPlayerLevelChanged = new UnityEvent();
     #endregion
 
     #region Methods
@@ -50,9 +48,9 @@ public class PlayerEventManager
     /// <summary>
     /// Вызов события повышения уровня игрока
     /// </summary>
-    public static void PlayerLevelUp(int level)
+    public static void PlayerLevelUp()
     {
-        OnPlayerLevelUp.Invoke(level);
+        OnPlayerLevelUp.Invoke();
     }
 
     /// <summary>
@@ -87,12 +85,5 @@ public class PlayerEventManager
         OnPlayerExperienceChanged.Invoke();
     }
 
-    /// <summary>
-    /// Вызов события изменения уровня игрока
-    /// </summary>
-    public static void PlayerLevelUp()
-    {
-        OnPlayerLevelChanged.Invoke();
-    }
     #endregion
 }

@@ -129,7 +129,7 @@ public class GameMenuCanvasController : MonoBehaviour
         ShowMenu(_gameOverMenu);
     }
 
-    private void EventHandlerPlayerLevelUp(int level)
+    private void EventHandlerPlayerLevelUp()
     {
         GlobalGameEventManager.PauseGame(true);
 
