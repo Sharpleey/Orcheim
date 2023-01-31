@@ -174,6 +174,13 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         PlayerEventManager.PlayerExperienceChanged();
     }
 
+    public void AddGold(int gold)
+    {
+        Gold += gold;
+
+        PlayerEventManager.PlayerGoldChanged();
+    }
+
     #endregion Public methods
 
     #region Event Handlers
@@ -181,8 +188,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     private void EventHandler_EnemyKilled(EnemyUnit enemyUnit)
     {
         AddExperience(enemyUnit.CostInExp.Value);
-
-        Gold += enemyUnit.CostInGold.Value;
+        AddGold(enemyUnit.CostInGold.Value);
     }
 
     #endregion Event Handlers

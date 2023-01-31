@@ -93,9 +93,10 @@ public class ButtonAwardController : MonoBehaviour
             awardPlayerStatsUpgrade.UpgratableParameter.LevelUp();
 
             if(awardPlayerStatsUpgrade.UpgratableParameter is Health)
-            {
                 PlayerEventManager.PlayerHealthChanged();
-            }
+
+            if (awardPlayerStatsUpgrade.UpgratableParameter is Armor)
+                PlayerEventManager.PlayerArmorChanged();
         }
 
         GlobalGameEventManager.PauseGame(false);
