@@ -1,32 +1,16 @@
-using TMPro;
-using UnityEngine;
 
 /// <summary>
 /// Скрипт HUD элемента: Счетчик оставшихся врагов
 /// </summary>
-public class EnemiesRemainingHUDElementController : MonoBehaviour
+public class EnemiesRemainingHUDElementController : HUDElementController
 {
-    [Header("Текст вывода значения")]
-    [SerializeField] private TextMeshProUGUI _enemiesRemainingValueText;
-
-    private void Awake()
+    protected override void AddListeners()
     {
-        SpawnEnemyEventManager.OnEnemiesRemaining.AddListener(SetValueEnemiesRemainingCounter); //TODO Поменять событие
+        SpawnEnemyEventManager.OnEnemiesRemaining.AddListener(UpdatetValueText);
     }
 
-    private void Start()
+    private void UpdatetValueText(int countEnemy)
     {
-        if (_enemiesRemainingValueText)
-            _enemiesRemainingValueText.text = "";
-    }
-
-    /// <summary>
-    /// Метод устанавлиает значение для счетчика оставшихся врагов, выводя его в виде текста
-    /// </summary>
-    /// <param name="wave">Номер волны</param>
-    private void SetValueEnemiesRemainingCounter(int enemiesRemaining)
-    {
-        if (_enemiesRemainingValueText)
-            _enemiesRemainingValueText.text = enemiesRemaining.ToString();
+        SetValueText(countEnemy.ToString());
     }
 }

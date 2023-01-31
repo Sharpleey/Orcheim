@@ -1,34 +1,16 @@
-using TMPro;
-using UnityEngine;
 
-public class LevelHUDElementController : MonoBehaviour
+/// <summary>
+/// Скрипт HUD элемента: Уровень игрока
+/// </summary>
+public class LevelHUDElementController : HUDElementController
 {
-    [Header("Текст для вывода значения")]
-    [SerializeField] private TextMeshProUGUI _levelValueText;
-
-    private PlayerUnit _playerUnit;
-
-    private void Awake()
+    protected override void AddListeners()
     {
-        PlayerEventManager.OnPlayerLevelUp.AddListener(UpdatetLevelValueText);
+        PlayerEventManager.OnPlayerLevelUp.AddListener(UpdatetValueText);
     }
 
-    private void Start()
+    protected override void UpdatetValueText()
     {
-        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
-
-        UpdatetLevelValueText();
-    }
-
-    private void UpdatetLevelValueText()
-    {
-        if (_playerUnit)
-            SetLevelValueText(_playerUnit.Level);
-    }
-
-    private void SetLevelValueText(int level)
-    {
-        if (_levelValueText)
-            _levelValueText.text = level.ToString();
+            SetValueText(_playerUnit?.Level.ToString());
     }
 }

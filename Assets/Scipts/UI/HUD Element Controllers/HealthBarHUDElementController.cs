@@ -1,45 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBarHUDElementController : MonoBehaviour
+public class HealthBarHUDElementController : HUDElementController
 {
-    [SerializeField] private TextMeshProUGUI _healthValue;
     [SerializeField] private Slider _healthSlider;
 
-    private PlayerUnit _playerUnit;
-
-    private void Awake()
+    protected override void AddListeners()
     {
-        //PlayerEventManager.OnPlayerDamaged.AddListener(PlayerDamaged_EventHandler);
-        PlayerEventManager.OnPlayerHealthChanged.AddListener(UpdateValueHealthBar);
-
+        PlayerEventManager.OnPlayerHealthChanged.AddListener(UpdatetValueText);
     }
 
-    private void Start()
+    protected override void UpdatetValueText()
     {
-        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
-
-        if(_healthValue)
-            _healthValue.text = "";
-
-        if (_playerUnit)
-            UpdateValueHealthBar();
-    }
-
-    private void UpdateValueHealthBar()
-    {
-        SetTextValueHealthBar(_playerUnit.Health.Actual, _playerUnit.Health.Max);
+        SetValueText($"{_playerUnit.Health.Actual} / {_playerUnit.Health.Max}");
         SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
-    }
-
-    private void SetTextValueHealthBar(int currentHealth, int maxHealth)
-    {
-        if (_healthValue)
-            _healthValue.text = currentHealth.ToString() + "/" + maxHealth.ToString();
-
     }
 
     private void SetValueHealthBarSlider(int currentHealth, int maxHealth)

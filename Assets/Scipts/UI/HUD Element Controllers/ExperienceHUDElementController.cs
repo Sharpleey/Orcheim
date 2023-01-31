@@ -1,37 +1,17 @@
-using UnityEngine;
-using TMPro;
 
 /// <summary>
 /// Скрипт HUD элемента: Опыт игрока
 /// </summary>
-public class ExperienceHUDElementController : MonoBehaviour
+public class ExperienceHUDElementController : HUDElementController
 {
-    [Header("Текст для вывода значения")]
-    [SerializeField] private TextMeshProUGUI _expValueText;
-
-    private PlayerUnit _playerUnit;
-
-    private void Awake()
+    protected override void AddListeners()
     {
-        PlayerEventManager.OnPlayerExperienceChanged.AddListener(UpdatetExpValueText);
+        PlayerEventManager.OnPlayerExperienceChanged.AddListener(UpdatetValueText);
     }
 
-    private void Start()
+    protected override void UpdatetValueText()
     {
-        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
-
-        UpdatetExpValueText();
-    }
-
-    private void UpdatetExpValueText()
-    {
-        if(_playerUnit)
-            SetExpValueText(_playerUnit.Experience, _playerUnit.ExperienceForNextLevel);
-    }
-
-    private void SetExpValueText(int actualExp, int expForNextLevel)
-    {
-        if (_expValueText)
-            _expValueText.text = $"{actualExp} / {expForNextLevel}";
+        string valueText = $"{_playerUnit?.Experience} / {_playerUnit?.ExperienceForNextLevel}";
+        SetValueText(valueText);
     }
 }

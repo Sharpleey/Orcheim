@@ -1,32 +1,16 @@
-using UnityEngine;
-using TMPro;
 
 /// <summary>
 /// Скрипт HUD элемента: Счетчик волн
 /// </summary>
-public class WaveCounterHUDElementController : MonoBehaviour
+public class WaveCounterHUDElementController : HUDElementController
 {
-    [Header("Текст вывода значения")]
-    [SerializeField] private TextMeshProUGUI _waveValueText;
-
-    private void Awake()
+    protected override void AddListeners()
     {
-        WaveEventManager.OnWaveIsComing.AddListener(SetValueWaveCounter);
+        WaveEventManager.OnWaveIsComing.AddListener(UpdatetValueText);
     }
 
-    private void Start()
+    private void UpdatetValueText(int wave)
     {
-        if (_waveValueText)
-            _waveValueText.text = "";
-    }
-
-    /// <summary>
-    /// Метод устанавлиает значение для счетчика волн, выводя его в виде текста
-    /// </summary>
-    /// <param name="wave">Номер волны</param>
-    private void SetValueWaveCounter(int wave)
-    {
-        if (_waveValueText)
-            _waveValueText.text = wave.ToString();
+        SetValueText(wave.ToString());
     }
 }

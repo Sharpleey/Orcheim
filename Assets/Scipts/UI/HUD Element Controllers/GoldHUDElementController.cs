@@ -1,34 +1,16 @@
-using TMPro;
-using UnityEngine;
 
-public class GoldHUDElementController : MonoBehaviour
+/// <summary>
+/// Скрипт HUD элемента, отображающего кол-во золота у игрока
+/// </summary>
+public class GoldHUDElementController : HUDElementController
 {
-    [Header("Текст для вывода значения")]
-    [SerializeField] private TextMeshProUGUI _valueText;
-
-    private PlayerUnit _playerUnit;
-
-    private void Awake()
+    protected override void AddListeners()
     {
         PlayerEventManager.OnPlayerGoldChanged.AddListener(UpdatetValueText);
     }
 
-    private void Start()
+    protected override void UpdatetValueText()
     {
-        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
-
-        UpdatetValueText();
-    }
-
-    private void UpdatetValueText()
-    {
-        if (_playerUnit)
-            SetValueText(_playerUnit.Gold);
-    }
-
-    private void SetValueText(int gold)
-    {
-        if (_valueText)
-            _valueText.text = gold.ToString();
+            SetValueText(_playerUnit?.Gold.ToString());
     }
 }

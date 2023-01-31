@@ -1,34 +1,15 @@
-using TMPro;
-using UnityEngine;
 
-public class ArmorHUDElementController : MonoBehaviour
+/// <summary>
+/// Скрипт HUD элемента, отображающего кол-во брони у игрока
+/// </summary>
+public class ArmorHUDElementController : HUDElementController
 {
-    [Header("Текст для вывода значения")]
-    [SerializeField] private TextMeshProUGUI _valueText;
-
-    private PlayerUnit _playerUnit;
-
-    private void Awake()
+    protected override void AddListeners()
     {
         PlayerEventManager.OnPlayerArmorChanged.AddListener(UpdatetValueText);
     }
-
-    private void Start()
+    protected override void UpdatetValueText()
     {
-        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
-
-        UpdatetValueText();
-    }
-
-    private void UpdatetValueText()
-    {
-        if (_playerUnit)
-            SetValueText(_playerUnit.Armor.Actual);
-    }
-
-    private void SetValueText(int armor)
-    {
-        if (_valueText)
-            _valueText.text = armor.ToString();
+        SetValueText(_playerUnit?.Armor.Actual.ToString());
     }
 }
