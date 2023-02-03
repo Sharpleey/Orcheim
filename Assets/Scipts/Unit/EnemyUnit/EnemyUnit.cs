@@ -83,6 +83,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         States[typeof(IdleState)] = new IdleState(this);
         States[typeof(DieState)] = new DieState(this);
         States[typeof(PatrollingState)] = new PatrollingState(this);
+        States[typeof(NeutralState)] = new NeutralState(this);
     }
 
     public void SetStateByDefault()
@@ -94,6 +95,9 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
                 break;
             case StartStateType.Patrolling:
                 SetState<PatrollingState>();
+                break;
+            case StartStateType.Neutral:
+                SetState<NeutralState>();
                 break;
             default:
                 SetState<IdleState>();

@@ -5,5 +5,6 @@ public enum StartStateType
 {
    Idle,
    Chasing,
-   Patrolling
+   Patrolling,
+   Neutral
 }

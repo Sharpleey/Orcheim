@@ -78,26 +78,25 @@ public class PatrollingState : EnemyState
         {
             // Ќа случай, когда игрок еще не заспавнилс€
             if (!transformPlayer)
-            {
                 transformPlayer = GetTransformPlayer();
-                return;
+            else
+            {
+                // ѕолучаем дистанцию от персонажа противника до игрока
+                distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
+
+                // ћен€ем соссто€ние на преследеование, если (»грок в зоне абсолютной дистанции видимости) или (ѕерсонаж проивника увидил игрока перед собой)
+                if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
+                {
+                    // ¬оспроизводим звук
+                    if (enemyUnit.AudioController)
+                        enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
+
+                    enemyUnit.SetState<ChasingState>();
+                }
             }
 
-            // ѕолучаем дистанцию от персонажа противника до игрока
-            distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
             // ѕолучаем дистанцию от персонажа противника до точки маршрута
             _distanceEnemyToWayPoint = Vector3.Distance(enemyUnit.transform.position, _positionCurrentWayPoint);
-
-            // ћен€ем соссто€ние на преследеование, если (»грок в зоне абсолютной дистанции видимости) или (ѕерсонаж проивника увидил игрока перед собой)
-            if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
-            {
-                // ¬оспроизводим звук
-                if (enemyUnit.AudioController)
-                    enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
-
-                enemyUnit.SetState<ChasingState>();
-            }
-
 
             // ≈сли дистанци€ до точки маршрута меньше 1 метра
             if (_distanceEnemyToWayPoint <= 1f)
