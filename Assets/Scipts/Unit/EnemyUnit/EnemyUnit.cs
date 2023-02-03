@@ -115,7 +115,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
             return;
         }
 
-        if (CurrentState != null)
+         if (CurrentState != null)
             CurrentState?.Exit();
 
         CurrentState = newState;
@@ -165,6 +165,11 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
             HealthBarController?.SetMaxHealth(Health.Max);
             HealthBarController?.SetHealth(Health.Actual);
         }
+    }
+
+    private void OnDestroy()
+    {
+        CurrentState?.Exit();
     }
 
     #endregion Private methods
