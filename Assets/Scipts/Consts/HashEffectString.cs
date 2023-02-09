@@ -12,4 +12,7 @@ public class HashEffectString
     public const string SLOWDOWN_MOVEMENT_SPEED_PERCENTAGE_DECREASE_UPGRADE_DESCRIPTION = "Замедление скорости передвижения цели +{0}% (Текущее {1}%)";
     public const string SLOWDOWN_ATTACK_SPEED_PERCENTAGE_DECREASE_UPGRADE_DESCRIPTION = "Замедление скорости атаки цели +{0}% (Текущее {1}%)";
     public const string SLOWDOWN_DURATION_UPGRADE_DESCRIPTION = "Длительность эффекта +{0} сек. (Текущая {1})";
+
+    public const string ARMORUP_NAME = "Увеличение брони";
+    public const string ARMORUP_DESCRIPTION = "Эффект на {0} cек. увеличивает броню цели на {1}%";
 }

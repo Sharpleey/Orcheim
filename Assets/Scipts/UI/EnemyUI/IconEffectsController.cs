@@ -8,7 +8,7 @@ using UnityEngine;
 public class IconEffectsController : MonoBehaviour
 {
     #region Serialize fields
-    [SerializeField] private GameObject _fireIcon;
+    [SerializeField] private GameObject _flameIcon;
     [SerializeField] private GameObject _electroIcon;
     [SerializeField] private GameObject _slowdownIcon;
 
@@ -28,7 +28,7 @@ public class IconEffectsController : MonoBehaviour
     #region Mono
     void Start()
     {
-        _fireIcon.SetActive(false);
+        _flameIcon.SetActive(false);
         _electroIcon.SetActive(false);
         _slowdownIcon.SetActive(false);
 
@@ -62,12 +62,12 @@ public class IconEffectsController : MonoBehaviour
     /// <param name="active">активировать (true) / деактивировать (false)</param>
     public void SetActiveIconBurning(bool active)
     {
-        _fireIcon.SetActive(active);
+        _flameIcon.SetActive(active);
 
         if (active)
-            _activeIcons.Add(_fireIcon);
+            _activeIcons.Add(_flameIcon);
         else
-            _activeIcons.Remove(_fireIcon);
+            _activeIcons.Remove(_flameIcon);
 
         RecalculationLocationIcon();
     }

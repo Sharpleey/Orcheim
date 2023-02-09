@@ -40,7 +40,7 @@ public class GoonChasingState : ChasingState
             int countAlliesNearby = GetCountAlliesNearby();
 
             // Если их больше 2х, то кастуем баф
-            if (countAlliesNearby > 2 && !((Goon)enemyUnit).IsWarcryInCooldown)
+            if (countAlliesNearby > 2 && !((Goon)enemyUnit).Warcry.IsCooldown)
             {
                 enemyUnit.SetState<InspirationState>();
             }

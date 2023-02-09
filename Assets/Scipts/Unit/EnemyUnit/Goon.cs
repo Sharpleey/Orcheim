@@ -3,11 +3,7 @@ using UnityEngine;
 
 public class Goon : EnemyUnit
 {
-    [Header("Spell Parameters")]
-    [SerializeField, Min(5)] private float _cooldownWarcry = 20f;
-    [SerializeField, Min(2)] private float _radiusWarcry = 8f;
-
-    public bool IsWarcryInCooldown { get; private set; }
+    public Warcry Warcry { get; private set; }
 
     /// <summary>
     /// Метод инициализирует состояния
@@ -21,6 +17,17 @@ public class Goon : EnemyUnit
         States[typeof(InspirationState)] = new InspirationState(this);
     }
 
+    public override void InitAbilities()
+    {
+        base.InitAbilities();
+
+        Warcry = new Warcry(this, 20, 16, isActive: true);
+
+        //Abilities.Add(typeof(Warcry), );
+    }
+
+    #region Methods Event Animation
+
     /// <summary>
     /// Метод для смены состояния из EventAnimation
     /// </summary>
@@ -29,25 +36,18 @@ public class Goon : EnemyUnit
         SetState<ChasingState>();
     }
 
-    private IEnumerator ResetCooldown()
+    /// <summary>
+    /// Вызывается из анимации
+    /// </summary>
+    private void ApplyWarcry()
     {
-        IsWarcryInCooldown = true;
-
-        yield return new WaitForSeconds(_cooldownWarcry);
-
-        IsWarcryInCooldown = false;
-    }
-
-    private void CastWarcry()
-    {
-        if (IsWarcryInCooldown)
+        if (Warcry.IsCooldown)
             return;
 
-        Debug.Log("Использование способности Warcry");
+        Warcry.Apply();
 
-        StartCoroutine(ResetCooldown());
-
-        // Ищем союзных существ в радиусе
-        // Вешаем на них положительный эффект повышащий броню
+        StartCoroutine(Warcry.Cooldown());
     }
+
+    #endregion Methods Event Animation
 }
