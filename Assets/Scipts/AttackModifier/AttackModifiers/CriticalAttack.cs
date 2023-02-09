@@ -16,7 +16,7 @@ public class CriticalAttack : ProcableAttackModifier
         int procChance = 10, int increaseProcChancePerLevel = 5, int levelProcChance = 1, int maxLevelProcChance = 18,
         int defaultValueDamageMultiplier = 150, int increaseDamageMultiplierPerLevel= 10, int levelDamageMultiplier = 1): base(isActive, procChance, increaseProcChancePerLevel, levelProcChance, maxLevelProcChance)
     {
-        DamageMultiplier = new Parameter(defaultValue: defaultValueDamageMultiplier, increaseValuePerLevel: increaseDamageMultiplierPerLevel, level: levelDamageMultiplier);
+        DamageMultiplier = new Parameter(defaultValue: defaultValueDamageMultiplier, changeValuePerLevel: increaseDamageMultiplierPerLevel, level: levelDamageMultiplier);
 
         Chance.UpgradeDescription = HashAttackModString.CRITICAL_ATTACK_CHANCE_UPGRADE_DESCRIPTION;
         DamageMultiplier.UpgradeDescription = HashAttackModString.CRITICAL_ATTACK_DAMAGEMULTIPLY_UPGRADE_DESCRIPTION;

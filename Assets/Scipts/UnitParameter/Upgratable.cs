@@ -25,10 +25,10 @@ public abstract class Upgratable
     /// <summary>
     /// Значение прироста параметра за уровень улучшения
     /// </summary>
-    public virtual float IncreaseValuePerLevel
+    public virtual float ChangeValuePerLevel
     {
-        get => _increaseValuePerLevel;
-        protected set => _increaseValuePerLevel = Mathf.Clamp(value, 0, float.MaxValue);
+        get => _changeValuePerLevel;
+        protected set => _changeValuePerLevel = Mathf.Clamp(value, 0, float.MaxValue);
     }
 
     /// <summary>
@@ -42,14 +42,14 @@ public abstract class Upgratable
 
     private int _maxLevel;
     private int _level;
-    protected float _increaseValuePerLevel;
+    protected float _changeValuePerLevel;
     protected string _upgradeDescription;
 
     #endregion Private fields
 
     public Upgratable(int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1)
     {
-        IncreaseValuePerLevel = increaseValuePerLevel;
+        ChangeValuePerLevel = increaseValuePerLevel;
         Level = level;
         MaxLevel = maxLevel;
     }

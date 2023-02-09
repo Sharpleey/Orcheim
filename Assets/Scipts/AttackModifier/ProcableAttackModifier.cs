@@ -18,6 +18,6 @@ public abstract class ProcableAttackModifier : AttackModifier
 
     public ProcableAttackModifier(bool isActive = false, int procChance = 10, int increaseProcChancePerLevel = 5, int levelProcChance = 1, int maxLevelProcChance = 18) : base(isActive)
     {
-        Chance = new Parameter(defaultValue: procChance, increaseValuePerLevel: increaseProcChancePerLevel, level: levelProcChance, maxLevel: maxLevelProcChance);
+        Chance = new Parameter(defaultValue: procChance, changeValuePerLevel: increaseProcChancePerLevel, level: levelProcChance, maxLevel: maxLevelProcChance);
     }
 }

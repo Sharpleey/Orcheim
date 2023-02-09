@@ -115,7 +115,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
             return;
         }
 
-         if (CurrentState != null)
+        if (CurrentState != null)
             CurrentState?.Exit();
 
         CurrentState = newState;

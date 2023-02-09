@@ -28,12 +28,12 @@ public class Flame : Effect
 
         ArmorDecrease = new Parameter(
             defaultValue: armorDecrease,
-            increaseValuePerLevel: increaseArmorDecreasePerLevel,
+            changeValuePerLevel: increaseArmorDecreasePerLevel,
             level: levelArmorDecrease);
 
         Duration = new Parameter(
             defaultValue: durationEffect,
-            increaseValuePerLevel: increaseDurationEffectPerLevel,
+            changeValuePerLevel: increaseDurationEffectPerLevel,
             level: levelDurationEffect);
 
         EffectType = EffectType.Negative;

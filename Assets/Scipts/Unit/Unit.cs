@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable, IUsesAttackModifiers, IUnitParameters, IInfluenceOfEffects
+public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable, IUsesAttackModifiers, IUnitParameters, IInfluenceOfEffects, IUsesAbilities
 {
     #region Serialize fields
 
@@ -29,15 +29,16 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     #endregion
 
     #region Attack modifaers
-    public CriticalAttack CriticalAttack { get; protected set; }
-    public FlameAttack FlameAttack { get; protected set; }
-    public SlowAttack SlowAttack { get; protected set; }
-    public PenetrationProjectile PenetrationProjectile { get; protected set; }
+    public CriticalAttack CriticalAttack { get; protected set; } //TODO запихнуть в словарь
+    public FlameAttack FlameAttack { get; protected set; } //TODO запихнуть в словарь
+    public SlowAttack SlowAttack { get; protected set; } //TODO запихнуть в словарь
+    public PenetrationProjectile PenetrationProjectile { get; protected set; } //TODO запихнуть в словарь
 
     public Dictionary<Type, AttackModifier> AttackModifaers { get; protected set; }
     #endregion
 
     public Dictionary<Type, Effect> ActiveEffects { get; protected set; }
+    public Dictionary<Type, Ability> Abilities { get; protected set; }
 
     #endregion Properties
 
@@ -47,6 +48,8 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         InitParameters();
 
         InitAttackModifiers();
+
+        InitAbilities();
 
         SetLevel(Level);
     }
@@ -105,6 +108,11 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
         if (_unitConfig.OnPenetrationProjectile)
             SetActiveAttackModifier(PenetrationProjectile);
+    }
+
+    public virtual void InitAbilities()
+    {
+        Abilities = new Dictionary<Type, Ability>();
     }
 
     public virtual void LevelUp(int levelUp = 1)

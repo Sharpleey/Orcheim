@@ -38,7 +38,7 @@ public class UnitParameter : Upgratable
 
     public override string UpgradeDescription
     {
-        get => string.Format(_upgradeDescription, IncreaseValuePerLevel, Max);
+        get => string.Format(_upgradeDescription, ChangeValuePerLevel, Max);
         set => _upgradeDescription = value;
     }
 
@@ -70,11 +70,9 @@ public class UnitParameter : Upgratable
     {
         base.SetLevel(newLevel);
 
-        Max = Default + (int)IncreaseValuePerLevel * (Level - 1);
+        Max = Default + (int)ChangeValuePerLevel * (Level - 1);
         Actual = Max;
     }
-
-
 }
 
 

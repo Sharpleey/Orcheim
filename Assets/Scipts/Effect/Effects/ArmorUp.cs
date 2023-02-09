@@ -1,0 +1,44 @@
+
+using UnityEngine;
+/// <summary>
+/// Эффект увеличивает броню юнита в процентах от его максимального значения брони
+/// </summary>
+public class ArmorUp : Effect
+{
+    public override string Name => HashEffectString.ARMORUP_NAME;
+
+    public override string Description => HashEffectString.ARMORUP_DESCRIPTION;
+
+    /// <summary>
+    /// Процентное увелечение брони
+    /// </summary>
+    public Parameter PercentageArmorIncrease { get; private set; }
+
+    /// <summary>
+    /// Значение дополнительной брони от максимального значения брони юнита
+    /// </summary>
+    private int _extraArmor;
+
+    public ArmorUp(int duration, int defaultPercentageArmorIncrease, int increaseArmorIncreasePerLevel = 0, int level = 1)
+    {
+        Duration = new Parameter(duration);
+
+        PercentageArmorIncrease = new Parameter(defaultValue: defaultPercentageArmorIncrease, changeValuePerLevel: increaseArmorIncreasePerLevel, level: level);
+
+        EffectType = EffectType.Positive;
+    }
+
+    public override void Enable()
+    {
+        _extraArmor = (int)(unit.Armor.Max * (PercentageArmorIncrease.Value / 100f));
+        unit.Armor.Actual += _extraArmor;
+
+        //if(enemyUnit)
+        //    enemyUnit.IconEffectsController.Se
+    }
+
+    public override void Disable()
+    {
+        unit.Armor.Actual -= _extraArmor;
+    }
+}

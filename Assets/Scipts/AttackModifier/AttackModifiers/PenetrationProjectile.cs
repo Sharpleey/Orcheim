@@ -34,9 +34,9 @@ public class PenetrationProjectile : AttackModifier
         int defaultValueMaxPenetrationCount = 2, int increaseMaxPenetrationCountPerLevel = 1, int maxLevelPenetrationCount = 1,
         int defaultValuePenetrationDamageDecrease = 50, int decreasePenetrationDamageDecreasePerLevel = -5, int levelPenetrationDamageDecrease = 1, int maxLevelPenetrationDamageDecrease = 10)
     {
-        MaxPenetrationCount = new Parameter(defaultValue: defaultValueMaxPenetrationCount, increaseValuePerLevel: increaseMaxPenetrationCountPerLevel, level: maxLevelPenetrationCount);
+        MaxPenetrationCount = new Parameter(defaultValue: defaultValueMaxPenetrationCount, changeValuePerLevel: increaseMaxPenetrationCountPerLevel, level: maxLevelPenetrationCount);
 
-        PenetrationDamageDecrease = new Parameter(defaultValue: defaultValuePenetrationDamageDecrease, increaseValuePerLevel: decreasePenetrationDamageDecreasePerLevel, maxLevel: maxLevelPenetrationDamageDecrease, level: levelPenetrationDamageDecrease);
+        PenetrationDamageDecrease = new Parameter(defaultValue: defaultValuePenetrationDamageDecrease, changeValuePerLevel: decreasePenetrationDamageDecreasePerLevel, maxLevel: maxLevelPenetrationDamageDecrease, level: levelPenetrationDamageDecrease);
 
         MaxPenetrationCount.UpgradeDescription = HashAttackModString.PENETRATION_PROJECTILE_MAX_COUNT_UPGRADE_DESCRIPTION;
         PenetrationDamageDecrease.UpgradeDescription = HashAttackModString.PENETRATION_DAMAGE_DECREASE_COUNT_UPGRADE_DESCRIPTION;

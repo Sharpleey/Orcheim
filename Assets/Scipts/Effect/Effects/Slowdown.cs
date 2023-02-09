@@ -14,19 +14,19 @@ public class Slowdown : Effect
     {
         MovementSpeedPercentageDecrease = new Parameter(
             defaultValue: defaultMovementSpeedPercentageDecrease,
-            increaseValuePerLevel: increaseMovementSpeedPercentageDecrease,
+            changeValuePerLevel: increaseMovementSpeedPercentageDecrease,
             maxLevel: 10,
             level: levelMovementSpeedPercentageDecrease);
 
         AttackSpeedPercentageDecrease = new Parameter(
             defaultValue: defaultAttackSpeedPercentageDecrease,
-            increaseValuePerLevel: increaseAttackSpeedPercentageDecrease,
+            changeValuePerLevel: increaseAttackSpeedPercentageDecrease,
             maxLevel: 10,
             level: levelAttackSpeedPercentageDecrease);
 
         Duration = new Parameter(
             defaultValue: durationEffect,
-            increaseValuePerLevel: increaseDurationEffectPerLevel,
+            changeValuePerLevel: increaseDurationEffectPerLevel,
             level: levelDurationEffect);
 
         EffectType = EffectType.Negative;

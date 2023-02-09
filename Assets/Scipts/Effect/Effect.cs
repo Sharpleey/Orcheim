@@ -15,11 +15,11 @@ public abstract class Effect : INaming, ICloneable
     /// Описание эффекта
     /// </summary>
     public abstract string Description { get; }
-    
+
     /// <summary>
     /// Тип эффекта, положительный или негативный
     /// </summary>
-    public EffectType EffectType { get; protected set; }
+    public EffectType EffectType { get; protected set; } = EffectType.Negative;
 
     /// <summary>
     /// Длительность эффекта, если хотим сделать эффект без длительности, то не переопределяем
