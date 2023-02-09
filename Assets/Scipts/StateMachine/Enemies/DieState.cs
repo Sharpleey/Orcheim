@@ -13,11 +13,11 @@ public class DieState : EnemyState
     {
         GlobalGameEventManager.EnemyKilled(enemyUnit);
 
-        enemyUnit?.WeaponController.MakeWeaponPhysical(true);
-        enemyUnit?.RagdollController.MakePhysical();
-        enemyUnit?.HealthBarController.SetActiveHealthBar(false);
-        enemyUnit?.IconEffectsController.DeactivateAllIcons();
-        enemyUnit?.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Dead);
+        enemyUnit?.WeaponController?.MakeWeaponPhysical(true);
+        enemyUnit?.RagdollController?.MakePhysical();
+        enemyUnit?.HealthBarController?.SetActiveHealthBar(false);
+        enemyUnit?.IconEffectsController?.DisableAllActiveIcons();
+        enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Dead);
 
         if (enemyUnit.Animator)
             enemyUnit.Animator.enabled = false;

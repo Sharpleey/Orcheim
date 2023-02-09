@@ -30,15 +30,20 @@ public class ArmorUp : Effect
 
     public override void Enable()
     {
+        base.Enable();
+
         _extraArmor = (int)(unit.Armor.Max * (PercentageArmorIncrease.Value / 100f));
         unit.Armor.Actual += _extraArmor;
 
-        //if(enemyUnit)
-        //    enemyUnit.IconEffectsController.Se
+        // Включаем иконку эффекта
+        enemyUnit?.IconEffectsController?.EnableIcon<ArmorUp>(true);
     }
 
     public override void Disable()
     {
         unit.Armor.Actual -= _extraArmor;
+
+        // Выключаем иконку эффекта
+        enemyUnit?.IconEffectsController?.EnableIcon<ArmorUp>(false);
     }
 }

@@ -50,8 +50,7 @@ public class Flame : Effect
         if (enemyUnit)
         {
             // Включаем иконку горения над противником
-            if (enemyUnit.IconEffectsController)
-                enemyUnit.IconEffectsController.SetActiveIconBurning(true);
+            enemyUnit?.IconEffectsController?.EnableIcon<Flame>(true);
 
             // Включаем визульный эффект горения
             if (enemyUnit.BurningEffectController)
@@ -79,8 +78,7 @@ public class Flame : Effect
         if (enemyUnit)
         {
             // Выключаем иконку горения над противником
-            if (enemyUnit.IconEffectsController)
-                enemyUnit.IconEffectsController.SetActiveIconBurning(false);
+            enemyUnit?.IconEffectsController?.EnableIcon<Flame>(false);
 
             // Выключаем визульный эффект горения
             if (enemyUnit.BurningEffectController)

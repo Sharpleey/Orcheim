@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,40 +9,66 @@ using UnityEngine;
 public class IconEffectsController : MonoBehaviour
 {
     #region Serialize fields
+
     [SerializeField] private GameObject _flameIcon;
-    [SerializeField] private GameObject _electroIcon;
+    [SerializeField] private GameObject _armorUpIcon;
     [SerializeField] private GameObject _slowdownIcon;
 
     /// <summary>
     /// Промежуток по Х между иконками
     /// </summary>
+    [Header("Промежуток по Х между иконками")]
     [SerializeField] [Range(0.5f, 5f)] private float _offsetX = 3f;
+
     #endregion Serialize fields
 
     #region Private fields
+
     /// <summary>
     /// Список активных иконок, необходим для правильного расположения иконок над противником
     /// </summary>
-    private List<GameObject> _activeIcons;
+    private List<GameObject> _activeIcons = new List<GameObject>();
+
+    private Dictionary<Type, GameObject> _effectIcons = new Dictionary<Type, GameObject>();
+
     #endregion Private fields
 
     #region Mono
-    void Start()
-    {
-        _flameIcon.SetActive(false);
-        _electroIcon.SetActive(false);
-        _slowdownIcon.SetActive(false);
 
-        _activeIcons = new List<GameObject>();
+    private void Awake()
+    {
+        InitIcons();
     }
+
+    private void Start()
+    {
+        DisableAllIcons();
+    }
+
     #endregion Mono
 
     #region Private methods
+
+    private void InitIcons()
+    {
+        _effectIcons.Add(typeof(Flame), _flameIcon);
+        _effectIcons.Add(typeof(Slowdown), _slowdownIcon);
+        _effectIcons.Add(typeof(ArmorUp), _armorUpIcon);
+    }
+
+    private void DisableAllIcons()
+    {
+        foreach (GameObject item in _effectIcons.Values)
+        {
+            item.SetActive(false);
+        }
+    }
+
     /// <summary>
     /// Метод с учетом активных иконок перерасчитывает расположения каждой из иконок так, чтобы 
     /// в любом случае и при любом колличестве они раполагались по центру противника
     /// </summary>
-    private void RecalculationLocationIcon()
+    private void RecalculationLocationIcons()
     {
         float leftBound = (_offsetX * (_activeIcons.Count - 1)) / -2f;
 
@@ -56,54 +83,33 @@ public class IconEffectsController : MonoBehaviour
     #endregion Private methods
 
     #region Public methods
+
     /// <summary>
-    /// Метод активирует/деактивирует иконку горения
+    /// Метод активации/деактивации иконки соответсвующего эффекта
     /// </summary>
-    /// <param name="active">активировать (true) / деактивировать (false)</param>
-    public void SetActiveIconBurning(bool active)
+    /// <typeparam name="T">Эффект, иконку которого хотим активировать</typeparam>
+    /// <param name="active">Флаг активации иконки</param>
+    public void EnableIcon<T>(bool active) where T : Effect
     {
-        _flameIcon.SetActive(active);
+        GameObject icon;
 
-        if (active)
-            _activeIcons.Add(_flameIcon);
-        else
-            _activeIcons.Remove(_flameIcon);
+        if (_effectIcons.TryGetValue(typeof(T), out icon))
+        {
+            icon.SetActive(active);
 
-        RecalculationLocationIcon();
+            if (active)
+                _activeIcons.Add(icon);
+            else
+                _activeIcons.Remove(icon);
+
+            RecalculationLocationIcons();
+        }
     }
-    /// <summary>
-    /// Метод активирует/деактивирует иконку электро
-    /// </summary>
-    /// <param name="active">активировать (true) / деактивировать (false)</param>
-    public void SetActiveIconElectric(bool active)
-    {
-        _electroIcon.SetActive(active);
-        if (active)
-            _activeIcons.Add(_electroIcon);
-        else
-            _activeIcons.Remove(_electroIcon);
 
-        RecalculationLocationIcon();
-    }
-    /// <summary>
-    /// Метод активирует/деактивирует иконку замедления
-    /// </summary>
-    /// <param name="active">активировать (true) / деактивировать (false)</param>
-    public void SetActiveIconSlowdown(bool active)
-    {
-        _slowdownIcon.SetActive(active);
-
-        if (active)
-            _activeIcons.Add(_slowdownIcon);
-        else
-            _activeIcons.Remove(_slowdownIcon);
-
-        RecalculationLocationIcon();
-    }
     /// <summary>
     /// Диактивируем все иконки
     /// </summary>
-    public void DeactivateAllIcons()
+    public void DisableAllActiveIcons()
     {
         foreach (var icon in _activeIcons)
             icon.SetActive(false);

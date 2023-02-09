@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2727642235375198196}
   - component: {fileID: 7816452091306312764}
   m_Layer: 0
-  m_Name: slowdown
+  m_Name: Slowdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2965817196240778832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.29, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children: []
   m_Father: {fileID: 4905916620788844037}
   m_RootOrder: 2
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 2579973014042841657}
   - component: {fileID: 6720871208350219185}
   m_Layer: 0
-  m_Name: flame
+  m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flameIcon: {fileID: 4236151021713769068}
-  _electroIcon: {fileID: 5537126636257985690}
+  _armorUpIcon: {fileID: 5537126636257985690}
   _slowdownIcon: {fileID: 2965817196240778832}
   _offsetX: 3
 --- !u!1 &5537126636257985690
@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 6555666281181214702}
   - component: {fileID: 8084374938994538802}
   m_Layer: 0
-  m_Name: electro
+  m_Name: ArmorUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 5537126636257985690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.5, y: 0, z: -0}
-  m_LocalScale: {x: 0.8, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 4905916620788844037}
   m_RootOrder: 1
@@ -290,8 +290,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b9f361382306f284b9537fd5afcc1814, type: 3}
-  m_Color: {r: 0.15806337, g: 0.77662474, b: 0.9056604, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 165d6b343b38b174ca371f66d1e65a2b, type: 3}
+  m_Color: {r: 0.020247417, g: 0.3512903, b: 0.8584906, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

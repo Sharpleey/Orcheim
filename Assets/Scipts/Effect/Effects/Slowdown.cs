@@ -48,8 +48,7 @@ public class Slowdown : Effect
             if(enemyUnit.NavMeshAgent)
                 enemyUnit.NavMeshAgent.speed = unit.MovementSpeed.Actual / 100f;
 
-            if(enemyUnit.IconEffectsController)
-                enemyUnit.IconEffectsController.SetActiveIconSlowdown(true);
+            enemyUnit?.IconEffectsController?.EnableIcon<Slowdown>(true);
         }
 
         if (player)
@@ -68,8 +67,7 @@ public class Slowdown : Effect
             if (enemyUnit.NavMeshAgent)
                 enemyUnit.NavMeshAgent.speed = unit.MovementSpeed.Actual / 100f;
 
-            if (enemyUnit.IconEffectsController)
-                enemyUnit.IconEffectsController.SetActiveIconSlowdown(false);
+            enemyUnit?.IconEffectsController?.EnableIcon<Slowdown>(false);
 
         }
 

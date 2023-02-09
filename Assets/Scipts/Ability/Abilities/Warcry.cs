@@ -17,7 +17,8 @@ public class Warcry : ActiveAbility
     public Warcry(Unit unit, int timeCooldown, int radius, int decreaseTimeCooldownPerLevel = 1, bool isActive = false) : base(unit: unit, timeCooldown: timeCooldown, decreaseTimeCooldownPerLevel: decreaseTimeCooldownPerLevel, isActive: isActive)
     {
         Radius = new Parameter(radius);
-        ArmorUp = new ArmorUp(5, 100);
+
+        ArmorUp = new ArmorUp(12, 100);
     }
 
     public override void Apply()
@@ -33,9 +34,7 @@ public class Warcry : ActiveAbility
         foreach (Collider unitCollider in hitColliders)
         {
             EnemyUnit enemyUnit = unitCollider.GetComponent<EnemyUnit>();
-
-            if (enemyUnit)
-                enemyUnit.SetEffect(ArmorUp);
+            enemyUnit?.SetEffect(ArmorUp);
         }
     }
 }
