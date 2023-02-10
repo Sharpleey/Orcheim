@@ -91,8 +91,7 @@ public abstract class ChasingState : EnemyState
         if(_timerAudioPlayback >= _soundFrequency)
         {
             // Воспроизводим звук
-            if (enemyUnit.AudioController)
-                enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Agro);
+            enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Chasing);
 
             // Обнуляем таймер
             _timerAudioPlayback = 0;

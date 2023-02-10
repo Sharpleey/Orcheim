@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// —пособность при применении накладывает на союзных юнитов эффект ArmorUp, увеличивающий броню юнитов на некоторое врем€
+/// </summary>
 public class Warcry : ActiveAbility
 {
     /// <summary>
@@ -7,6 +10,9 @@ public class Warcry : ActiveAbility
     /// </summary>
     public Parameter Radius { get; private set; }
 
+    /// <summary>
+    /// Ёффект данной способности, который накладываетс€ на юниты
+    /// </summary>
     public Effect ArmorUp { get; private set; }
 
     /// <summary>

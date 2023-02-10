@@ -12,16 +12,16 @@ public enum EnemySoundType
     /// <summary>
     /// Начало атаки у врага
     /// </summary>
-    Atttack,
+    Attack,
     /// <summary>
     /// Преследование игрока
     /// </summary>
-    Agro,
+    Chasing,
     Gibberish,
     /// <summary>
     /// Использование способности
     /// </summary>
-    UsingSpell,
+    UsingAbility,
     /// <summary>
     /// Когда враг заметил игрока или когда один враг позвал другого
     /// </summary>

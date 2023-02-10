@@ -9,7 +9,10 @@ public class InspirationState : EnemyState
         enemyUnit.NavMeshAgent.isStopped = true;
 
         // ¬ключаем анимацию
-        enemyUnit.Animator.SetTrigger(HashAnimStringEnemy.IsInspiration);
+        enemyUnit?.Animator?.SetTrigger(HashAnimStringEnemy.IsInspiration);
+
+        // «вук
+        enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.UsingAbility);
     }
 
     public override void Exit()

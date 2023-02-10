@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Goon : EnemyUnit
 {
+    /// <summary>
+    /// Способность данного юнита
+    /// </summary>
     public Warcry Warcry { get; private set; }
 
     /// <summary>
@@ -21,9 +24,9 @@ public class Goon : EnemyUnit
     {
         base.InitAbilities();
 
-        Warcry = new Warcry(this, 20, 16, isActive: true);
+        Warcry = new Warcry(this, timeCooldown: 20, radius: 8, isActive: true);
 
-        //Abilities.Add(typeof(Warcry), );
+        Abilities.Add(typeof(Warcry), Warcry); // TODO
     }
 
     #region Methods Event Animation
