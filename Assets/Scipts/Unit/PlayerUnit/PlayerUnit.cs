@@ -77,7 +77,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         }
     }
 
-    public override void TakeDamage(Damage damage, Collider hitBox = null)
+    public override void TakeDamage(Damage damage, bool isCriticalHit = false, Collider hitBox = null)
     {
         if (Health.Actual > 0)
         {

@@ -201,7 +201,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         base.SetEffect(effect);
     }
 
-    public override void TakeDamage(Damage damage, Collider hitBox = null)
+    public override void TakeDamage(Damage damage, bool isCriticalHit = false, Collider hitBox = null)
     {
         if (Health.Actual > 0)
         {
@@ -236,7 +236,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
 
             // Всплывающий дамаг
             if (PopupDamageController != null)
-                PopupDamageController.ShowPopupDamage(resultDamageValue, damage.DamageType);
+                PopupDamageController.ShowPopupDamage(resultDamageValue, isCriticalHit, damage.DamageType);
 
             // Полоса здоровья
             if (HealthBarController != null)

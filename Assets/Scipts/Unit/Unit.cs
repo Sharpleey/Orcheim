@@ -129,9 +129,11 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     public void PerformAttack(Unit attackedUnit, Collider hitBox = null)
     {
         Damage damage = Damage.Copy();
+        bool isCriticalHit = false;
 
         if (CriticalAttack.IsActive && CriticalAttack.IsProc)
         {
+            isCriticalHit = true;
             damage.Actual = damage.Max * CriticalAttack.DamageMultiplier.Value;
         }
 
@@ -146,7 +148,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         }
 
         // Наносим урон юниту
-        attackedUnit.TakeDamage(damage, hitBox);
+        attackedUnit.TakeDamage(damage, isCriticalHit, hitBox);
     }
 
     public virtual void SetEffect(Effect effect)
@@ -190,7 +192,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     #region Abstract methods
 
-    public abstract void TakeDamage(Damage damage, Collider hitBox = null);
+    public abstract void TakeDamage(Damage damage, bool isCriticalHit = false, Collider hitBox = null);
 
     /// <summary>
     /// Метод инициализации конроллеров юнита

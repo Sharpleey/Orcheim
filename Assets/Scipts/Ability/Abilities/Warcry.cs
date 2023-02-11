@@ -18,7 +18,7 @@ public class Warcry : ActiveAbility
     /// <summary>
     /// ћаска слоев с одним слоем Enemy, который мы будем искать
     /// </summary>
-    private LayerMask collisionMask = 4096;
+    private LayerMask _collisionMask = 4096;
 
     public Warcry(Unit unit, int timeCooldown, int radius, int decreaseTimeCooldownPerLevel = 1, bool isActive = false) : base(unit: unit, timeCooldown: timeCooldown, decreaseTimeCooldownPerLevel: decreaseTimeCooldownPerLevel, isActive: isActive)
     {
@@ -31,7 +31,7 @@ public class Warcry : ActiveAbility
     {
         Vector3 center = unit.gameObject.transform.position;
 
-        Collider[] hitColliders = Physics.OverlapSphere(center, Radius.Value, collisionMask);
+        Collider[] hitColliders = Physics.OverlapSphere(center, Radius.Value, _collisionMask);
 
         if (hitColliders == null)
             return;
