@@ -7,7 +7,7 @@ public class Parameter : Upgratable
 {
     #region Properties
 
-    public float Value
+    public virtual float Value
     {
         get => _value;
         protected set => _value = Mathf.Round(Mathf.Clamp(value, 0, int.MaxValue));
@@ -22,15 +22,15 @@ public class Parameter : Upgratable
     public override float ChangeValuePerLevel 
     { 
         get => _changeValuePerLevel;
-        protected set => _changeValuePerLevel = Mathf.Clamp(value, -100, float.MaxValue);
+        protected set => _changeValuePerLevel = Mathf.Round(Mathf.Clamp(value, int.MinValue, int.MaxValue));
     }
 
     #endregion Properties
 
     #region Private fields
 
-    private float _value;
-    private float _defaultValue;
+    protected float _value;
+    protected float _defaultValue;
 
     #endregion Private fields
 
