@@ -81,7 +81,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     {
         if (Health.Actual > 0)
         {
-            int damageValue = damage.Actual;
+            float damageValue = damage.Actual;
 
             if (!damage.IsArmorIgnore)
             {
@@ -89,7 +89,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
                 float increaseDamage = 1.0f - (Armor.Actual / (100.0f + Armor.Actual));
 
                 // Уменьшенный урон за счет брони
-                damageValue = (int)(damageValue * increaseDamage);
+                damageValue = damageValue * increaseDamage;
             }
 
             Health.Actual -= damageValue;
@@ -187,8 +187,8 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 
     private void EventHandler_EnemyKilled(EnemyUnit enemyUnit)
     {
-        AddExperience(enemyUnit.CostInExp.Value);
-        AddGold(enemyUnit.CostInGold.Value);
+        AddExperience((int)enemyUnit.CostInExp.Value);
+        AddGold((int)enemyUnit.CostInGold.Value);
     }
 
     #endregion Event Handlers

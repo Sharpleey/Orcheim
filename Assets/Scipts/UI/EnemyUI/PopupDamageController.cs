@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,14 +38,14 @@ public class PopupDamageController : MonoBehaviour
     /// </summary>
     /// <param name="damage">Значение урона</param>
     /// <param name="typeDamage">Тип получаемого урона (Необходимо для определения цвета текста урона)</param>
-    public void ShowPopupDamage(int damage, DamageType typeDamage)
+    public void ShowPopupDamage(float damage, DamageType typeDamage)
     {
         GameObject popupDamageText = Instantiate(_prefabPopupDamageText);
         popupDamageText.transform.SetParent(gameObject.transform, false);
 
         PopupDamage popupDamage = popupDamageText.GetComponent<PopupDamage>();
         if (popupDamage != null)
-            popupDamage.ShowPopupDamageText(damage, TYPE_DAMAGE_COLOR[typeDamage], _rateShowingPopupDamageText, _rateHidePopupDamageText, _durationShowPopupDamageText);
+            popupDamage.ShowPopupDamageText(Mathf.Round(damage), TYPE_DAMAGE_COLOR[typeDamage], _rateShowingPopupDamageText, _rateHidePopupDamageText, _durationShowPopupDamageText);
     }
     #endregion Public methods
 }

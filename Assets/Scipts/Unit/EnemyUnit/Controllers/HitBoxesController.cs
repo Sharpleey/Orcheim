@@ -19,13 +19,13 @@ public class HitBoxesController : MonoBehaviour
     #endregion Serialize fields
 
     #region Public methods
-    public int GetDamageValue(int damage, Collider hitCollider)
+    public float GetDamageValue(float damage, Collider hitCollider)
     {
         // TODO Возможно стоит оптимизировать/отрефакторить
-        if (hitCollider == this._headCollider)
+        if (hitCollider == _headCollider)
         {
             float actualDamage = damage * _headDamageMultiplier;
-            return (int)actualDamage;
+            return actualDamage;
         }
 
         foreach (Collider handCollider in _handColliders)
@@ -33,7 +33,7 @@ public class HitBoxesController : MonoBehaviour
             if (hitCollider == handCollider)
             {
                 float actualDamage = damage * _handDamageMultiplier;
-                return (int)actualDamage;
+                return actualDamage;
             }
         } 
         
@@ -42,7 +42,7 @@ public class HitBoxesController : MonoBehaviour
             if (hitCollider == legCollider)
             {
                 float actualDamage = damage * _legDamageMultiplier;
-                return (int)actualDamage;
+                return actualDamage;
             }
         }
 
@@ -51,7 +51,7 @@ public class HitBoxesController : MonoBehaviour
             if (hitCollider == bodyCollider)
             {
                 float actualDamage = damage * _bodyDamageMultiplier;
-                return (int)actualDamage;
+                return actualDamage;
             }
         }
 

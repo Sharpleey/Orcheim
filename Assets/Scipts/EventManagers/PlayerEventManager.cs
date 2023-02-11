@@ -6,7 +6,7 @@ public class PlayerEventManager
     /// <summary>
     /// События, когда игроку нанесли урон
     /// </summary>
-    public static readonly UnityEvent<int> OnPlayerDamaged = new UnityEvent<int>();
+    public static readonly UnityEvent<float> OnPlayerDamaged = new UnityEvent<float>();
 
     /// <summary>
     /// Событие смерти игрока
@@ -32,7 +32,7 @@ public class PlayerEventManager
     /// Метод вызова события OnPlayerDamaged
     /// </summary>
     /// <param name="damage">Значение урона ненесенного игроку</param>
-    public static void PlayerDamaged(int damage)
+    public static void PlayerDamaged(float damage)
     {
         OnPlayerDamaged.Invoke(damage);
     }

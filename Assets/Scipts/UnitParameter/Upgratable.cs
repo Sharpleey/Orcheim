@@ -47,9 +47,9 @@ public abstract class Upgratable
 
     #endregion Private fields
 
-    public Upgratable(int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1)
+    public Upgratable(float changeValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1)
     {
-        ChangeValuePerLevel = increaseValuePerLevel;
+        ChangeValuePerLevel = changeValuePerLevel;
         Level = level;
         MaxLevel = maxLevel;
     }

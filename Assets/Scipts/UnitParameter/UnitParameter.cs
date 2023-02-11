@@ -12,28 +12,28 @@ public class UnitParameter : Upgratable
     /// <summary>
     /// Начальное значение параметра
     /// </summary>
-    public virtual int Default
+    public virtual float Default
     {
         get => _default;
-        protected set => _default = Mathf.Clamp(value, 0, int.MaxValue);
+        protected set => _default = Mathf.Round(Mathf.Clamp(value, 0, int.MaxValue));
     }
 
     /// <summary>
     /// Максимальное значение параметра
     /// </summary>
-    public virtual int Max
+    public virtual float Max
     {
         get => _max;
-        protected set => _max = Mathf.Clamp(value, _default, int.MaxValue);
+        protected set => _max = Mathf.Round(Mathf.Clamp(value, _default, int.MaxValue));
     }
 
     /// <summary>
     /// Текущее значение параметра
     /// </summary>
-    public virtual int Actual
+    public virtual float Actual
     {
         get => _actual;
-        set => _actual = Mathf.Clamp(value, 0, _max);
+        set => _actual = Mathf.Round(Mathf.Clamp(value, 0, _max));
     }
 
     public override string UpgradeDescription
@@ -46,9 +46,9 @@ public class UnitParameter : Upgratable
 
     #region Private fields
 
-    protected int _default;
-    protected int _max;
-    protected int _actual;
+    protected float _default;
+    protected float _max;
+    protected float _actual;
 
     #endregion Private fields
 
@@ -56,10 +56,10 @@ public class UnitParameter : Upgratable
     /// Конструктор абстрактного класса параметра юнита
     /// </summary>
     /// <param name="defaultValue">Начальное значение параметра</param>
-    /// <param name="increaseValuePerLevel">Прирост значения за уровень</param>
+    /// <param name="changeValuePerLevel">Прирост значения за уровень</param>
     /// <param name="maxLevel">Максимальный уровень улучшения параметра</param>
     /// <param name="level">Текущий уровень улучшения параметра</param>
-    public UnitParameter(int defaultValue, int increaseValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) : base (increaseValuePerLevel, maxLevel, level)
+    public UnitParameter(float defaultValue, float changeValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) : base (changeValuePerLevel, maxLevel, level)
     {
         Default = defaultValue;
 
@@ -70,7 +70,7 @@ public class UnitParameter : Upgratable
     {
         base.SetLevel(newLevel);
 
-        Max = Default + (int)ChangeValuePerLevel * (Level - 1);
+        Max = Default + ChangeValuePerLevel * (Level - 1);
         Actual = Max;
     }
 }

@@ -112,7 +112,7 @@ public class TakeDamageFlashController : MonoBehaviour
         FlashCanvasGroup.gameObject.SetActive(true);
     }
 
-    void TakeDamageFlash(int damage)
+    void TakeDamageFlash(float damage)
     {
         ResetFlash();
         FlashImage.color = DamageFlashColor;

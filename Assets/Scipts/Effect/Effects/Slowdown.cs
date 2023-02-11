@@ -40,8 +40,8 @@ public class Slowdown : Effect
     {
         base.Enable();
 
-        unit.MovementSpeed.Actual = (int)(unit.MovementSpeed.Max * (1f - (MovementSpeedPercentageDecrease.Value/100f)));
-        unit.AttackSpeed.Actual = (int)(unit.AttackSpeed.Max * (1f - (AttackSpeedPercentageDecrease.Value/100f)));
+        unit.MovementSpeed.Actual = unit.MovementSpeed.Max * (1f - (MovementSpeedPercentageDecrease.Value/100f));
+        unit.AttackSpeed.Actual = unit.AttackSpeed.Max * (1f - (AttackSpeedPercentageDecrease.Value/100f));
 
         if (enemyUnit)
         {

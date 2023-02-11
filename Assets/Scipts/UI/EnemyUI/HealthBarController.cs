@@ -130,7 +130,7 @@ public class HealthBarController : MonoBehaviour
     /// Устанавливаем максимальное значение полосы хп
     /// </summary>
     /// <param name="maxHealth">Значение максимального здоровья</param>
-    public void SetMaxHealth(int maxHealth)
+    public void SetMaxHealth(float maxHealth)
     {
         _hpSlider.maxValue = maxHealth;
     }
@@ -138,7 +138,7 @@ public class HealthBarController : MonoBehaviour
     /// Устанавливаем текущее значение здоровья для полосы хп
     /// </summary>
     /// <param name="health">Текущее значение здоровья</param>
-    public void SetHealth(int health)
+    public void SetHealth(float health)
     {
         _hpSlider.value = health;
     }

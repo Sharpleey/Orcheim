@@ -7,10 +7,10 @@ public class Parameter : Upgratable
 {
     #region Properties
 
-    public int Value
+    public float Value
     {
         get => _value;
-        protected set => _value = Mathf.Clamp(value, 0, int.MaxValue);
+        protected set => _value = Mathf.Round(Mathf.Clamp(value, 0, int.MaxValue));
     }
 
     public override string UpgradeDescription 
@@ -29,12 +29,12 @@ public class Parameter : Upgratable
 
     #region Private fields
 
-    private int _value;
-    private int _defaultValue;
+    private float _value;
+    private float _defaultValue;
 
     #endregion Private fields
 
-    public Parameter(int defaultValue, int changeValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) :base(changeValuePerLevel, maxLevel, level)
+    public Parameter(float defaultValue, float changeValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) :base(changeValuePerLevel, maxLevel, level)
     {
         _defaultValue = defaultValue;
         Value = _defaultValue;
@@ -48,7 +48,7 @@ public class Parameter : Upgratable
     {
         base.SetLevel(newLevel);
 
-        Value = _defaultValue + (int)ChangeValuePerLevel * (Level - 1);
+        Value = _defaultValue + ChangeValuePerLevel * (Level - 1);
     }
 
     #endregion Public methods

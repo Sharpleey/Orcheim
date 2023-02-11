@@ -16,7 +16,7 @@ public class HealthBarHUDElementController : HUDElementController
         SetValueHealthBarSlider(_playerUnit.Health.Actual, _playerUnit.Health.Max);
     }
 
-    private void SetValueHealthBarSlider(int currentHealth, int maxHealth)
+    private void SetValueHealthBarSlider(float currentHealth, float maxHealth)
     {
         if (_healthSlider)
         {

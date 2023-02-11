@@ -132,7 +132,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
         if (CriticalAttack.IsActive && CriticalAttack.IsProc)
         {
-            damage.Actual = (int)(damage.Max * CriticalAttack.DamageMultiplier.Value/100f);
+            damage.Actual = damage.Max * (CriticalAttack.DamageMultiplier.Value/100f);
         }
 
         if (FlameAttack.IsActive && FlameAttack.IsProc)

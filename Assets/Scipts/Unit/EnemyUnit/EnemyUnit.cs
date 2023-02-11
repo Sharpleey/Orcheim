@@ -205,24 +205,24 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     {
         if (Health.Actual > 0)
         {
-            int damageValue = damage.Actual;
+            float resultDamageValue = damage.Actual;
 
             if (hitBox)
             {
                 // Изменяем значение урона в зависимости от попадаемого хитбокса
-                damageValue = HitBoxesController.GetDamageValue(damageValue, hitBox);
+                resultDamageValue = HitBoxesController.GetDamageValue(resultDamageValue, hitBox);
             }
 
             if (!damage.IsArmorIgnore)
             {
-                // Значение уменьшения урона
+                // Множитель урона прошедшег очерез броню
                 float increaseDamage = 1.0f - (Armor.Actual / (100.0f + Armor.Actual));
 
                 // Уменьшенный урон за счет брони
-                damageValue = (int)(damageValue * increaseDamage);
+                resultDamageValue *= increaseDamage;
             }
 
-            Health.Actual -= damageValue;
+            Health.Actual -= resultDamageValue;
 
             // Если игрок атаковал врага, изменяем состояние
             if (CurrentState.GetType() == typeof(IdleState) || CurrentState.GetType() == typeof(PatrollingState))
@@ -236,7 +236,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
 
             // Всплывающий дамаг
             if (PopupDamageController != null)
-                PopupDamageController.ShowPopupDamage(damageValue, damage.DamageType);
+                PopupDamageController.ShowPopupDamage(resultDamageValue, damage.DamageType);
 
             // Полоса здоровья
             if (HealthBarController != null)

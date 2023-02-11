@@ -23,12 +23,12 @@ public class PenetrationProjectile : AttackModifier
     /// <summary>
     /// “екущее кол-во пробитых снар€дом целей
     /// </summary>
-    public int CurrentPenetration
+    public float CurrentPenetration
     {
         get => _currentPenetration;
         set => _currentPenetration = Mathf.Clamp(value, 0, MaxPenetrationCount.Value);
     }
-    private int _currentPenetration = 0;
+    private float _currentPenetration = 0;
 
     public PenetrationProjectile(
         int defaultValueMaxPenetrationCount = 2, int increaseMaxPenetrationCountPerLevel = 1, int maxLevelPenetrationCount = 1,

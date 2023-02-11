@@ -111,7 +111,7 @@ public class PopupDamage : MonoBehaviour
     /// <param name="colorText">Цвет текста урона</param>
     /// <param name="rateShowing">Скорость появления/сокрытия урона</param>
     /// <param name="durationShow">Длительность показа текста с уроном</param>
-    public void ShowPopupDamageText(int damage, Color colorText, float rateShowing, float rateHide, float durationShow)
+    public void ShowPopupDamageText(float damage, Color colorText, float rateShowing, float rateHide, float durationShow)
     {
         SetText(damage.ToString());
         SetColorText(colorText);

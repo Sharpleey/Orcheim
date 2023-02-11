@@ -16,7 +16,7 @@ public class ArmorUp : Effect
     /// <summary>
     /// Значение дополнительной брони от максимального значения брони юнита
     /// </summary>
-    private int _extraArmor;
+    private float _extraArmor;
 
     public ArmorUp(int duration, int defaultPercentageArmorIncrease, int increaseArmorIncreasePerLevel = 0, int level = 1)
     {
@@ -31,7 +31,7 @@ public class ArmorUp : Effect
     {
         base.Enable();
 
-        _extraArmor = (int)(unit.Armor.Max * (PercentageArmorIncrease.Value / 100f));
+        _extraArmor = unit.Armor.Max * (PercentageArmorIncrease.Value / 100f);
         unit.Armor.Actual += _extraArmor;
 
         // Включаем иконку эффекта

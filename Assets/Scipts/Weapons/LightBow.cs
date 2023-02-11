@@ -17,6 +17,10 @@ public class LightBow : MonoBehaviour, IBowWeapon
     [SerializeField] private float _zoomFOV = 30f;
     [SerializeField] private float _originalFOV = 60f;
     [SerializeField] private float _zoomStepTime = 4f;
+
+    [Header("ћножитель скорости передвижени€ игрока при прицеливании")]
+    [SerializeField, Range(0, 1f)] private float _multiplyAimingMovementSpeed = 0.5f;
+
     #endregion Serialize fields
 
     #region Properties
@@ -174,7 +178,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // «амедл€ем скорость бега игрока при прицеливании
-                Player.MovementSpeed.Actual = (int)(Player.MovementSpeed.Max * 0.5f);
+                Player.MovementSpeed.Actual = Player.MovementSpeed.Max * _multiplyAimingMovementSpeed;
                 Player.FirstPersonController.walkSpeed = Player.MovementSpeed.Actual/100f;
 
                 // Ѕлокируем игроку возможность спринтовать
@@ -280,7 +284,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
             if (Player)
             {
                 // «амедл€ем скорость бега игрока при стрельбе
-                Player.MovementSpeed.Actual = (int)(Player.MovementSpeed.Max * 0.5f);
+                Player.MovementSpeed.Actual = Player.MovementSpeed.Max * _multiplyAimingMovementSpeed;
                 Player.FirstPersonController.walkSpeed = Player.MovementSpeed.Actual / 100f;
 
                 // Ѕлокируем игроку возможность спринтовать

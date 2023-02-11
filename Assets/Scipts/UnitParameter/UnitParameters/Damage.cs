@@ -5,16 +5,21 @@ using UnityEngine;
 /// </summary>
 public class Damage : UnitParameter
 {
-    public override int Actual
+    public override float Actual
     {
         get
         {
-            int range = (int)(_actual * GeneralParameter.OFFSET_DAMAGE_HEALING);
-            return Random.Range(_actual - range, _actual + range);
+            // Вычисляем диапозон
+            float range = (_actual * GeneralParameter.OFFSET_DAMAGE_HEALING);
+
+            // Получаем случайный урон с учетом дмапозона
+            float actual = Random.Range(_actual - range, _actual + range);
+
+            return Mathf.Round(actual);
         }
         set
         {
-            _actual = Mathf.Clamp(value, 1, int.MaxValue);
+            _actual = Mathf.Round(Mathf.Clamp(value, 1, int.MaxValue));
         }
     }
 
@@ -37,7 +42,7 @@ public class Damage : UnitParameter
     /// <param name="isArmorIgnore">Игнорирование брони юнита при нанесении урона</param>
     /// <param name="maxLevel">Максимальный уровень улучшение параметра</param>
     /// <param name="level">Создать параметр данного уровня</param>
-    public Damage(int defaultValue, int increaseValuePerLevel = 0, DamageType damageType = DamageType.Physical, bool isArmorIgnore = false, int maxLevel = int.MaxValue, int level = 1) : base(defaultValue, increaseValuePerLevel, maxLevel, level)
+    public Damage(float defaultValue, float increaseValuePerLevel = 0, DamageType damageType = DamageType.Physical, bool isArmorIgnore = false, int maxLevel = int.MaxValue, int level = 1) : base(defaultValue, increaseValuePerLevel, maxLevel, level)
     {
         Name = HashUnitParameterString.DAMAGE;
         UpgradeDescription = HashUnitParameterString.DAMAGE_UPGRADE_DESCRIPTION;

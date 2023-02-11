@@ -187,7 +187,7 @@ public class PatrollingState : EnemyState
         _positionCurrentWayPoint = GetPointOnNavmesh(_positionCurrentWayPoint);
 
         // Меняем скорость, что сделать передвижение немного хаотично
-        enemyUnit.MovementSpeed.Actual = (int)(enemyUnit.MovementSpeed.Max / 2 + Random.Range(-0.05f, 0.05f));
+        enemyUnit.MovementSpeed.Actual = enemyUnit.MovementSpeed.Max / 2 + Random.Range(-0.05f, 0.05f);
         enemyUnit.NavMeshAgent.speed = enemyUnit.MovementSpeed.Actual/100f;
 
         // Устанавливаем точку назначения персонажу противника на точку маршрута
