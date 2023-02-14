@@ -52,7 +52,7 @@ public class PopupDamageController : MonoBehaviour
         GameObject popupDamageText;
 
         if (isCriticalHit)
-            popupDamageText = Instantiate(_prefabCriticalDamageText);
+            popupDamageText = Instantiate(_prefabCriticalDamageText); //TODO реализовтаь через Object Pool
         else
             popupDamageText = Instantiate(_prefabDamageText);
 

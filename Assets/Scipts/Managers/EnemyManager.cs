@@ -46,8 +46,6 @@ public class EnemyManager : MonoBehaviour, IGameManager
     [Header("Ќомер волны, после каждой которой происходит приращение максиммального значени€ врагов за волну")]
     [SerializeField][Range(1, 10)] int _incrementWaveMaximumEnemiesOnWave = 3;
 
-    [SerializeField] private GameObject _prefabEnemy;
-
     #endregion Serialize fields
 
     #region Properties
@@ -77,6 +75,8 @@ public class EnemyManager : MonoBehaviour, IGameManager
     #endregion Properties
 
     #region Private fields
+
+    private WarriorFactory _warriorFactory;
 
     /// <summary>
     /// «оны возрождени€ врагов
@@ -112,6 +112,11 @@ public class EnemyManager : MonoBehaviour, IGameManager
             Destroy(gameObject);
 
         AddListeners();
+    }
+
+    private void Start()
+    {
+        _warriorFactory = GetComponent<WarriorFactory>();
     }
 
     private void Update()
@@ -163,13 +168,8 @@ public class EnemyManager : MonoBehaviour, IGameManager
         int numSpawnZone = Random.Range(0, _enemySpawnZones.Length);
         GameObject spawn = _enemySpawnZones[numSpawnZone];
 
-        GameObject enemyOrc = Instantiate(_prefabEnemy, spawn.transform.position, Quaternion.identity);
+        Warrior orc = _warriorFactory.GetNewInstance(spawn.transform.position);
 
-        // ћен€ем состо€ние врага на преследование
-        EnemyUnit enemyUnit = enemyOrc.GetComponent<EnemyUnit>();
-        enemyUnit.DefaultState = StartStateType.Chasing;
-
-        Debug.Log("Spawn enemy " + enemyUnit.GetType());
     }
 
     /// <summary>
