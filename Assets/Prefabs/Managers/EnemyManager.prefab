@@ -43,9 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f76371bad2c1f642831e28352a2a666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maximumEnemiesOnScene: 16
-  _incrementMaximumEnemiesOnScene: 2
-  _incrementWaveMaximumEnemiesOnScene: 3
-  _maximumEnemiesOnWave: 16
-  _incrementMaximumEnemiesOnWave: 2
-  _incrementWaveMaximumEnemiesOnWave: 3
+  _managerConfig: {fileID: 11400000, guid: 912a0453923229642b6c1f5b812fbe32, type: 2}
+  _prefabMainUnit: {fileID: 3949734795052093717, guid: 6457d12cec7289942b985c0cbe0321e4, type: 3}
+  _prefabUnits:
+  - _prefabUnit: {fileID: 5740876689641206511, guid: ec03ba65de94e5245b5c703194cb3749, type: 3}
+    _spawnWave: 2
+    _incrementCountEnemy: 2
+    _incrementWaveCountEnemy: 2

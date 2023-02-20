@@ -4,17 +4,12 @@ using UnityEngine;
 /// Базовый абстрактный класс фабрики юнитов
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class BaseFactory<T> : MonoBehaviour where T : EnemyUnit
+public abstract class BaseFactory<T> : MonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField] protected T _prefabUnit;
-
-    public T GetNewInstance(Vector3 position)
+    public virtual T GetNewInstance(T obj, Vector3 position)
     {
-        var enemyUnit = Instantiate(_prefabUnit, position, Quaternion.identity);
+        var newobj = Instantiate(obj, position, Quaternion.identity);
 
-        // Меняем состояние врага на преследование
-        enemyUnit.DefaultState = StartStateType.Chasing;
-
-        return enemyUnit;
+        return newobj;
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,41 +12,8 @@ public class EnemyManager : MonoBehaviour, IGameManager
 
     #region Serialize fields
 
-    /// <summary>
-    /// Максиммальное значение врагов на сцене
-    /// </summary>
-    [Header("Максиммальное значение врагов на сцене")]
-    [SerializeField][Range(8, 80)] int _maximumEnemiesOnScene = 16;
-
-    /// <summary>
-    /// Значение прироста маскимального значения врагов на сцене
-    /// </summary>
-    [Header("Значение прироста маскимального значения врагов на сцене")]
-    [SerializeField][Range(1, 8)] int _incrementMaximumEnemiesOnScene = 2;
-
-    /// <summary>
-    /// Номер волны, после каждой которой происходит приращение максиммального значения врагов на сцене
-    /// </summary>
-    [Header("Номер волны, после каждой которой происходит приращение максиммального значения врагов на сцене")]
-    [SerializeField][Range(1, 10)] int _incrementWaveMaximumEnemiesOnScene = 4;
-
-    /// <summary>
-    /// Максиммальное значение врагов за волну
-    /// </summary>
-    [Header("Максиммальное значение врагов за волну")]
-    [SerializeField][Range(16, 256)] int _maximumEnemiesOnWave = 32;
-
-    /// <summary>
-    /// Значение прироста маскимального значения врагов за волну
-    /// </summary>
-    [Header("Значение прироста маскимального значения врагов за волну")]
-    [SerializeField][Range(1, 8)] int _incrementMaximumEnemiesOnWave = 4;
-
-    /// <summary>
-    /// Номер волны, после каждой которой происходит приращение максиммального значения врагов за волну
-    /// </summary>
-    [Header("Номер волны, после каждой которой происходит приращение максиммального значения врагов за волну")]
-    [SerializeField][Range(1, 10)] int _incrementWaveMaximumEnemiesOnWave = 3;
+    [Header("Конфиг файл с настройками менеджера")]
+    [SerializeField] private EnemyManagerConfig _managerConfig;
 
     #endregion Serialize fields
 
@@ -57,44 +26,59 @@ public class EnemyManager : MonoBehaviour, IGameManager
     /// </summary>
     public int EnemiesRemaining
     {
-        get => _countEnemyOnScene + _countEnemyOnWavePool;
+        get => CountEnemyOnScene + CountEnemyOnWavePool;
     }
 
+    /// <summary>
+    /// Кол-во противников на сцене
+    /// </summary>
     public int CountEnemyOnScene
     {
         get => _countEnemyOnScene;
-        set => _countEnemyOnScene = Mathf.Clamp(value, 0, 128);
+        private set => _countEnemyOnScene = Mathf.Clamp(value, 0, 128);
     }
+    private int _countEnemyOnScene;
 
+    /// <summary>
+    /// Кол-во врагов на волне
+    /// </summary>
     public int CountEnemyOnWavePool
     {
         get => _countEnemyOnWavePool;
-        set => _countEnemyOnWavePool = Mathf.Clamp(value, 0, 4096);
+        private set => _countEnemyOnWavePool = Mathf.Clamp(value, 0, 4096);
     }
+    private int _countEnemyOnWavePool;
+
+
+    public int CurrentMaximumEnemiesOnScene
+    {
+        get => _currentMaximumEnemiesOnScene;
+        private set => _currentMaximumEnemiesOnScene = Mathf.Clamp(value, 0, 4096);
+    }
+    private int _currentMaximumEnemiesOnScene;
+
+    public int CurrentMaximumEnemiesOnWave
+    {
+        get => _currentMaximumEnemiesOnWave;
+        private set => _currentMaximumEnemiesOnWave = Mathf.Clamp(value, 0, 4096);
+    }
+    private int _currentMaximumEnemiesOnWave;
 
     #endregion Properties
 
     #region Private fields
-
-    private WarriorFactory _warriorFactory;
 
     /// <summary>
     /// Зоны возрождения врагов
     /// </summary>
     private GameObject[] _enemySpawnZones;
 
-    /// <summary>
-    /// Кол-во противников на сцене
-    /// </summary>
-    private int _countEnemyOnScene;
-
-    /// <summary>
-    /// Кол-во врагов на волне
-    /// </summary>
-    private int _countEnemyOnWavePool;
-
     private float _timer = 0;
     private bool _isSpawningEnemy;
+
+    private EnemyUnitFactory _enemyUnitFactory;
+
+    private List<EnemyUnit> _poolEnemy;
 
     #endregion Private fields
 
@@ -116,7 +100,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
 
     private void Start()
     {
-        _warriorFactory = GetComponent<WarriorFactory>();
+        _enemyUnitFactory = GetComponent<EnemyUnitFactory>();
     }
 
     private void Update()
@@ -129,7 +113,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
             if (_timer > 0.8f)
             {
                 // Спавним противника, если (кол-во врагов на сцене меньше лимита) и если (пулл врагов не пустой)
-                if (CountEnemyOnScene < _maximumEnemiesOnScene && CountEnemyOnWavePool != 0)
+                if (CountEnemyOnScene < _managerConfig.DefaultMaximumEnemiesOnScene && CountEnemyOnWavePool != 0)
                     SpawnEnemy();
 
                 _timer = 0;
@@ -152,8 +136,10 @@ public class EnemyManager : MonoBehaviour, IGameManager
 
     private void SetDefaultParameters()
     {
-        CountEnemyOnScene = 0;
-        CountEnemyOnWavePool = 0;
+        CurrentMaximumEnemiesOnScene = 0;
+        CurrentMaximumEnemiesOnWave = 0;
+
+        _poolEnemy = new List<EnemyUnit>();
     }
 
     private void SpawnEnemy()
@@ -165,10 +151,16 @@ public class EnemyManager : MonoBehaviour, IGameManager
         CountEnemyOnScene += 1;
 
         // Возрождаем врага на одной из точек возрождения
-        int numSpawnZone = Random.Range(0, _enemySpawnZones.Length);
+        int numSpawnZone = UnityEngine.Random.Range(0, _enemySpawnZones.Length);
         GameObject spawn = _enemySpawnZones[numSpawnZone];
 
-        Warrior orc = _warriorFactory.GetNewInstance(spawn.transform.position);
+        int randomIndexEnemy = UnityEngine.Random.Range(0, _poolEnemy.Count);
+
+        var enemyUnit = _poolEnemy[randomIndexEnemy];
+
+        var newenemy = _enemyUnitFactory.GetNewInstance(enemyUnit, spawn.transform.position);
+
+        _poolEnemy.Remove(enemyUnit);
 
     }
 
@@ -191,7 +183,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Find enemies on scene");
 
-        _countEnemyOnScene = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        CountEnemyOnScene = GameObject.FindGameObjectsWithTag("Enemy").Length;
 
         Debug.Log("Found: " + _countEnemyOnScene.ToString() + " enemies");
     }
@@ -215,49 +207,50 @@ public class EnemyManager : MonoBehaviour, IGameManager
     }
 
     /// <summary>
-    /// Метод определяет максимальное кол-во врагов на сцене в зависимости от номера волны
+    /// Метод поределяет и возвращает значение максимального кол-ва врагов на сцене в зависимости от номера волны
     /// </summary>
     /// <param name="wave">Номер волны</param>
-    private void UpdateValueMaximumEnemiesOnScene(int wave)
+    /// <returns>Значение максимального кол-ва врагов на сцене</returns>
+    private void UpdateCurrentMaximumEnemiesOnScene(int wave)
     {
-        if (wave % _incrementWaveMaximumEnemiesOnScene == 0)
-        {
-            _maximumEnemiesOnScene += _incrementMaximumEnemiesOnScene;
-        }
+        CurrentMaximumEnemiesOnScene = _managerConfig.DefaultMaximumEnemiesOnScene + (wave / _managerConfig.IncrementWaveMaximumEnemiesOnScene) * _managerConfig.IncrementMaximumEnemiesOnScene;
     }
+
     
-    /// <summary>
-    /// Метод определяет максимальное кол-во врагов за волну в зависимости от номера волны
-    /// </summary>
-    /// <param name="wave">Номер волны</param>
-    private void UpdateValueMaximumEnemiesOnWave(int wave)
+    private void UpdateCurrentMaximumEnemiesOnWave(int wave)
     {
-        if (wave % _incrementWaveMaximumEnemiesOnWave == 0)
-        {
-            _maximumEnemiesOnWave += _incrementMaximumEnemiesOnWave;
-        }
+        CurrentMaximumEnemiesOnWave = _managerConfig.DefaultMaximumEnemiesOnWave + (wave / _managerConfig.IncrementWaveMaximumEnemiesOnWave) * _managerConfig.IncrementMaximumEnemiesOnWave;
     }
 
     /// <summary>
     /// Метод подготовливает пул противников, которые будут спавнится на конкретной волне
     /// </summary>
-    private void FillPoolEnemies()
+    private void FillPoolEnemies(int wave)
     {
-        // TODO Реализовать через pool objects
-        // TODO Реализовать с разными типами врагов
+        Debug.Log("Fill pool enemies...");
 
-        Debug.Log("Fill pool enemies");
+        CountEnemyOnWavePool = CurrentMaximumEnemiesOnWave;
 
-        _countEnemyOnWavePool = _maximumEnemiesOnWave;
+        int countSpecialUnits = 0;
 
-        //// Пока заполним пул одним типом врагов
-        //for (int i = 0; i < _maximumEnemiesOnWave; i++)
-        //{
-        //    GameObject enemy = Instantiate(_prefabEnemy);
-        //    enemy.SetActive(false);
+        foreach (EnemySpawnConfig enemySpawnConfig in _managerConfig.EnemySpawnConfigs)
+        {
+            if(wave >= enemySpawnConfig.SpawnWave)
+            {
+                int maxCountEnemyOnCurrentWave = (wave / enemySpawnConfig.IncrementWaveCountEnemy) * enemySpawnConfig.IncrementCountEnemy;
+                int countEnemyOnCurrentWave = UnityEngine.Random.Range(0, maxCountEnemyOnCurrentWave);
 
-        //    _enemyOnWavePool.Enqueue(enemy);
-        //}
+                for (int i = 0; i < countEnemyOnCurrentWave; i++)
+                    _poolEnemy.Add(enemySpawnConfig.PrefabUnit);
+
+                countSpecialUnits += countEnemyOnCurrentWave;
+            }
+        }
+
+        for (int i = 0; i < CurrentMaximumEnemiesOnWave - countSpecialUnits; i++)
+            _poolEnemy.Add(_managerConfig.PrefabMainUnit);
+
+        Debug.Log("Fill pool enemies (DONE)");
     }
 
     private void CheckEnemiesRemaining(EnemyUnit enemyUnit)
@@ -291,16 +284,21 @@ public class EnemyManager : MonoBehaviour, IGameManager
     private void EventHandler_GameMapStarded()
     {
         SetDefaultParameters();
+
         FindEnemySpawnZonesOnScene();
+
         FindEnemiesOnScene();
     }
 
     private void EventHandler_PreparingForWave(int wave)
     {
-        UpdateValueMaximumEnemiesOnScene(wave);
-        UpdateValueMaximumEnemiesOnWave(wave);
+        // Обновляем максимальное кол-во врагов на сцене на данной волне
+        UpdateCurrentMaximumEnemiesOnScene(wave);
 
-        FillPoolEnemies();
+        // Обновляем максимальное кол-во врагов на данной волне
+        UpdateCurrentMaximumEnemiesOnWave(wave);
+
+        FillPoolEnemies(wave);
     }
 
     private void EventHandler_WaveIsComing(int wave)
