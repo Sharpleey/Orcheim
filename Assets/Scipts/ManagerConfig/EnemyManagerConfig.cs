@@ -32,6 +32,10 @@ public class EnemyManagerConfig : ScriptableObject
     [Tooltip("Номер волны, после каждой которой происходит приращение максиммального значения врагов за волну")]
     [SerializeField][Range(1, 10)] int _incrementWaveMaximumEnemiesOnWave = 3;
 
+    [Space(20)]
+    [Tooltip("Задержка между спавном врагов")]
+    [SerializeField][Range(0.0f, 2f)] float _delayBetweenSpawnEnemies = 0.5f;
+
     [Header("Префаб основного юнита")]
     [Space(20)]
     [SerializeField] private EnemyUnit _prefabMainUnit;
@@ -68,6 +72,11 @@ public class EnemyManagerConfig : ScriptableObject
     /// Номер волны, после каждой которой происходит приращение максиммального значения врагов за волну
     /// </summary>
     public int IncrementWaveMaximumEnemiesOnWave => _incrementWaveMaximumEnemiesOnWave;
+
+    /// <summary>
+    /// Задержка между появлениями врагов
+    /// </summary>
+    public float DelayBetweenSpawnEnemies => _delayBetweenSpawnEnemies;
 
     /// <summary>
     /// Префаб основного юнита врага

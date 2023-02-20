@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -110,7 +109,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
             _timer += Time.deltaTime;
 
             // Спавним врагов с задержкой
-            if (_timer > 0.8f)
+            if (_timer > _managerConfig.DelayBetweenSpawnEnemies)
             {
                 // Спавним противника, если (кол-во врагов на сцене меньше лимита) и если (пулл врагов не пустой)
                 if (CountEnemyOnScene < _managerConfig.DefaultMaximumEnemiesOnScene && CountEnemyOnWavePool != 0)
