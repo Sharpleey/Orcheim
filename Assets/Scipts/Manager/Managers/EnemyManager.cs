@@ -23,7 +23,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
     /// <summary>
     /// Кол-во оставшихся врагов на волне
     /// </summary>
-    public int EnemiesRemaining
+    public int CountEnemiesRemaining
     {
         get => CountEnemyOnScene + CountEnemyOnWavePool;
     }
@@ -33,22 +33,20 @@ public class EnemyManager : MonoBehaviour, IGameManager
     /// </summary>
     public int CountEnemyOnScene
     {
-        get => _countEnemyOnScene;
-        private set => _countEnemyOnScene = Mathf.Clamp(value, 0, 128);
+        get => _enemiesOnScene.Count;
     }
-    private int _countEnemyOnScene;
 
     /// <summary>
     /// Кол-во врагов на волне
     /// </summary>
     public int CountEnemyOnWavePool
     {
-        get => _countEnemyOnWavePool;
-        private set => _countEnemyOnWavePool = Mathf.Clamp(value, 0, 4096);
+        get => _wavePoolEnemies.Count;
     }
-    private int _countEnemyOnWavePool;
-
-
+    
+    /// <summary>
+    /// Текущее значение максимального вол-ва врагов на сцене
+    /// </summary>
     public int CurrentMaximumEnemiesOnScene
     {
         get => _currentMaximumEnemiesOnScene;
@@ -56,6 +54,9 @@ public class EnemyManager : MonoBehaviour, IGameManager
     }
     private int _currentMaximumEnemiesOnScene;
 
+    /// <summary>
+    /// Текущее значение максимального вол-ва врагов на волне
+    /// </summary>
     public int CurrentMaximumEnemiesOnWave
     {
         get => _currentMaximumEnemiesOnWave;
@@ -73,11 +74,22 @@ public class EnemyManager : MonoBehaviour, IGameManager
     private GameObject[] _enemySpawnZones;
 
     private float _timer = 0;
+
     private bool _isSpawningEnemy;
 
+    /// <summary>
+    /// Фабрика юнитов
+    /// </summary>
     private EnemyUnitFactory _enemyUnitFactory;
 
-    private List<EnemyUnit> _poolEnemy;
+    /// <summary>
+    /// Пул (список) врагов волны
+    /// </summary>
+    private List<EnemyUnit> _wavePoolEnemies;
+    /// <summary>
+    /// Пул (список) врагов на сцене
+    /// </summary>
+    private List<EnemyUnit> _enemiesOnScene;
 
     #endregion Private fields
 
@@ -112,7 +124,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
             if (_timer > _managerConfig.DelayBetweenSpawnEnemies)
             {
                 // Спавним противника, если (кол-во врагов на сцене меньше лимита) и если (пулл врагов не пустой)
-                if (CountEnemyOnScene < _managerConfig.DefaultMaximumEnemiesOnScene && CountEnemyOnWavePool != 0)
+                if (CountEnemyOnScene < CurrentMaximumEnemiesOnScene && CountEnemyOnWavePool != 0)
                     SpawnEnemy();
 
                 _timer = 0;
@@ -129,7 +141,7 @@ public class EnemyManager : MonoBehaviour, IGameManager
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarded);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PreparingForWave);
         WaveEventManager.OnWaveIsComing.AddListener(EventHandler_WaveIsComing);
-        GlobalGameEventManager.OnEnemyKilled.AddListener(CheckEnemiesRemaining);
+        GlobalGameEventManager.OnEnemyKilled.AddListener(EventHandler_OnEnemyKilled);
         GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
     }
 
@@ -138,28 +150,29 @@ public class EnemyManager : MonoBehaviour, IGameManager
         CurrentMaximumEnemiesOnScene = 0;
         CurrentMaximumEnemiesOnWave = 0;
 
-        _poolEnemy = new List<EnemyUnit>();
+        _wavePoolEnemies = new List<EnemyUnit>();
+        _enemiesOnScene = new List<EnemyUnit>();
     }
 
+    /// <summary>
+    /// Метод спавнит случайного противника из пула в случайной точке спавна
+    /// </summary>
     private void SpawnEnemy()
     {
-        // Получаем врага из пула врагов
-        CountEnemyOnWavePool -= 1;
-
-        // Добавляем его в список врагов на сцене
-        CountEnemyOnScene += 1;
-
         // Возрождаем врага на одной из точек возрождения
-        int numSpawnZone = UnityEngine.Random.Range(0, _enemySpawnZones.Length);
-        GameObject spawn = _enemySpawnZones[numSpawnZone];
+        int numSpawnZone = Random.Range(0, _enemySpawnZones.Length);
+        Vector3 spawnPosition = _enemySpawnZones[numSpawnZone].transform.position;
 
-        int randomIndexEnemy = UnityEngine.Random.Range(0, _poolEnemy.Count);
+        // Извлекаем случайный тип противника из пула
+        int randomIndexEnemy = Random.Range(0, _wavePoolEnemies.Count);
+        EnemyUnit enemyUnitPrefab = _wavePoolEnemies[randomIndexEnemy];
+        _wavePoolEnemies.Remove(enemyUnitPrefab);
 
-        var enemyUnit = _poolEnemy[randomIndexEnemy];
+        // Создаем новый объект противника на основе извлеченного типа из пула
+        EnemyUnit enemyUnit = _enemyUnitFactory.GetNewInstance(enemyUnitPrefab, spawnPosition);
+        // Добавляем нового противника в пул противников на сцене
+        _enemiesOnScene.Add(enemyUnit);
 
-        var newenemy = _enemyUnitFactory.GetNewInstance(enemyUnit, spawn.transform.position);
-
-        _poolEnemy.Remove(enemyUnit);
 
     }
 
@@ -182,9 +195,14 @@ public class EnemyManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Find enemies on scene");
 
-        CountEnemyOnScene = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        GameObject[] emeniesOnScene = GameObject.FindGameObjectsWithTag("Enemy");
 
-        Debug.Log("Found: " + _countEnemyOnScene.ToString() + " enemies");
+        for(int i=0; i<emeniesOnScene.Length; i++)
+        {
+            _enemiesOnScene.Add(emeniesOnScene[i].GetComponent<EnemyUnit>());
+        }
+
+        Debug.Log($"Found: {_enemiesOnScene.Count} enemies");
     }
 
     private void StartSpawnEnemies()
@@ -228,42 +246,32 @@ public class EnemyManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Fill pool enemies...");
 
-        CountEnemyOnWavePool = CurrentMaximumEnemiesOnWave;
-
+        // Кол-во особых противников в пуле на данной волне
         int countSpecialUnits = 0;
 
         foreach (EnemySpawnConfig enemySpawnConfig in _managerConfig.EnemySpawnConfigs)
         {
+            // Если данная волна, это первая волна появления данного типа врага
             if(wave >= enemySpawnConfig.SpawnWave)
             {
+                // Определяем максимальное кол-во противников данного типа на текущей волне
                 int maxCountEnemyOnCurrentWave = (wave / enemySpawnConfig.IncrementWaveCountEnemy) * enemySpawnConfig.IncrementCountEnemy;
-                int countEnemyOnCurrentWave = UnityEngine.Random.Range(0, maxCountEnemyOnCurrentWave);
+                // Рандомим актульное их число, на данной волне
+                int countEnemyOnCurrentWave = Random.Range(0, maxCountEnemyOnCurrentWave);
 
+                // Добавляем из в пул
                 for (int i = 0; i < countEnemyOnCurrentWave; i++)
-                    _poolEnemy.Add(enemySpawnConfig.PrefabUnit);
+                    _wavePoolEnemies.Add(enemySpawnConfig.PrefabUnit);
 
                 countSpecialUnits += countEnemyOnCurrentWave;
             }
         }
 
+        // Дозаполяем пул обычным типов врага
         for (int i = 0; i < CurrentMaximumEnemiesOnWave - countSpecialUnits; i++)
-            _poolEnemy.Add(_managerConfig.PrefabMainUnit);
+            _wavePoolEnemies.Add(_managerConfig.PrefabMainUnit);
 
         Debug.Log("Fill pool enemies (DONE)");
-    }
-
-    private void CheckEnemiesRemaining(EnemyUnit enemyUnit)
-    {
-        CountEnemyOnScene -= 1;
-
-        SpawnEnemyEventManager.EnemiesRemaining(EnemiesRemaining);
-
-        if (EnemiesRemaining == 0)
-        {
-            StopSpawnEnemies();
-
-            WaveEventManager.WaveIsOver();
-        }
     }
 
     #endregion Private methods
@@ -302,9 +310,30 @@ public class EnemyManager : MonoBehaviour, IGameManager
 
     private void EventHandler_WaveIsComing(int wave)
     {
+        // Запускаем спавн врагов
         StartSpawnEnemies();
 
-        SpawnEnemyEventManager.EnemiesRemaining(EnemiesRemaining);
+        // Рассылаем события обновления кол-ва оставшихся врагов
+        EnemyEventManager.UpdateCountEnemiesRemaining(CountEnemiesRemaining);
+    }
+
+    private void EventHandler_OnEnemyKilled(EnemyUnit enemyUnit)
+    {
+        // Удаляем противника из пула врагов на сцене
+        _enemiesOnScene.Remove(enemyUnit);
+
+        // Рассылаем события обновления кол-ва оставшихся врагов
+        EnemyEventManager.UpdateCountEnemiesRemaining(CountEnemiesRemaining);
+
+        // Если кол-во оставшихся врагов
+        if (CountEnemiesRemaining == 0)
+        {
+            // Останавливаем спавн врагов
+            StopSpawnEnemies();
+
+            // Рассылаем событие о том, что врагм на волне закончились
+            EnemyEventManager.EnemiesOver();
+        }
     }
 
     private void EventHandler_GameOver()

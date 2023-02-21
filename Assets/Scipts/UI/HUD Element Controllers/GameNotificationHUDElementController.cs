@@ -54,7 +54,7 @@ public class GameNotificationHUDElementController : MonoBehaviour
         StartCoroutine(SetTextGameNotificationWithDelay(HashGameNotificationString.WAVE_IS_COMING, 0));
     }
 
-    private void EventHandler_WaveIsOver()
+    private void EventHandler_WaveIsOver(int wave)
     {
         StartCoroutine(SetTextGameNotificationWithDelay(HashGameNotificationString.WAVE_IS_OVER, 0));
     }

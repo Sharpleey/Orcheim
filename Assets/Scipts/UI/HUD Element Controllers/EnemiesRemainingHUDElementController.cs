@@ -6,7 +6,7 @@ public class EnemiesRemainingHUDElementController : HUDElementController
 {
     protected override void AddListeners()
     {
-        SpawnEnemyEventManager.OnEnemiesRemaining.AddListener(UpdatetValueText);
+        EnemyEventManager.OnUpdateCountEnemiesRemaining.AddListener(UpdatetValueText);
     }
 
     private void UpdatetValueText(int countEnemy)

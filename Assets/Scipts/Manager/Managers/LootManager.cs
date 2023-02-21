@@ -57,7 +57,7 @@ public class LootManager : MonoBehaviour, IGameManager
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
         GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
-        WaveEventManager.OnWaveIsOver.AddListener(ChestRespawn);
+        WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
     }
 
     private void FindChestSpawnZones()
@@ -197,5 +197,11 @@ public class LootManager : MonoBehaviour, IGameManager
         AwardsAttackModifiersUpgrade = new List<AwardAttackModifierUpgrade>();
         AwardsPlayerStatsUpgrade = new List<AwardPlayerStatsUpgrade>();
     }
+
+    private void EventHandler_WaveIsOver(int wave)
+    {
+        ChestRespawn();
+    }
+
     #endregion
 }

@@ -58,7 +58,7 @@ public class WaveManager : MonoBehaviour, IGameManager
     {
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PreparingForWave);
-        WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
+        EnemyEventManager.OnEnemiesOver.AddListener(EventHandler_EnemiesOver);
         WaveEventManager.OnStartWaveLogic.AddListener(EventHandler_StartWaveLogic);
         GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
     }
@@ -146,8 +146,10 @@ public class WaveManager : MonoBehaviour, IGameManager
         StartCoroutine(_coroutineBroadcastWaveIsComing);
     }
 
-    private void EventHandler_WaveIsOver()
+    private void EventHandler_EnemiesOver()
     {
+        WaveEventManager.WaveIsOver(_wave);
+
         SetNumWave(_wave + 1);
         StartCoroutine(BroadcastPreparingForWave(_delayToBroadcastPreparingForWave));
     }

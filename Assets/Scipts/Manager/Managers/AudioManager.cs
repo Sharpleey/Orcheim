@@ -256,7 +256,7 @@ public class AudioManager : MonoBehaviour, IGameManager
         PlayRandomSound(SoundType.CombatMusic, 8);
     }
 
-    private void EventHandler_WaveIsOver()
+    private void EventHandler_WaveIsOver(int wave)
     {
         PlaySound(SoundType.Sfx, "wave_is_over", 0);
         StopSound(SoundType.CombatMusic);

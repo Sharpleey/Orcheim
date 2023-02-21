@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class WaveEventManager
 {
     #region Events
+
     /// <summary>
     /// Событие запуска игровой логики спавна волн. Событие первого нанесение урона по противнику, после которого начинается игра, спавн волн
     /// </summary>
@@ -14,7 +15,7 @@ public class WaveEventManager
     /// <summary>
     /// Событие, когда волна врагов закончилась
     /// </summary>
-    public static readonly UnityEvent OnWaveIsOver = new UnityEvent();
+    public static readonly UnityEvent<int> OnWaveIsOver = new UnityEvent<int>();
 
     /// <summary>
     /// Событие подготовки волны
@@ -25,9 +26,11 @@ public class WaveEventManager
     /// Событик начала волны
     /// </summary>
     public static readonly UnityEvent<int> OnWaveIsComing = new UnityEvent<int>();
+
     #endregion
 
     #region Methods
+
     /// <summary>
     /// Метод вызова события OnStartingTrigger
     /// </summary>
@@ -39,9 +42,9 @@ public class WaveEventManager
     /// <summary>
     /// Метод вызова события OnWaveIsOver
     /// </summary>
-    public static void WaveIsOver()
+    public static void WaveIsOver(int wave)
     {
-        OnWaveIsOver.Invoke();
+        OnWaveIsOver.Invoke(wave);
     }
 
     /// <summary>
@@ -59,5 +62,6 @@ public class WaveEventManager
     {
         OnWaveIsComing.Invoke(wave);
     }
+
     #endregion
 }
