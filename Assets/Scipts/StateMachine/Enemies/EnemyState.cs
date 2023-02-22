@@ -20,6 +20,11 @@ public abstract class EnemyState: IState
     protected float distanceEnemyToPlayer;
 
     /// <summary>
+    /// Маска слоев с одним слоем Enemy, который мы будем искать
+    /// </summary>
+    private LayerMask collisionMask = 4096;
+
+    /// <summary>
     /// Конструктор класса состояния, необходим для прокидывания связей с данными противника и машины состояний
     /// </summary>
     /// <param name="enemyUnit">Данный и параметры противника</param>
@@ -58,6 +63,19 @@ public abstract class EnemyState: IState
     protected Transform GetTransformPlayer()
     {
         return GameObject.FindGameObjectWithTag("Player")?.transform;
+    }
+
+    /// <summary>
+    /// Метод ищет ближайших юнитов противника (EnemyUnit) и возвращает их кол-во
+    /// </summary>
+    /// <returns>Кол-во EnemyUnit в заданном радиусе</returns>
+    protected int GetCountAlliesNearby(float searchRadius)
+    {
+        Vector3 center = enemyUnit.transform.position;
+
+        Collider[] hitColliders = Physics.OverlapSphere(center, searchRadius, collisionMask);
+
+        return hitColliders.Length;
     }
 
     /// <summary>

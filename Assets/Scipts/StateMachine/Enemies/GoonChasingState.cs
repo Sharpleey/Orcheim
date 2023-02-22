@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class GoonChasingState : ChasingState
 {
@@ -7,11 +6,6 @@ public class GoonChasingState : ChasingState
     /// Таймер проверки союзных существ
     /// </summary>
     private float _timerCheckAlliesNearby;
-
-    /// <summary>
-    /// Маска слоев с одним слоем Enemy, который мы будем искать
-    /// </summary>
-    private LayerMask collisionMask = 4096;
 
     public GoonChasingState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
@@ -34,10 +28,10 @@ public class GoonChasingState : ChasingState
 
         _timerCheckAlliesNearby += Time.deltaTime;
 
-        if (_timerCheckAlliesNearby > 3f)
+        if (_timerCheckAlliesNearby > 2f)
         {
             // Получаем кол-во союзных существ поблизости
-            int countAlliesNearby = GetCountAlliesNearby();
+            int countAlliesNearby = GetCountAlliesNearby(((Goon)enemyUnit).Warcry.Radius.Value);
 
             // Если их больше 2х, то кастуем баф
             if (countAlliesNearby > 2 && !((Goon)enemyUnit).Warcry.IsCooldown)
@@ -63,16 +57,5 @@ public class GoonChasingState : ChasingState
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
         enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, false);
-    }
-
-    private int GetCountAlliesNearby()
-    {
-        Vector3 center = enemyUnit.transform.position;
-        float radius = 8;
-
-        Collider[] hitColliders = Physics.OverlapSphere(center, radius, collisionMask);
-
-        return hitColliders.Length;
-
     }
 }

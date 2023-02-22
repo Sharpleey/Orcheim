@@ -42,7 +42,7 @@ public class Goon : EnemyUnit
     /// <summary>
     /// Вызывается из анимации
     /// </summary>
-    private void ApplyWarcry()
+    private void ApplyWarcry() //TODO
     {
         if (Warcry.IsCooldown)
             return;
