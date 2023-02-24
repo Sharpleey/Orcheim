@@ -47,8 +47,13 @@ public class EnemyAudioController : MonoBehaviour
         // Выбираем случайный звук из набора
         int randSound = UnityEngine.Random.Range(0, enemySoundPack.AudioClips.Length);
 
-        // Воспроизводим его
-        _enemyAudioSource.PlayOneShot(enemySoundPack.AudioClips[randSound]);
+        // Если источник звка занят, отменяем воспроизведение
+        if (_enemyAudioSource.isPlaying)
+            return;
+
+        // Воспроизводим звук
+        _enemyAudioSource.clip = enemySoundPack.AudioClips[randSound];
+        _enemyAudioSource.Play();
     }
 
     /// <summary>

@@ -184,7 +184,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     }
 
     /// <summary>
-    /// Запустить проигрывание источника звука
+    /// Запустить проигрывание источника звука с задержкой
     /// </summary>
     /// <param name="audioSource">Источник звука, который будем запускать</param>
     private void StartPlayAudioSource(AudioSource audioSource, float delay)
