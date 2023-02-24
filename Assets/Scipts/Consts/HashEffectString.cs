@@ -15,4 +15,7 @@ public class HashEffectString
 
     public const string ARMORUP_NAME = "”величение брони";
     public const string ARMORUP_DESCRIPTION = "Ёффект на {0} cек. увеличивает броню цели на {1}%";
+
+    public const string DAMAGEUP_NAME = "”величение урона";
+    public const string DAMAGEUP_DESCRIPTION = "Ёффект на {0} cек. увеличивает урон цели на {1}%";
 }

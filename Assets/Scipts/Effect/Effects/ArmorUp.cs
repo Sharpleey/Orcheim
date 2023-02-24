@@ -5,7 +5,6 @@
 public class ArmorUp : Effect
 {
     public override string Name => HashEffectString.ARMORUP_NAME;
-
     public override string Description => HashEffectString.ARMORUP_DESCRIPTION;
 
     /// <summary>

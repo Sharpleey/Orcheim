@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +12,7 @@ public class IconEffectsController : MonoBehaviour
     [SerializeField] private GameObject _flameIcon;
     [SerializeField] private GameObject _armorUpIcon;
     [SerializeField] private GameObject _slowdownIcon;
+    [SerializeField] private GameObject _damageUpIcon;
 
     /// <summary>
     /// Промежуток по Х между иконками
@@ -54,6 +54,7 @@ public class IconEffectsController : MonoBehaviour
         _effectIcons.Add(typeof(Flame), _flameIcon);
         _effectIcons.Add(typeof(Slowdown), _slowdownIcon);
         _effectIcons.Add(typeof(ArmorUp), _armorUpIcon);
+        _effectIcons.Add(typeof(DamageUp), _damageUpIcon);
     }
 
     private void DisableAllIcons()
