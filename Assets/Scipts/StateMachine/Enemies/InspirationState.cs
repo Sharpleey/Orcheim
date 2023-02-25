@@ -10,9 +10,6 @@ public class InspirationState : EnemyState
 
         // ¬ключаем анимацию
         enemyUnit?.Animator?.SetTrigger(HashAnimStringEnemy.IsInspiration);
-
-        // «вук
-        enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.UsingAbility);
     }
 
     public override void Exit()
