@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -13,6 +11,7 @@ public class ButtonAwardController : MonoBehaviour
     [SerializeField] private Color _colorAwardAttackModifaer;
     [SerializeField] private Color _colorAwardAttackModifierUpgrade;
     [SerializeField] private Color _colorAwardPlayerStatsUpgrade;
+    [SerializeField] private Color _colorDefaultAward;
 
     [Space(10)]
     [SerializeField] private TextMeshProUGUI _textTypeNameAward;
@@ -28,6 +27,16 @@ public class ButtonAwardController : MonoBehaviour
 
     #endregion Private fields
 
+    #region Private methods
+
+    private void SetColorAwardText(Color newColor)
+    {
+        _textTypeNameAward.color = newColor;
+        _textLevelUpgrade.color = newColor;
+    }
+
+    #endregion Private methods
+
     #region Public methods
 
     public void SetAward(Award award)
@@ -41,28 +50,32 @@ public class ButtonAwardController : MonoBehaviour
         // TODO Переделать
         if (_textDescriptionAward)
         {
-            if (_award is AwardAttackModifaer awardAttackModifaer)
+            if (_award is AwardAttackModifier awardAttackModifaer)
             {
                 _textDescriptionAward.text = awardAttackModifaer?.AttackModifier.Description;
-                _textTypeNameAward.color = _colorAwardAttackModifaer;
             }
 
-            if (_award is AwardAttackModifierUpgrade awardAttackModifierUpgrade)
+            if (_award is AwardParameterUpgrade awardParameterUpgrade)
             {
-                _textDescriptionAward.text = awardAttackModifierUpgrade?.UpgratableParameter?.UpgradeDescription;
-                _textLevelUpgrade.text = $"Уровень {awardAttackModifierUpgrade?.UpgratableParameter?.Level + 1}";
-
-                _textTypeNameAward.color = _colorAwardAttackModifierUpgrade;
-                _textLevelUpgrade.color = _colorAwardAttackModifierUpgrade;
+                _textDescriptionAward.text = awardParameterUpgrade?.UpgratableParameter?.UpgradeDescription;
+                _textLevelUpgrade.text = $"Уровень {awardParameterUpgrade?.UpgratableParameter?.Level + 1}";
             }
 
-            if (_award is AwardPlayerStatsUpgrade awardPlayerStatsUpgrade)
+            switch (_award.Type)
             {
-                _textDescriptionAward.text = awardPlayerStatsUpgrade?.UpgratableParameter?.UpgradeDescription;
-                _textLevelUpgrade.text = $"Уровень {awardPlayerStatsUpgrade?.UpgratableParameter?.Level + 1}";
+                case AwardType.AttackModifaer:
+                    SetColorAwardText(_colorAwardAttackModifaer);
+                    break;
+                case AwardType.AttackModifierUpgrade:
+                    SetColorAwardText(_colorAwardAttackModifierUpgrade);
+                    break;
+                case AwardType.PlayerStatUpgrade:
+                    SetColorAwardText(_colorAwardPlayerStatsUpgrade);
+                    break;
+                default:
+                    SetColorAwardText(_colorDefaultAward);
+                    break;
 
-                _textTypeNameAward.color = _colorAwardPlayerStatsUpgrade;
-                _textLevelUpgrade.color = _colorAwardPlayerStatsUpgrade;
             }
         }
     }
@@ -72,7 +85,7 @@ public class ButtonAwardController : MonoBehaviour
     /// </summary>
     public void OnClickAward()
     {
-        if(_award is AwardAttackModifaer awardAttackModifaer)
+        if(_award is AwardAttackModifier awardAttackModifaer)
         {
             // Добавляем модификатор атаки игроку
             PlayerManager.Instance?.PlayerUnit?.SetActiveAttackModifier(awardAttackModifaer.AttackModifier);
@@ -81,23 +94,18 @@ public class ButtonAwardController : MonoBehaviour
             LootManager.Instance?.RemoveAwardAttackModifier(awardAttackModifaer);
         }
 
-        if(_award is AwardAttackModifierUpgrade awardAttackModifierUpgrade)
+        if(_award is AwardParameterUpgrade awardParameterUpgrade)
         {
             // Улучшаем параметр модификатора атаки
-            awardAttackModifierUpgrade.UpgratableParameter.LevelUp();
-        }
+            awardParameterUpgrade.UpgratableParameter.LevelUp();
 
-        if (_award is AwardPlayerStatsUpgrade awardPlayerStatsUpgrade)
-        {
-            // Улучшаем параметр игрока
-            awardPlayerStatsUpgrade.UpgratableParameter.LevelUp();
-
-            if(awardPlayerStatsUpgrade.UpgratableParameter is Health)
+            if (awardParameterUpgrade.UpgratableParameter is Health)
                 PlayerEventManager.PlayerHealthChanged();
 
-            if (awardPlayerStatsUpgrade.UpgratableParameter is Armor)
+            if (awardParameterUpgrade.UpgratableParameter is Armor)
                 PlayerEventManager.PlayerArmorChanged();
         }
+
 
         GlobalGameEventManager.PauseGame(false);
 

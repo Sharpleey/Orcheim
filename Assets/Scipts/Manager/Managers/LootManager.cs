@@ -19,9 +19,10 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public ManagerStatus Status { get; private set; }
 
-    public List<AwardAttackModifaer> AwardsAttackModifaers { get; private set; } = new List<AwardAttackModifaer>();
-    public List<AwardAttackModifierUpgrade> AwardsAttackModifiersUpgrade { get; private set; } = new List<AwardAttackModifierUpgrade>();
-    public List<AwardPlayerStatsUpgrade> AwardsPlayerStatsUpgrade { get; private set; } = new List<AwardPlayerStatsUpgrade>();
+    public List<AwardAttackModifier> AwardsAttackModifaers { get; private set; } = new List<AwardAttackModifier>();
+    public List<AwardParameterUpgrade> AwardsAttackModifiersUpgrade { get; private set; } = new List<AwardParameterUpgrade>();
+    public List<AwardParameterUpgrade> AwardsPlayerStatsUpgrade { get; private set; } = new List<AwardParameterUpgrade>();
+    public List<Award> Awards { get; private set; } = new List<Award>();
 
 
     #endregion Properties
@@ -73,6 +74,7 @@ public class LootManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Spawn chest");
     }
+
     #endregion Private methods
 
     #region Public methods
@@ -86,25 +88,25 @@ public class LootManager : MonoBehaviour, IGameManager
 
     public void AddAwardAttackModifier(AttackModifier attackModifaer)
     {
-        AwardsAttackModifaers.Add(new AwardAttackModifaer(attackModifaer.Name, attackModifaer));
+        AwardsAttackModifaers.Add(new AwardAttackModifier(AwardType.AttackModifaer, attackModifaer.Name, attackModifaer));
     }
 
-    public void RemoveAwardAttackModifier(AwardAttackModifaer award)
+    public void RemoveAwardAttackModifier(AwardAttackModifier award)
     {
         AwardsAttackModifaers.Remove(award);
     }
 
     public void AddAwardAttackModifierUpgrade(string name, Upgratable upgratableParameter)
     {
-        AwardsAttackModifiersUpgrade.Add(new AwardAttackModifierUpgrade(name, upgratableParameter));
+        AwardsAttackModifiersUpgrade.Add(new AwardParameterUpgrade(AwardType.AttackModifierUpgrade, name, upgratableParameter));
     }
 
     public void AddAwardPlayerStatUpgrade(string name, Upgratable upgratableParameter)
     {
-        AwardsPlayerStatsUpgrade.Add(new AwardPlayerStatsUpgrade(name, upgratableParameter));
+        AwardsPlayerStatsUpgrade.Add(new AwardParameterUpgrade(AwardType.PlayerStatUpgrade, name, upgratableParameter));
     }
 
-    public AwardAttackModifaer GetRandomAwardAttackModifaer()
+    public AwardAttackModifier GetRandomAwardAttackModifaer()
     {
         if (AwardsAttackModifaers.Count == 0)
             return null;
@@ -113,7 +115,7 @@ public class LootManager : MonoBehaviour, IGameManager
         return AwardsAttackModifaers[indexAward];
     }
 
-    public AwardAttackModifierUpgrade GetRandomAwardAttackModifaerUpgrade()
+    public AwardParameterUpgrade GetRandomAwardAttackModifaerUpgrade()
     {
         if (AwardsAttackModifiersUpgrade.Count == 0)
             return null;
@@ -122,7 +124,7 @@ public class LootManager : MonoBehaviour, IGameManager
         return AwardsAttackModifiersUpgrade[indexAward];
     }
 
-    public AwardPlayerStatsUpgrade GetRandomAwardPlayerStatsUpgrade()
+    public AwardParameterUpgrade GetRandomAwardPlayerStatsUpgrade()
     {
         if (AwardsPlayerStatsUpgrade.Count == 0)
             return null;
@@ -193,9 +195,10 @@ public class LootManager : MonoBehaviour, IGameManager
 
     private void EventHandler_GameOver()
     {
-        AwardsAttackModifaers = new List<AwardAttackModifaer>();
-        AwardsAttackModifiersUpgrade = new List<AwardAttackModifierUpgrade>();
-        AwardsPlayerStatsUpgrade = new List<AwardPlayerStatsUpgrade>();
+        AwardsAttackModifaers = new List<AwardAttackModifier>();
+        AwardsAttackModifiersUpgrade = new List<AwardParameterUpgrade>();
+        AwardsPlayerStatsUpgrade = new List<AwardParameterUpgrade>();
+        Awards = new List<Award>();
     }
 
     private void EventHandler_WaveIsOver(int wave)
