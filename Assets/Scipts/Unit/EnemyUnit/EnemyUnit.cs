@@ -167,11 +167,6 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         }
     }
 
-    private void OnDestroy()
-    {
-        //CurrentState?.Exit();
-    }
-
     #endregion Private methods
 
     #region Public methods
