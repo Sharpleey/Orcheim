@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2358710284360283650}
   - component: {fileID: 1349581977659638512}
   - component: {fileID: 7498937118518864321}
-  - component: {fileID: 8806779338736666760}
   m_Layer: 0
   m_Name: EM_wood_fence3b_LOD0
   m_TagString: Untagged
@@ -56,6 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,19 +80,51 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &8806779338736666760
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &329350749507586980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6909607539923728853}
+  - component: {fileID: 7893387508691956008}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &6909607539923728853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329350749507586980}
+  m_LocalRotation: {x: 0.024804052, y: -0, z: -0, w: 0.9996924}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2436965638503491324}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 2.843, y: 0, z: 0}
+--- !u!65 &7893387508691956008
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37024429227915252}
+  m_GameObject: {fileID: 329350749507586980}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.026673404, y: 0.003, z: 0.0115080755}
-  m_Center: {x: -0.00033646633, y: -0.00016659996, z: 0.005752544}
+  m_Size: {x: 2.6494277, y: 1.1552402, z: 0.16384892}
+  m_Center: {x: -0.033958793, y: 0.5675973, z: 0.010602912}
 --- !u!1 &2220854671356614416
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,6 +180,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -172,6 +205,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3069774869389720646
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,6 +237,7 @@ Transform:
   - {fileID: 2358710284360283650}
   - {fileID: 202936503946989132}
   - {fileID: 3693354783640410457}
+  - {fileID: 6909607539923728853}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -288,6 +323,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -312,3 +348,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
