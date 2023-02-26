@@ -1,6 +1,4 @@
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class AwardsMenuController : MonoBehaviour
@@ -13,9 +11,7 @@ public class AwardsMenuController : MonoBehaviour
 
     private void OnEnable()
     {
-        MyStopwatch.StartStopwatch();
         _awards = LootManager.Instance?.GetListRandomAwards(3);
-        MyStopwatch.StopStopwatch();
 
         if (_awards != null && _buttonAwardControllers != null)
         {
