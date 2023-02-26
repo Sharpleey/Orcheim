@@ -50,8 +50,6 @@ public class PatrollingState : EnemyState
         // Получаем Transform игрока для отслеживания его позиции
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
-        WaveEventManager.OnWaveIsComing.AddListener(SetChasingState);
-
         // Получаем ближайший маршрут патруля
         PatrolRoute nearbyPatrolRoute = FindNearbyRoute();
 
@@ -134,8 +132,6 @@ public class PatrollingState : EnemyState
 
         // Изменяем дистанцию остановки противника
         enemyUnit.NavMeshAgent.stoppingDistance = enemyUnit.AttackDistance - 0.2f;
-
-        WaveEventManager.OnWaveIsComing.RemoveListener(SetChasingState);
     }
 
     /// <summary>

@@ -38,8 +38,6 @@ public class IdleState : EnemyState
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
         enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsIdle, true);
-
-        WaveEventManager.OnWaveIsComing.AddListener(SetChasingState);
     }
 
     public override void Update()
@@ -75,8 +73,6 @@ public class IdleState : EnemyState
     public override void Exit()
     {
         enemyUnit?.Animator?.SetBool(HashAnimStringEnemy.IsIdle, false);
-
-        WaveEventManager.OnWaveIsComing.RemoveListener(SetChasingState);
     }
 
     #region Private methods

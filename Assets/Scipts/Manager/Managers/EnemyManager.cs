@@ -310,7 +310,11 @@ public class EnemyManager : MonoBehaviour, IGameManager
 
     private void EventHandler_WaveIsComing(int wave)
     {
-        // Запускаем спавн врагов
+        // Врагам на сцене меняем состояние на преследование игрока
+        foreach (EnemyUnit enemy in _enemiesOnScene)
+            enemy.SetState<ChasingState>();
+
+        // Запускаем спавн врагов из пула
         StartSpawnEnemies();
 
         // Рассылаем события обновления кол-ва оставшихся врагов
