@@ -169,7 +169,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
 
     private void OnDestroy()
     {
-        CurrentState?.Exit();
+        //CurrentState?.Exit();
     }
 
     #endregion Private methods
@@ -277,7 +277,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     /// </summary>
     public void DestroyUnit()
     {
-        Destroy(gameObject); //TODO
+        Destroy(gameObject); //TODO Через Pool objects
     }
 
     #endregion Public methods
