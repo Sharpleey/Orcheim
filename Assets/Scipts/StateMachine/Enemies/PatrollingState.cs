@@ -50,6 +50,9 @@ public class PatrollingState : EnemyState
         // Получаем Transform игрока для отслеживания его позиции
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
+        // Включием триггер отвечающий за призыв атаковать игрока
+        enemyUnit.SummonTrigger?.SetEnable(true);
+
         // Получаем ближайший маршрут патруля
         PatrolRoute nearbyPatrolRoute = FindNearbyRoute();
 
@@ -132,6 +135,9 @@ public class PatrollingState : EnemyState
 
         // Изменяем дистанцию остановки противника
         enemyUnit.NavMeshAgent.stoppingDistance = enemyUnit.AttackDistance - 0.2f;
+
+        // Выключием триггер отвечающий за призыа атаковать рядом стоящих союзных юнитов
+        enemyUnit.SummonTrigger?.SetEnable(false);
     }
 
     /// <summary>

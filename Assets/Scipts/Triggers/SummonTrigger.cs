@@ -1,36 +1,49 @@
 using UnityEngine;
 
 /// <summary>
-///  ласс отвечает за призыв соседних врагов атаковать игрока, когда персонаж, на котором используетс€ этот класс, проходит р€дом с другими персонажами.
-/// ѕри выходе коллайдера одного персонажа из другого, мен€етс€ состо€ние на преследование
+///  ласс обработки триггера, отвечающего за смену состо€ни€ врага на Chasing, если из этого триггера вышел EnemyUnit в состо€нии Chasing
 /// </summary>
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class SummonTrigger : MonoBehaviour
 {
-    public EnemyUnit EnemyUnit { get; private set; }
+    private EnemyUnit _enemyUnit;
+    private BoxCollider _boxCollider;
 
     private void Awake()
     {
-        EnemyUnit = GetComponentInParent<EnemyUnit>();
+        _enemyUnit = GetComponentInParent<EnemyUnit>();
+        _boxCollider = GetComponent<BoxCollider>();
     }
-    private void OnTriggerExit(Collider otherSummonTriggerCollider)  
+    private void OnTriggerExit(Collider otherEnemyCollider)  
     {
-        // ≈сли текущее состо€ние "поко€", то ничего не делаем
-        if (EnemyUnit.CurrentState.GetType() == typeof(IdleState))
-            return;
+        JoinChasing(otherEnemyCollider);
+    }
 
-        EnemyUnit otherEnemy = otherSummonTriggerCollider.GetComponent<SummonTrigger>().EnemyUnit;
+    private void OnTriggerEnter(Collider otherEnemyCollider)
+    {
+        JoinChasing(otherEnemyCollider); 
+    }
 
-        bool onChangeState = (EnemyUnit.CurrentState.GetType() == typeof(WarriorChasingState) || EnemyUnit.CurrentState.GetType() == typeof(GoonChasingState))
-            && (otherEnemy.CurrentState.GetType() == typeof(IdleState) || otherEnemy.CurrentState.GetType() == typeof(PatrollingState));
+    private void JoinChasing(Collider otherEnemyCollider)
+    {
+        EnemyUnit otherEnemyUnit = otherEnemyCollider.GetComponent<EnemyUnit>();
 
-        // ≈сли персонаж в состо€нии "преследовани€" и другой персонаж (р€дом сто€щий) в состо€нии "поко€" или "патрулировани€", то второму мен€ем состо€ние на "преследовани€"
-        if (onChangeState)
+        // ≈сли р€дом с текущим юнитов проходит враг в состо€нии Chasing, то мен€ем состо€ние на Chasing
+        if (otherEnemyUnit?.CurrentState is ChasingState)
         {
-            // ¬оспроизводим звук
-            if(otherEnemy.AudioController)
-                otherEnemy.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
+            _enemyUnit.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Confused);
 
-            otherEnemy.SetState<ChasingState>();
+            _enemyUnit.SetState<ChasingState>();
         }
+    }
+
+    /// <summary>
+    /// ¬ключает/отключает работу триггера
+    /// </summary>
+    /// <param name="isEnable">¬ключить/отключить</param>
+    public void SetEnable(bool isEnable)
+    {
+        _boxCollider.enabled = isEnable;
     }
 }

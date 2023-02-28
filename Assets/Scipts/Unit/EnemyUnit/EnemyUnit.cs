@@ -15,8 +15,6 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     [Header("Начальнео состояние")]
     [SerializeField] private StartStateType _defaultState;
 
-    [SerializeField] private BoxCollider _summonTrigger;
-
     #endregion Serialize fields
 
     #region Properties
@@ -25,7 +23,6 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     public Parameter CostInGold { get; private set; }
     public Parameter CostInExp { get; private set; }
 
-    public BoxCollider SummonTrigger { get => _summonTrigger; private set => _summonTrigger = value; }
 
     #region State machine
     public StartStateType DefaultState { get => _defaultState; set => _defaultState = value; }
@@ -43,6 +40,8 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     public DieEffectController DieEffectController { get; private set; } //TODO Сделать через одинт контроллер визуальных эффектов
     public BurningEffectController BurningEffectController { get; private set; } //TODO Сделать через одинт контроллер визуальных эффектов
     public IconEffectsController IconEffectsController { get; private set; }
+    public SummonTrigger SummonTrigger { get; private set; }
+
     #endregion 
 
     public NavMeshAgent NavMeshAgent { get; private set; }
@@ -140,6 +139,8 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         HealthBarController = GetComponentInChildren<HealthBarController>();
         PopupDamageController = GetComponentInChildren<PopupDamageController>();
 
+        SummonTrigger = GetComponentInChildren<SummonTrigger>();
+
         Animator = GetComponent<Animator>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
     }
@@ -176,7 +177,6 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         base.InitParameters();
 
         DefaultState = _defaultState; //?? надо ли
-        SummonTrigger = _summonTrigger; //?? надо ли
 
         if(_unitConfig is EnemyUnitConfig enemyUnitConfig)
         {

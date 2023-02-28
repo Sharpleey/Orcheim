@@ -38,6 +38,9 @@ public class IdleState : EnemyState
         transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
 
         enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsIdle, true);
+
+        // Включием триггер отвечающий за призыв атаковать игрока
+        enemyUnit.SummonTrigger?.SetEnable(true);
     }
 
     public override void Update()
@@ -73,6 +76,9 @@ public class IdleState : EnemyState
     public override void Exit()
     {
         enemyUnit?.Animator?.SetBool(HashAnimStringEnemy.IsIdle, false);
+
+        // Выключием триггер отвечающий за призыа атаковать рядом стоящих союзных юнитов
+        enemyUnit.SummonTrigger?.SetEnable(false);
     }
 
     #region Private methods
