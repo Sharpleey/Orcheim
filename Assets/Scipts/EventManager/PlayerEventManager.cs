@@ -4,7 +4,7 @@ public class PlayerEventManager
 {
     #region Events
     /// <summary>
-    /// События, когда игроку нанесли урон
+    /// Событие, когда игроку нанесли урон
     /// </summary>
     public static readonly UnityEvent<float> OnPlayerDamaged = new UnityEvent<float>();
 
@@ -18,13 +18,35 @@ public class PlayerEventManager
     /// </summary>
     public static readonly UnityEvent OnPlayerLevelUp = new UnityEvent();
 
+    /// <summary>
+    /// Событие изменения кол-ва здоровья у игрока
+    /// </summary>
     public static readonly UnityEvent OnPlayerHealthChanged = new UnityEvent();
 
+    /// <summary>
+    /// Событие изменения кол-ва брони у игрока
+    /// </summary>
     public static readonly UnityEvent OnPlayerArmorChanged = new UnityEvent();
 
+    /// <summary>
+    /// Событие изменения кол-ва золота у игрока
+    /// </summary>
     public static readonly UnityEvent OnPlayerGoldChanged = new UnityEvent();
 
+    /// <summary>
+    /// Событие изменения кол-ва опыта у игрока
+    /// </summary>
     public static readonly UnityEvent OnPlayerExperienceChanged = new UnityEvent();
+
+    /// <summary>
+    /// Событие выбора игроком оружия ближнего боя
+    /// </summary>
+    public static readonly UnityEvent OnPlayerChooseMeleeWeapon = new UnityEvent();
+
+    /// <summary>
+    /// Событие выбора игроком оружия дальнего боя
+    /// </summary>
+    public static readonly UnityEvent OnPlayerChooseRangeWeapon = new UnityEvent();
     #endregion
 
     #region Methods
@@ -83,6 +105,22 @@ public class PlayerEventManager
     public static void PlayerExperienceChanged()
     {
         OnPlayerExperienceChanged.Invoke();
+    }
+
+    /// <summary>
+    /// Вызов события игрок выбрал оружие ближнего боя
+    /// </summary>
+    public static void PlayerChooseMeleeWeapon()
+    {
+        OnPlayerChooseMeleeWeapon.Invoke();
+    }
+
+    /// <summary>
+    /// Вызов события игрок выбрал оружие дальнего боя
+    /// </summary>
+    public static void PlayerChooseRangeWeapon()
+    {
+        OnPlayerChooseRangeWeapon.Invoke();
     }
 
     #endregion

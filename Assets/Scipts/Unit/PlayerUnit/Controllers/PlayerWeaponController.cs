@@ -50,11 +50,15 @@ public class PlayerWeaponController : MonoBehaviour
         {
             if (Input.GetKeyDown(_keyCodeMeleeWeapon))
             {
+                PlayerEventManager.PlayerChooseMeleeWeapon();
+
                 ChangeWeapon(_meleeWeapon);
             }
 
             if (Input.GetKeyDown(_keyCodeRangeWeapon))
             {
+                PlayerEventManager.PlayerChooseRangeWeapon();
+
                 ChangeWeapon(_rangeWeapon);
             }
         }
