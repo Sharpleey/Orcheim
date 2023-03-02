@@ -160,12 +160,12 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
             NavMeshAgent.speed = MovementSpeed.Actual / 100f;
         }
 
-        if(HealthBarController)
-        {
-            // Устанавливаем максимальное и актуальное хп для полосы хп
-            HealthBarController?.SetMaxHealth(Health.Max);
-            HealthBarController?.SetHealth(Health.Actual);
-        }
+        // Устанавливаем максимальное и актуальное хп для полосы хп
+        HealthBarController?.SetMaxHealth(Health.Max);
+        HealthBarController?.SetHealth(Health.Actual);
+
+        // Отключаем триггер
+        SummonTrigger?.SetEnable(false);
     }
 
     #endregion Private methods
