@@ -13,6 +13,9 @@ public class WeaponAndAbilityHUDElementController : MonoBehaviour
     [SerializeField] GameObject _meleeWeapon;
     [SerializeField] GameObject _rangeWeapon;
 
+    [Space(10)]
+    [SerializeField] GameObject _inProgressText;
+
     private Vector2 _sizeSelectedWeapon, _sizeDeselectedWeapon;
     private Vector3 _positionSelectedWeapon, _positionDeselectedWeapon;
     private Color _colorSelectedWeapon, _colorDeselectedWeapon;
@@ -66,11 +69,15 @@ public class WeaponAndAbilityHUDElementController : MonoBehaviour
     {
         SelectWeapon(_meleeWeapon, _rectTransformMeleeWeapon, _imageMeleeWeapon);
         DeselectWeapon(_rangeWeapon, _rectTransformRangeWeapon, _imageRangeWeapon);
+
+        _inProgressText?.SetActive(true);
     }
 
     private void EventHandler_PlayerChooseRangeWeapon()
     {
         SelectWeapon(_rangeWeapon, _rectTransformRangeWeapon, _imageRangeWeapon);
         DeselectWeapon(_meleeWeapon, _rectTransformMeleeWeapon, _imageMeleeWeapon);
+
+        _inProgressText?.SetActive(false);
     }
 }
