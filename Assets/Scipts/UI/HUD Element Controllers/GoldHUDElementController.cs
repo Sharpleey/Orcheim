@@ -11,6 +11,6 @@ public class GoldHUDElementController : HUDElementController
 
     protected override void UpdatetValueText()
     {
-            SetValueText(_playerUnit?.Gold.ToString());
+        SetValueText(_playerUnit?.Gold.ToString());
     }
 }
