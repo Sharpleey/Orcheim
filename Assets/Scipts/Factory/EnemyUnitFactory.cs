@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class EnemyUnitFactory : BaseFactory<EnemyUnit>
 {
-    public override EnemyUnit GetNewInstance(EnemyUnit obj, Vector3 position)
+    public override EnemyUnit GetNewInstance(EnemyUnit prefab, Vector3 position)
     {
-        var enemyUnit = base.GetNewInstance(obj, position);
+        var enemyUnit = base.GetNewInstance(prefab, position);
 
         enemyUnit.DefaultState = StartStateType.Chasing;
 

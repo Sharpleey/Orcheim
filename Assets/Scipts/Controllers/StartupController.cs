@@ -11,6 +11,7 @@ public class StartupController : MonoBehaviour
     [SerializeField] private WaveManager _waveManager;
     [SerializeField] private LootManager _lootManager;
     [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private PoolManager _poolManager;
 
     // Список диспетчеров, который просматривается в цикле во время стартовой последовательности.
     private List<IGameManager> _startSequence;
@@ -31,6 +32,8 @@ public class StartupController : MonoBehaviour
             _startSequence.Add(_lootManager);
         if (_audioManager)
             _startSequence.Add(_audioManager);
+        if (_audioManager)
+            _startSequence.Add(_poolManager);
 
         StartCoroutine(StartupManagers());
     }
@@ -61,9 +64,6 @@ public class StartupController : MonoBehaviour
             if (numReady > lastReady)
             {
                 Debug.Log("Progress: " + numReady + "/" + numModules);
-
-                // Событие загрузки рассылается вместе с относящимися к нему данными.
-                //Messenger<int, int>.Broadcast(StartupEvent.MANAGERS_PROGRESS, numReady, numModules);
             }
 
             yield return new WaitForSeconds(0);

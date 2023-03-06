@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System;
+using UnityEngine.UI;
 
 public class PopupDamage : MonoBehaviour
 {
+    [SerializeField] private Image _criticalHitIcon;
+    [SerializeField] private TextMeshProUGUI _textMeshPro;
+
     #region Private fields
     private bool _isShown = false;
     private bool _isShowing = false;
@@ -15,29 +16,29 @@ public class PopupDamage : MonoBehaviour
     private float _timer = 0f;
 
     private Vector3 targetPosition;
-    private float offsetX, offsetY;
 
     private float _rateShowing = 2.5f;
     private float _rateHide = 2.5f;
     private float _durationShown = 1f;
-    //private Color _colorText = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
-    [SerializeField] private TextMeshProUGUI _textMeshPro; // Если без SerializeField, выдает ошибку (хз с чем связано)
     #endregion Private fields
 
     #region Mono
-    void Start()
+    private void OnEnable()
     {
-        _textMeshPro = GetComponent<TextMeshProUGUI>();
-        _textMeshPro.alpha = _currentAlpha;
+        transform.localPosition = new Vector3(0, 25f, 0);
+        transform.eulerAngles = new Vector3(0, 180, 0);
+        transform.localScale = Vector3.one;
 
-        offsetX = UnityEngine.Random.Range(-1.5f, 1.5f);
-        offsetY = UnityEngine.Random.Range(0.3f, 1.2f);
-        targetPosition = new Vector3(transform.position.x + offsetX, transform.position.y + 0.5f, transform.position.z);
+
+        targetPosition = new Vector3(Random.Range(-30f, 30f), Random.Range(35f, 45f), 0);
+
+        _textMeshPro.alpha = 0;
+        _textMeshPro.fontSize = 30;
+
+        _criticalHitIcon.enabled = false;
     }
-    #endregion Mono
 
-    #region Private methods
     private void Update()
     {
         if (_isShowing)
@@ -77,7 +78,6 @@ public class PopupDamage : MonoBehaviour
 
         if (_isHide)
         {
-
             _textMeshPro.alpha = _currentAlpha;
             if (_currentAlpha > 0f)
             {
@@ -88,22 +88,15 @@ public class PopupDamage : MonoBehaviour
                 _currentAlpha = 0f;
                 _isHide = false;
 
-                Destroy(gameObject);
+                PoolManager.Instance?.PopupDamagePool.ReturnToContainerPool(this);
             }
 
         }
     }
-    private void SetText(String stext)
-    {
-        _textMeshPro.text = "-" + stext;
-    }
-    private void SetColorText(Color colorText)
-    {
-        _textMeshPro.color = colorText;
-    }
-    #endregion Private methods
+    #endregion Mono
 
     #region Public methods
+
     /// <summary>
     /// Метод задает параметры отображения текста: значение урона, цвет урона, скорость появления/сокрытия урона, длительность показа
     /// </summary>
@@ -111,14 +104,20 @@ public class PopupDamage : MonoBehaviour
     /// <param name="colorText">Цвет текста урона</param>
     /// <param name="rateShowing">Скорость появления/сокрытия урона</param>
     /// <param name="durationShow">Длительность показа текста с уроном</param>
-    public void ShowPopupDamageText(float damage, Color colorText, float rateShowing, float rateHide, float durationShow)
+    public void StartShowing(float damage, bool isCriticalHit, Color colorText, float rateShowing, float rateHide, float durationShow)
     {
-        SetText(damage.ToString());
-        SetColorText(colorText);
+        _textMeshPro.text = $"-{damage}";
+        _textMeshPro.color = colorText;
 
         _rateShowing = rateShowing;
         _rateHide = rateHide;
         _durationShown = durationShow;
+
+        if (isCriticalHit)
+        {
+            _criticalHitIcon.enabled = true;
+            _textMeshPro.fontSize = 42;
+        }
 
         _isShowing = true;
     }

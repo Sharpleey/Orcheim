@@ -9,18 +9,11 @@ public class PopupDamageController : MonoBehaviour
     #region Serialize fields
 
     /// <summary>
-    /// Поле для префаба объекта с текстом, которое и будет текстом с получаемым уроном
-    /// </summary>
-    [SerializeField] private GameObject _prefabDamageText;
-
-    [SerializeField] private GameObject _prefabCriticalDamageText;
-
-    /// <summary>
     /// Скорость плавного показа/скрытия текста урона
     /// </summary>
-    [SerializeField] [Range (0.1f, 10f)] private float _rateShowingPopupDamageText = 2.5f;
-    [SerializeField][Range(0.1f, 10f)] private float _rateHidePopupDamageText = 2.5f;
-    [SerializeField] [Range (0.0f, 10f)] private float _durationShowPopupDamageText = 1f;
+    [SerializeField] [Range (0.1f, 10f)] private float _rateShowing = 2.5f;
+    [SerializeField] [Range(0.1f, 10f)] private float _rateHide = 2.5f;
+    [SerializeField] [Range (0.0f, 10f)] private float _durationShow = 1f;
 
     #endregion Serialize fields
 
@@ -49,18 +42,11 @@ public class PopupDamageController : MonoBehaviour
     /// <param name="typeDamage">Тип получаемого урона (Необходимо для определения цвета текста урона)</param>
     public void ShowPopupDamage(float damage, bool isCriticalHit, DamageType typeDamage)
     {
-        GameObject popupDamageText;
+        PopupDamage popupDamage = PoolManager.Instance?.PopupDamagePool.GetFreeElement();
 
-        if (isCriticalHit)
-            popupDamageText = Instantiate(_prefabCriticalDamageText); //TODO реализовтаь через Object Pool
-        else
-            popupDamageText = Instantiate(_prefabDamageText);
+        popupDamage?.transform.SetParent(transform, false);
 
-        popupDamageText.transform.SetParent(gameObject.transform, false);
-
-        PopupDamage popupDamage = popupDamageText.GetComponent<PopupDamage>();
-        if (popupDamage != null)
-            popupDamage.ShowPopupDamageText(Mathf.Round(damage), TYPE_DAMAGE_COLOR[typeDamage], _rateShowingPopupDamageText, _rateHidePopupDamageText, _durationShowPopupDamageText);
+        popupDamage?.StartShowing(Mathf.Round(damage), isCriticalHit, TYPE_DAMAGE_COLOR[typeDamage], _rateShowing, _rateHide, _durationShow);
     }
 
     #endregion Public methods

@@ -281,7 +281,6 @@ public class EnemyManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Spawn Enemy manager starting...");
 
-        // any long-running startup tasks go here, and set status to 'Initializi ng' until those tasks are complete
         Status = ManagerStatus.Started;
     }
 
