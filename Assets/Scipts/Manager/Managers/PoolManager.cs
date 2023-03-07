@@ -38,6 +38,8 @@ public class PoolManager : MonoBehaviour, IGameManager
         }
         else
             Destroy(gameObject);
+
+        AddListeners();
     }
 
     private void Start()
@@ -49,6 +51,11 @@ public class PoolManager : MonoBehaviour, IGameManager
     #endregion Mono
 
     #region Private methods
+
+    private void AddListeners()
+    {
+        GlobalGameEventManager.OnNewGame.AddListener(EventHandler_OnNewGame);
+    }
 
     private Transform CreateAndGetContainer(Type typeNameContainer)
     {
@@ -67,6 +74,11 @@ public class PoolManager : MonoBehaviour, IGameManager
         Debug.Log("Pool Managaer manager starting...");
 
         Status = ManagerStatus.Started;
+    }
+
+    private void EventHandler_OnNewGame(GameMode gameMode)
+    {
+        PopupDamagePool.RefillPool(_sizePoolPopupDamage);
     }
 
     #endregion Public methods

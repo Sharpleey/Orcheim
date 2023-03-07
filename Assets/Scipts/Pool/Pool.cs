@@ -100,13 +100,32 @@ public class Pool<T> where T : MonoBehaviour
         T freeElement;
 
         if (HasFreeElement(out var element))
+        {
             freeElement = element;
+            _pool.Remove(element);
+        }
         else
             freeElement = GetInstance();
 
         freeElement?.gameObject.SetActive(true);
 
         return freeElement;
+    }
+
+    /// <summary>
+    /// Дозаполняет пул объектами до нужного кол-ва
+    /// </summary>
+    public void RefillPool(int size)
+    {
+        for (int i = _pool.Count; i < size; i++)
+        {
+            T obj = GetInstance();
+
+            obj.gameObject.SetActive(false);
+            obj.transform.SetParent(_container);
+
+            _pool.Add(obj);
+        }
     }
 
     /// <summary>
@@ -117,5 +136,9 @@ public class Pool<T> where T : MonoBehaviour
     {
         element.gameObject.SetActive(false);
         element.transform.SetParent(_container);
+
+        _pool.Add(element);
     }
+
+
 }
