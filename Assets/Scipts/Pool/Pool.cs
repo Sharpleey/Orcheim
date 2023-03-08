@@ -119,12 +119,12 @@ public class Pool<T> where T : MonoBehaviour
     {
         for (int i = _pool.Count; i < size; i++)
         {
-            T obj = GetInstance();
+            T element = GetInstance();
 
-            obj.gameObject.SetActive(false);
-            obj.transform.SetParent(_container);
+            element.gameObject.SetActive(false);
+            element.transform.SetParent(_container);
 
-            _pool.Add(obj);
+            _pool.Add(element);
         }
     }
 
@@ -136,6 +136,7 @@ public class Pool<T> where T : MonoBehaviour
     {
         element.gameObject.SetActive(false);
         element.transform.SetParent(_container);
+        element.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
         _pool.Add(element);
     }

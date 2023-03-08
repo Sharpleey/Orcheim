@@ -5,6 +5,7 @@ public class HitEffect : MonoBehaviour
 {
     #region Serialize fields
 
+    [Header("Время показа")]
     [SerializeField][Range(0.1f, 1f)] float _secondsBeforeDeletion = 0.15f;
 
     #endregion Serialize fields
@@ -13,13 +14,13 @@ public class HitEffect : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(DeleteEffect(_secondsBeforeDeletion));
+        StartCoroutine(StartCountdownToDelete(_secondsBeforeDeletion));
     }
 
     #endregion Mono
 
     #region Private methods
-    private IEnumerator DeleteEffect(float secondsBeforeDeletion)
+    private IEnumerator StartCountdownToDelete(float secondsBeforeDeletion)
     {
         yield return new WaitForSeconds(secondsBeforeDeletion);
 

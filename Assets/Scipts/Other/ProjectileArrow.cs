@@ -38,6 +38,7 @@ public class ProjectileArrow : MonoBehaviour
 		_isBlockDamage = false;
 
 		_collider.isTrigger = false;
+		_rigidbody.isKinematic = true;
 
 		_currentHitUnit = null;
 	}
@@ -136,7 +137,7 @@ public class ProjectileArrow : MonoBehaviour
 		// Отвязываем эффект от стрелы
         _tracerEffect?.transform.SetParent(null);
 		// Удаляем объект трассера через некоторое время
-		_tracerEffect?.DeleteTracer();
+		_tracerEffect?.StartCountdownToDelete();
 
 		// Возвращаем объект в пул
 		PoolManager.Instance?.ProjectileArrowPool.ReturnToContainerPool(this);
@@ -156,7 +157,7 @@ public class ProjectileArrow : MonoBehaviour
 		// Отвязываем эффект от стрелы
 		_tracerEffect?.transform.SetParent(null);
 		// Удаляем объект трассера через некоторое время
-		_tracerEffect?.DeleteTracer();
+		_tracerEffect?.StartCountdownToDelete();
 
 		// Возвращаем объект в пул
 		PoolManager.Instance?.ProjectileArrowPool.ReturnToContainerPool(this);
@@ -165,8 +166,9 @@ public class ProjectileArrow : MonoBehaviour
 	private void EnableTracerEffect()
     {
 		_tracerEffect = PoolManager.Instance?.TracerEffectPool.GetFreeElement();
-		_tracerEffect.gameObject.transform.parent = transform;
-		_tracerEffect.gameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
+
+		_tracerEffect.gameObject.transform.SetParent(transform);
+		_tracerEffect.gameObject.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
 	}
 
 	#endregion Private methods
@@ -183,7 +185,7 @@ public class ProjectileArrow : MonoBehaviour
 		_lightBow = lightBow;
 		_playerUnit = playerUnit;
 
-		transform.parent = null;
+		transform.SetParent(null);
 
 		_rigidbody.isKinematic = false;
 		_rigidbody.AddForce((transform.forward) * _lightBow.ShotForce, ForceMode.Impulse);
@@ -196,7 +198,6 @@ public class ProjectileArrow : MonoBehaviour
 
 		// Запускаем отсчет для удаления стрелы
 		StartCoroutine(DeleteProjectileInDelay(5));
-
     }
 	#endregion Public methods
 }

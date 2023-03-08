@@ -6,7 +6,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     #region Serialize fields
     [Header("Weapon")]
     [SerializeField] private string _name = "Легкий лук";
-    [SerializeField] private float _shotForce = 16;
+    [SerializeField] private float _fastShotForce = 16;
     [SerializeField] private Transform _arrowSpawn;
 
     [Header("AimingZoom")]
@@ -63,7 +63,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// <summary>
     /// Сила выстрела
     /// </summary>
-    public float ShotForce => _shotForce;
+    public float ShotForce => _fastShotForce;
 
 
     #endregion Properties
@@ -73,7 +73,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private bool _isZoomed;
     private bool _isLockControl;
 
-    private ProjectileArrow _projectileArrow;
+    private ProjectileArrow _projectile;
 
     #endregion Private fields
 
@@ -329,7 +329,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private void Shot()
     {
         // Запускаем стрелу
-        _projectileArrow?.Launch(this, Player);
+        _projectile?.Launch(this, Player);
     }
 
     /// <summary>
@@ -337,13 +337,10 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// </summary>
     private void RespawnProjectile()
     {
-        _projectileArrow = PoolManager.Instance?.ProjectileArrowPool.GetFreeElement();
+        _projectile = PoolManager.Instance?.ProjectileArrowPool.GetFreeElement();
 
-        _projectileArrow.transform.parent = _arrowSpawn.transform;
-        _projectileArrow.transform.position = _arrowSpawn.position;
-        _projectileArrow.transform.rotation = _arrowSpawn.rotation;
-
-        _projectileArrow.GetComponent<Rigidbody>().isKinematic = true;
+        _projectile.transform.SetParent(_arrowSpawn.transform);
+        _projectile.transform.SetPositionAndRotation(_arrowSpawn.position, _arrowSpawn.rotation);
     }
     #endregion Private methods
 }

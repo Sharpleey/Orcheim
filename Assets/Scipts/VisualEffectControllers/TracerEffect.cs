@@ -14,7 +14,7 @@ public class TracerEffect : MonoBehaviour
     #endregion Private methods
 
     #region Public methods
-    public void DeleteTracer()
+    public void StartCountdownToDelete()
     {
         StartCoroutine(DeleteEffectInDelay(1));
     }
