@@ -9,11 +9,19 @@ public class PoolManager : MonoBehaviour, IGameManager
 
     [Header("Popup Damage")]
     [SerializeField] private PopupDamage _prefabPopupDamage;
-    [SerializeField] private int _sizePoolPopupDamage;
+    [SerializeField] private int _startSizePoolPopupDamage;
 
-    [Header("ProjectileArrow")]
-    [SerializeField] private ProjectileArrow _prefabProjectileArrow;
-    [SerializeField] private int _sizePoolProjectileArrow;
+    [Header("Projectile Arrow")]
+    [SerializeField] public ProjectileArrow _prefabProjectileArrow;
+    [SerializeField] private int _startSizePoolProjectileArrow;
+
+    [Header("TracerEffect")]
+    [SerializeField] private TracerEffect _prefabTracerEffect;
+    [SerializeField] private int _startSizePoolTracerEffect;
+
+    [Header("HitEffect")]
+    [SerializeField] private HitEffect _prefabHitEffect;
+    [SerializeField] private int _startSizePoolHitEffect;
 
     #endregion Serialize fields
 
@@ -21,8 +29,10 @@ public class PoolManager : MonoBehaviour, IGameManager
 
     public ManagerStatus Status { get; private set; }
 
-    public Pool<PopupDamage> PopupDamagePool { get; set; }
-    public Pool<ProjectileArrow> ProjectileArrowPool { get; set; }
+    public Pool<PopupDamage> PopupDamagePool { get; private set; }
+    public Pool<ProjectileArrow> ProjectileArrowPool { get; private set; }
+    public Pool<TracerEffect> TracerEffectPool { get; private set; }
+    public Pool<HitEffect> HitEffectPool { get; private set; }
 
     #endregion Properties
 
@@ -44,8 +54,11 @@ public class PoolManager : MonoBehaviour, IGameManager
 
     private void Start()
     {
-        PopupDamagePool = new Pool<PopupDamage>(_prefabPopupDamage, _sizePoolPopupDamage, CreateAndGetContainer(_prefabPopupDamage.GetType()));
-        //ProjectileArrowPool = new Pool<ProjectileArrow>(_prefabProjectileArrow, _sizePoolProjectileArrow, CreateAndGetContainer(_prefabProjectileArrow.GetType()));
+        PopupDamagePool = new Pool<PopupDamage>(_prefabPopupDamage, _startSizePoolPopupDamage, CreateAndGetContainer(_prefabPopupDamage.GetType()));
+        ProjectileArrowPool = new Pool<ProjectileArrow>(_prefabProjectileArrow, _startSizePoolProjectileArrow, CreateAndGetContainer(_prefabProjectileArrow.GetType()));
+        TracerEffectPool = new Pool<TracerEffect>(_prefabTracerEffect, _startSizePoolTracerEffect, CreateAndGetContainer(_prefabTracerEffect.GetType()));
+        HitEffectPool = new Pool<HitEffect>(_prefabHitEffect, _startSizePoolHitEffect, CreateAndGetContainer(_prefabHitEffect.GetType()));
+
     }
 
     #endregion Mono
@@ -78,7 +91,10 @@ public class PoolManager : MonoBehaviour, IGameManager
 
     private void EventHandler_OnNewGame(GameMode gameMode)
     {
-        PopupDamagePool.RefillPool(_sizePoolPopupDamage);
+        PopupDamagePool.RefillPool(_startSizePoolPopupDamage);
+        ProjectileArrowPool.RefillPool(_startSizePoolProjectileArrow);
+        TracerEffectPool.RefillPool(_startSizePoolTracerEffect);
+        HitEffectPool.RefillPool(_startSizePoolHitEffect);
     }
 
     #endregion Public methods

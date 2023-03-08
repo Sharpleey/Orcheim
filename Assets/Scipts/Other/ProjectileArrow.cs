@@ -6,52 +6,54 @@ using UnityEngine;
 
 public class ProjectileArrow : MonoBehaviour
 {
-	#region Serialize fields
-	[SerializeField] private GameObject _tracerEffect;
-	[SerializeField] private GameObject _hitEffect;
-	#endregion Serialize fields
-
 	#region Private fields
+
 	private bool _isArrowInFlight;
 	private bool _isBlockDamage;
 
 	private LightBow _lightBow;
-	private BowAudioController _bowAudioController;
-	private Rigidbody _arrowRigidbody;
-	private BoxCollider _arrowCollider;
 
-	private Unit _currentHitUnit;
+	private TracerEffect _tracerEffect;
+	private HitEffect _hitEffect;
 
+	private Rigidbody _rigidbody;
+	private BoxCollider _collider;
+
+	private EnemyUnit _currentHitUnit;
 	private PlayerUnit _playerUnit;
+
 	#endregion Private fields
 
 	#region Mono
-	private void Start() 
+
+	private void Awake()
 	{
+		_collider = GetComponent<BoxCollider>();
+		_rigidbody = GetComponent<Rigidbody>();
+	}
+
+	private void OnEnable()
+    {
 		_isArrowInFlight = false;
 		_isBlockDamage = false;
 
-		_lightBow = GetComponentInParent<LightBow>();
-		_playerUnit = _lightBow.Player;
+		_collider.isTrigger = false;
 
-		_arrowRigidbody = GetComponent<Rigidbody>();
-		_arrowCollider = GetComponent<BoxCollider>();
-
-		_bowAudioController = _lightBow.AudioController;
-
-		_arrowCollider.isTrigger = false;
+		_currentHitUnit = null;
 	}
-    #endregion Mono
 
-    #region Private methods
-    private void Update() 
+	private void Update()
 	{
 		// Поворачиваем стрелу в полете в сторону движения
 		if (_isArrowInFlight)
-        {
-			transform.LookAt(transform.position + _arrowRigidbody.velocity);
+		{
+			transform.LookAt(transform.position + _rigidbody.velocity);
 		}
 	}
+
+	#endregion Mono
+
+	#region Private methods
 
 	/// <summary>
 	/// Метод срабатывает при касании стрелы с другими объектами на которых есть коллайдер
@@ -59,42 +61,42 @@ public class ProjectileArrow : MonoBehaviour
 	/// <param name="hitCollider">Коллайдер, с которым соприкоснулась стрела</param>
 	private void OnTriggerEnter(Collider hitCollider)
     {
-		Unit unit = hitCollider.GetComponentInParent<EnemyUnit>();
+		EnemyUnit unit = hitCollider.GetComponentInParent<EnemyUnit>();
 
 		// Если мы попали в противника
 		if (unit)
 		{
 			if (unit != _currentHitUnit)
 			{
-                if (!_isBlockDamage)
-                {
+				if (!_isBlockDamage)
+				{
 					_playerUnit.PerformAttack(unit, hitCollider);
 
 					// Воспроизводим звук попадания
-					_bowAudioController.PlayHit();
+					_lightBow.AudioController.PlayHit();
 
 					// Эффект попадания
-					GameObject hitObj = Instantiate(_hitEffect, transform.position, transform.rotation); //TODO Сделать через Pull objects
+					ShowHitEffect();
 				}
 
 				if (_playerUnit.PenetrationProjectile.IsActive)
-                {
+				{
 					_playerUnit.PenetrationProjectile.CurrentPenetration++;
 
 					// Уменьшаем урон с каждым пробитием
-					_playerUnit.Damage.Actual = _playerUnit.Damage.Max * (1 - _playerUnit.PenetrationProjectile.PenetrationDamageDecrease.Value/100f);
+					_playerUnit.Damage.Actual = _playerUnit.Damage.Max * (1 - _playerUnit.PenetrationProjectile.PenetrationDamageDecrease.Value / 100f);
 
 					// Если число пробитий подошло к пределу, то удаляем стрелу
 					if (_playerUnit.PenetrationProjectile.CurrentPenetration == _playerUnit.PenetrationProjectile.MaxPenetrationCount.Value)
-                    {
+					{
 						_isBlockDamage = true;
-						StartCoroutine(DeleteProjectile(0));
+						DeleteProjectile();
 					}
 				}
 				else
-                {
+				{
 					_isBlockDamage = true;
-					StartCoroutine(DeleteProjectile(0));
+					DeleteProjectile();
 				}
 			}
 
@@ -102,7 +104,14 @@ public class ProjectileArrow : MonoBehaviour
 				_currentHitUnit = unit;
 		}
 		else
-			StartCoroutine(DeleteProjectile(0));
+			DeleteProjectile();
+	}
+
+	private void ShowHitEffect()
+    {
+		_hitEffect = PoolManager.Instance?.HitEffectPool.GetFreeElement();
+
+		_hitEffect?.gameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
 	}
 
 	/// <summary>
@@ -110,7 +119,7 @@ public class ProjectileArrow : MonoBehaviour
 	/// </summary>
 	/// <param name="secondsBeforeDeletion"></param>
 	/// <returns>Задержка (в секундах) до удаления объекта стрелы</returns>
-	private IEnumerator DeleteProjectile(int secondsBeforeDeletion)
+	private IEnumerator DeleteProjectileInDelay(int secondsBeforeDeletion)
     {
 		if (_playerUnit.PenetrationProjectile.IsActive)
         {
@@ -118,7 +127,7 @@ public class ProjectileArrow : MonoBehaviour
 			_playerUnit.PenetrationProjectile.CurrentPenetration = 0;
 
 			// Возвращаем исходный урон
-			_playerUnit.Damage.Actual = _playerUnit.Damage.Max;
+			_playerUnit.Damage.Actual = _playerUnit.Damage.Max; //TODO Кароче это не вариант так делать
 		}			
 
 		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.
@@ -127,34 +136,66 @@ public class ProjectileArrow : MonoBehaviour
 		// Отвязываем эффект от стрелы
         _tracerEffect?.transform.SetParent(null);
 		// Удаляем объект трассера через некоторое время
-		_tracerEffect?.GetComponent<TracerEffectController>()?.DeleteTracer();
+		_tracerEffect?.DeleteTracer();
 
-        // Удаляем объект со сцены и очищаем память
-        Destroy(gameObject); //TODO Сделать через Pull objects
+		// Возвращаем объект в пул
+		PoolManager.Instance?.ProjectileArrowPool.ReturnToContainerPool(this);
     }
+
+	private void DeleteProjectile()
+    {
+		if (_playerUnit.PenetrationProjectile.IsActive)
+		{
+			// Обнуляем кол-во пробитий
+			_playerUnit.PenetrationProjectile.CurrentPenetration = 0;
+
+			// Возвращаем исходный урон 
+			_playerUnit.Damage.Actual = _playerUnit.Damage.Max; //TODO Кароче это не вариант так делать
+		}
+
+		// Отвязываем эффект от стрелы
+		_tracerEffect?.transform.SetParent(null);
+		// Удаляем объект трассера через некоторое время
+		_tracerEffect?.DeleteTracer();
+
+		// Возвращаем объект в пул
+		PoolManager.Instance?.ProjectileArrowPool.ReturnToContainerPool(this);
+	}
+
+	private void EnableTracerEffect()
+    {
+		_tracerEffect = PoolManager.Instance?.TracerEffectPool.GetFreeElement();
+		_tracerEffect.gameObject.transform.parent = transform;
+		_tracerEffect.gameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
+	}
+
 	#endregion Private methods
 
 	#region Public methods
+
 	/// <summary>
-	/// Запуск стрелы, с применение определенного значения силы
+	/// Запуск снаярда стрелы
 	/// </summary>
-	/// <param name="forceLaunch">Сила импульса придаваемого стреле</param>
-	public void Launch (float forceLaunch)
+	/// <param name="lightBow">Оружие с которого запускается снаряд</param>
+	/// <param name="playerUnit">Игрок, который стреляет</param>
+	public void Launch (LightBow lightBow, PlayerUnit playerUnit)
     {
+		_lightBow = lightBow;
+		_playerUnit = playerUnit;
+
 		transform.parent = null;
 
-		_arrowRigidbody.isKinematic = false;
-		_arrowRigidbody.AddForce((transform.forward) * forceLaunch, ForceMode.Impulse);
+		_rigidbody.isKinematic = false;
+		_rigidbody.AddForce((transform.forward) * _lightBow.ShotForce, ForceMode.Impulse);
 
         _isArrowInFlight = true;
 
-        _arrowCollider.isTrigger = true;
+        _collider.isTrigger = true;
 
-        if (_tracerEffect != null)
-            _tracerEffect.SetActive(true);
+		EnableTracerEffect();
 
-        // Запускаем отсчет для удаления стрелы
-        StartCoroutine(DeleteProjectile(5));
+		// Запускаем отсчет для удаления стрелы
+		StartCoroutine(DeleteProjectileInDelay(5));
 
     }
 	#endregion Public methods

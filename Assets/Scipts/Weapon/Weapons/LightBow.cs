@@ -6,11 +6,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     #region Serialize fields
     [Header("Weapon")]
     [SerializeField] private string _name = "Легкий лук";
-    [SerializeField] private float _shotForce = 16; // Сила выстрела
-
-    [Header("Projectile")]
-    //[SerializeField] private GameObject _selectedPrefabArrow; // Префаб для стрелы
-    [SerializeField] private GameObject _prefabArrow; // Объект из которого будем делать дубликаты стрел, выступает в роле префаба
+    [SerializeField] private float _shotForce = 16;
     [SerializeField] private Transform _arrowSpawn;
 
     [Header("AimingZoom")]
@@ -64,16 +60,20 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// </summary>
     public Player Player { get; private set; }
 
+    /// <summary>
+    /// Сила выстрела
+    /// </summary>
+    public float ShotForce => _shotForce;
+
+
     #endregion Properties
 
     #region Private fields
-    private bool _isZoomed;
 
+    private bool _isZoomed;
     private bool _isLockControl;
 
-    // Объект в котором будем хранить клон стрелы, его же будем выстреливать
-    private GameObject _cloneArrow;
-    private ProjectileArrow _cloneProjectileArrow;
+    private ProjectileArrow _projectileArrow;
 
     #endregion Private fields
 
@@ -329,10 +329,7 @@ public class LightBow : MonoBehaviour, IBowWeapon
     private void Shot()
     {
         // Запускаем стрелу
-        if(_cloneProjectileArrow)
-        {
-            _cloneProjectileArrow?.Launch(_shotForce);
-        }
+        _projectileArrow?.Launch(this, Player);
     }
 
     /// <summary>
@@ -340,16 +337,13 @@ public class LightBow : MonoBehaviour, IBowWeapon
     /// </summary>
     private void RespawnProjectile()
     {
-        _cloneArrow = Instantiate(_prefabArrow);
+        _projectileArrow = PoolManager.Instance?.ProjectileArrowPool.GetFreeElement();
 
-        _cloneArrow.transform.parent = _arrowSpawn.transform;
+        _projectileArrow.transform.parent = _arrowSpawn.transform;
+        _projectileArrow.transform.position = _arrowSpawn.position;
+        _projectileArrow.transform.rotation = _arrowSpawn.rotation;
 
-        _cloneArrow.transform.position = _arrowSpawn.position;
-        _cloneArrow.transform.rotation = _arrowSpawn.rotation;
-
-        _cloneProjectileArrow = _cloneArrow.GetComponent<ProjectileArrow>();
-
-        _cloneArrow.GetComponent<Rigidbody>().isKinematic = true;
+        _projectileArrow.GetComponent<Rigidbody>().isKinematic = true;
     }
     #endregion Private methods
 }
