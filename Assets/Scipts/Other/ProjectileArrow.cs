@@ -169,6 +169,7 @@ public class ProjectileArrow : MonoBehaviour
 
 		_tracerEffect.gameObject.transform.SetParent(transform);
 		_tracerEffect.gameObject.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+		_tracerEffect.TrailRenderer.enabled = true;
 	}
 
 	#endregion Private methods
