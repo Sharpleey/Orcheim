@@ -196,28 +196,26 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         base.SetEffect(effect);
     }
 
-    public override void TakeDamage(Damage damage, bool isCriticalHit = false, Collider hitBox = null)
+    public override void TakeDamage(float damage, DamageType damageType, bool isArmorIgnore = false, bool isCriticalHit = false, Collider hitBox = null)
     {
         if (Health.Actual > 0)
         {
-            float resultDamageValue = damage.Actual;
-
             if (hitBox)
             {
                 // Изменяем значение урона в зависимости от попадаемого хитбокса
-                resultDamageValue = HitBoxesController.GetDamageValue(resultDamageValue, hitBox);
+                damage = HitBoxesController.GetDamageValue(damage, hitBox);
             }
 
-            if (!damage.IsArmorIgnore)
+            if (!isArmorIgnore)
             {
-                // Множитель урона прошедшег очерез броню
+                // Множитель урона прошедшего через броню
                 float increaseDamage = 1.0f - (Armor.Actual / (100.0f + Armor.Actual));
 
                 // Уменьшенный урон за счет брони
-                resultDamageValue *= increaseDamage;
+                damage *= increaseDamage;
             }
 
-            Health.Actual -= resultDamageValue;
+            Health.Actual -= damage;
 
             // Если игрок атаковал врага, изменяем состояние
             if (CurrentState.GetType() == typeof(IdleState) || CurrentState.GetType() == typeof(PatrollingState))
@@ -231,7 +229,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
 
             // Всплывающий дамаг
             if (PopupDamageController != null)
-                PopupDamageController.ShowPopupDamage(resultDamageValue, isCriticalHit, damage.DamageType);
+                PopupDamageController.ShowPopupDamage(damage, isCriticalHit, damageType);
 
             // Полоса здоровья
             if (HealthBarController != null)

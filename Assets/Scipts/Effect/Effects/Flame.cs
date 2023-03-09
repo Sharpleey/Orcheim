@@ -67,7 +67,7 @@ public class Flame : Effect
     public override void Tick()
     {
         // Ёффект наносит урон за один тик
-        unit.TakeDamage(Damage);
+        unit.TakeDamage(Damage.Actual, Damage.Type);
 
         // ”меньшение брони за один тик
         unit.Armor.Actual -= ArmorDecrease.Value;

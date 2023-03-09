@@ -31,7 +31,7 @@ public class Damage : UnitParameter
     /// <summary>
     /// Тип урона
     /// </summary>
-    public DamageType DamageType { get; private set; }
+    public DamageType Type { get; private set; }
 
     /// <summary>
     /// 
@@ -46,7 +46,7 @@ public class Damage : UnitParameter
     {
         Name = HashUnitParameterString.DAMAGE;
         UpgradeDescription = HashUnitParameterString.DAMAGE_UPGRADE_DESCRIPTION;
-        DamageType = damageType;
+        Type = damageType;
         IsArmorIgnore = isArmorIgnore;
     }
 

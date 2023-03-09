@@ -126,15 +126,20 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     {
         Level = newLevel;
     }
-    public void PerformAttack(Unit attackedUnit, Collider hitBox = null)
+    public void PerformAttack(Unit attackedUnit, int currentPenetration = 0, Collider hitBox = null)
     {
-        Damage damage = Damage.Copy();
+        float damage = Damage.Actual;
         bool isCriticalHit = false;
+
+        if (PenetrationProjectile.IsActive && currentPenetration != 0)
+        {
+            damage = PenetrationProjectile.GetValueDamage(damage, currentPenetration);
+        }
 
         if (CriticalAttack.IsActive && CriticalAttack.IsProc)
         {
             isCriticalHit = true;
-            damage.Actual = damage.Max * (CriticalAttack.DamageMultiplier.Value / 100f);
+            damage *= CriticalAttack.DamageMultiplier.Value / 100f;
         }
 
         if (FlameAttack.IsActive && FlameAttack.IsProc)
@@ -148,7 +153,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         }
 
         // Наносим урон юниту
-        attackedUnit.TakeDamage(damage, isCriticalHit, hitBox);
+        attackedUnit.TakeDamage(damage, Damage.Type, Damage.IsArmorIgnore, isCriticalHit, hitBox);
     }
 
     public virtual void SetEffect(Effect effect)
@@ -192,7 +197,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     #region Abstract methods
 
-    public abstract void TakeDamage(Damage damage, bool isCriticalHit = false, Collider hitBox = null);
+    public abstract void TakeDamage(float damage, DamageType damageType, bool isArmorIgnore = false, bool isCriticalHit = false, Collider hitBox = null);
 
     /// <summary>
     /// Метод инициализации конроллеров юнита

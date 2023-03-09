@@ -11,6 +11,8 @@ public class ProjectileArrow : MonoBehaviour
 	private bool _isArrowInFlight;
 	private bool _isBlockDamage;
 
+	private int _currentPenetration;
+
 	private LightBow _lightBow;
 
 	private TracerEffect _tracerEffect;
@@ -41,6 +43,7 @@ public class ProjectileArrow : MonoBehaviour
 		_rigidbody.isKinematic = true;
 
 		_currentHitUnit = null;
+		_currentPenetration = 0;
 	}
 
 	private void Update()
@@ -71,7 +74,7 @@ public class ProjectileArrow : MonoBehaviour
 			{
 				if (!_isBlockDamage)
 				{
-					_playerUnit.PerformAttack(unit, hitCollider);
+					_playerUnit.PerformAttack(unit, _currentPenetration, hitCollider);
 
 					// Воспроизводим звук попадания
 					_lightBow.AudioController.PlayHit();
@@ -82,13 +85,10 @@ public class ProjectileArrow : MonoBehaviour
 
 				if (_playerUnit.PenetrationProjectile.IsActive)
 				{
-					_playerUnit.PenetrationProjectile.CurrentPenetration++;
-
-					// Уменьшаем урон с каждым пробитием
-					_playerUnit.Damage.Actual = _playerUnit.Damage.Max * (1 - _playerUnit.PenetrationProjectile.PenetrationDamageDecrease.Value / 100f);
+					_currentPenetration++;
 
 					// Если число пробитий подошло к пределу, то удаляем стрелу
-					if (_playerUnit.PenetrationProjectile.CurrentPenetration == _playerUnit.PenetrationProjectile.MaxPenetrationCount.Value)
+					if (_currentPenetration == _playerUnit.PenetrationProjectile.MaxPenetrationCount.Value)
 					{
 						_isBlockDamage = true;
 						DeleteProjectile();
@@ -122,40 +122,16 @@ public class ProjectileArrow : MonoBehaviour
 	/// <returns>Задержка (в секундах) до удаления объекта стрелы</returns>
 	private IEnumerator DeleteProjectileInDelay(int secondsBeforeDeletion)
     {
-		if (_playerUnit.PenetrationProjectile.IsActive)
-        {
-			// Обнуляем кол-во пробитий
-			_playerUnit.PenetrationProjectile.CurrentPenetration = 0;
-
-			// Возвращаем исходный урон
-			_playerUnit.Damage.Actual = _playerUnit.Damage.Max; //TODO Кароче это не вариант так делать
-		}			
-
 		// Ключевое слово yield указывает сопрограмме, когда следует остановиться.
 		yield return new WaitForSeconds(secondsBeforeDeletion);
 
-		// Отвязываем эффект от стрелы
-        _tracerEffect?.transform.SetParent(null);
-		// Удаляем объект трассера через некоторое время
-		_tracerEffect?.StartCountdownToDelete();
-
-		// Возвращаем объект в пул
-		PoolManager.Instance?.ProjectileArrowPool.ReturnToContainerPool(this);
-    }
+		DeleteProjectile();
+	}
 
 	private void DeleteProjectile()
     {
-		if (_playerUnit.PenetrationProjectile.IsActive)
-		{
-			// Обнуляем кол-во пробитий
-			_playerUnit.PenetrationProjectile.CurrentPenetration = 0;
-
-			// Возвращаем исходный урон 
-			_playerUnit.Damage.Actual = _playerUnit.Damage.Max; //TODO Кароче это не вариант так делать
-		}
-
-		// Отвязываем эффект от стрелы
-		_tracerEffect?.transform.SetParent(null);
+        // Отвязываем эффект от стрелы
+        _tracerEffect?.transform.SetParent(null);
 		// Удаляем объект трассера через некоторое время
 		_tracerEffect?.StartCountdownToDelete();
 

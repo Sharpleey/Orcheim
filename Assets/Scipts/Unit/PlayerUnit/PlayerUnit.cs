@@ -77,24 +77,22 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         }
     }
 
-    public override void TakeDamage(Damage damage, bool isCriticalHit = false, Collider hitBox = null)
+    public override void TakeDamage(float damage, DamageType damageType, bool isArmorIgnore = false, bool isCriticalHit = false, Collider hitBox = null)
     {
         if (Health.Actual > 0)
         {
-            float damageValue = damage.Actual;
-
-            if (!damage.IsArmorIgnore)
+            if (!isArmorIgnore)
             {
                 // Значение уменьшения урона
                 float increaseDamage = 1.0f - (Armor.Actual / (100.0f + Armor.Actual));
 
                 // Уменьшенный урон за счет брони
-                damageValue = damageValue * increaseDamage;
+                damage *= increaseDamage;
             }
 
-            Health.Actual -= damageValue;
+            Health.Actual -= damage;
 
-            PlayerEventManager.PlayerDamaged(damageValue);
+            PlayerEventManager.PlayerDamaged(damage);
             PlayerEventManager.PlayerHealthChanged();
         }
 
