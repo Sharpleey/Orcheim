@@ -7,6 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class SummonTrigger : MonoBehaviour
 {
+    [SerializeField] private LayerMask collisionMask = 4096;
+
     private EnemyUnit _enemyUnit;
     private BoxCollider _boxCollider;
 
@@ -35,6 +37,16 @@ public class SummonTrigger : MonoBehaviour
             _enemyUnit.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Confused);
 
             _enemyUnit.SetState<ChasingState>();
+        }
+    }
+
+    public void SummonNearbyUnits(int radius)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, collisionMask);
+        foreach (var hitCollider in hitColliders)
+        {
+            if(hitCollider.TryGetComponent(out EnemyUnit enemyUnit))
+                enemyUnit.SetState<ChasingState>();
         }
     }
 

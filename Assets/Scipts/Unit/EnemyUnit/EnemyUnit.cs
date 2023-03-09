@@ -223,6 +223,8 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
 
                 WaveEventManager.StartingTrigger();
 
+                //SummonTrigger.SummonNearbyUnits(8);
+
                 // Изменяем состояние на преследование
                 SetState<ChasingState>();
             }
