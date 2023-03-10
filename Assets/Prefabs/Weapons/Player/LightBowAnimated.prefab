@@ -1163,7 +1163,7 @@ AudioSource:
   m_GameObject: {fileID: 5812279950464386752}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 4826991133054636264, guid: 273e5e9e27beace4c8a60f5fb9d66511, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1282,14 +1282,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\u041B\u0435\u0433\u043A\u0438\u0439 \u043B\u0443\u043A"
-  _shotForce: 16
-  _prefabProjectileArrow: {fileID: 2124105183255642117, guid: 5e483ede1b11c0e42ba461c99086a1b0, type: 3}
-  _containerProjectileArrowPool: {fileID: 7514655222156426744}
+  _fastShotForce: 16
   _arrowSpawn: {fileID: 5812279950464058762}
-  _prefabTracerEffect: {fileID: 6561238656261594322, guid: 110728f155355644aa720dd56725e4d8, type: 3}
-  _containerTracerEffectPool: {fileID: 1716087526129028925}
-  _prefabHitEffect: {fileID: -1192032277656675168, guid: e3cef86ae115b464f9895384cf8a5536, type: 3}
-  _containerHitEffectPool: {fileID: 1181140050079046345}
   _zoomFOV: 30
   _originalFOV: 60
   _zoomStepTime: 4

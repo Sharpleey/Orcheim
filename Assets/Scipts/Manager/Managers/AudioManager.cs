@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour, IGameManager
 
     [SerializeField] private Sound[] _sounds;
 
-    [SerializeField] private AudioSource _ambientSource, _musicSource, _sfxSource;
+    [SerializeField] private AudioSource _ambientSource, _musicSource, _mainMenuMusicSource, _sfxSource;
 
     #endregion Serialize fields
 
@@ -146,6 +146,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     {
         _ambientSource.Stop();
         _musicSource.Stop();
+        _mainMenuMusicSource.Stop();
         _sfxSource.Stop();
     }
 
@@ -165,7 +166,7 @@ public class AudioManager : MonoBehaviour, IGameManager
             case SoundType.Sfx:
                 return _sfxSource;
             case SoundType.MainMenuTheme:
-                return _musicSource;
+                return _mainMenuMusicSource;
             default:
                 return null;
         }
@@ -213,6 +214,8 @@ public class AudioManager : MonoBehaviour, IGameManager
                 _ambientSource.Pause();
             if (_musicSource.isPlaying)
                 _musicSource.Pause();
+            if (_mainMenuMusicSource.isPlaying)
+                _mainMenuMusicSource.Pause();
             if (_sfxSource.isPlaying)
                 _sfxSource.Pause();
         }
@@ -220,6 +223,7 @@ public class AudioManager : MonoBehaviour, IGameManager
         {
             _ambientSource.UnPause();
             _musicSource.UnPause();
+            _mainMenuMusicSource.UnPause();
             _sfxSource.UnPause();
         }
        
