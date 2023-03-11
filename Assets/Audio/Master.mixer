@@ -127,7 +127,7 @@ AudioMixerController:
   m_StartSnapshot: {fileID: 24500006}
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
-  m_UpdateMode: 1
+  m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 07906d9f8aa29034fb137eb6c01d29f3
     name: AmbientVolume
@@ -172,7 +172,7 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 24400004}
-  m_UserColorIndex: 0
+  m_UserColorIndex: 2
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
@@ -201,7 +201,7 @@ AudioMixerSnapshotController:
   m_SnapshotID: 392bec246926de04bbd74e68b89498fe
   m_FloatValues:
     9eeea4f10ee3cd847b384f2cb9c5c449: -0.025776558
-    f052bd4f831165541895221f3014e42c: 0
+    f052bd4f831165541895221f3014e42c: -0.16685188
   m_TransitionOverrides: {}
 --- !u!243 &4546271718580219741
 AudioMixerGroupController:

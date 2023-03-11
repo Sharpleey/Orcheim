@@ -5,7 +5,7 @@ public class MainMenuCanvasController : MonoBehaviour
     [field: SerializeField] public GameObject MainMenu { get; private set; }
     [field: SerializeField] public GameObject NewGameMenu { get; private set; }
     [field: SerializeField] public GameObject SettingsMenu { get; private set; }
-    [field: SerializeField] public GameObject LoadMenu { get; private set; }
+    [field: SerializeField] public GameObject LearnMenu { get; private set; }
     [field: SerializeField] public GameObject ScenesMenu { get; private set; }
 
     private GameObject _activeMenu;
@@ -27,7 +27,7 @@ public class MainMenuCanvasController : MonoBehaviour
         MainMenu?.SetActive(false);
         NewGameMenu?.SetActive(false);
         SettingsMenu?.SetActive(false);
-        LoadMenu?.SetActive(false);
+        LearnMenu?.SetActive(false);
         ScenesMenu?.SetActive(false);
     }
 

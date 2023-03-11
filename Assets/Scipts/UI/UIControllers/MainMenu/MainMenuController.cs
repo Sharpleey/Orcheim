@@ -13,9 +13,9 @@ public class MainMenuController : MonoBehaviour
     {
         _mainMenuCanvasController?.ShowMenu(_mainMenuCanvasController.NewGameMenu);
     }
-    public void OnClickLoad()
+    public void OnClickLearn()
     {
-        _mainMenuCanvasController?.ShowMenu(_mainMenuCanvasController.LoadMenu);
+        _mainMenuCanvasController?.ShowMenu(_mainMenuCanvasController.LearnMenu);
     }
     public void OnClickScenes()
     {
