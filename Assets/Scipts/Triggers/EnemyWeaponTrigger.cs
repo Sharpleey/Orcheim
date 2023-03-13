@@ -13,9 +13,7 @@ public class EnemyWeaponTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider hitCollider)
     {
-        PlayerUnit playerUnit = hitCollider.GetComponent<PlayerUnit>();
-
-        if (playerUnit)
+        if (hitCollider.TryGetComponent(out PlayerUnit playerUnit))
         {
             _enemyUnit.PerformAttack(playerUnit);
         }
