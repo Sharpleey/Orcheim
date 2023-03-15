@@ -161,8 +161,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         }
 
         // Устанавливаем максимальное и актуальное хп для полосы хп
-        HealthBarController?.SetMaxHealth(Health.Max);
-        HealthBarController?.SetHealth(Health.Actual);
+        HealthBarController?.SetDefaultParameters(Health.Max, Health.Actual);
 
         // Отключаем триггер
         SummonTrigger?.SetEnable(false);
@@ -236,7 +235,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
             // Полоса здоровья
             if (HealthBarController != null)
             {
-                HealthBarController.SetHealth(Health.Actual);
+                HealthBarController.SetHealth(Health.Actual, true);
                 HealthBarController.ShowHealthBar();
             }
 

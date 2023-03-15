@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
 /// Контроллер отвечает за полосу здоровья над противником
@@ -9,9 +8,15 @@ using UnityEngine.UI;
 public class HealthBarController : MonoBehaviour
 {
     #region Serialize fields
+
     [SerializeField] private Slider _hpSlider;
     [SerializeField] private float _rateShowing = 1.5f;
     [SerializeField] private float _durationShown = 2f;
+
+    [Space(5)]
+    [SerializeField] private Slider _hpDamageEffectSlider;
+    [SerializeField] private float _durationEffect = 0.2f;
+
     #endregion Serialize fields
 
     #region Private fields
@@ -96,6 +101,7 @@ public class HealthBarController : MonoBehaviour
 
         }
     }
+
     /// <summary>
     /// Метод устанавливает прозрачность для всех элементов объекта HealthBar
     /// </summary>
@@ -108,9 +114,17 @@ public class HealthBarController : MonoBehaviour
         }
     }
 
+    private void DamageEffectAnimation(float health)
+    {
+        _hpDamageEffectSlider.DOKill();
+        _hpDamageEffectSlider.DOValue(health, _durationEffect);
+    }
+
+
     #endregion Private methods
 
     #region Public methods
+
     /// <summary>
     /// Плавно показываем и плавно скрываем полосу хп
     /// </summary>
@@ -126,6 +140,21 @@ public class HealthBarController : MonoBehaviour
             _timer = 0;
         }
     }
+
+    /// <summary>
+    /// Устанавливаем начальные значения для полосы здоровья
+    /// </summary>
+    /// <param name="maxHealth">Значение максимального здоровья</param>
+    /// <param name="health">Текущее значение здоровья</param>
+    public void SetDefaultParameters(float maxHealth, float health)
+    {
+        _hpSlider.maxValue = maxHealth;
+        _hpDamageEffectSlider.maxValue = maxHealth;
+
+        _hpSlider.value = health;
+        _hpDamageEffectSlider.value = health;
+    }
+
     /// <summary>
     /// Устанавливаем максимальное значение полосы хп
     /// </summary>
@@ -133,15 +162,21 @@ public class HealthBarController : MonoBehaviour
     public void SetMaxHealth(float maxHealth)
     {
         _hpSlider.maxValue = maxHealth;
+        _hpDamageEffectSlider.maxValue = maxHealth;
     }
+
     /// <summary>
     /// Устанавливаем текущее значение здоровья для полосы хп
     /// </summary>
     /// <param name="health">Текущее значение здоровья</param>
-    public void SetHealth(float health)
+    public void SetHealth(float health, bool onEffectDamage = false)
     {
         _hpSlider.value = health;
+
+        if (onEffectDamage)
+            DamageEffectAnimation(health);
     }
+
     /// <summary>
     /// Метод для активации/деактивации полосы здоровья
     /// </summary>
