@@ -17,6 +17,12 @@ public class EnemyAudioController : MonoBehaviour
     /// </summary>
     [SerializeField] private EnemySoundPack[] _enemySoundPacks;
 
+
+    private void Awake()
+    {
+        GlobalGameEventManager.OnPauseGame.AddListener(Pause);
+    }
+
     /// <summary>
     /// ¬оспроизвести случайный звук определенного типа c некоторой веро€тностью. ¬еро€тность определ€етс€ в классе EnemySoundPack
     /// </summary>
@@ -52,8 +58,21 @@ public class EnemyAudioController : MonoBehaviour
             return;
 
         // ¬оспроизводим звук
-        _enemyAudioSource.clip = enemySoundPack.AudioClips[randSound];
+        Play(enemySoundPack.AudioClips[randSound]);
+    }
+
+    private void Play(AudioClip audioClip)
+    {
+        _enemyAudioSource.clip = audioClip;
         _enemyAudioSource.Play();
+    }
+
+    public void Pause(bool isPause)
+    {
+        if (isPause && _enemyAudioSource.isPlaying)
+            _enemyAudioSource.Pause();
+        else
+            _enemyAudioSource.UnPause();
     }
 
     /// <summary>
