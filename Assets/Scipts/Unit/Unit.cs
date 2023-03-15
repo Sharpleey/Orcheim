@@ -86,10 +86,10 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     public virtual void InitAttackModifiers()
     {
-        CriticalAttack = new CriticalAttack();
-        FlameAttack = new FlameAttack();
-        SlowAttack = new SlowAttack();
-        PenetrationProjectile = new PenetrationProjectile();
+        CriticalAttack = new CriticalAttack(increaseProcChancePerLevel: 10);
+        FlameAttack = new FlameAttack(increaseProcChancePerLevel: 10, increaseDamageFlamePerLevel: 4, increaseDurationEffectPerLevel: 2);
+        SlowAttack = new SlowAttack(increaseProcChancePerLevel: 10, increaseAttackSpeedPercentageDecrease: 10, increaseMovementSpeedPercentageDecrease: 10, increaseDurationEffectPerLevel: 3);
+        PenetrationProjectile = new PenetrationProjectile(decreasePenetrationDamageDecreasePerLevel: 10);
 
         if (!_unitConfig)
         {

@@ -4215,7 +4215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Exit Main Menu
+  m_text: 'Main Menu
 
 '
   m_isRightToLeft: 0
@@ -4301,7 +4301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7882538437926739561
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6093,7 +6093,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 597544876102298250, guid: 8723ca4398199be43a26639c8421e102, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2680498834461034458, guid: 8723ca4398199be43a26639c8421e102, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3172516634149458517, guid: 8723ca4398199be43a26639c8421e102, type: 3}
       propertyPath: m_Pivot.x
