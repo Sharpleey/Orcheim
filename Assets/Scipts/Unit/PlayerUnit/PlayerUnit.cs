@@ -12,7 +12,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         get => _experience; 
         protected set => _experience = Mathf.Clamp(value, 0, int.MaxValue);
     }
-    public int ExperienceForNextLevel => ((Level + 1) - 1) * (((Level + 1) - 2) * 75 + 200);
+    public int ExperienceForNextLevel => ((Level + 1) - 1) * (((Level + 1) - 2) * GeneralParameter.EXP_COEFF + 200);
 
     #endregion Properties
 
