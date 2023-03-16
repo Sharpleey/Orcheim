@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using TMPro;
 
-public class ButtonAwardController : MonoBehaviour
+public class ButtonAwardController : MonoBehaviour, IPointerClickHandler
 {
     #region Serialize fields
     [Header("Контроллер игрового меню")]
@@ -85,6 +86,8 @@ public class ButtonAwardController : MonoBehaviour
     /// </summary>
     public void OnClickAward()
     {
+        Debug.Log("OnClickAward");
+
         if(_award is AwardAttackModifier awardAttackModifaer)
         {
             // Добавляем модификатор атаки игроку
@@ -110,6 +113,11 @@ public class ButtonAwardController : MonoBehaviour
         GlobalGameEventManager.PauseGame(false);
 
         _gameMenuCanvasController?.ShowCanvas(false);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        OnClickAward();
     }
 
     #endregion Public methods
