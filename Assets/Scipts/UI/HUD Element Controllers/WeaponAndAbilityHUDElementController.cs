@@ -54,14 +54,14 @@ public class WeaponAndAbilityHUDElementController : MonoBehaviour
     private void SelectWeapon(GameObject weapon, RectTransform rectTransform, Image imageWeapon)
     {
         rectTransform.sizeDelta = _sizeSelectedWeapon;
-        weapon.transform.position = _positionSelectedWeapon;
+        //weapon.transform.position = _positionSelectedWeapon;
         imageWeapon.color = _colorSelectedWeapon;
     }
 
     private void DeselectWeapon(GameObject weapon, RectTransform rectTransform, Image imageWeapon)
     {
         rectTransform.sizeDelta = _sizeDeselectedWeapon;
-        weapon.transform.position = _positionDeselectedWeapon;
+        //weapon.transform.position = _positionDeselectedWeapon;
         imageWeapon.color = _colorDeselectedWeapon;
     }
 
