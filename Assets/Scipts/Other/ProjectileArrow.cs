@@ -68,9 +68,9 @@ public class ProjectileArrow : MonoBehaviour
 		EnemyUnit unit = hitCollider.GetComponentInParent<EnemyUnit>();
 
 		// Если мы попали в противника
-		if (unit && !(unit.CurrentState is DieState))
+		if (unit)
 		{
-			if (unit != _currentHitUnit)
+			if (unit != _currentHitUnit && !(unit.CurrentState is DieState))
 			{
 				if (!_isBlockDamage)
 				{
