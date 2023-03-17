@@ -190,7 +190,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         AddGold((int)enemyUnit.CostInGold.Value);
     }
 
-    private void EventHandler_WaveIsOver()
+    private void EventHandler_WaveIsOver(int wave)
     {
         Health.Actual = Health.Max;
 
