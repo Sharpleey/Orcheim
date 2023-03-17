@@ -396,6 +396,9 @@ public class FirstPersonController : MonoBehaviour
             {
                 targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
 
+                // Ограничиваем движение по диагонали той же скоростью, что и движение вдоль оси. 
+                targetVelocity = Vector3.ClampMagnitude(targetVelocity, sprintSpeed);
+
                 // Apply a force that attempts to reach our target velocity
                 Vector3 velocity = rb.velocity;
                 Vector3 velocityChange = (targetVelocity - velocity);
@@ -434,12 +437,15 @@ public class FirstPersonController : MonoBehaviour
 
                 targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
 
+                // Ограничиваем движение по диагонали той же скоростью, что и движение вдоль оси. 
+                targetVelocity = Vector3.ClampMagnitude(targetVelocity, walkSpeed);
+
                 // Apply a force that attempts to reach our target velocity
                 Vector3 velocity = rb.velocity;
                 Vector3 velocityChange = (targetVelocity - velocity);
                 velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
                 velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                velocityChange.y = 0; 
+                velocityChange.y = 0;
 
                 rb.AddForce(velocityChange, ForceMode.VelocityChange);
             }
