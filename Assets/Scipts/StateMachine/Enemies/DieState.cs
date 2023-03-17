@@ -18,6 +18,7 @@ public class DieState : EnemyState
         enemyUnit?.HealthBarController?.SetActiveHealthBar(false);
         enemyUnit?.IconEffectsController?.DisableAllActiveIcons();
         enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Dead);
+        enemyUnit?.WeaponController.EnableDealingDamage(ObjectState.Disabled);
 
         if (enemyUnit.Animator)
             enemyUnit.Animator.enabled = false;

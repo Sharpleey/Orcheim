@@ -77,7 +77,7 @@ public class EnemyWeaponController : MonoBehaviour
     /// Метод для события анимации атаки. Используется чтобы в определенные моменты атаки включать и отключать 
     /// возможность нанесения врагом урона
     /// </summary>
-    private void EnableDealingDamage(ObjectState state)
+    public void EnableDealingDamage(ObjectState state)
     {
         _usedWeaponTriggerCollider.enabled = state == ObjectState.Enabled;
     }
