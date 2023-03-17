@@ -89,7 +89,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         CriticalAttack = new CriticalAttack(increaseProcChancePerLevel: 10);
         FlameAttack = new FlameAttack(increaseProcChancePerLevel: 10, increaseDamageFlamePerLevel: 4, increaseDurationEffectPerLevel: 2);
         SlowAttack = new SlowAttack(increaseProcChancePerLevel: 10, increaseAttackSpeedPercentageDecrease: 10, increaseMovementSpeedPercentageDecrease: 10, increaseDurationEffectPerLevel: 3);
-        PenetrationProjectile = new PenetrationProjectile(decreasePenetrationDamageDecreasePerLevel: 10);
+        PenetrationProjectile = new PenetrationProjectile(decreasePenetrationDamageDecreasePerLevel: -10, maxLevelPenetrationDamageDecrease: 5);
 
         if (!_unitConfig)
         {
@@ -153,7 +153,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         }
 
         // Наносим урон юниту
-        attackedUnit.TakeDamage(damage, Damage.Type, Damage.IsArmorIgnore, isCriticalHit, hitBox);
+        attackedUnit.TakeDamage(Mathf.Clamp(damage, 0, int.MaxValue), Damage.Type, Damage.IsArmorIgnore, isCriticalHit, hitBox);
     }
 
     public virtual void SetEffect(Effect effect)
