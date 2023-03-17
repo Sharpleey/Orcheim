@@ -44,7 +44,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6, y: 1.5, z: 6}
+  m_Size: {x: 8, y: 1.5, z: 8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &702713085367075649
 Rigidbody:
@@ -74,3 +74,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6962e4d4a098e048b794c97e11f3cd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4096
