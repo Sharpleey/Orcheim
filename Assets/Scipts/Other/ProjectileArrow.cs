@@ -70,6 +70,9 @@ public class ProjectileArrow : MonoBehaviour
 		// Если мы попали в противника
 		if (unit)
 		{
+			if (unit.CurrentState is DieState)
+				return;
+
 			if (unit != _currentHitUnit)
 			{
 				if (!_isBlockDamage)
