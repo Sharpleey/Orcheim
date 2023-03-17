@@ -1,11 +1,13 @@
 using UnityEngine;
 
+/// <summary>
+/// In Progress
+/// </summary>
 [RequireComponent(typeof(BowAudioController))]
-public class LightBow : MonoBehaviour, IBowWeapon
+public class LightBow : MonoBehaviour
 {
     #region Serialize fields
     [Header("Weapon")]
-    [SerializeField] private string _name = "Легкий лук";
     [SerializeField] private float _fastShotForce = 16;
     [SerializeField] private Transform _arrowSpawn;
 
@@ -20,10 +22,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
     #endregion Serialize fields
 
     #region Properties
-    /// <summary>
-    /// Название лука
-    /// </summary>
-    public string Name { get => _name; private set => _name = value; }
 
     /// <summary>
     /// Состояние прицеливания, нятяжения тетевы
@@ -80,8 +78,6 @@ public class LightBow : MonoBehaviour, IBowWeapon
     #region Mono
     private void Awake()
     {
-        Name = _name;
-
         GlobalGameEventManager.OnPauseGame.AddListener(SetLockControl);
     }
 
