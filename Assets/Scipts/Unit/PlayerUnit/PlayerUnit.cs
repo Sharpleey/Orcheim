@@ -35,6 +35,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     private void AddListeners()
     {
         GlobalGameEventManager.OnEnemyKilled.AddListener(EventHandler_EnemyKilled);
+        WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
     }
 
     private void AddParametersToPoolAwards()
@@ -187,6 +188,13 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     {
         AddExperience((int)enemyUnit.CostInExp.Value);
         AddGold((int)enemyUnit.CostInGold.Value);
+    }
+
+    private void EventHandler_WaveIsOver()
+    {
+        Health.Actual = Health.Max;
+
+        PlayerEventManager.PlayerHealthChanged();
     }
 
     #endregion Event Handlers
