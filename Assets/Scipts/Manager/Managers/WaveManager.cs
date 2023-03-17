@@ -59,7 +59,7 @@ public class WaveManager : MonoBehaviour, IGameManager
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PreparingForWave);
         EnemyEventManager.OnEnemiesOver.AddListener(EventHandler_EnemiesOver);
-        WaveEventManager.OnStartWaveLogic.AddListener(EventHandler_StartWaveLogic);
+        GlobalGameEventManager.OnEnemyKilled.AddListener(EventHandler_EnemyKilled);
         GlobalGameEventManager.OnGameOver.AddListener(EventHandler_GameOver);
     }
 
@@ -129,7 +129,7 @@ public class WaveManager : MonoBehaviour, IGameManager
         SetDefaultParameters();
     }
 
-    private void EventHandler_StartWaveLogic()
+    private void EventHandler_EnemyKilled(EnemyUnit enemyUnit)
     {
         if (!_isFirstTriggerGame)
         {

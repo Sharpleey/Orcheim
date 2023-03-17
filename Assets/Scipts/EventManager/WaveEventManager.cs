@@ -8,11 +8,6 @@ public class WaveEventManager
     #region Events
 
     /// <summary>
-    /// Событие запуска игровой логики спавна волн. Событие первого нанесение урона по противнику, после которого начинается игра, спавн волн
-    /// </summary>
-    public static readonly UnityEvent OnStartWaveLogic = new UnityEvent();
-
-    /// <summary>
     /// Событие, когда волна врагов закончилась
     /// </summary>
     public static readonly UnityEvent<int> OnWaveIsOver = new UnityEvent<int>();
@@ -30,14 +25,6 @@ public class WaveEventManager
     #endregion
 
     #region Methods
-
-    /// <summary>
-    /// Метод вызова события OnStartingTrigger
-    /// </summary>
-    public static void StartingTrigger()
-    {
-        OnStartWaveLogic.Invoke();
-    }
 
     /// <summary>
     /// Метод вызова события OnWaveIsOver

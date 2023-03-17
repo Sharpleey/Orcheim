@@ -219,9 +219,6 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
             // Если игрок атаковал врага, изменяем состояние
             if (CurrentState.GetType() == typeof(IdleState) || CurrentState.GetType() == typeof(PatrollingState))
             {
-
-                WaveEventManager.StartingTrigger();
-
                 //SummonTrigger.SummonNearbyUnits(8);
 
                 // Изменяем состояние на преследование
