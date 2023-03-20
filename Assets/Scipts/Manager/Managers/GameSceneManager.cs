@@ -22,14 +22,14 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 
 	public ManagerStatus Status { get; private set; }
 
-	#endregion Properties
-
-	#region Private fields
-
 	/// <summary>
 	/// Свойство используется в LoadingScreenController для отображения значения прогресса
 	/// </summary>
 	public AsyncOperation AsyncOperationLoadingScene => _asyncOperationLoadingScene;
+
+	#endregion Properties
+
+	#region Private fields
 
 	private AsyncOperation _asyncOperationLoadingScene;
 

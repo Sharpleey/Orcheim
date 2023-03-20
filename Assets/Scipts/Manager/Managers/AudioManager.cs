@@ -56,72 +56,6 @@ public class AudioManager : MonoBehaviour, IGameManager
     }
 
     /// <summary>
-    /// ћетод дл€ воспроизведени€ конкретной фоновой музыки из массива _ambientSounds
-    /// </summary>
-    /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
-    public void PlaySound(SoundType soundType, string nameSound, float delay = 0)
-    {
-        // ѕолучаем звук из массива с определенным названием и типом
-        Sound sound = Array.Find(_sounds, x => x.soundType == soundType && x.name == nameSound);
-
-        if (sound == null)
-        {
-            Debug.Log("Sound not found!");
-            return;
-        }
-
-        // ѕолучаем источник звука дл€ звука определенного типа
-        AudioSource audioSource = GetAudioSource(soundType);
-
-        if (audioSource == null)
-        {
-            Debug.Log("Sound source for this sound type is not assigned!");
-            return;
-        }
-
-        // ”станавливаем параметры дл€ источника звука
-        SetAudioSourceParameters(audioSource, sound);
-
-        // ѕроигрываем звук
-        StartPlayAudioSource(audioSource, delay);
-    }
-
-    /// <summary>
-    /// ћетод дл€ воспроизведени€ конкретной музыки из массива _musicSounds
-    /// </summary>
-    /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
-    public void PlayRandomSound(SoundType soundType, float delay = 0)
-    {
-        // ѕолучаем массив звуков определенного типа
-        Sound[] sounds = Array.FindAll(_sounds, x => x.soundType == soundType);
-
-        if (sounds == null)
-        {
-            Debug.Log("This type of sound was not found!");
-            return;
-        }
-
-        // ¬ыбираем случайный звук из массива
-        int randSound = UnityEngine.Random.Range(0, sounds.Length);
-        Sound sound = sounds[randSound];
-
-        // ѕолучаем источник звука дл€ звука определенного типа
-        AudioSource audioSource = GetAudioSource(soundType);
-
-        if(audioSource == null)
-        {
-            Debug.Log("Sound source for this sound type " + soundType.ToString() + " is not assigned!");
-            return;
-        }
-
-        // ”станавливаем параметры дл€ источника звука
-        SetAudioSourceParameters(audioSource, sound);
-
-        // ѕроигрываем звук
-        StartPlayAudioSource(audioSource, delay);
-    }
-
-    /// <summary>
     /// ћетод дл€ остановки истоника звука дл€ определенного типа звука
     /// </summary>
     private void StopSound(SoundType soundType)
@@ -137,17 +71,6 @@ public class AudioManager : MonoBehaviour, IGameManager
 
         // ќстанавливаем проигрывание источника звука
         StopPlayAudioSource(audioSource);
-    }
-
-    /// <summary>
-    /// ћетод дл€ остановки всех источников звука AudioManager-а
-    /// </summary>
-    public void StopAllSoundSource()
-    {
-        _ambientSource.Stop();
-        _musicSource.Stop();
-        _mainMenuMusicSource.Stop();
-        _sfxSource.Stop();
     }
 
     /// <summary>
@@ -239,6 +162,83 @@ public class AudioManager : MonoBehaviour, IGameManager
 
         // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
         Status = ManagerStatus.Started;
+    }
+
+    /// <summary>
+    /// ћетод дл€ остановки всех источников звука AudioManager-а
+    /// </summary>
+    public void StopAllSoundSource()
+    {
+        _ambientSource.Stop();
+        _musicSource.Stop();
+        _mainMenuMusicSource.Stop();
+        _sfxSource.Stop();
+    }
+
+    /// <summary>
+    /// ћетод дл€ воспроизведени€ конкретной музыки из массива _musicSounds
+    /// </summary>
+    /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
+    public void PlayRandomSound(SoundType soundType, float delay = 0)
+    {
+        // ѕолучаем массив звуков определенного типа
+        Sound[] sounds = Array.FindAll(_sounds, x => x.soundType == soundType);
+
+        if (sounds == null)
+        {
+            Debug.Log("This type of sound was not found!");
+            return;
+        }
+
+        // ¬ыбираем случайный звук из массива
+        int randSound = UnityEngine.Random.Range(0, sounds.Length);
+        Sound sound = sounds[randSound];
+
+        // ѕолучаем источник звука дл€ звука определенного типа
+        AudioSource audioSource = GetAudioSource(soundType);
+
+        if (audioSource == null)
+        {
+            Debug.Log("Sound source for this sound type " + soundType.ToString() + " is not assigned!");
+            return;
+        }
+
+        // ”станавливаем параметры дл€ источника звука
+        SetAudioSourceParameters(audioSource, sound);
+
+        // ѕроигрываем звук
+        StartPlayAudioSource(audioSource, delay);
+    }
+
+    /// <summary>
+    /// ћетод дл€ воспроизведени€ конкретной фоновой музыки из массива _ambientSounds
+    /// </summary>
+    /// <param name="nameAmbient">Ќазвание звука, который выберем из массива и воспроизводем</param>
+    public void PlaySound(SoundType soundType, string nameSound, float delay = 0)
+    {
+        // ѕолучаем звук из массива с определенным названием и типом
+        Sound sound = Array.Find(_sounds, x => x.soundType == soundType && x.name == nameSound);
+
+        if (sound == null)
+        {
+            Debug.Log("Sound not found!");
+            return;
+        }
+
+        // ѕолучаем источник звука дл€ звука определенного типа
+        AudioSource audioSource = GetAudioSource(soundType);
+
+        if (audioSource == null)
+        {
+            Debug.Log("Sound source for this sound type is not assigned!");
+            return;
+        }
+
+        // ”станавливаем параметры дл€ источника звука
+        SetAudioSourceParameters(audioSource, sound);
+
+        // ѕроигрываем звук
+        StartPlayAudioSource(audioSource, delay);
     }
 
     #endregion Public methods

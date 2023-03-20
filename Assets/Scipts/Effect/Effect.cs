@@ -4,8 +4,10 @@ using UnityEngine;
 /// <summary>
 /// Абстрактный класс эффекта
 /// </summary>
-public abstract class Effect : INaming, ICloneable
+public abstract class Effect : IEntity, ICloneableEffect
 {
+    #region Properties
+
     /// <summary>
     /// Название эффекта
     /// </summary>
@@ -19,7 +21,7 @@ public abstract class Effect : INaming, ICloneable
     /// <summary>
     /// Тип эффекта, положительный или негативный
     /// </summary>
-    public EffectType EffectType { get; protected set; } = EffectType.Negative;
+    public EffectType Type { get; protected set; } = EffectType.Negative;
 
     /// <summary>
     /// Длительность эффекта, если хотим сделать эффект без длительности, то не переопределяем
@@ -36,13 +38,20 @@ public abstract class Effect : INaming, ICloneable
     /// </summary>
     public IEnumerator CoroutineEffect { get; private set; }
 
+    #endregion Properties
+
+    #region Private fields
+
     /// <summary>
     /// Объект юнита, над который производим изменения с помощью эффекта
     /// </summary>
     protected Unit unit;
-
     protected EnemyUnit enemyUnit;
     protected Player player;
+
+    #endregion Private fields
+
+    #region Methods
 
     /// <summary>
     /// Метод для глубокого копирования объекта эффекта
@@ -106,4 +115,6 @@ public abstract class Effect : INaming, ICloneable
         
         unit.RemoveEffect(this);
     }
+
+    #endregion
 }

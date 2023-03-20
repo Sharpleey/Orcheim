@@ -77,13 +77,4 @@ public abstract class EnemyState: IState
 
         return hitColliders.Length;
     }
-
-    /// <summary>
-    /// Метод для обработки события. Для смены состояния на преследование
-    /// </summary>
-    /// <param name="wave"></param>
-    protected void SetChasingState(int wave)
-    {
-        enemyUnit.SetState<ChasingState>();
-    }
 }

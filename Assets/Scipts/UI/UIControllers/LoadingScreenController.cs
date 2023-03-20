@@ -8,46 +8,58 @@ using UnityEngine.UI;
 public class LoadingScreenController : MonoBehaviour
 {
     #region SerializeFields
+
     [SerializeField] private GameObject _canvas;
     [SerializeField] private Image _imageProgressBar;
     [SerializeField] private Animator _animator;
+     
     #endregion SerializeFields
 
     #region Properties
+
     /// <summary>
     /// Изображение полоски прогресса
     /// </summary>
     public Image ProgressBar => _imageProgressBar;
+
     /// <summary>
     /// Проигрывается ли анимация показа загрузочного экрана или нет
     /// </summary>
     public bool IsShow => _isShow;
+
     #endregion Properties
 
     #region Private fields
+
     private bool _isShow;
+
     #endregion Private fields
     
     #region Mono
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
+
     private void Start()
     {
         // Отключаем аниматор
         _animator.enabled = false;
         _isShow = false;
     }
+
     private void Update()
     {
         // Заполянем полосу прогресса
         if (_animator.enabled && GameSceneManager.Instance.AsyncOperationLoadingScene != null)
             _imageProgressBar.fillAmount = GameSceneManager.Instance.AsyncOperationLoadingScene.progress;
     }
+
     #endregion Mono
 
     #region Private methods
+
     /// <summary>
     /// Метод события окончания анимации показа экрана загрузки
     /// </summary>
@@ -55,6 +67,7 @@ public class LoadingScreenController : MonoBehaviour
     {
         _isShow = false;
     }
+
     /// <summary>
     /// Метод события при окончании анимации сокрытия экрана загрузки
     /// </summary>
@@ -62,6 +75,7 @@ public class LoadingScreenController : MonoBehaviour
     {
         _animator.enabled = false;
     }
+
     #endregion Private methods
 
     #region Public methods

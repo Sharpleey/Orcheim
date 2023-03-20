@@ -23,7 +23,7 @@ public class ArmorUp : Effect
 
         PercentageArmorIncrease = new Parameter(defaultValue: defaultPercentageArmorIncrease, changeValuePerLevel: increaseArmorIncreasePerLevel, level: level);
 
-        EffectType = EffectType.Positive;
+        Type = EffectType.Positive;
     }
 
     public override void Enable()

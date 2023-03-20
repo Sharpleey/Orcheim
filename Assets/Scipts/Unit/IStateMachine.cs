@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+// TODO Сделать отдельный класс может быть?? мм?
 public interface IStateMachine
 {
     /// <summary>

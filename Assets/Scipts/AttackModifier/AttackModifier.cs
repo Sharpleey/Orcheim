@@ -1,5 +1,5 @@
 
-public abstract class AttackModifier : INaming
+public abstract class AttackModifier : IEntity
 {
     /// <summary>
     /// Название модификатора атаки

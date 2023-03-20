@@ -29,7 +29,7 @@ public class Slowdown : Effect
             changeValuePerLevel: increaseDurationEffectPerLevel,
             level: levelDurationEffect);
 
-        EffectType = EffectType.Negative;
+        Type = EffectType.Negative;
 
         MovementSpeedPercentageDecrease.UpgradeDescription = HashEffectString.SLOWDOWN_MOVEMENT_SPEED_PERCENTAGE_DECREASE_UPGRADE_DESCRIPTION;
         AttackSpeedPercentageDecrease.UpgradeDescription = HashEffectString.SLOWDOWN_ATTACK_SPEED_PERCENTAGE_DECREASE_UPGRADE_DESCRIPTION;

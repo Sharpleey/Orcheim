@@ -49,9 +49,4 @@ public class Damage : UnitParameter
         Type = damageType;
         IsArmorIgnore = isArmorIgnore;
     }
-
-    public Damage Copy()
-    {
-        return (Damage)MemberwiseClone();
-    }
 }

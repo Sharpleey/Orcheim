@@ -1,10 +1,16 @@
 
 public class Flame : Effect
 {
+    #region Properties
+
     public override string Name => HashEffectString.FLAME_NAME;
-    public override string Description => string.Format(HashEffectString.FLAME_DESCRIPTION, Frequency, Duration.Value, Damage.Max, ArmorDecrease.Value);
-    public Damage Damage { get; private set; }
+    public override string Description => string.Format(HashEffectString.FLAME_DESCRIPTION, Frequency, Duration.Value, DamagePerSecond.Max, ArmorDecrease.Value);
+    public Damage DamagePerSecond { get; private set; }
     public Parameter ArmorDecrease { get; private set; }
+
+    #endregion Properties
+
+    #region Methods
 
     /// <summary>
     /// 
@@ -20,7 +26,7 @@ public class Flame : Effect
         int armorDecrease = 1, int increaseArmorDecreasePerLevel = 1, int levelArmorDecrease = 1, 
         int durationEffect = 3, int increaseDurationEffectPerLevel = 1, int levelDurationEffect = 1)
     {
-        Damage = new Damage(
+        DamagePerSecond = new Damage(
             defaultValue: damageFlame,
             increaseValuePerLevel: increaseDamageFlamePerLevel,
             level: levelDamageFlame,
@@ -36,9 +42,9 @@ public class Flame : Effect
             changeValuePerLevel: increaseDurationEffectPerLevel,
             level: levelDurationEffect);
 
-        EffectType = EffectType.Negative;
+        Type = EffectType.Negative;
 
-        Damage.UpgradeDescription = HashEffectString.FLAME_DAMAGE_UPGRADE_DESCRIPTION;
+        DamagePerSecond.UpgradeDescription = HashEffectString.FLAME_DAMAGE_UPGRADE_DESCRIPTION;
         ArmorDecrease.UpgradeDescription = HashEffectString.FLAME_ARMOR_DECREASE_UPGRADE_DESCRIPTION;
         Duration.UpgradeDescription = HashEffectString.FLAME_DURATION_UPGRADE_DESCRIPTION;
     }
@@ -67,7 +73,7 @@ public class Flame : Effect
     public override void Tick()
     {
         // Ёффект наносит урон за один тик
-        unit.TakeDamage(Damage.Actual, Damage.Type);
+        unit.TakeDamage(DamagePerSecond.Actual, DamagePerSecond.Type);
 
         // ”меньшение брони за один тик
         unit.Armor.Actual -= ArmorDecrease.Value;
@@ -90,4 +96,6 @@ public class Flame : Effect
             //TODO –еализовать действие эффекта на игрока
         }
     }
+
+    #endregion Methods
 }

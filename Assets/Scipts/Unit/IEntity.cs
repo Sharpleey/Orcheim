@@ -1,4 +1,4 @@
-public interface INaming
+public interface IEntity
 {
     /// <summary>
     /// Название

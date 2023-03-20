@@ -11,10 +11,6 @@ public class LootManager : MonoBehaviour, IGameManager
 {
     public static LootManager Instance { get; private set; }
 
-    #region Serialize fields
-
-    #endregion Serialize fields
-
     #region Properties
 
     public ManagerStatus Status { get; private set; }
@@ -200,7 +196,7 @@ public class LootManager : MonoBehaviour, IGameManager
         AwardsPlayerStatsUpgrade = new List<AwardParameterUpgrade>();
         Awards = new List<Award>();
     }
-
+    
     private void EventHandler_WaveIsOver(int wave)
     {
         ChestRespawn();

@@ -121,7 +121,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         if (attackModifier is FlameAttack flameAttack)
         {
             LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Chance);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.Damage);
+            LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.DamagePerSecond);
             LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.Duration);
             LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.ArmorDecrease);
 

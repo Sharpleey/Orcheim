@@ -232,7 +232,6 @@ public class EnemyManager : MonoBehaviour, IGameManager
     {
         CurrentMaximumEnemiesOnScene = _managerConfig.DefaultMaximumEnemiesOnScene + (wave / _managerConfig.IncrementWaveMaximumEnemiesOnScene) * _managerConfig.IncrementMaximumEnemiesOnScene;
     }
-
     
     private void UpdateCurrentMaximumEnemiesOnWave(int wave)
     {

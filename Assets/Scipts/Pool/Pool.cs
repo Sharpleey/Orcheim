@@ -66,7 +66,7 @@ public class Pool<T> where T : MonoBehaviour
     /// <returns>Объект типа Т</returns>
     private T GetInstance()
     {
-        T newInstance = UnityEngine.Object.Instantiate(_prefab, _container);
+        T newInstance = Object.Instantiate(_prefab, _container);
         return newInstance;
     }
 

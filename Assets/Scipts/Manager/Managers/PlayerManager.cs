@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// (P.S. In progress)
-/// Менеджер отвечает за параметры и данные игрока. ?? Возрождение игрока на сцене ??
+/// Менеджер отвечает за параметры и данные игрока (Тут кароче много еще работы). ?? Возрождение игрока на сцене ??
 /// </summary>
 public class PlayerManager : MonoBehaviour, IGameManager
 {
@@ -122,8 +122,6 @@ public class PlayerManager : MonoBehaviour, IGameManager
         // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
         Status = ManagerStatus.Started;
     }
-
-   
 
     #endregion Public methods
 

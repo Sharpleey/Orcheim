@@ -34,15 +34,15 @@ public class Parameter : Upgratable
 
     #endregion Private fields
 
-    public Parameter(float defaultValue, float changeValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) :base(changeValuePerLevel, maxLevel, level)
+    #region Public methods
+
+    public Parameter(float defaultValue, float changeValuePerLevel = 0, int maxLevel = int.MaxValue, int level = 1) : base(changeValuePerLevel, maxLevel, level)
     {
         _defaultValue = defaultValue;
         Value = _defaultValue;
 
         SetLevel(Level);
     }
-
-    #region Public methods
 
     public override void SetLevel(int newLevel)
     {
