@@ -42,7 +42,7 @@ ___
 
 *6 минутное видео доступное по данной [ссылке](https://www.youtube.com/watch?v=ZmShTZPr1dw)*
 
-[![Gameplay 1 min](https://photos.app.goo.gl/aNJHNjKNw7QnxuaVA)](https://youtu.be/07Daxt--Tys)
+[![Gameplay 1 min](https://drive.google.com/file/d/1eRxoKgs04JIgzAAK1pka8JDlrMNbsZho/view?usp=sharing)](https://youtu.be/07Daxt--Tys)
 
 ## **Враги и их способности**
 
