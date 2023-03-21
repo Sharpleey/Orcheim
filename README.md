@@ -5,10 +5,10 @@
 Данный проект это первая моя игра (прототип) разрабатываемая на Unity и что в итоге на данный момент получилось я кратко расскажу ниже*
 ___
 
-### [**Скачать**](https://drive.google.com/file/d/1GrtBin0npPOPY1XlyVz7Ch-rjR9r1M7U/view?usp=sharing) прототип (274 Мб) (Version 0.0.1.25) (PC) ###
+### :zap: [**Скачать**](https://drive.google.com/file/d/1GrtBin0npPOPY1XlyVz7Ch-rjR9r1M7U/view?usp=sharing) прототип (274 Мб) (Version 0.0.1.25) (PC) ###
 ___
 
-### [**Ссылка**]() на мое резюме
+### :zap: [**Ссылка**]() на мое резюме
 ___
 ### **Мои контактные данные** 
 
@@ -38,20 +38,20 @@ ___
 ## Оркхейм (Orcheim)
 Режим, в котором игроку предстоит выживать на одной из выбранных сцен. Суть игры заключается в бесконечном наплыве волн врагов. С каждой волной враги становятся сильнее и многочисленней, но игрок получая опыт тоже прокачивается, улучшает свои характеристики, получает предметы снаряжения, получает способности, модификаторы атаки, которые с получением уровня также можно улучшить
 
-*Минутное видео геймплея данного режима представлена ниже (**Клик по картинке**) или по [ссылке](https://youtu.be/07Daxt--Tys)*
+:cinema: *Минутное видео геймплея данного режима представлена ниже (**Клик по картинке**) или по [ссылке](https://youtu.be/07Daxt--Tys) :zap: :zap: :zap:*
 
-*6 минутное видео доступное по данной [ссылке](https://www.youtube.com/watch?v=ZmShTZPr1dw)*
+:cinema: *6 минутное видео доступное по данной [ссылке](https://www.youtube.com/watch?v=ZmShTZPr1dw)*
 
 
 
-[<img src="https://lh3.googleusercontent.com/pw/AMWts8CEhXifKqMktkNJuaNdNsOGMQqh-_99b13XwQ3ruhS68S2-a_1c-8K9K1cL1KSfuDZAD3bZD5JDK63O7jft3uu2qywvtJETv1knCly-CaLHHlXwMo0-CTBqFSNz6dgjC8SxYQovABeYqcsD9DKs_slD=w1035-h414-no?authuser=0"
+[<img src="https://lh3.googleusercontent.com/pw/AMWts8B_Gjbhu5YI8gSLW4cwklsAzWNskKGrGm2ejiJyso5UsJzxB1ZAffMTzjHacDHJPLOESnHlyP9cK5WMS1pduDNBT-7qVRbLfa0MGoLxHYtNbUxDPTjC5TbOctrVmNF2PAj0RIk43jrVqPGZMnz401VVVZmMNki888v35vMcCY3L7JnyZiJciWvpWcKvGqWtEHWRHzXISyfo18BpxtQBMa9MbHSVaR4zhi1n4I5h4YpPVZ9SnOOxfWeC9QwVcF50vA_gHFJrXDILgZlWzfAUqBfVMPZorhF0Xo8Yihy5o6RHevjQ9eySffPU1T81FcqP6JJnH-AHIeoDVol7Lpcpm5wIFCLmL0ypZUDd4F9mQebqCXmn7VIWgIAcIcXcDJTuD__XPG02vRTho83Bk-EcmXC7JZEMGNwI0cGUL4WuS_0EFpE1Pjras9yeD4AgslxEP-2XEjLFG0kqtEn-C4w_ZLw6yM-QuNSs41BOCHslMOgWv4uIWd7Js1ZvHUPJiU1NPZypEyVZFP52MfTatEqGkdtdkHok_kOqwgFWVtnzig4p20p5YhM5tWVrgeX3cbNebzzwTZcuinCL2a1wKdLVXsu6omBiay4aK8iliilaCtiVItrv5irptv44JbyVXwY6LHfsjkm6V-FM9uJ3rH8AmfipsGgP4NXQ7CtxiH9uptiB7f3fhMARiAXYAgc4HrP5NqrAxV62zovIDzgAo19_oPyGz-bTw8vu8NX7X0h0RK1-93Z8j3nCDFl6omR9e1PkK80wBkAAymC9lDencufY7YyLx6rfxYnO6jwSNfBLMO5zx4BMaogrUTAWhESVovbAEfxYHYg_QpxX8cQbCSHFLyQGS3FZSXJmO8Bz2jOVwlIE275Jalu-FltIrhXuWo4R6zDYYfGZUPZq-S4V4LaU77n3QPbQwZuZOPfSXdIDHhQyJJuZBfy_8tIF2VfxHA=w1035-h414-no?authuser=0"
      alt="sample image"
      style="display: block; margin-right: auto; margin-left: auto; width: 90%;
      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" />](https://youtu.be/07Daxt--Tys)
 
 # **Враги и их способности**
 
-На данном этапе разработки реализовано 3 типа врагов, их краткое описание ниже
+:heavy_exclamation_mark: На данном этапе разработки реализовано 3 типа врагов, их краткое описание ниже
 
 *Более подробное описание врагов их способностей и характеристик представлены в [данном документе]()*
 ## Воин (Warrior)
@@ -86,7 +86,7 @@ ___
 ## Оружие игрока
 (In Progress) Перед началом каждой игровой сессии игру представляется возможность выбрать набор оружия для ближнего боя и дальнего. Каждой оружие уникальное и имеет свой набор возможностей и характеристик, которые по мере игры можно будет улучшать.
 
-*На данном этапе разработке нет выбора оружия, а игроку доступно лишь одно оружие дальнего боя Лук*
+:heavy_exclamation_mark: *На данном этапе разработке нет выбора оружия, а игроку доступно лишь одно оружие дальнего боя Лук*
 ## Способности игрока
 (In Progress) Способности также можно будет выбирать перед началом сессии, на данный момент игроку доступен только Sprint, дающая игроку возможность быстро бегать
 
@@ -97,7 +97,7 @@ ___
 
 Каждый модификатор может сочетатся с любым другим модификатором.
 
-На данном этапе реализовано 4 модификатора атаки:
+:heavy_exclamation_mark: На данном этапе реализовано 4 модификатора атаки:
 
 ## Критическая атака
 Атаки с шансом 10% могут нанести 150% урона.
@@ -138,33 +138,34 @@ ___
 ![PenetrationProjectile](https://lh3.googleusercontent.com/pw/AMWts8AZaANSIlfroz-4MO9Fit5GopK8NZi7wH2SpDRRD_XOqi6ayK6CTYvN3EzTidVJEEBwVDgiPnx2s8CDE6a7fnH5M25h7hDe9-gI5ctTEY9uUyhP1X1Cpigm6X_9eGw-aceGbJJy5_fG16MQMWCQstYA6gj_06Y5Ic3HRyE9chfNoto_Be0pfPUtKb_pHj11hcUUFKZVpTECpYhDKlZEp4UyDmDQPWQoVqvMcyFcITWLIbBcEgqLR7Cmr7Ut4C2IujUXTa6BIBSD1fm9hI0EQTqyGSc_jKZ8UOJzSPOPKDlM1Y8LM8_M4gM8HdYw6fX3NGEl8OZVwXbcr8MPhU0Zx3dHVymFX8cuUp0yIo2ii9oaZMKRflOY_NQMIM__XMXzKxLLzUt3GrdHdLAwWZAJ0SDCpPS0II9s5jAJfog-kxRQYRtzHBC9H50_o71idBzkt5aZBGDEvhYp0-jFIwyGljulYwM_Ajkg9MssK_uK2kyxNM4OldaQBkrllMGkE-3iGkT0Kesn99FuUsDuQErrUemPn3AOTEPTcuPInRVIpem2VKIEkxoiN08Yh35MH2f02cmXL4c6eRFUMEGQTR6Ba7USkelFVlT4DjrD5eD7D356ZcVtPvRiuYsLlzKGN_KSSzxnxRQGE6XTRsDF9rVrvgo26tWWJGox7dAM6LOeilDQIna_U1WgikKLtCWxvvezOpAA8BKFtRXnDk9kJTi5A62xLYRVtVX_gEJs-cQynvkqucaffM9HAN-dogrw53NWeAjQbV7F7UXEdP74ggqY9W9R563JOifSK0jGeySRj53TRcYDy2vmrwz-eSBdgxv0KJapsCmwPKOvbs7vhjDw5ps7Uu5VbzENDYN4TdDvjEdGRTr4oXSb8cF9My5O37Mv5AWKFzDMLlWOGy9Db7lSQCykK_GvyGsWmC1wc5XOt2E5H0gHfcgQZPziTHY9DA=w600-h338-no?authuser=0)
 
 # Что я сделал? Какие паттерны я использовал? Какие ресурсы и инструменты я использовал
-+ ### Поведение юнитов врагов реализован через паттерн **StateMachine** (State)
-+ ### Спавн юнитов реализовал с помощью паттерна **Factory**
-+ ### Часто создающиеся объекты реализовал через **Pool Object**
-+ ### Игровые менеджеры с помощью **Singleton**
-+ ### Навигация юнитов по сцене реализована с помощью **NavMeshAgent**
-+ ### Анимации юнитов взяты из **Mixamo**
-+ ### Модели юнитов (Орков) приобретены в **AssetStore**
-+ ### Риггинг для орка сделал в **Mixamo**
-+ ### Скининг элементов брони для орка делал в **Blender**
-+ ### Модели окружения приобретены в **AssetStore**
-+ ### Звуки и музыку взял из свободных источников
++ :white_check_mark: Поведение юнитов врагов реализован через паттерн **StateMachine** (State)
++ :white_check_mark: Спавн юнитов реализовал с помощью паттерна **Factory**
++ :white_check_mark: Часто создающиеся объекты реализовал через **Pool Object**
++ :white_check_mark: Игровые менеджеры с помощью **Singleton**
++ :white_check_mark: Навигация юнитов по сцене реализована с помощью **NavMeshAgent**
++ :white_check_mark: Анимации юнитов взяты из **Mixamo**
++ :white_check_mark: Модели юнитов (Орков) приобретены в **AssetStore**
++ :white_check_mark: Риггинг для орка сделал в **Mixamo**
++ :white_check_mark: Скининг элементов брони для орка делал в **Blender**
++ :white_check_mark: Модели окружения приобретены в **AssetStore**
++ :white_check_mark: Звуки и музыку взял из свободных источников
++ :white_check_mark: Контроллер персонажа взят из **AssetStore**, мною внесены некоторые доработки
 
 # Ближайшие планы на проект
-+ #### Перенести проект на **URP**
-+ #### Реализовать для игрока оружие ближнего боя
-+ #### Реализовать выбор оружия перед началом игры
-+ #### Реализовать увеличение уровня врагов с волнами
-+ #### Связать **Factory** и **Pool Object**
++ :white_medium_square: Перенести проект на **URP**
++ :white_medium_square: Реализовать для игрока оружие ближнего боя
++ :white_medium_square: Реализовать выбор оружия перед началом игры
++ :white_medium_square: Реализовать увеличение уровня врагов с волнами
++ :white_medium_square: Связать **Factory** и **Pool Object**
 
 # Что планирую сделать в дальнейшем
-+ #### Занятся левел дизайном и сделать большую полноценную сцену (*Сейчас в игре присутствуют только небольшие тестовые сцены*)
-+ #### Добавить новые виды врагов
-+ #### Добавить новые модификаторы атак
-+ #### Добавить способности игроку
-+ #### Реализовать модификаторы волн
-+ #### Улучшить визуальную часть игры
-+ #### Заняться оптимизацией
++ :black_medium_square: Занятся левел дизайном и сделать большую полноценную сцену (*Сейчас в игре присутствуют только небольшие тестовые сцены*)
++ :black_medium_square: Добавить новые виды врагов
++ :black_medium_square: Добавить новые модификаторы атак
++ :black_medium_square: Добавить способности игроку
++ :black_medium_square: Реализовать модификаторы волн
++ :black_medium_square: Улучшить визуальную часть игры
++ :black_medium_square: Заняться оптимизацией
 
 
 
