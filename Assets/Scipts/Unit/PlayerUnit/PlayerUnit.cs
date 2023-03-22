@@ -32,7 +32,7 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     #endregion Mono
 
     #region Private methods
-    private void AddListeners()
+    protected virtual void AddListeners()
     {
         GlobalGameEventManager.OnEnemyKilled.AddListener(EventHandler_EnemyKilled);
         WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);

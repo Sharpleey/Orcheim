@@ -29,6 +29,11 @@ public class PlayerEventManager
     public static readonly UnityEvent OnPlayerArmorChanged = new UnityEvent();
 
     /// <summary>
+    /// Событие изменения скорости передвижения у игрока
+    /// </summary>
+    public static readonly UnityEvent OnPlayerMovementSpeedChanged = new UnityEvent();
+
+    /// <summary>
     /// Событие изменения кол-ва золота у игрока
     /// </summary>
     public static readonly UnityEvent OnPlayerGoldChanged = new UnityEvent();
@@ -89,6 +94,14 @@ public class PlayerEventManager
     public static void PlayerArmorChanged()
     {
         OnPlayerArmorChanged.Invoke();
+    }
+
+    /// <summary>
+    /// Вызов события изменения скорости передвижения игрока
+    /// </summary>
+    public static void PlayerMovementSpeedChanged()
+    {
+        OnPlayerMovementSpeedChanged.Invoke();
     }
 
     /// <summary>

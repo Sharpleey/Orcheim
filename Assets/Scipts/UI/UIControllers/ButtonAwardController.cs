@@ -123,8 +123,6 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
     /// </summary>
     public void OnClickAward()
     {
-        Debug.Log("OnClickAward");
-
         if(_award is AwardAttackModifier awardAttackModifaer)
         {
             // Добавляем модификатор атаки игроку
@@ -144,6 +142,9 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
 
             if (awardParameterUpgrade.UpgratableParameter is Armor)
                 PlayerEventManager.PlayerArmorChanged();
+
+            if (awardParameterUpgrade.UpgratableParameter is MovementSpeed)
+                PlayerEventManager.PlayerMovementSpeedChanged();
         }
 
 

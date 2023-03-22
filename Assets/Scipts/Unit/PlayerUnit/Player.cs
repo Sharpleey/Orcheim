@@ -17,6 +17,13 @@ public class Player : PlayerUnit
 
     #region Private methods
 
+    protected override void AddListeners()
+    {
+        base.AddListeners();
+
+        PlayerEventManager.OnPlayerMovementSpeedChanged.AddListener(EventHandler_PlayerMovementSpeedChanged);
+    }
+
     protected override void InitControllers()
     {
         Rigidbody = GetComponent<Rigidbody>();
@@ -33,4 +40,14 @@ public class Player : PlayerUnit
     }
 
     #endregion Private methods
+
+    #region Event Handlers
+
+    private void EventHandler_PlayerMovementSpeedChanged()
+    {
+        FirstPersonController.walkSpeed = MovementSpeed.Max / 100f;
+        FirstPersonController.sprintSpeed = MovementSpeed.Max * (1f + 0.25f) / 100f;
+    }
+
+    #endregion
 }
