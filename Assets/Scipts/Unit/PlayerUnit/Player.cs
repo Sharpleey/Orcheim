@@ -29,7 +29,7 @@ public class Player : PlayerUnit
     protected override void InitControllersParameters()
     {
         FirstPersonController.walkSpeed = MovementSpeed.Max / 100f;
-        FirstPersonController.sprintSpeed = MovementSpeed.Max * (1f + 0.18f) / 100f; //TODO спринт сделать как способность
+        FirstPersonController.sprintSpeed = MovementSpeed.Max * (1f + 0.25f) / 100f; //TODO спринт сделать как способность
     }
 
     #endregion Private methods
