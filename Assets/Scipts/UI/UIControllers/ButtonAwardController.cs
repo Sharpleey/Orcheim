@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using DG.Tweening;
+using UnityEngine.UI;
 
-public class ButtonAwardController : MonoBehaviour, IPointerClickHandler
+public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     #region Serialize fields
     [Header("Контроллер игрового меню")]
@@ -20,13 +22,48 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI _textDescriptionAward;
     [SerializeField] private TextMeshProUGUI _textLevelUpgrade;
 
+    [Header("Настройка кнопки")]
+    [SerializeField] private Color _colorNormal;
+    [SerializeField] private Color _colorPointerEnter;
+    [SerializeField, Range(1f, 1.1f)] private float _scaleXYPointerEnter;
+
     #endregion Serialize fields
 
     #region Private fields
 
+    private Image _image;
+    private RectTransform _rectTransform;
+
     private Award _award;
 
+    private float _timer;
+    private bool _isBlockClick;
+    private Vector3 _vector3ScalePointerEnter;
+
     #endregion Private fields
+
+    private void Awake()
+    {
+        _vector3ScalePointerEnter = new Vector3(_scaleXYPointerEnter, _scaleXYPointerEnter, 1f);
+
+        _image = GetComponent<Image>();
+        _rectTransform = GetComponent<RectTransform>();
+    }
+
+    private void OnEnable()
+    {
+        _isBlockClick = true;
+        _timer = 0;
+    }
+
+    private void Update()
+    {
+        if(_isBlockClick)
+            _timer += Time.unscaledDeltaTime;
+
+        if (_timer >= 2)
+            _isBlockClick = false;
+    }
 
     #region Private methods
 
@@ -117,7 +154,22 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (_isBlockClick)
+            return;
+
         OnClickAward();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _image.color = _colorPointerEnter;
+        _rectTransform.localScale = _vector3ScalePointerEnter;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _image.color = _colorNormal;
+        _rectTransform.localScale = Vector3.one;
     }
 
     #endregion Public methods
