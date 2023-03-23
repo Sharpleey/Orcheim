@@ -5,10 +5,10 @@
 Данный проект это первая моя игра (прототип) разрабатываемая на Unity и что в итоге на данный момент получилось я кратко расскажу ниже*
 ___
 
-### :zap: [**Скачать**](https://drive.google.com/file/d/1bj50FRfRBjy9wgHxwSd6AxXC85JchtV1/view?usp=sharing) прототип (274 Мб) (Version 0.0.1.26) (PC) ###
+### :zap: [**Скачать**](https://drive.google.com/file/d/1bj50FRfRBjy9wgHxwSd6AxXC85JchtV1/view?usp=sharing) готовый билд прототипа (274 Мб) (Version 0.0.1.26) (PC) ###
 ___
 
-### :zap: [**Ссылка**]() на мое резюме
+### :zap: [**Ссылка**](https://drive.google.com/file/d/1rYfr6Y9o12VHB35BISItUkLzDaZ9WegH/view?usp=sharing) на мое резюме
 ___
 ### **Мои контактные данные** 
 
@@ -18,7 +18,7 @@ ___
 ___
 # **Подробное описание**
 
-Проектный документ с подробным описанием, описанием механик, архитектуры, логики, характеристиками и т.д. представлен в [**данном документе**](https://docs.google.com/document/d/1NYoCePAHFZjdG9UJANhixeU1OFk7vmSEIUg-LotZG2Q/edit?usp=sharing) Google Doc (*Пока в сыром виде*)
+Проектный документ с подробным описанием, описанием механик, архитектуры, логики, характеристиками и т.д. представлен [**здесь**](https://docs.google.com/document/d/1NYoCePAHFZjdG9UJANhixeU1OFk7vmSEIUg-LotZG2Q/edit?usp=sharing) Google Doc (*Пока в сыром виде*)
 
 Некоторые расчеты представлены в [**данной таблице**](https://docs.google.com/spreadsheets/d/1sgMaXqCYsp2G1TjNH1PkK6vDeeO-F7lut04VZOc9PrA/edit?usp=sharing) Google Sheet
 
