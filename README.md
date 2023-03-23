@@ -38,13 +38,13 @@ ___
 ## Оркхейм (Orcheim)
 Режим, в котором игроку предстоит выживать на одной из выбранных сцен. Суть игры заключается в бесконечном наплыве волн врагов. С каждой волной враги становятся сильнее и многочисленней, но игрок получая опыт тоже прокачивается, улучшает свои характеристики, получает предметы снаряжения, получает способности, модификаторы атаки, которые с получением уровня также можно улучшить
 
-:cinema: *Минутное видео геймплея данного режима представлена ниже (**Клик по картинке**) или по [ссылке](https://youtu.be/07Daxt--Tys) :zap: :zap: :zap:*
+:cinema: *Минутное видео геймплея данного режима представлена ниже (**Клик по картинке**) или по [ссылке](https://youtu.be/07Daxt--Tys) :zap:*
 
-:cinema: *6 минутное видео доступное по данной [ссылке](https://www.youtube.com/watch?v=ZmShTZPr1dw)*
+:cinema: *6 минутное видео доступное по данной [ссылке](https://www.youtube.com/watch?v=ZmShTZPr1dw) :zap:*
 
 
 
-[<img src="https://lh3.googleusercontent.com/pw/AMWts8B_Gjbhu5YI8gSLW4cwklsAzWNskKGrGm2ejiJyso5UsJzxB1ZAffMTzjHacDHJPLOESnHlyP9cK5WMS1pduDNBT-7qVRbLfa0MGoLxHYtNbUxDPTjC5TbOctrVmNF2PAj0RIk43jrVqPGZMnz401VVVZmMNki888v35vMcCY3L7JnyZiJciWvpWcKvGqWtEHWRHzXISyfo18BpxtQBMa9MbHSVaR4zhi1n4I5h4YpPVZ9SnOOxfWeC9QwVcF50vA_gHFJrXDILgZlWzfAUqBfVMPZorhF0Xo8Yihy5o6RHevjQ9eySffPU1T81FcqP6JJnH-AHIeoDVol7Lpcpm5wIFCLmL0ypZUDd4F9mQebqCXmn7VIWgIAcIcXcDJTuD__XPG02vRTho83Bk-EcmXC7JZEMGNwI0cGUL4WuS_0EFpE1Pjras9yeD4AgslxEP-2XEjLFG0kqtEn-C4w_ZLw6yM-QuNSs41BOCHslMOgWv4uIWd7Js1ZvHUPJiU1NPZypEyVZFP52MfTatEqGkdtdkHok_kOqwgFWVtnzig4p20p5YhM5tWVrgeX3cbNebzzwTZcuinCL2a1wKdLVXsu6omBiay4aK8iliilaCtiVItrv5irptv44JbyVXwY6LHfsjkm6V-FM9uJ3rH8AmfipsGgP4NXQ7CtxiH9uptiB7f3fhMARiAXYAgc4HrP5NqrAxV62zovIDzgAo19_oPyGz-bTw8vu8NX7X0h0RK1-93Z8j3nCDFl6omR9e1PkK80wBkAAymC9lDencufY7YyLx6rfxYnO6jwSNfBLMO5zx4BMaogrUTAWhESVovbAEfxYHYg_QpxX8cQbCSHFLyQGS3FZSXJmO8Bz2jOVwlIE275Jalu-FltIrhXuWo4R6zDYYfGZUPZq-S4V4LaU77n3QPbQwZuZOPfSXdIDHhQyJJuZBfy_8tIF2VfxHA=w1035-h414-no?authuser=0"
+[<img src="https://lh3.googleusercontent.com/pw/AMWts8D8RcnklrXddalDpgqCn6BvqSXyDNP9kpxXqDGzHkekcTUC2uNmqEnXNHK_igCSI2zGt8mkorMnDhoGouqQ4BK9MzcSv-MCumdFJ4dIaHfFQ2MoW2DGWNfvfBC5AUA8cIzK0CzDiJ9cb5ufDdbz1RtcqKeHJKG1jBwVWH_6fn-SO-8zgZVZTcPnGEtd8UsPydNIPOXXeEStGGETiN8VStMRw7HTxHGg3GO9wQBaa9B4Oh3Ni6M1ljtuzX4M6YVJJsL3hJTrbMlGS5RNTShh3Yk9e70t-KyjgAfQf6ck12ngXRAXIYAV0uROHDZZsoNvnYiDq7vqW_OyAlljCWMC5wNMBNRI_oXnMW49NKdAjGh4sTy6UflrMX842SnUkJcbOaFNHTf47M59EpDjnSIAgGZheUdaLW0XNtkrfIEH2wf6GXbMh5HKDMf38DMISxD5_QIuqJQLJWag9oMOYfxc9Ml6luAmI9vo5oUyvFG1SdBxdVpRgaGAwtzDRYYLRGC0C79F3_aEB_eHITTdOAkCkbmv44RGW7bRnL7MHdwkvDw06neX-NsTvLWQXx_1iHV1i2uY2M4QgrgQ1oOFknjlRCwhBt4OR1nzsjJhct6aA8NPs0ulYWfQjlD_5e5tO5-3e9nhK78OqN1y51JhPaKSfAVcLYKDfOxx8aCuaXEA3DhdANlA9W_W_AtX1BAcQqyufJQtOAa0Y5mCVla_gWmQmaPgbYL76ox4RM0tWaNLtmUWeSsUV7VvsYLhVTXS8tWc6hygrCqEQ-YjFTrV2nIGqkPhrgMUndBPrGPZTUS7fv9iwJ_Zdu0F54M48ua4fUQJT-o0wfTLi-D-erB66-uirisf3C7I5eED4rTjKeciTxwvjrwJe9zfpkqxOlMgOgYpO-VctLawU4_9oYdu_3x5ONBx9JqR8iB8txp_djYW_huQ6-4vm6CcQhKTFHZRZQ=w1035-h414-no?authuser=0"
      alt="sample image"
      style="display: block; margin-right: auto; margin-left: auto; width: 90%;
      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" />](https://youtu.be/07Daxt--Tys)
@@ -105,7 +105,7 @@ ___
 - Шанс нанести критический урон  +10% за уровень
 - Множитель критического урона  +25% за уровень
   
-![CriticalAttack](https://lh3.googleusercontent.com/pw/AMWts8AV3jKXsjqODfQFJNwjfB36lFqrlab4vdE0J1-2bDh83wBGgOfiBmQUIwaEQ4AaR2kAeIyzaQay1plKFQQHubNAqnxt_8ONUFlmsoWrzsJbEb5Ik7PQQiWq2hTGbV0qP8hlc98xqQCNxtgXomwzLjo6Hu2mlU0ecDVLWZ7obNiDgXX6YPd6N598vBpJJoNZsEcMopEOCpLcUwxnhNaAr9kXWvE2KmbslR3L3Y1H9EdzqzuI11RMxsCKr_Coowztk1HCfGGDFEvDch7cCxU3LE2tB1UBGspng4pgs86TLi_rEL21STZ4UVoenzmB6DjD2CzYWVvMOb4nAdyUbE0xwUybSj0EZkl1Z87j-CQPDA4UUyfO9thnPz2EN7luQPfP7t623ODamqfbwDvSEVIhWGBLZHAc41_tUo_2LLUi8_4oIn8wzDB2Lt7YyDS00EUvX1LsNT2Ier7LtaxIlyupdF3wTEDeJff1UBS_qKPyPra0ABmiXqKQAbiD0BkRK60MuD_jHG4lHE5nysuR3bFAFvA5pLfmjcDrSU5U8fqZwsLsB2QeDJdHdJDGwhufSLStInWLcUrcY7nPD--u_Hn-b-VrcHcLQk2kv1LJO2ckXeCXn4aXcUE_i3Ejl3Ih67dYqbSRx1aKy7vjuNLmaY_FXnmS92bK_Wu8Zmh1gxxJP0TU6pP2Ji5rb1bNFXxIBVtFbdvWTx2VzheHJuN5jPoakkR1rfvKLRA4J87RAiU0ZFd3BfqUTvLwfP08o-uLi9uNwDelqfr1TYp_J-YNA010OPKIJdp7itp6pG8A9BpaSPiESwbs2jm-8oL3F43E5JIQX1Oeg5req0nJyV04Khgfx9g4lYeK4qtggZaK7ZNfLxkfaPJDqhTMpfqI6fiLrBUMB1GBjJQVXywiTqlJScJtvXX6Pf0c6EbECNBU9_E7U9khjiGf3RASbakk5hUo3g=w600-h338-no?authuser=0)
+![CriticalAttack](https://lh3.googleusercontent.com/pw/AMWts8Dl8ZNWWvZxAECNJ3ZBe5furlTao_UkVWABj5-TEptN6wEMqK4Nw6T8JnMr7UAwUQ-joP8GEDh0S1ftXU1prX7ro6suWLHx3bHXXN8heO6yhB4abiE0AF30CEPuDs99yHAmLhPRohwj3-PkOyiWJ23gwl9qyWshJi-GuILkzZh0zBW-mgGxTYpERKnHru2pFt42zu0ipo3691qVNhgjFhCulwU6FIBo6QWsoLXicLb1IG4XkKPtl_J-khI4RFiPbxhikqI5VG8kAy058duAxGeuMbAwevRpHS1ow7ztX3mmSVm76RDTMPEegGSSvCxyH_X1UtzmRs_W7_SOt4a3k-nuEpC8N5aF0xDgIbh0Ll83Jq3IcsBd1-CUOQTM2HAktUAPl_ECx3XmA3qO5_0TZYVgwLDdNJzYvUnJm94eTD_6vCFwSbi9G-8surNoPdi7P3x930tVr43Mg2ymc5fQbl3Ws4bS7vnNPCRaPGDgTAIv6MoWZFqoDM58LjiXyboSs73eerCP4QMi7BMaGBqo2rVYJ6pl7GiExacOkOO-O2P0_p0LxWBeCG7UK3cXz5cwedsaCKNxHksPCAWg3XGLwt6oBQSOE5BxdCfjCr8edcAORpH1fcrZKcPdHCzWwb-C3KS7uMFUsfq-bQhRbTqnG4tioVE7yLxcCg9pi9woG-AEQWo6aqG1CWrOZ-9QLarMEMO98HaUQZOnbDFRlTs1sT_KVcd2dRmD4Y0c2EVPFwAp4ztPTgLzC_dLAx08yDJNTcJV2WW6lT0qgVEy2Q4joWYhcU9vumyZ73y5hg834ZwHNCEHGOBp8gcZJibUb3twl7zLbGf0z31I0wRVKifqPVHUAeVRjeZWBn4UqLuIiftvcR2RFOTkCq-Tp068_mtJimiuTTsWreodxqiissHku9ytF9VnNGqKYzhFTrylVs7UKlAZeByid_LdOTfdKQ=w600-h338-no?authuser=0)
 
 ## Поджигающая атака
 Атаки с шансом 10% накладывают на цель эффект Горение. 
@@ -116,7 +116,7 @@ ___
 - Снижение брони за тик +1 за уровень
 - Длительность эффекта +2 сек. за уровень
 
-![FlameAttack](https://lh3.googleusercontent.com/pw/AMWts8BwSR9wM46ANFUZHzjdqAWfrb3QzI8r0QV8mLzemOB9X1XDOO7pSD4cR2Q_KG8wQLjKqLn9UXRMJJSIk_Jr_vw_sqf1JosDJY_oh-cVg9zjgzcwWgVPj63MtGMp9stex4AYtZN88D4_nl1q80VCyLvv5RFNs6IjQQRGqbFVWWAwZarWDOrGJj16D_ulDyoSKcmiteX0b4wvZF5dR1zxlg5wDRUnNML6_fm_Dr2guX2_OIx9YpVYAiZu90qK_QrqkyK7NrKsRxcxNDpsYWDXuYyKcZiCPAu8wUjsERUtUSxU7GbBiZS-pQpLkz_stOC3PF2EHLdvmE8QKRxp2ru_rR9uIgcP09ooWrUS8Ls-UKHQnYJLxiuB7pObaqk4aUd28CDMcsxX6IRrWPcmQZu-hJ4kFWyCb0cYZ0_9M6F47E8ZAFJzE2zTRTbgiTUQ9GXDxCio2fEHIQo_umwtaj4y4aZWs31jSbzzOQ-Nv3MFBLOinyLjJji9mFlAns-hnyQb8mkTTcrr7_NFaMHTQDPd1jW5aIQPqtenLHkgGrAphhC9LW1iIqU-UNqNnWWa_9lhM2tNt8WR9zdppOhC8XBYJWdECBVOTEF1mfI_YNxu-lv1Eb0zmYMZvdy9R0R4a6GGR-gFFIzNpBjKzEtrZKdnrfATukCVlE11l3qzfANiJlZLizNvexu9-Wxibt-NJ7jgH33cyIGw3ITcaIa6v5flRTX-joFdd99FeF-27x2RE89m29qvEuVhbo_T2nyVEzwZ9jw_vTyIOAVtSwThmzrBhyBiyOMMED77SpSiX-tL9kH0foWAFOjso75qmDIF0rktPDGs91jRoKzDlaogWl0vikenhN_kRhRpgoFbWm3fNmlniVGeL9xGxMAO5bbj_cL-s9NJa0mvIiLkjDRkobdbLKhBD1UmB9738AuhyDLjpa36RTUwuvv5FXxq6NZiyg=w600-h338-no?authuser=0)
+![FlameAttack](https://lh3.googleusercontent.com/pw/AMWts8DPq6mRGtEkGVbzvbC00peDS5FKVTaoh-dhmtq_3dJD2eQz0tnPEnlWglvwLYiDTSb4sqEuhLokvss5xlNVdkemZMdNetaeZ0Xe3AdL4dx_lcF6AXb2dazUf8t0Wf0kLJpYhdqqL2anDDBcfl2FBxAJxxtmAFAqmDj3BUWngHlVGlvy1tSQC9InXseSdUirQt1AWxMoU5UHZCIxonbbipnRs5C53AkCxhhO_nyrzVclwq3DETTSS3JAYYetSmWgl1x03VNuEvM4OoPo313muFehg7smK68HzexFBju0Er-rOa65uVuxyemGb-4rG6G2qqQuvgDJSGmXz0d0oT4n_oXP9nw-A9W0SrjCip9pp846vs-NLvfx04H2RVzAPRj1tyLIBcWYjBDzKmBeXw6VuSgYiyPj7rwDcjODW8M1D1Hq8pOq-JQ8MJUMYBZUuPHCgmNuWTafhLQNg_yF2jwd-lGyIByTUsPbEGFcnKWdLxAzLzbhHDuEypdf_TIbyJ9ATvskU4JEuavTfIcP1caaBrP56d94po7TBQoS7iGtXt1pQySCQc4CPCGo5TuFn6HBWfpeDfDhMvALB1d2weSVFzTiyn4BdXe4LYavGrQW1Vu0q7l_rdGLgQOmwY4lVy8n-qk0MSrOqd3cfkpjNOwhbq-IaKsrBxbT9LB9BxbbSQMo0Nlmx8jcbzksGLZjN1EvjXav7qU9HEIHZl1kxlEaNcxpw_ICxSAjyyrEFHDCF-sg-81-byB9NOfZaOCjE7WWonStNetOx761v5DC20vQp16vfsSdPyVgqa5L3F3RRXpc0Q_-jNea2t5Ojajr45ujouHHlGIj_cRmoF_bw-qds_GZEQTBHHYi5Tz16kybOdBvPf_ealnGirf7q_BfdXio8d40nff2Cncag17Dl8o4gDYYFH7l2COQ5jQfhq7FEgWvrCAvGjI6K3vRZlSJJQ=w600-h338-no?authuser=0)
 
 ## Замедляющая атака
 Атаки с шансом 10% накладывают на цель эффект Замедление.
@@ -127,7 +127,7 @@ ___
 - Замедление скорости атаки цели +10% за уровень
 - Длительность эффекта +3 сек. за уровень
 
-![SlowAttack](https://lh3.googleusercontent.com/pw/AMWts8DHQMPgCfvLxnK7n9itbCz3w4woOQnZSVxu8WxnGYPO7nRO9QZYYDBGHK3yKUu_cXsq5SP4rGs-nPsiPtEHlmMfvhGyxMRljYEnLif-kFR6Adwd-4nT48z-HQ_G7CSH2uvI8EYN6bzWeq1V9Ss57nlZrKZXoxtQcYZ2dcSvLa4UQ5E8yTdZTj-HoDK6I1riCFfc4en-Vmi6G5bnfD6WtT1RgHfsxFareavOI3vgjhKA9qefAH1-u6eNCcISmZx7oz7i1OPjkX0MBvn_ttJrsjST-81CHN2nI7My9bREkw0j5Xpe2tCpsXZx8jMmfmrG2mtY5L0gZrH69PjP3sz9g8sSzWPCNG3eOfNvgocoyr0ZrBUY7-TYW5_ckh6S3pb-Ks55t631SvJbhHxfzEMykpagGBaXiUZ2XL_UjGy4-jb1h6VU7Da7y54rY2oSuY3JVoKzpcp_5ToiOcANt90edx61jYri1cwDA6_4UxM8LGhqe442UEncS1ollHN7t1i47Ilkke70cwfMbqQBALH2FmF4SvwWSmuG5eCp8UZnl1UrsagvUMTi8wh31RFWtU98vHBsx3ln_c68opgPWhGcnd90rWxpAw-mgI1mQMXgMeACcZ-jasLQbp4rwJuFeqyXcFh8-APR_SEwTQN2Twvl3XJkuNAxPxNEr-P4mzXzvXtc4yZ6ACYluOpOdL5xoNILKACBUA1p2NkdnasFpK3cMyWJDnc3EausVduG8bNnFuQn_2QSxKqWousYzbyMfbQeAVvDF_rD2PY-MFR3ChJG2ZwLpoWBvP2rInVppYLZQeyXm2gxfLY8W6sFIw4e4CVfckVthSOPka3bJNRSsN8ZHDW55IMBAFc-Fw0AcjGoIvTZWE4R9rtWfMy0Fx0YA2d14mTbCnqc7S737qHK55oR57NWbQgfyDJUgi7KyLgJX2D2_1tTemYN_AiWFZw5Rg=w600-h338-no?authuser=0)
+![SlowAttack](https://lh3.googleusercontent.com/pw/AMWts8CD3md0ypuKCudAG2s5txzUgUOOll8QUV_pJp1mluT2p39-jPbxyIo3A2aU1JzTDVnGq0Scw9kDIHKFJtt7hcUkJgimz2Hzol_Df0BQhFJyt94CqtjQPouCYEDxMiP2K0jiWhBK4DwtAXcZjRIYhBjwEkKwjwswT22ofd_zy_vZPTdAAsv8kXMcaJXpOzXuUruDsZCf2YOe2IV1RqSh4Bxto_uRKXZFBroH3QzAyMZ-cJa9FgS0aO3zeClE7SqOp5LDj8IEHxWebiKnFa9OkxgSLeuu99npcV-dvvzMDU2xR_Tw2dLyQZLXj-fVBdgZeGVUMys2rmbFZ6tvx5qWRpRhu4HLc7ihzkJygiWuAd7SIxN0D-rZW_ygR9ob6xz8JSU8Jzk4b9DpCrC98ClaIfwA8dKHIJKEqbUqoqlX-pTWmv9V1QHzy1UbuI8IZ9iZuFY5n4VPEEa-4X5ZNJ1PaIQeqSPlz5uJzgEf7YVvXHKZDC4H-L6mDUyIpDjVxCpk_0hUZA8f_meEqB30nZs3TB2WTb5VdOwnjMYVIo29gU3VoQNq_15yOvGaiu-D3rC3Z6zjS6k-GRx8yPK0sa0zorugmfNPewL9R40xwx7h0d9BfiKSsXQiBC56LVjPbqcSpgso9I_8lim5sBVugmEbYpHYzUJrlK7acIoEPJIPjxL1vAV2hVj2uFECir9LeOURVWEsWNuRp3wDgOa6BCm-W15ZH4VSm6Rhuod_F_4nzyOxJt6ecWGR3rzf8tiF1gelLW6WyhnccYkUD4yKBum9JNjhYjXjN3Bj5yVdBUDq__kIF1fW60r9gzekKqALSCpJMgUJVO-f7n36YvEmTQUPwh6OolhAZqmWQrlYucAx9GF1JsyKh6llqwj014swYkSu7lgz9wk17NiWJpWix8ihPwV0UivZKmwcoVbNnNQhJsfwUYcUv6MNdOyWP9dAtQ=w600-h338-no?authuser=0)
 
 ## Пробивающий снаряд
 Снаряд оружия дальнего боя пробивает несколько целей (2) и наносит урон уменьщающийся на 50% с каждым пробитием.
@@ -135,37 +135,48 @@ ___
 - Число пробиваемые целей +1 за уровень
 - Уменьшение урона с каждым пробитием -10% за уровень
 
-![PenetrationProjectile](https://lh3.googleusercontent.com/pw/AMWts8AZaANSIlfroz-4MO9Fit5GopK8NZi7wH2SpDRRD_XOqi6ayK6CTYvN3EzTidVJEEBwVDgiPnx2s8CDE6a7fnH5M25h7hDe9-gI5ctTEY9uUyhP1X1Cpigm6X_9eGw-aceGbJJy5_fG16MQMWCQstYA6gj_06Y5Ic3HRyE9chfNoto_Be0pfPUtKb_pHj11hcUUFKZVpTECpYhDKlZEp4UyDmDQPWQoVqvMcyFcITWLIbBcEgqLR7Cmr7Ut4C2IujUXTa6BIBSD1fm9hI0EQTqyGSc_jKZ8UOJzSPOPKDlM1Y8LM8_M4gM8HdYw6fX3NGEl8OZVwXbcr8MPhU0Zx3dHVymFX8cuUp0yIo2ii9oaZMKRflOY_NQMIM__XMXzKxLLzUt3GrdHdLAwWZAJ0SDCpPS0II9s5jAJfog-kxRQYRtzHBC9H50_o71idBzkt5aZBGDEvhYp0-jFIwyGljulYwM_Ajkg9MssK_uK2kyxNM4OldaQBkrllMGkE-3iGkT0Kesn99FuUsDuQErrUemPn3AOTEPTcuPInRVIpem2VKIEkxoiN08Yh35MH2f02cmXL4c6eRFUMEGQTR6Ba7USkelFVlT4DjrD5eD7D356ZcVtPvRiuYsLlzKGN_KSSzxnxRQGE6XTRsDF9rVrvgo26tWWJGox7dAM6LOeilDQIna_U1WgikKLtCWxvvezOpAA8BKFtRXnDk9kJTi5A62xLYRVtVX_gEJs-cQynvkqucaffM9HAN-dogrw53NWeAjQbV7F7UXEdP74ggqY9W9R563JOifSK0jGeySRj53TRcYDy2vmrwz-eSBdgxv0KJapsCmwPKOvbs7vhjDw5ps7Uu5VbzENDYN4TdDvjEdGRTr4oXSb8cF9My5O37Mv5AWKFzDMLlWOGy9Db7lSQCykK_GvyGsWmC1wc5XOt2E5H0gHfcgQZPziTHY9DA=w600-h338-no?authuser=0)
+![PenetrationProjectile](https://lh3.googleusercontent.com/pw/AMWts8DsDQCzJTaZw5qJ4GJNNUjIyqw05LK_rN6797YzOCopTyLb08SjCXbkqoVsf4S8M9t3p7XTqjIrcS6kNhyGxr4fU1uagt5qR49GwVI8ynmvKk9e-CIIr-Es2kQjJrDALmXDb8_3W78Kp-RKgwCifgxUGTXyqiOLSQUd32zTbmPnYWCFpwAY25RZAvL_3IdHWCedHN4tZe4Ri6mKs9_637QOXOVYXJM8yYWL1PNDninzKgUtjcomFIqEgfVLoU9-AKgaQYb39or9Av8naVNKduR1J-Au_lYczpGhFiqWw6TwcssFuaQBVhhud-9LHlAOX3qUTejl67A6rtg0Yp-Oc2u2JnuwF3VhzM6MGy0AC3a0ZsjkG-XxVVFyqDxt-nyx6xCCXv8zsQ0v6qvtK-xH_bBwPpBgQPv4qLJkF2QHIELJF1Hkc73Tnfop356qvsHeR4yLnA2hHhZx6jdePEzUsuV6M2wOAvmOQ3TLm1DKWatLHqLBEckhSkKek7I4DXB8jAwn_o-7teFhgBt3JpRtYRrmFq8vDnVuWtaTBO33mSvXwX0ad4n_smtA54yRa8-uCqYWsL10tovayRrzDRBhE4XAh2VBDWfn3YCmaMmFr6UYIt6Y80qQyNos0xzJ8qSwumafhUPuv3NlADEI5GlNq4sqaYfpdu7S3hRA8D2Ekd8J3QfsaFTFHakFdmral9JMCLRJqytT1N6FsKJJvelExjDii9yuVhePF-Vecwmmewt9XoCZHIVKWQAbdocHmG46Ix6QfTM4HiKFjrmdwvqlbkm1xvGjOz1O9Ii-OLkQYOM8XstizDI6Ju03_HwBF2rFuUO569jFylRrwuKjxIurrkPln_mrMuF6IopyD6xtoBLaURXE1TAxlhNA84ag3c-Jtv80rtTjX4qx9pN0saxUmDaJbbdDBbjFe51xchOdRxyo9tUXoHYkfrEEASIyVg=w600-h338-no?authuser=0)
 
 # Что я сделал? Какие паттерны я использовал? Какие ресурсы и инструменты я использовал
-+ :white_check_mark: Поведение юнитов врагов реализован через паттерн **StateMachine** (State)
-+ :white_check_mark: Спавн юнитов реализовал с помощью паттерна **Factory**
-+ :white_check_mark: Часто создающиеся объекты реализовал через **Pool Object**
-+ :white_check_mark: Игровые менеджеры с помощью **Singleton**
-+ :white_check_mark: Навигация юнитов по сцене реализована с помощью **NavMeshAgent**
-+ :white_check_mark: Анимации юнитов взяты из **Mixamo**
-+ :white_check_mark: Модели юнитов (Орков) приобретены в **AssetStore**
-+ :white_check_mark: Риггинг для орка сделал в **Mixamo**
-+ :white_check_mark: Скининг элементов брони для орка делал в **Blender**
-+ :white_check_mark: Модели окружения приобретены в **AssetStore**
-+ :white_check_mark: Звуки и музыку взял из свободных источников
-+ :white_check_mark: Контроллер персонажа взят из **AssetStore**, мною внесены некоторые доработки
+:heavy_check_mark: Поведение юнитов врагов реализован через паттерн **StateMachine** (State)
+
+:heavy_check_mark: Спавн юнитов реализовал с помощью паттерна **Factory**
+
+:heavy_check_mark: Часто создающиеся объекты реализовал через **Pool Object**
+
+:heavy_check_mark: Игровые менеджеры с помощью **Singleton**
+
+:heavy_check_mark: Навигация юнитов по сцене реализована с помощью **NavMeshAgent**
+
+:heavy_check_mark: Анимации юнитов взяты из **Mixamo**
+
+:heavy_check_mark: Модели юнитов (Орков) приобретены в **AssetStore**
+
+:heavy_check_mark: Риггинг для орка сделал в **Mixamo**
+
+:heavy_check_mark: Скининг элементов брони для орка делал в **Blender**
+
+:heavy_check_mark: Модели окружения приобретены в **AssetStore**
+
+:heavy_check_mark: Звуки и музыку взял из свободных источников
+
+:heavy_check_mark: Контроллер персонажа взят из **AssetStore**, мною внесены некоторые доработки
 
 # Ближайшие планы на проект
-+ :white_medium_square: Перенести проект на **URP**
-+ :white_medium_square: Реализовать для игрока оружие ближнего боя
-+ :white_medium_square: Реализовать выбор оружия перед началом игры
-+ :white_medium_square: Реализовать увеличение уровня врагов с волнами
-+ :white_medium_square: Связать **Factory** и **Pool Object**
++ Перенести проект на **URP**
++ Реализовать для игрока оружие ближнего боя
++ Реализовать выбор оружия перед началом игры
++ Реализовать увеличение уровня врагов с волнами
++ Связать **Factory** и **Pool Object**
 
 # Что планирую сделать в дальнейшем
-+ :black_medium_square: Занятся левел дизайном и сделать большую полноценную сцену (*Сейчас в игре присутствуют только небольшие тестовые сцены*)
-+ :black_medium_square: Добавить новые виды врагов
-+ :black_medium_square: Добавить новые модификаторы атак
-+ :black_medium_square: Добавить способности игроку
-+ :black_medium_square: Реализовать модификаторы волн
-+ :black_medium_square: Улучшить визуальную часть игры
-+ :black_medium_square: Заняться оптимизацией
++ Занятся левел дизайном и сделать большую полноценную сцену (*Сейчас в игре присутствуют только небольшие тестовые сцены*)
++ Добавить новые виды врагов
++ Добавить новые модификаторы атак
++ Добавить способности игроку
++ Реализовать модификаторы волн
++ Улучшить визуальную часть игры
++ Заняться оптимизацией
 
 
 
