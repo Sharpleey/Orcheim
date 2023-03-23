@@ -5,7 +5,7 @@
 Данный проект это первая моя игра (прототип) разрабатываемая на Unity и что в итоге на данный момент получилось я кратко расскажу ниже*
 ___
 
-### :zap: [**Скачать**](https://drive.google.com/file/d/1GrtBin0npPOPY1XlyVz7Ch-rjR9r1M7U/view?usp=sharing) прототип (274 Мб) (Version 0.0.1.25) (PC) ###
+### :zap: [**Скачать**](https://drive.google.com/file/d/1bj50FRfRBjy9wgHxwSd6AxXC85JchtV1/view?usp=sharing) прототип (274 Мб) (Version 0.0.1.26) (PC) ###
 ___
 
 ### :zap: [**Ссылка**]() на мое резюме
@@ -18,7 +18,7 @@ ___
 ___
 # **Подробное описание**
 
-Проектный документ с подробным описанием, описанием механик, архитектуры, логики, характеристиками и т.д. представлен в [**данном документе**]() Google Doc (*Пока в сыром виде*)
+Проектный документ с подробным описанием, описанием механик, архитектуры, логики, характеристиками и т.д. представлен в [**данном документе**](https://docs.google.com/document/d/1NYoCePAHFZjdG9UJANhixeU1OFk7vmSEIUg-LotZG2Q/edit?usp=sharing) Google Doc (*Пока в сыром виде*)
 
 Некоторые расчеты представлены в [**данной таблице**](https://docs.google.com/spreadsheets/d/1sgMaXqCYsp2G1TjNH1PkK6vDeeO-F7lut04VZOc9PrA/edit?usp=sharing) Google Sheet
 
@@ -44,7 +44,7 @@ ___
 
 
 
-[<img src="https://lh3.googleusercontent.com/pw/AMWts8D8RcnklrXddalDpgqCn6BvqSXyDNP9kpxXqDGzHkekcTUC2uNmqEnXNHK_igCSI2zGt8mkorMnDhoGouqQ4BK9MzcSv-MCumdFJ4dIaHfFQ2MoW2DGWNfvfBC5AUA8cIzK0CzDiJ9cb5ufDdbz1RtcqKeHJKG1jBwVWH_6fn-SO-8zgZVZTcPnGEtd8UsPydNIPOXXeEStGGETiN8VStMRw7HTxHGg3GO9wQBaa9B4Oh3Ni6M1ljtuzX4M6YVJJsL3hJTrbMlGS5RNTShh3Yk9e70t-KyjgAfQf6ck12ngXRAXIYAV0uROHDZZsoNvnYiDq7vqW_OyAlljCWMC5wNMBNRI_oXnMW49NKdAjGh4sTy6UflrMX842SnUkJcbOaFNHTf47M59EpDjnSIAgGZheUdaLW0XNtkrfIEH2wf6GXbMh5HKDMf38DMISxD5_QIuqJQLJWag9oMOYfxc9Ml6luAmI9vo5oUyvFG1SdBxdVpRgaGAwtzDRYYLRGC0C79F3_aEB_eHITTdOAkCkbmv44RGW7bRnL7MHdwkvDw06neX-NsTvLWQXx_1iHV1i2uY2M4QgrgQ1oOFknjlRCwhBt4OR1nzsjJhct6aA8NPs0ulYWfQjlD_5e5tO5-3e9nhK78OqN1y51JhPaKSfAVcLYKDfOxx8aCuaXEA3DhdANlA9W_W_AtX1BAcQqyufJQtOAa0Y5mCVla_gWmQmaPgbYL76ox4RM0tWaNLtmUWeSsUV7VvsYLhVTXS8tWc6hygrCqEQ-YjFTrV2nIGqkPhrgMUndBPrGPZTUS7fv9iwJ_Zdu0F54M48ua4fUQJT-o0wfTLi-D-erB66-uirisf3C7I5eED4rTjKeciTxwvjrwJe9zfpkqxOlMgOgYpO-VctLawU4_9oYdu_3x5ONBx9JqR8iB8txp_djYW_huQ6-4vm6CcQhKTFHZRZQ=w1035-h414-no?authuser=0"
+[<img src="https://lh3.googleusercontent.com/pw/AMWts8D07KdSGG4rmlp8TF4TP20pNUyOnestMb1OYPYYsK7Z7TOw6zbT5gRUquIvBAiUV07uNqxvJJms2j-86gNZBqcHo74a9pcUccEZnGITEAIXswWTKZQzA4WYx6SGyIIbLB_6EOMRbg-eToE5uxAvkFtx=w1035-h414-no?authuser=0"
      alt="sample image"
      style="display: block; margin-right: auto; margin-left: auto; width: 90%;
      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" />](https://youtu.be/07Daxt--Tys)
@@ -97,7 +97,7 @@ ___
 
 Каждый модификатор может сочетатся с любым другим модификатором.
 
-:heavy_exclamation_mark: На данном этапе реализовано 4 модификатора атаки:
+:heavy_exclamation_mark: *На данном этапе реализовано 4 модификатора атаки*
 
 ## Критическая атака
 Атаки с шансом 10% могут нанести 150% урона.
@@ -105,7 +105,7 @@ ___
 - Шанс нанести критический урон  +10% за уровень
 - Множитель критического урона  +25% за уровень
   
-![CriticalAttack](https://lh3.googleusercontent.com/pw/AMWts8Dl8ZNWWvZxAECNJ3ZBe5furlTao_UkVWABj5-TEptN6wEMqK4Nw6T8JnMr7UAwUQ-joP8GEDh0S1ftXU1prX7ro6suWLHx3bHXXN8heO6yhB4abiE0AF30CEPuDs99yHAmLhPRohwj3-PkOyiWJ23gwl9qyWshJi-GuILkzZh0zBW-mgGxTYpERKnHru2pFt42zu0ipo3691qVNhgjFhCulwU6FIBo6QWsoLXicLb1IG4XkKPtl_J-khI4RFiPbxhikqI5VG8kAy058duAxGeuMbAwevRpHS1ow7ztX3mmSVm76RDTMPEegGSSvCxyH_X1UtzmRs_W7_SOt4a3k-nuEpC8N5aF0xDgIbh0Ll83Jq3IcsBd1-CUOQTM2HAktUAPl_ECx3XmA3qO5_0TZYVgwLDdNJzYvUnJm94eTD_6vCFwSbi9G-8surNoPdi7P3x930tVr43Mg2ymc5fQbl3Ws4bS7vnNPCRaPGDgTAIv6MoWZFqoDM58LjiXyboSs73eerCP4QMi7BMaGBqo2rVYJ6pl7GiExacOkOO-O2P0_p0LxWBeCG7UK3cXz5cwedsaCKNxHksPCAWg3XGLwt6oBQSOE5BxdCfjCr8edcAORpH1fcrZKcPdHCzWwb-C3KS7uMFUsfq-bQhRbTqnG4tioVE7yLxcCg9pi9woG-AEQWo6aqG1CWrOZ-9QLarMEMO98HaUQZOnbDFRlTs1sT_KVcd2dRmD4Y0c2EVPFwAp4ztPTgLzC_dLAx08yDJNTcJV2WW6lT0qgVEy2Q4joWYhcU9vumyZ73y5hg834ZwHNCEHGOBp8gcZJibUb3twl7zLbGf0z31I0wRVKifqPVHUAeVRjeZWBn4UqLuIiftvcR2RFOTkCq-Tp068_mtJimiuTTsWreodxqiissHku9ytF9VnNGqKYzhFTrylVs7UKlAZeByid_LdOTfdKQ=w600-h338-no?authuser=0)
+![CriticalAttack](https://lh3.googleusercontent.com/pw/AMWts8BJeCm1ANgsABo03G1yFjDGin_ALnt3ql8nQfoL7gEoFtE6CK991FIsw4LDiYdFx2eGg-XDFUpPz2U8exfsysQe00fBYtiYYS_vPJeJxjCoyFqT1zWfaiEaJr15PNGAxumJuIfZmPoy7rWqGLPznCmx=w600-h338-no?authuser=0)
 
 ## Поджигающая атака
 Атаки с шансом 10% накладывают на цель эффект Горение. 
@@ -116,7 +116,7 @@ ___
 - Снижение брони за тик +1 за уровень
 - Длительность эффекта +2 сек. за уровень
 
-![FlameAttack](https://lh3.googleusercontent.com/pw/AMWts8DPq6mRGtEkGVbzvbC00peDS5FKVTaoh-dhmtq_3dJD2eQz0tnPEnlWglvwLYiDTSb4sqEuhLokvss5xlNVdkemZMdNetaeZ0Xe3AdL4dx_lcF6AXb2dazUf8t0Wf0kLJpYhdqqL2anDDBcfl2FBxAJxxtmAFAqmDj3BUWngHlVGlvy1tSQC9InXseSdUirQt1AWxMoU5UHZCIxonbbipnRs5C53AkCxhhO_nyrzVclwq3DETTSS3JAYYetSmWgl1x03VNuEvM4OoPo313muFehg7smK68HzexFBju0Er-rOa65uVuxyemGb-4rG6G2qqQuvgDJSGmXz0d0oT4n_oXP9nw-A9W0SrjCip9pp846vs-NLvfx04H2RVzAPRj1tyLIBcWYjBDzKmBeXw6VuSgYiyPj7rwDcjODW8M1D1Hq8pOq-JQ8MJUMYBZUuPHCgmNuWTafhLQNg_yF2jwd-lGyIByTUsPbEGFcnKWdLxAzLzbhHDuEypdf_TIbyJ9ATvskU4JEuavTfIcP1caaBrP56d94po7TBQoS7iGtXt1pQySCQc4CPCGo5TuFn6HBWfpeDfDhMvALB1d2weSVFzTiyn4BdXe4LYavGrQW1Vu0q7l_rdGLgQOmwY4lVy8n-qk0MSrOqd3cfkpjNOwhbq-IaKsrBxbT9LB9BxbbSQMo0Nlmx8jcbzksGLZjN1EvjXav7qU9HEIHZl1kxlEaNcxpw_ICxSAjyyrEFHDCF-sg-81-byB9NOfZaOCjE7WWonStNetOx761v5DC20vQp16vfsSdPyVgqa5L3F3RRXpc0Q_-jNea2t5Ojajr45ujouHHlGIj_cRmoF_bw-qds_GZEQTBHHYi5Tz16kybOdBvPf_ealnGirf7q_BfdXio8d40nff2Cncag17Dl8o4gDYYFH7l2COQ5jQfhq7FEgWvrCAvGjI6K3vRZlSJJQ=w600-h338-no?authuser=0)
+![FlameAttack](https://lh3.googleusercontent.com/pw/AMWts8BGPkuKg9CF6uu6K-et0YGe9z3y-bAYfSkfWOvRm-n8A-sqhg02au4fJZTXykwvr390xpcZVsaUqBRc7juL1C1n172yQy0VgNDSfZmkeilCP9EkURBZYY0Z9ZWmTcxbQXuaSVRbSq4F2P9zF4IFugQf=w600-h338-no?authuser=0)
 
 ## Замедляющая атака
 Атаки с шансом 10% накладывают на цель эффект Замедление.
@@ -127,7 +127,7 @@ ___
 - Замедление скорости атаки цели +10% за уровень
 - Длительность эффекта +3 сек. за уровень
 
-![SlowAttack](https://lh3.googleusercontent.com/pw/AMWts8CD3md0ypuKCudAG2s5txzUgUOOll8QUV_pJp1mluT2p39-jPbxyIo3A2aU1JzTDVnGq0Scw9kDIHKFJtt7hcUkJgimz2Hzol_Df0BQhFJyt94CqtjQPouCYEDxMiP2K0jiWhBK4DwtAXcZjRIYhBjwEkKwjwswT22ofd_zy_vZPTdAAsv8kXMcaJXpOzXuUruDsZCf2YOe2IV1RqSh4Bxto_uRKXZFBroH3QzAyMZ-cJa9FgS0aO3zeClE7SqOp5LDj8IEHxWebiKnFa9OkxgSLeuu99npcV-dvvzMDU2xR_Tw2dLyQZLXj-fVBdgZeGVUMys2rmbFZ6tvx5qWRpRhu4HLc7ihzkJygiWuAd7SIxN0D-rZW_ygR9ob6xz8JSU8Jzk4b9DpCrC98ClaIfwA8dKHIJKEqbUqoqlX-pTWmv9V1QHzy1UbuI8IZ9iZuFY5n4VPEEa-4X5ZNJ1PaIQeqSPlz5uJzgEf7YVvXHKZDC4H-L6mDUyIpDjVxCpk_0hUZA8f_meEqB30nZs3TB2WTb5VdOwnjMYVIo29gU3VoQNq_15yOvGaiu-D3rC3Z6zjS6k-GRx8yPK0sa0zorugmfNPewL9R40xwx7h0d9BfiKSsXQiBC56LVjPbqcSpgso9I_8lim5sBVugmEbYpHYzUJrlK7acIoEPJIPjxL1vAV2hVj2uFECir9LeOURVWEsWNuRp3wDgOa6BCm-W15ZH4VSm6Rhuod_F_4nzyOxJt6ecWGR3rzf8tiF1gelLW6WyhnccYkUD4yKBum9JNjhYjXjN3Bj5yVdBUDq__kIF1fW60r9gzekKqALSCpJMgUJVO-f7n36YvEmTQUPwh6OolhAZqmWQrlYucAx9GF1JsyKh6llqwj014swYkSu7lgz9wk17NiWJpWix8ihPwV0UivZKmwcoVbNnNQhJsfwUYcUv6MNdOyWP9dAtQ=w600-h338-no?authuser=0)
+![SlowAttack](https://lh3.googleusercontent.com/pw/AMWts8DKYEmIF8LcUC6ELIopXups9aaasvDGS35VEvbKhCTZjz9s4nvL-pZrEmWTMmiIIWGemGD2ZwBd7YonLIID0j5i89jxgs79jGeG0OsgoBipxoV_FY8qw2EgdRJxZfhu842j2qIcU6ZN6vVXtv8-4XYD=w600-h338-no?authuser=0)
 
 ## Пробивающий снаряд
 Снаряд оружия дальнего боя пробивает несколько целей (2) и наносит урон уменьщающийся на 50% с каждым пробитием.
@@ -135,7 +135,7 @@ ___
 - Число пробиваемые целей +1 за уровень
 - Уменьшение урона с каждым пробитием -10% за уровень
 
-![PenetrationProjectile](https://lh3.googleusercontent.com/pw/AMWts8DsDQCzJTaZw5qJ4GJNNUjIyqw05LK_rN6797YzOCopTyLb08SjCXbkqoVsf4S8M9t3p7XTqjIrcS6kNhyGxr4fU1uagt5qR49GwVI8ynmvKk9e-CIIr-Es2kQjJrDALmXDb8_3W78Kp-RKgwCifgxUGTXyqiOLSQUd32zTbmPnYWCFpwAY25RZAvL_3IdHWCedHN4tZe4Ri6mKs9_637QOXOVYXJM8yYWL1PNDninzKgUtjcomFIqEgfVLoU9-AKgaQYb39or9Av8naVNKduR1J-Au_lYczpGhFiqWw6TwcssFuaQBVhhud-9LHlAOX3qUTejl67A6rtg0Yp-Oc2u2JnuwF3VhzM6MGy0AC3a0ZsjkG-XxVVFyqDxt-nyx6xCCXv8zsQ0v6qvtK-xH_bBwPpBgQPv4qLJkF2QHIELJF1Hkc73Tnfop356qvsHeR4yLnA2hHhZx6jdePEzUsuV6M2wOAvmOQ3TLm1DKWatLHqLBEckhSkKek7I4DXB8jAwn_o-7teFhgBt3JpRtYRrmFq8vDnVuWtaTBO33mSvXwX0ad4n_smtA54yRa8-uCqYWsL10tovayRrzDRBhE4XAh2VBDWfn3YCmaMmFr6UYIt6Y80qQyNos0xzJ8qSwumafhUPuv3NlADEI5GlNq4sqaYfpdu7S3hRA8D2Ekd8J3QfsaFTFHakFdmral9JMCLRJqytT1N6FsKJJvelExjDii9yuVhePF-Vecwmmewt9XoCZHIVKWQAbdocHmG46Ix6QfTM4HiKFjrmdwvqlbkm1xvGjOz1O9Ii-OLkQYOM8XstizDI6Ju03_HwBF2rFuUO569jFylRrwuKjxIurrkPln_mrMuF6IopyD6xtoBLaURXE1TAxlhNA84ag3c-Jtv80rtTjX4qx9pN0saxUmDaJbbdDBbjFe51xchOdRxyo9tUXoHYkfrEEASIyVg=w600-h338-no?authuser=0)
+![PenetrationProjectile](https://lh3.googleusercontent.com/pw/AMWts8BAyp5dpdCtY4qKPS4zIu4W7ajuKjX3wrYtL_ZceIg9-cJBVw7TSXZLNJ9srcjZL_Ku9V73ofF9ub01otjP5IKMjt1lG4AfoJ2BSHZFr-0O5FuKo1KxZcpjA4u5FBOzCZUM-6vrJ5_2gUjSJ5KkgMjC=w600-h338-no?authuser=0)
 
 # Что я сделал? Какие паттерны я использовал? Какие ресурсы и инструменты я использовал
 :heavy_check_mark: Поведение юнитов врагов реализован через паттерн **StateMachine** (State)
@@ -145,6 +145,8 @@ ___
 :heavy_check_mark: Часто создающиеся объекты реализовал через **Pool Object**
 
 :heavy_check_mark: Игровые менеджеры с помощью **Singleton**
+
+:heavy_check_mark: Менеджеры и другие объекты взаимодействуют с друг другом с помощью событий **UnityEvent**
 
 :heavy_check_mark: Навигация юнитов по сцене реализована с помощью **NavMeshAgent**
 
@@ -163,6 +165,7 @@ ___
 :heavy_check_mark: Контроллер персонажа взят из **AssetStore**, мною внесены некоторые доработки
 
 # Ближайшие планы на проект
++ Переделать контроллер игрока
 + Перенести проект на **URP**
 + Реализовать для игрока оружие ближнего боя
 + Реализовать выбор оружия перед началом игры
