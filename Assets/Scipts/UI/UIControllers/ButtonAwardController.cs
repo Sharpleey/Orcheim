@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
-using DG.Tweening;
 using UnityEngine.UI;
 
 public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
