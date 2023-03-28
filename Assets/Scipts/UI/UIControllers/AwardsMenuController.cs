@@ -11,7 +11,7 @@ public class AwardsMenuController : MonoBehaviour
 
     private void OnEnable()
     {
-        AudioManager.Instance?.PlaySound(SoundType.Sfx, "level_up");
+        AudioManager.Instance?.PlaySound(SoundType.Sfx, "level_up"); //TODO Вынести в константы
 
         _awards = LootManager.Instance?.GetListRandomAwards(3);
 
