@@ -1078,6 +1078,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6962e4d4a098e048b794c97e11f3cd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &1249712453112741506
 GameObject:
   m_ObjectHideFlags: 0
@@ -22134,7 +22137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitConfig: {fileID: 11400000, guid: 27b4b64b491b53245a41dcbb603aa036, type: 2}
   _defaultState: 0
-  _summonTrigger: {fileID: 8360898302848970580}
 --- !u!114 &1813647020247659928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22177,6 +22179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638d22e0f698e24438937e2acdbb3832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolation: 0
+  _collisionDetectionMode: 0
   _allRigibodys:
   - {fileID: 2337848117833089742}
   - {fileID: 7433407080999172056}

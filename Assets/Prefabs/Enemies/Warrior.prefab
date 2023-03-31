@@ -5824,6 +5824,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638d22e0f698e24438937e2acdbb3832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolation: 0
+  _collisionDetectionMode: 0
   _allRigibodys:
   - {fileID: 6653703489764706683}
   - {fileID: 698333245944791615}
@@ -14594,6 +14596,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7852846082764756813, guid: eaea48f37d3d15a4c8c61e577ba380c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359487303626019422, guid: eaea48f37d3d15a4c8c61e577ba380c8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359487303626019422, guid: eaea48f37d3d15a4c8c61e577ba380c8, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
