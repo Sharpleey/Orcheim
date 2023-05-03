@@ -8,22 +8,22 @@ public class IdleState : EnemyState
     /// <summary>
     /// Угол обзора враг
     /// </summary>
-    private float _viewAngleDetection = 120f;
-    
+    protected float _viewAngleDetection = 120f;
+
     /// <summary>
     /// Дистанция обзора врага
     /// </summary>
-    private float _viewDetectionDistance = 14f;
-    
+    protected float _viewDetectionDistance = 14f;
+
     /// <summary>
     /// Радиус обнаружения, при котором в любом случае враг заметит игрока
     /// </summary>
-    private float _absoluteDetectionDistance = 4f;
+    protected float _absoluteDetectionDistance = 4f;
     
     /// <summary>
     /// Таймер обновления
     /// </summary>
-    private float _timerUpdate;
+    protected float _timerUpdate;
 
     public IdleState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
@@ -58,12 +58,11 @@ public class IdleState : EnemyState
 
             distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
 
-            // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Персонаж проивника увидил игрока перед собой)
+            // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Персонаж противника увидел игрока перед собой)
             if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
             {
                 // Воспроизводим звук
-                if(enemyUnit.AudioController)
-                    enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
+                enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Confused);
 
                 enemyUnit.SetState<ChasingState>();
             }
@@ -82,6 +81,7 @@ public class IdleState : EnemyState
     }
 
     #region Private methods
+
     /// <summary>
     /// Метод проверяет находится ли игрок в поле зрения врага
     /// </summary>
@@ -99,5 +99,6 @@ public class IdleState : EnemyState
         }
         return false;
     }
+
     #endregion Private methods
 }

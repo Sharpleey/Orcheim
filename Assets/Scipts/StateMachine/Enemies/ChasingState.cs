@@ -95,10 +95,10 @@ public abstract class ChasingState : EnemyState
 
             // Обнуляем таймер
             _timerAudioPlayback = 0;
-        }    
+        }
 
         // Рисуем линию от протиника до его цели
-        //Debug.DrawLine(enemy.transform.position, enemy.NavMeshAgent.destination, Color.yellow);
+        Debug.DrawLine(enemyUnit.transform.position, enemyUnit.NavMeshAgent.destination, Color.yellow);
 
         // Задаем параметр анимации
         enemyUnit.Animator.SetFloat(HashAnimStringEnemy.Speed, enemyUnit.NavMeshAgent.velocity.magnitude / (enemyUnit.MovementSpeed.Max/100f));

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 /// <summary>
 /// Состояние патрулирования персонажем противника. Патрулирование производится по точкам
 /// </summary>
-public class PatrollingState : EnemyState
+public class PatrollingState : IdleState
 {
     private Transform[] _wayPoints;
 
@@ -13,22 +13,10 @@ public class PatrollingState : EnemyState
     private Vector3 _positionCurrentWayPoint;
     private int _indexCurrentWayPoint;
 
-    private float _timerUpdateDistance;
-
     /// <summary>
-    /// Угол обзора враг
+    /// Скорость патрулирорвания
     /// </summary>
-    private float _viewAngleDetection = 120f;
-
-    /// <summary>
-    /// Дистанция обзора врага
-    /// </summary>
-    private float _viewDetectionDistance = 14f;
-
-    /// <summary>
-    /// Радиус обнаружения, при котором в любом случае враг заметит игрока
-    /// </summary>
-    private float _absoluteDetectionDistance = 4f;
+    private float _patrolSpeed = 1.8f;
 
     public PatrollingState(EnemyUnit enemyUnit) : base(enemyUnit)
     {
@@ -38,7 +26,7 @@ public class PatrollingState : EnemyState
     {
         // Обнуляем параметры
         _indexCurrentWayPoint = 0;
-        _timerUpdateDistance = 0;
+        _timerUpdate = 0;
 
         // Включаем анимацию для этого состояния, задаем параметр анимации
         enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsMovement, true);
@@ -72,48 +60,21 @@ public class PatrollingState : EnemyState
 
     public override void Update()
     {
-        _timerUpdateDistance += Time.deltaTime;
+        base.Update();
 
-        // Проверяем дистанцию каждуые полсекунды
-        if(_timerUpdateDistance >= 0.5f)
+        _distanceEnemyToWayPoint = Vector3.Distance(enemyUnit.transform.position, _positionCurrentWayPoint);
+
+        // Если дистанция до точки маршрута меньше 1 метра
+        if (_distanceEnemyToWayPoint <= 1f)
         {
-            // На случай, когда игрок еще не заспавнился
-            if (!transformPlayer)
-                transformPlayer = GetTransformPlayer();
-            else
-            {
-                // Получаем дистанцию от персонажа противника до игрока
-                distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
+            // Увеличиваем индекс точки
+            _indexCurrentWayPoint += 1;
 
-                // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Персонаж проивника увидил игрока перед собой)
-                if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
-                {
-                    // Воспроизводим звук
-                    if (enemyUnit.AudioController)
-                        enemyUnit.AudioController.PlayRandomSoundWithProbability(EnemySoundType.Confused);
+            // Если индекс вышел за пределы массива с точками
+            if (_indexCurrentWayPoint == _wayPoints.Length)
+                _indexCurrentWayPoint = 0;
 
-                    enemyUnit.SetState<ChasingState>();
-                }
-            }
-
-            // Получаем дистанцию от персонажа противника до точки маршрута
-            _distanceEnemyToWayPoint = Vector3.Distance(enemyUnit.transform.position, _positionCurrentWayPoint);
-
-            // Если дистанция до точки маршрута меньше 1 метра
-            if (_distanceEnemyToWayPoint <= 1f)
-            {
-                // Увеличиваем индекс точки
-                _indexCurrentWayPoint += 1;
-
-                // Если индекс вышел за пределы массива с точками
-                if (_indexCurrentWayPoint == _wayPoints.Length)
-                    _indexCurrentWayPoint = 0;
-
-                MoveToWayPoint();
-            }
-
-            // Обнуляем таймер
-            _timerUpdateDistance = 0;
+            MoveToWayPoint();
         }
 
         // Рисуем линию от протиника до его цели
@@ -188,9 +149,10 @@ public class PatrollingState : EnemyState
         // Переводим позицию точки на позицию на навмеше
         _positionCurrentWayPoint = GetPointOnNavmesh(_positionCurrentWayPoint);
 
-        // Меняем скорость, что сделать передвижение немного хаотично
-        enemyUnit.MovementSpeed.Actual = enemyUnit.MovementSpeed.Max / 2 + Random.Range(-0.05f, 0.05f);
-        enemyUnit.NavMeshAgent.speed = enemyUnit.MovementSpeed.Actual/100f;
+        // Меняем скорость, чтобы сделать передвижение немного хаотичным
+        float speed = _patrolSpeed + Random.Range(-0.05f, 0.05f);
+        enemyUnit.MovementSpeed.Actual = speed;
+        enemyUnit.NavMeshAgent.speed = speed;
 
         // Устанавливаем точку назначения персонажу противника на точку маршрута
         enemyUnit?.NavMeshAgent?.SetDestination(_positionCurrentWayPoint);
@@ -215,23 +177,5 @@ public class PatrollingState : EnemyState
         positionWayPointInNavMesh = new Vector3(x, navMeshHit.position.y, z);
 
         return positionWayPointInNavMesh;
-    }
-
-    /// <summary>
-    /// Метод проверяет находится ли игрок в поле зрения врага
-    /// </summary>
-    /// <returns></returns>
-    private bool IsPlayerInSight()
-    {
-        float realAngle = Vector3.Angle(enemyUnit.transform.forward, transformPlayer.position - enemyUnit.transform.position);
-        RaycastHit hit;
-        if (Physics.Raycast(enemyUnit.transform.position, transformPlayer.position - enemyUnit.transform.position, out hit, _viewDetectionDistance))
-        {
-            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemyUnit.transform.position, transformPlayer.position) <= _viewDetectionDistance && hit.transform == transformPlayer.transform)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 }
