@@ -134,7 +134,7 @@ public class PlayerManager : MonoBehaviour, IGameManager
     private void EventHandler_GameMapStarted()
     {
         FindPlayerSpawnZonesOnScene();
-        PlayerRespawn();
+        //PlayerRespawn();
     }
     #endregion
 }

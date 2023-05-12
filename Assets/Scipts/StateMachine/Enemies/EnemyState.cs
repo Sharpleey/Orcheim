@@ -10,14 +10,9 @@ public abstract class EnemyState: IState
     protected EnemyUnit enemyUnit;
 
     /// <summary>
-    /// Transform игрока для отслеживания его позиции
+    /// Дистанция от врага до цели
     /// </summary>
-    protected Transform transformPlayer;
-
-    /// <summary>
-    /// Дистанция от врага до игрока
-    /// </summary>
-    protected float distanceEnemyToPlayer;
+    protected float distanceEnemyToTarget;
 
     /// <summary>
     /// Маска слоев с одним слоем Enemy, который мы будем искать
@@ -54,15 +49,6 @@ public abstract class EnemyState: IState
     public virtual void Exit()
     {
 
-    }
-
-    /// <summary>
-    /// Метод ищет игрока по тегу на сцене, получает его трансформ и возвращает его
-    /// </summary>
-    /// <returns>Transfrom игрока</returns>
-    protected Transform GetTransformPlayer()
-    {
-        return GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     /// <summary>

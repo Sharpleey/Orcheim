@@ -34,12 +34,9 @@ public class IdleState : EnemyState
     {
         _timerUpdate = 0.5f;
 
-        // Получаем Transform игрока для отслеживания его позиции
-        transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
-
         enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsIdle, true);
 
-        // Включием триггер отвечающий за призыв атаковать игрока
+        // Включием триггер отвечающий за призыв атаковать цель
         enemyUnit.SummonTrigger?.SetEnable(true);
     }
 
@@ -47,19 +44,12 @@ public class IdleState : EnemyState
     {
         _timerUpdate += Time.deltaTime;
 
-        if (_timerUpdate > 0.5f)
+        if (_timerUpdate > 0.5f && enemyUnit.TargetUnit != null)
         {
-            // На случай, когда игрок еще не заспавнился
-            if (!transformPlayer)
-            {
-                transformPlayer = GetTransformPlayer();
-                return;
-            }
-
-            distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
+            distanceEnemyToTarget = Vector3.Distance(enemyUnit.transform.position, enemyUnit.TargetUnit.transform.position);
 
             // Меняем сосстояние на преследеование, если (Игрок в зоне абсолютной дистанции видимости) или (Персонаж противника увидел игрока перед собой)
-            if (distanceEnemyToPlayer < _absoluteDetectionDistance || IsPlayerInSight())
+            if (distanceEnemyToTarget < _absoluteDetectionDistance || IsTargetInSight())
             {
                 // Воспроизводим звук
                 enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Confused);
@@ -86,13 +76,13 @@ public class IdleState : EnemyState
     /// Метод проверяет находится ли игрок в поле зрения врага
     /// </summary>
     /// <returns></returns>
-    private bool IsPlayerInSight()
+    private bool IsTargetInSight()
     {
-        float realAngle = Vector3.Angle(enemyUnit.transform.forward, transformPlayer.position - enemyUnit.transform.position);
+        float realAngle = Vector3.Angle(enemyUnit.transform.forward, enemyUnit.TargetUnit.transform.position - enemyUnit.transform.position);
         RaycastHit hit;
-        if (Physics.Raycast(enemyUnit.transform.position, transformPlayer.position - enemyUnit.transform.position, out hit, _viewDetectionDistance))
+        if (Physics.Raycast(enemyUnit.transform.position, enemyUnit.TargetUnit.transform.position - enemyUnit.transform.position, out hit, _viewDetectionDistance))
         {
-            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemyUnit.transform.position, transformPlayer.position) <= _viewDetectionDistance && hit.transform == transformPlayer.transform)
+            if (realAngle < _viewAngleDetection / 2f && Vector3.Distance(enemyUnit.transform.position, enemyUnit.TargetUnit.transform.position) <= _viewDetectionDistance && hit.transform == enemyUnit.TargetUnit.transform)
             {
                 return true;
             }

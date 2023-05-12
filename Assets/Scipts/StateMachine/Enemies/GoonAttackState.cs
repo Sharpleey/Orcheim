@@ -28,9 +28,6 @@ public class GoonAttackState : EnemyState
         // Обнуляем таймеры
         _timerRotateToPlayer = 0;
 
-        // Получаем transform игрока для использования его в дальнейшем
-        transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
-
         // Включаем анимацию
         enemyUnit.Animator.SetInteger(HashAnimStringEnemy.AttackVariant, Random.Range(0, _attackVariantCount));
         enemyUnit.Animator.SetTrigger(HashAnimStringEnemy.IsAttack);
@@ -50,7 +47,7 @@ public class GoonAttackState : EnemyState
     /// </summary>
     private void LookAtTarget()
     {
-        Vector3 direction = -(enemyUnit.transform.position - transformPlayer.position);
+        Vector3 direction = -(enemyUnit.transform.position - enemyUnit.TargetUnit.transform.position);
         enemyUnit.transform.rotation = Quaternion.Lerp(enemyUnit.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
     }
 }

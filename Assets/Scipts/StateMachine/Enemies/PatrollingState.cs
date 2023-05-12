@@ -35,9 +35,6 @@ public class PatrollingState : IdleState
         enemyUnit.NavMeshAgent.stoppingDistance = 0f;
         enemyUnit.NavMeshAgent.angularSpeed = 120f;
 
-        // Получаем Transform игрока для отслеживания его позиции
-        transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
-
         // Включием триггер отвечающий за призыв атаковать игрока
         enemyUnit.SummonTrigger?.SetEnable(true);
 
@@ -111,7 +108,7 @@ public class PatrollingState : IdleState
         PatrolRoute nearbyPatrolRoute = null;
 
         // Получаем объекты на сцене с точками патрулирования 
-        GameObject[] _patrolRoutes = GameObject.FindGameObjectsWithTag("PatrolRoute");
+        GameObject[] _patrolRoutes = GameObject.FindGameObjectsWithTag("PatrolRoute"); //TODO
 
         if (_patrolRoutes == null)
             return null;

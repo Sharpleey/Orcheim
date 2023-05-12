@@ -18,7 +18,7 @@ public class WarriorChasingState : ChasingState
         base.Update();
 
         // ≈сли противник подошел на дистанцию атаки (_attackDistance), то измен€ем состо€ние
-        if (distanceEnemyToPlayer < enemyUnit.AttackDistance)
+        if (distanceEnemyToTarget < enemyUnit.AttackDistance)
         {
             // »змен€ем состо€ние на состо€ние атаки
             enemyUnit.SetState<WarriorAttackState>();

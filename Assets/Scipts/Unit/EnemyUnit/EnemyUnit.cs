@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 [RequireComponent(typeof(HitBoxesController))]
 [RequireComponent(typeof(RagdollController))]
@@ -47,6 +48,8 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     public NavMeshAgent NavMeshAgent { get; private set; }
     public Animator Animator { get; private set; }
 
+    public Unit TargetUnit { get; private set; }
+
     #endregion Properties
 
     #region Mono
@@ -69,6 +72,12 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     {
         if (CurrentState != null)
             CurrentState?.Update();
+    }
+
+    [Inject]
+    private void Construct(PlayerUnit unitTarget)
+    {
+        TargetUnit = unitTarget;
     }
 
     #endregion Mono

@@ -38,11 +38,8 @@ public class WarriorIdleAttackState : EnemyState
         // Определяем частоту атак в зависимости от скорости атаки
         _attackFrequency = 3.5f /  (enemyUnit.AttackSpeed.Actual / 100f);
 
-        // Получаем transform игрока для использования его в дальнейшем
-        transformPlayer = transformPlayer ? transformPlayer : GetTransformPlayer();
-
         // Определяем дистанцию до игрока
-        distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
+        distanceEnemyToTarget = Vector3.Distance(enemyUnit.transform.position, enemyUnit.TargetUnit.transform.position);
 
         // Включаем анимацию
         enemyUnit.Animator.SetBool(HashAnimStringEnemy.IsIdleAttack, true);
@@ -66,8 +63,8 @@ public class WarriorIdleAttackState : EnemyState
         if (_timerUpdateDistance > 0.5f)
         {
             // Определяем дистанцию до игрока
-            distanceEnemyToPlayer = Vector3.Distance(enemyUnit.transform.position, transformPlayer.position);
-            if (distanceEnemyToPlayer > enemyUnit.AttackDistance)
+            distanceEnemyToTarget = Vector3.Distance(enemyUnit.transform.position, enemyUnit.TargetUnit.transform.position);
+            if (distanceEnemyToTarget > enemyUnit.AttackDistance)
             {
                 enemyUnit.SetState<ChasingState>();
             }
@@ -89,7 +86,7 @@ public class WarriorIdleAttackState : EnemyState
     /// </summary>
     private void LookAtTarget()
     {
-        Vector3 direction = -(enemyUnit.transform.position - transformPlayer.position);
+        Vector3 direction = -(enemyUnit.transform.position - enemyUnit.TargetUnit.transform.position);
         enemyUnit.transform.rotation = Quaternion.Lerp(enemyUnit.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * _rotationSpeedToTarget);
     }
 }

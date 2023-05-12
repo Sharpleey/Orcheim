@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 /// <summary>
 /// Абстрактный класс для HUD элементов интерфейса игрока
@@ -21,7 +22,13 @@ public abstract class HUDElementController : MonoBehaviour
 
     protected virtual void Start()
     {
-        _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerUnit>();
+
+    }
+
+    [Inject]
+    private void Construct(PlayerUnit playerUnit)
+    {
+        _playerUnit = playerUnit;
 
         SetValueText(string.Empty);
 
