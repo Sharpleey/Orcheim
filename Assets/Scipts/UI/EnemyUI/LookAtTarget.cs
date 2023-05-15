@@ -1,33 +1,31 @@
 using UnityEngine;
+using Zenject;
 
 public class LookAtTarget : MonoBehaviour
 {
     #region Serialize fields
-    [SerializeField] private Transform _target;
-    [SerializeField] private string _nameTargetObjectOnScene = "Player";
+
+    private Transform _target;
+
     #endregion Serialize fields
 
-    #region Private fields
-    private GameObject _mainCam;
-    #endregion Private fields
-
     #region Mono
-    private void Start()
+
+    private void LateUpdate()
     {
-        if (!_target)
-        {
-            _target = UnityUtility.FindGameObjectTransformWithTag(_nameTargetObjectOnScene);
-        }
+        if(_target)
+            transform.LookAt(transform.position - _target.forward);
     }
+
     #endregion Mono
 
     #region Private methods
-    private void LateUpdate()
-    {
-        if(!_target)
-            _target = UnityUtility.FindGameObjectTransformWithTag(_nameTargetObjectOnScene);
 
-        transform.LookAt(transform.position - _target.forward);
+    [Inject]
+    private void Construct(PlayerUnit unitTarget)
+    {
+        _target = unitTarget.transform;
     }
+   
     #endregion Private methods
 }
