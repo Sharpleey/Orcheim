@@ -7,8 +7,8 @@ public class LocalInstaller : MonoInstaller, IInitializable
     [SerializeField] private Transform PlayerStartPoint;
     [SerializeField] private GameObject PlayerPrefab;
     
-    [Space(5)]
-    [SerializeField] private EnemySpawnMarker[] _enemySpawnMarkers;
+    /*[Space(5)]
+    [SerializeField] private EnemySpawnMarker[] _enemySpawnMarkers;*/
     
     public override void InstallBindings()
     {
@@ -45,12 +45,12 @@ public class LocalInstaller : MonoInstaller, IInitializable
 
     public void Initialize()
     {
-        IEnemyFactory enemyFactory = Container.Resolve<IEnemyFactory>();
+        /*IEnemyFactory enemyFactory = Container.Resolve<IEnemyFactory>();
         enemyFactory.Load();
 
         foreach (EnemySpawnMarker enemySpawnMarker in _enemySpawnMarkers)
         {
             enemyFactory.Create(enemySpawnMarker.EnemyType, enemySpawnMarker.StartStateType, enemySpawnMarker.SpawnPosition);
-        }
+        }*/
     }
 }

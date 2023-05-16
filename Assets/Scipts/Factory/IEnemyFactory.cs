@@ -6,6 +6,7 @@ namespace Scipts.Factory
     public interface IEnemyFactory
     {
         public void Load();
-        public void Create(EnemyType enemyType, StartStateType startStateType, Vector3 spawnPosition);
+        public EnemyUnit Create(EnemyType enemyType, StartStateType startStateType, Transform spawnTransform);
+        public EnemyUnit GetNewInstance(EnemyUnit prefab, StartStateType startStateType, Transform spawnTransform);
     }
 }

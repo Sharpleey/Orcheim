@@ -19,6 +19,8 @@ namespace Scipts.Factory
         public EnemyFactory(DiContainer diContainer)
         {
             _diContainer = diContainer;
+            
+            Load();
         }
         
         public void Load()
@@ -28,26 +30,40 @@ namespace Scipts.Factory
             _commanderPrefab = Resources.Load(_commanderPath);
         }
 
-        public void Create(EnemyType enemyType, StartStateType startStateType, Vector3 spawnPosition)
+        public EnemyUnit Create(EnemyType enemyType, StartStateType startStateType, Transform spawnTransform)
         {
+            EnemyUnit enemyUnit = null;
+            
             switch (enemyType)
             {
                 case EnemyType.Warrior:
-                    InstantiateEnemy(_warriorPrefab, startStateType, spawnPosition);
+                    enemyUnit = InstantiateEnemy(_warriorPrefab, startStateType, spawnTransform);
                     break;
                 case EnemyType.Goon:
-                    InstantiateEnemy(_goonPrefab, startStateType, spawnPosition);
+                    enemyUnit = InstantiateEnemy(_goonPrefab, startStateType, spawnTransform);
                     break;
                 case EnemyType.Commander:
-                    InstantiateEnemy(_commanderPrefab, startStateType, spawnPosition);
+                    enemyUnit = InstantiateEnemy(_commanderPrefab, startStateType, spawnTransform);
                     break;
             }
+
+            return enemyUnit;
         }
 
-        private void InstantiateEnemy(Object prefab, StartStateType startStateType, Vector3 spawnPosition)
+        public EnemyUnit GetNewInstance(EnemyUnit prefab, StartStateType startStateType, Transform spawnTransform)
         {
-            GameObject instantiatePrefab = _diContainer.InstantiatePrefab(prefab, spawnPosition, Quaternion.identity, null);
-            instantiatePrefab.GetComponent<EnemyUnit>().DefaultState = startStateType;
+            EnemyUnit enemyUnit = _diContainer.InstantiatePrefabForComponent<EnemyUnit>(prefab, spawnTransform.position, spawnTransform.rotation, null);
+            enemyUnit.DefaultState = startStateType;
+            return enemyUnit;
+        }
+
+        private EnemyUnit InstantiateEnemy(Object prefab, StartStateType startStateType, Transform spawnTransform)
+        {
+            GameObject instantiatePrefab = _diContainer.InstantiatePrefab(prefab, spawnTransform.position, spawnTransform.rotation, null);
+            EnemyUnit enemyUnit = instantiatePrefab.GetComponent<EnemyUnit>();
+            enemyUnit.DefaultState = startStateType;
+
+            return enemyUnit;
         }
     }
 }
