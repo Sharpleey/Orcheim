@@ -1,12 +1,9 @@
 
-namespace Scipts.Enums
+public enum EnemyType
 {
-    public enum EnemyType
-    {
-        Warrior,
-        Goon,
-        Commander
-    }
+    Warrior,
+    Goon,
+    Commander
 }
 
 

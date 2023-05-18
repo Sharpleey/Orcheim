@@ -1,5 +1,3 @@
-using System;
-using Scipts.Enums;
 using UnityEngine;
 
 public class EnemySpawnMarker : MonoBehaviour
@@ -12,7 +10,8 @@ public class EnemySpawnMarker : MonoBehaviour
 
     public EnemyType EnemyType => _enemyType;
     public StartStateType StartStateType => _startStateType;
-    public Vector3 SpawnPosition => transform.position;
+    public Vector3 Position => transform.position;
+    public Quaternion Rotation => transform.rotation;
     
     private void OnDrawGizmos()
     {

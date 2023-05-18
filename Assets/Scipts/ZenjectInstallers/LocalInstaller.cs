@@ -1,27 +1,23 @@
-using Scipts.Factory;
 using UnityEngine;
 using Zenject;
 
-public class LocalInstaller : MonoInstaller, IInitializable
+public class LocalInstaller : MonoInstaller
 {
     [SerializeField] private Transform PlayerStartPoint;
     [SerializeField] private GameObject PlayerPrefab;
-    
-    /*[Space(5)]
-    [SerializeField] private EnemySpawnMarker[] _enemySpawnMarkers;*/
-    
+
     public override void InstallBindings()
     {
         BindInstallerInterfaces();
         BindPlayer();
-        BindEnemyFactory();
+        BindEnemyUnitFactory();
     }
 
-    private void BindEnemyFactory()
+    private void BindEnemyUnitFactory()
     {
         Container
-            .Bind<IEnemyFactory>()
-            .To<EnemyFactory>()
+            .Bind<EnemyUnitFactory>()
+            .To<EnemyUnitFactory>()
             .AsSingle();
     }
 
@@ -41,16 +37,5 @@ public class LocalInstaller : MonoInstaller, IInitializable
             .Bind<PlayerUnit>()
             .FromInstance(playerUnit)
             .AsSingle();
-    }
-
-    public void Initialize()
-    {
-        /*IEnemyFactory enemyFactory = Container.Resolve<IEnemyFactory>();
-        enemyFactory.Load();
-
-        foreach (EnemySpawnMarker enemySpawnMarker in _enemySpawnMarkers)
-        {
-            enemyFactory.Create(enemySpawnMarker.EnemyType, enemySpawnMarker.StartStateType, enemySpawnMarker.SpawnPosition);
-        }*/
     }
 }

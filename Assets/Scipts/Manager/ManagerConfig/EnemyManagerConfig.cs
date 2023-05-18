@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Конфиг файл для EnemyManager-a c настройками спавна юнитов и т.п.
@@ -36,9 +37,10 @@ public class EnemyManagerConfig : ScriptableObject
     [Tooltip("Задержка между спавном врагов")]
     [SerializeField][Range(0.0f, 2f)] float _delayBetweenSpawnEnemies = 0.5f;
 
-    [Header("Префаб основного юнита")]
+    [FormerlySerializedAs("_typeMainEnemyUnit")]
+    [Header("Тип основного юнита врага")]
     [Space(20)]
-    [SerializeField] private EnemyUnit _prefabMainUnit;
+    [SerializeField] private EnemyType typeMainMainEnemyUnit;
 
     [Header("Конфиг файлы с префабом и настройками спавна особых юнитов")]
     [SerializeField] private List<EnemySpawnConfig> _enemySpawnConfigs;
@@ -79,9 +81,9 @@ public class EnemyManagerConfig : ScriptableObject
     public float DelayBetweenSpawnEnemies => _delayBetweenSpawnEnemies;
 
     /// <summary>
-    /// Префаб основного юнита врага
+    /// Тип основного юнита врага
     /// </summary>
-    public EnemyUnit PrefabMainUnit => _prefabMainUnit;
+    public EnemyType MainEnemyType => typeMainMainEnemyUnit;
     /// <summary>
     /// Конфиг файлы с префабом и настройками спавна особых юнитов
     /// </summary>

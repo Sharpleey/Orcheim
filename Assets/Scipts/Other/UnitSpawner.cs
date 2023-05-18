@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Scipts.Factory;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -11,16 +7,16 @@ public class UnitSpawner : MonoBehaviour
 {
     #region Serialize fields
 
-    [Header("Конфиг файл с настройками спавнера")]
+    [Header("РљРѕРЅС„РёРі С„Р°Р№Р» СЃ РЅР°СЃС‚СЂРѕР№РєР°РјРё СЃРїР°РІРЅРµСЂР°")]
     [SerializeField] private EnemyManagerConfig _managerConfig;
     
-    [Header("Точки появления начальных врагов на сцене")]
+    [Header("РўРѕС‡РєРё РїРѕСЏРІР»РµРЅРёСЏ РЅР°С‡Р°Р»СЊРЅС‹С… РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ")]
     [SerializeField] private EnemySpawnMarker[] _enemySpawnMarkers;
     
-    [Header("Зоны спавна врагов во время волн")]
+    [Header("Р—РѕРЅС‹ СЃРїР°РІРЅР° РІСЂР°РіРѕРІ РІРѕ РІСЂРµРјСЏ РІРѕР»РЅ")]
     [SerializeField] private EnemyWaveSpawnZone[] _enemyWaveSpawnZones;
     
-    [Header("Точка спавна игрока")]
+    [Header("РўРѕС‡РєР° СЃРїР°РІРЅР° РёРіСЂРѕРєР°")]
     [SerializeField] private Transform _playerSpawnPoint;
 
     #endregion Serialize fields
@@ -28,7 +24,7 @@ public class UnitSpawner : MonoBehaviour
     #region Properties
     
     /// <summary>
-    /// Кол-во оставшихся врагов на волне
+    /// РљРѕР»-РІРѕ РѕСЃС‚Р°РІС€РёС…СЃСЏ РІСЂР°РіРѕРІ РЅР° РІРѕР»РЅРµ
     /// </summary>
     public int CountEnemiesRemaining
     {
@@ -36,7 +32,7 @@ public class UnitSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Кол-во противников на сцене
+    /// РљРѕР»-РІРѕ РїСЂРѕС‚РёРІРЅРёРєРѕРІ РЅР° СЃС†РµРЅРµ
     /// </summary>
     public int CountEnemyOnScene
     {
@@ -44,7 +40,7 @@ public class UnitSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Кол-во врагов на волне
+    /// РљРѕР»-РІРѕ РІСЂР°РіРѕРІ РЅР° РІРѕР»РЅРµ
     /// </summary>
     public int CountEnemyOnWavePool
     {
@@ -52,7 +48,7 @@ public class UnitSpawner : MonoBehaviour
     }
     
     /// <summary>
-    /// Текущее значение максимального вол-ва врагов на сцене
+    /// РўРµРєСѓС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РІРѕР»-РІР° РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ
     /// </summary>
     public int CurrentMaximumEnemiesOnScene
     {
@@ -62,7 +58,7 @@ public class UnitSpawner : MonoBehaviour
     private int _currentMaximumEnemiesOnScene;
 
     /// <summary>
-    /// Текущее значение максимального вол-ва врагов на волне
+    /// РўРµРєСѓС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РІРѕР»-РІР° РІСЂР°РіРѕРІ РЅР° РІРѕР»РЅРµ
     /// </summary>
     public int CurrentMaximumEnemiesOnWave
     {
@@ -79,16 +75,16 @@ public class UnitSpawner : MonoBehaviour
     private bool _isSpawningEnemy;
     
     /// <summary>
-    /// Фабрика врагов
+    /// Р¤Р°Р±СЂРёРєР° РІСЂР°РіРѕРІ
     /// </summary>
-    private IEnemyFactory _enemyFactory;
+    private EnemyUnitFactory _enemyUnitFactory;
 
     /// <summary>
-    /// Пул (список) врагов волны
+    /// РџСѓР» (СЃРїРёСЃРѕРє) РІСЂР°РіРѕРІ РІРѕР»РЅС‹
     /// </summary>
     private List<EnemyUnit> _wavePoolEnemies;
     /// <summary>
-    /// Пул (список) врагов на сцене
+    /// РџСѓР» (СЃРїРёСЃРѕРє) РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ
     /// </summary>
     private List<EnemyUnit> _enemiesOnScene;
     
@@ -113,10 +109,10 @@ public class UnitSpawner : MonoBehaviour
         {
             _timer += Time.deltaTime;
 
-            // Спавним врагов с задержкой
+            // РЎРїР°РІРЅРёРј РІСЂР°РіРѕРІ СЃ Р·Р°РґРµСЂР¶РєРѕР№
             if (_timer > _managerConfig.DelayBetweenSpawnEnemies)
             {
-                // Спавним противника, если (кол-во врагов на сцене меньше лимита) и если (пулл врагов не пустой)
+                // РЎРїР°РІРЅРёРј РїСЂРѕС‚РёРІРЅРёРєР°, РµСЃР»Рё (РєРѕР»-РІРѕ РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ РјРµРЅСЊС€Рµ Р»РёРјРёС‚Р°) Рё РµСЃР»Рё (РїСѓР»Р» РІСЂР°РіРѕРІ РЅРµ РїСѓСЃС‚РѕР№)
                 if (CountEnemyOnScene < CurrentMaximumEnemiesOnScene && CountEnemyOnWavePool != 0)
                     SpawnEnemy();
 
@@ -130,9 +126,9 @@ public class UnitSpawner : MonoBehaviour
     #region Private methods
 
     [Inject]
-    private void Construct(IEnemyFactory enemyFactory)
+    private void Construct(EnemyUnitFactory enemyUnitFactory)
     {
-        _enemyFactory = enemyFactory;
+        _enemyUnitFactory = enemyUnitFactory;
     }
     
     private void AddListeners()
@@ -154,30 +150,29 @@ public class UnitSpawner : MonoBehaviour
 
     private void SpawnEnemyOnMarkers()
     {
-        foreach (EnemySpawnMarker enemySpawnMarker in _enemySpawnMarkers)
-        {
-            EnemyUnit enemyUnit = _enemyFactory.Create(enemySpawnMarker.EnemyType, enemySpawnMarker.StartStateType, enemySpawnMarker.transform);
-            _enemiesOnScene.Add(enemyUnit);
-        }
+        foreach (EnemySpawnMarker marker in _enemySpawnMarkers)
+            _enemiesOnScene.Add(_enemyUnitFactory.GetNewInstance(marker.EnemyType, marker.StartStateType, marker.Position, marker.Rotation));
     }
     
     /// <summary>
-    /// Метод спавнит случайного противника из пула в случайной точке спавна
+    /// РњРµС‚РѕРґ СЃРїР°РІРЅРёС‚ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ РїСЂРѕС‚РёРІРЅРёРєР° РёР· РїСѓР»Р° РІ СЃР»СѓС‡Р°Р№РЅРѕР№ С‚РѕС‡РєРµ СЃРїР°РІРЅР°
     /// </summary>
     private void SpawnEnemy()
     {
-        // Возрождаем врага на одной из точек возрождения
+        // Р’РѕР·СЂРѕР¶РґР°РµРј РІСЂР°РіР° РЅР° РѕРґРЅРѕР№ РёР· С‚РѕС‡РµРє РІРѕР·СЂРѕР¶РґРµРЅРёСЏ
         int numSpawnZone = Random.Range(0, _enemyWaveSpawnZones.Length);
         Transform spawnTransform = _enemyWaveSpawnZones[numSpawnZone].transform;
 
-        // Извлекаем случайный тип противника из пула
+        // РР·РІР»РµРєР°РµРј СЃР»СѓС‡Р°Р№РЅС‹Р№ С‚РёРї РїСЂРѕС‚РёРІРЅРёРєР° РёР· РїСѓР»Р°
         int randomIndexEnemy = Random.Range(0, _wavePoolEnemies.Count);
-        EnemyUnit enemyUnitPrefab = _wavePoolEnemies[randomIndexEnemy];
-        _wavePoolEnemies.Remove(enemyUnitPrefab);
+        EnemyUnit enemyUnit = _wavePoolEnemies[randomIndexEnemy];
+        _wavePoolEnemies.Remove(enemyUnit);
 
-        // Создаем новый объект противника на основе извлеченного типа из пула
-        EnemyUnit enemyUnit = _enemyFactory.GetNewInstance(enemyUnitPrefab, StartStateType.Chasing, spawnTransform);
-        // Добавляем нового противника в пул противников на сцене
+        // Р—Р°РґР°РµРј РїРѕР·РёС†РёСЋ СЃРїР°РІРЅР° Рё Р°РєС‚РёРІРёСЂСѓРµРј
+        enemyUnit.transform.SetPositionAndRotation(spawnTransform.position, spawnTransform.rotation);
+        enemyUnit.gameObject.SetActive(true);
+        
+        // Р”РѕР±Р°РІР»СЏРµРј РЅРѕРІРѕРіРѕ РїСЂРѕС‚РёРІРЅРёРєР° РІ РїСѓР» РїСЂРѕС‚РёРІРЅРёРєРѕРІ РЅР° СЃС†РµРЅРµ
         _enemiesOnScene.Add(enemyUnit);
     }
 
@@ -200,10 +195,10 @@ public class UnitSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Метод поределяет и возвращает значение максимального кол-ва врагов на сцене в зависимости от номера волны
+    /// РњРµС‚РѕРґ РїРѕСЂРµРґРµР»СЏРµС‚ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РєРѕР»-РІР° РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РЅРѕРјРµСЂР° РІРѕР»РЅС‹
     /// </summary>
-    /// <param name="wave">Номер волны</param>
-    /// <returns>Значение максимального кол-ва врагов на сцене</returns>
+    /// <param name="wave">РќРѕРјРµСЂ РІРѕР»РЅС‹</param>
+    /// <returns>Р—РЅР°С‡РµРЅРёРµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РєРѕР»-РІР° РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ</returns>
     private void UpdateCurrentMaximumEnemiesOnScene(int wave)
     {
         CurrentMaximumEnemiesOnScene = _managerConfig.DefaultMaximumEnemiesOnScene + (wave / _managerConfig.IncrementWaveMaximumEnemiesOnScene) * _managerConfig.IncrementMaximumEnemiesOnScene;
@@ -215,36 +210,36 @@ public class UnitSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Метод подготовливает пул противников, которые будут спавнится на конкретной волне
+    /// РњРµС‚РѕРґ РїРѕРґРіРѕС‚РѕРІР»РёРІР°РµС‚ РїСѓР» РїСЂРѕС‚РёРІРЅРёРєРѕРІ, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ СЃРїР°РІРЅРёС‚СЃСЏ РЅР° РєРѕРЅРєСЂРµС‚РЅРѕР№ РІРѕР»РЅРµ
     /// </summary>
     private void FillPoolEnemies(int wave)
     {
         Debug.Log("Fill pool enemies...");
 
-        // Кол-во особых противников в пуле на данной волне
+        // РљРѕР»-РІРѕ РѕСЃРѕР±С‹С… РїСЂРѕС‚РёРІРЅРёРєРѕРІ РІ РїСѓР»Рµ РЅР° РґР°РЅРЅРѕР№ РІРѕР»РЅРµ
         int countSpecialUnits = 0;
 
         foreach (EnemySpawnConfig enemySpawnConfig in _managerConfig.EnemySpawnConfigs)
         {
-            // Если данная волна, это первая волна появления данного типа врага
+            // Р•СЃР»Рё РґР°РЅРЅР°СЏ РІРѕР»РЅР°, СЌС‚Рѕ РїРµСЂРІР°СЏ РІРѕР»РЅР° РїРѕСЏРІР»РµРЅРёСЏ РґР°РЅРЅРѕРіРѕ С‚РёРїР° РІСЂР°РіР°
             if(wave >= enemySpawnConfig.SpawnWave)
             {
-                // Определяем максимальное кол-во противников данного типа на текущей волне
+                // РћРїСЂРµРґРµР»СЏРµРј РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»-РІРѕ РїСЂРѕС‚РёРІРЅРёРєРѕРІ РґР°РЅРЅРѕРіРѕ С‚РёРїР° РЅР° С‚РµРєСѓС‰РµР№ РІРѕР»РЅРµ
                 int maxCountEnemyOnCurrentWave = (wave / enemySpawnConfig.IncrementWaveCountEnemy) * enemySpawnConfig.IncrementCountEnemy;
-                // Рандомим актульное их число, на данной волне
+                // Р Р°РЅРґРѕРјРёРј Р°РєС‚СѓР»СЊРЅРѕРµ РёС… С‡РёСЃР»Рѕ, РЅР° РґР°РЅРЅРѕР№ РІРѕР»РЅРµ
                 int countEnemyOnCurrentWave = Random.Range(0, maxCountEnemyOnCurrentWave);
 
-                // Добавляем в пул
+                // Р”РѕР±Р°РІР»СЏРµРј РІ РїСѓР»
                 for (int i = 0; i < countEnemyOnCurrentWave; i++)
-                    _wavePoolEnemies.Add(enemySpawnConfig.PrefabUnit);
+                    _wavePoolEnemies.Add(_enemyUnitFactory.GetNewInstance(enemySpawnConfig.EnemyType, StartStateType.Chasing, Vector3.zero, Quaternion.identity, false));
 
                 countSpecialUnits += countEnemyOnCurrentWave;
             }
         }
 
-        // Дозаполяем пул обычным типов врага
+        // Р”РѕР·Р°РїРѕР»СЏРµРј РїСѓР» РѕР±С‹С‡РЅС‹Рј С‚РёРїРѕРІ РІСЂР°РіР°
         for (int i = 0; i < CurrentMaximumEnemiesOnWave - countSpecialUnits; i++)
-            _wavePoolEnemies.Add(_managerConfig.PrefabMainUnit);
+            _wavePoolEnemies.Add(_enemyUnitFactory.GetNewInstance(_managerConfig.MainEnemyType, StartStateType.Chasing, Vector3.zero, Quaternion.identity, false));
 
         Debug.Log("Fill pool enemies (DONE)");
     }
@@ -255,10 +250,10 @@ public class UnitSpawner : MonoBehaviour
 
     private void EventHandler_PreparingForWave(int wave)
     {
-        // Обновляем максимальное кол-во врагов на сцене на данной волне
+        // РћР±РЅРѕРІР»СЏРµРј РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»-РІРѕ РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ РЅР° РґР°РЅРЅРѕР№ РІРѕР»РЅРµ
         UpdateCurrentMaximumEnemiesOnScene(wave);
 
-        // Обновляем максимальное кол-во врагов на данной волне
+        // РћР±РЅРѕРІР»СЏРµРј РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»-РІРѕ РІСЂР°РіРѕРІ РЅР° РґР°РЅРЅРѕР№ РІРѕР»РЅРµ
         UpdateCurrentMaximumEnemiesOnWave(wave);
 
         FillPoolEnemies(wave);
@@ -266,32 +261,32 @@ public class UnitSpawner : MonoBehaviour
 
     private void EventHandler_WaveIsComing(int wave)
     {
-        // Врагам на сцене меняем состояние на преследование игрока
+        // Р’СЂР°РіР°Рј РЅР° СЃС†РµРЅРµ РјРµРЅСЏРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ РЅР° РїСЂРµСЃР»РµРґРѕРІР°РЅРёРµ РёРіСЂРѕРєР°
         foreach (EnemyUnit enemy in _enemiesOnScene)
             enemy.SetState<ChasingState>();
 
-        // Запускаем спавн врагов из пула
+        // Р—Р°РїСѓСЃРєР°РµРј СЃРїР°РІРЅ РІСЂР°РіРѕРІ РёР· РїСѓР»Р°
         StartSpawnEnemies();
 
-        // Рассылаем события обновления кол-ва оставшихся врагов
+        // Р Р°СЃСЃС‹Р»Р°РµРј СЃРѕР±С‹С‚РёСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ РєРѕР»-РІР° РѕСЃС‚Р°РІС€РёС…СЃСЏ РІСЂР°РіРѕРІ
         EnemyEventManager.UpdateCountEnemiesRemaining(CountEnemiesRemaining);
     }
 
     private void EventHandler_OnEnemyKilled(EnemyUnit enemyUnit)
     {
-        // Удаляем противника из пула врагов на сцене
+        // РЈРґР°Р»СЏРµРј РїСЂРѕС‚РёРІРЅРёРєР° РёР· РїСѓР»Р° РІСЂР°РіРѕРІ РЅР° СЃС†РµРЅРµ
         _enemiesOnScene.Remove(enemyUnit);
 
-        // Рассылаем события обновления кол-ва оставшихся врагов
+        // Р Р°СЃСЃС‹Р»Р°РµРј СЃРѕР±С‹С‚РёСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ РєРѕР»-РІР° РѕСЃС‚Р°РІС€РёС…СЃСЏ РІСЂР°РіРѕРІ
         EnemyEventManager.UpdateCountEnemiesRemaining(CountEnemiesRemaining);
 
-        // Если кол-во оставшихся врагов
+        // Р•СЃР»Рё РєРѕР»-РІРѕ РѕСЃС‚Р°РІС€РёС…СЃСЏ РІСЂР°РіРѕРІ
         if (CountEnemiesRemaining == 0)
         {
-            // Останавливаем спавн врагов
+            // РћСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРїР°РІРЅ РІСЂР°РіРѕРІ
             StopSpawnEnemies();
 
-            // Рассылаем событие о том, что врагм на волне закончились
+            // Р Р°СЃСЃС‹Р»Р°РµРј СЃРѕР±С‹С‚РёРµ Рѕ С‚РѕРј, С‡С‚Рѕ РІСЂР°РіРј РЅР° РІРѕР»РЅРµ Р·Р°РєРѕРЅС‡РёР»РёСЃСЊ
             EnemyEventManager.EnemiesOver();
         }
     }
