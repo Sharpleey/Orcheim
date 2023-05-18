@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
+using Zenject;
 
 public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -39,6 +40,8 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
     private bool _isBlockClick;
     private Vector3 _vector3ScalePointerEnter;
 
+    private PlayerUnit _playerUnit;
+
     #endregion Private fields
 
     private void Awake()
@@ -63,9 +66,15 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
         if (_timer >= 2)
             _isBlockClick = false;
     }
+    
+    [Inject]
+    private void Construct(PlayerUnit playerUnit)
+    {
+        _playerUnit = playerUnit;
+    }
 
     #region Private methods
-
+    
     private void SetColorAwardText(Color newColor)
     {
         _textTypeNameAward.color = newColor;
@@ -125,7 +134,7 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
         if(_award is AwardAttackModifier awardAttackModifaer)
         {
             // Добавляем модификатор атаки игроку
-            PlayerManager.Instance?.PlayerUnit?.SetActiveAttackModifier(awardAttackModifaer.AttackModifier);
+            _playerUnit.SetActiveAttackModifier(awardAttackModifaer.AttackModifier);
 
             // Удаляем модификатор атаки из пула наград
             LootManager.Instance?.RemoveAwardAttackModifier(awardAttackModifaer);

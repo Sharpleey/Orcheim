@@ -6,7 +6,6 @@ public class StartupController : MonoBehaviour
 {
     [Header("Managers")]
     [SerializeField] private GameSceneManager _gameSceneManager;
-    [SerializeField] private PlayerManager _playerManager;
     [SerializeField] private WaveManager _waveManager;
     [SerializeField] private LootManager _lootManager;
     [SerializeField] private AudioManager _audioManager;
@@ -21,8 +20,6 @@ public class StartupController : MonoBehaviour
 
         if(_gameSceneManager)
             _startSequence.Add(_gameSceneManager);
-        if (_playerManager)
-            _startSequence.Add(_playerManager);
         if (_waveManager)
             _startSequence.Add(_waveManager);
         if (_lootManager)
