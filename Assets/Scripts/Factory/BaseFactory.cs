@@ -20,4 +20,6 @@ public abstract class BaseFactory<T> where T : MonoBehaviour
         instance.gameObject.SetActive(isActive);
         return instance;
     }
+
+    protected abstract void LoadResources();
 }

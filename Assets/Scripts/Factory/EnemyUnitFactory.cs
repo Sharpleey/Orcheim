@@ -25,7 +25,7 @@ public class EnemyUnitFactory : BaseFactory<EnemyUnit>
         return enemyUnit;
     }
 
-    private void LoadResources()
+    protected override void LoadResources()
     {
         _enemyPrefabs = new Dictionary<EnemyType, EnemyUnit>();
         

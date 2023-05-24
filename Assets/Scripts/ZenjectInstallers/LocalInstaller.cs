@@ -3,14 +3,10 @@ using Zenject;
 
 public class LocalInstaller : MonoInstaller
 {
-    [SerializeField] private Transform PlayerStartPoint;
-    [SerializeField] private GameObject PlayerPrefab;
-
     public override void InstallBindings()
     {
-        BindInstallerInterfaces();
-        BindPlayer();
         BindEnemyUnitFactory();
+        BindPlayer();
     }
 
     private void BindEnemyUnitFactory()
@@ -21,17 +17,10 @@ public class LocalInstaller : MonoInstaller
             .AsSingle();
     }
 
-    private void BindInstallerInterfaces()
-    {
-        Container
-            .BindInterfacesTo<LocalInstaller>()
-            .FromInstance(this)
-            .AsSingle();
-    }
-
     private void BindPlayer()
     {
-        PlayerUnit playerUnit = Container.InstantiatePrefabForComponent<PlayerUnit>(PlayerPrefab, PlayerStartPoint.position, Quaternion.identity, null); //TODO
+        var prefab = Resources.Load<PlayerUnit>(HashResourcesPath.PLAYER_PATH);
+        PlayerUnit playerUnit = Container.InstantiatePrefabForComponent<PlayerUnit>(prefab, Vector3.zero, Quaternion.identity, null);
 
         Container
             .Bind<PlayerUnit>()

@@ -73,7 +73,9 @@ public class UnitSpawner : MonoBehaviour
 
     private float _timer = 0;
     private bool _isSpawningEnemy;
-    
+
+    private PlayerUnit _playerUnit;
+
     /// <summary>
     /// Фабрика врагов
     /// </summary>
@@ -83,11 +85,12 @@ public class UnitSpawner : MonoBehaviour
     /// Пул (список) врагов волны
     /// </summary>
     private List<EnemyUnit> _wavePoolEnemies;
+
     /// <summary>
     /// Пул (список) врагов на сцене
     /// </summary>
     private List<EnemyUnit> _enemiesOnScene;
-    
+
     #endregion Private fields
 
     #region Mono
@@ -101,6 +104,7 @@ public class UnitSpawner : MonoBehaviour
     {
         SetDefaultParameters();
         SpawnEnemyOnMarkers();
+        SpawnPlayer();
     }
 
     private void Update()
@@ -126,9 +130,10 @@ public class UnitSpawner : MonoBehaviour
     #region Private methods
 
     [Inject]
-    private void Construct(EnemyUnitFactory enemyUnitFactory)
+    private void Construct(EnemyUnitFactory enemyUnitFactory, PlayerUnit playerUnit)
     {
         _enemyUnitFactory = enemyUnitFactory;
+        _playerUnit = playerUnit;
     }
     
     private void AddListeners()
@@ -174,6 +179,11 @@ public class UnitSpawner : MonoBehaviour
         
         // Добавляем нового противника в пул противников на сцене
         _enemiesOnScene.Add(enemyUnit);
+    }
+
+    private void SpawnPlayer()
+    {
+        _playerUnit.gameObject.transform.SetPositionAndRotation(_playerSpawnPoint.transform.position, _playerSpawnPoint.transform.rotation);
     }
 
     private void StartSpawnEnemies()

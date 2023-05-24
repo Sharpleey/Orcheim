@@ -11,7 +11,7 @@ public class StartupController : MonoBehaviour
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private PoolManager _poolManager;
 
-    // Список диспетчеров, который просматривается в цикле во время стартовой последовательности.
+    // РЎРїРёСЃРѕРє РґРёСЃРїРµС‚С‡РµСЂРѕРІ, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕСЃРјР°С‚СЂРёРІР°РµС‚СЃСЏ РІ С†РёРєР»Рµ РІРѕ РІСЂРµРјСЏ СЃС‚Р°СЂС‚РѕРІРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё.
     private List<IGameManager> _startSequence;
 
     private void Awake()
@@ -43,7 +43,7 @@ public class StartupController : MonoBehaviour
         int numModules = _startSequence.Count;
         int numReady = 0;
 
-        // Продолжаем цикл, пока не начнут работать все диспетчеры.
+        // РџСЂРѕРґРѕР»Р¶Р°РµРј С†РёРєР», РїРѕРєР° РЅРµ РЅР°С‡РЅСѓС‚ СЂР°Р±РѕС‚Р°С‚СЊ РІСЃРµ РґРёСЃРїРµС‚С‡РµСЂС‹.
         while (numReady < numModules)
         {
             int lastReady = numReady;
