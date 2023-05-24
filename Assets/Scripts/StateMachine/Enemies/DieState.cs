@@ -19,12 +19,10 @@ public class DieState : EnemyState
         enemyUnit?.IconEffectsController?.DisableAllActiveIcons();
         enemyUnit?.AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Dead);
         enemyUnit?.WeaponController.EnableDealingDamage(ObjectState.Disabled);
+        enemyUnit?.EnemyVisualEffectsController?.DisableAllEffects();
 
         if (enemyUnit.Animator)
             enemyUnit.Animator.enabled = false;
-
-        if (enemyUnit.BurningEffectController)
-            enemyUnit.BurningEffectController.enabled = false;
 
         if (enemyUnit.NavMeshAgent)
             enemyUnit.NavMeshAgent.enabled = false;

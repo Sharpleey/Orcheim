@@ -39,7 +39,7 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
     public EnemyWeaponController WeaponController { get; private set; }
     public EnemyAudioController AudioController { get; private set; }
     public DieEffectController DieEffectController { get; private set; } //TODO Сделать через одинт контроллер визуальных эффектов
-    public BurningEffectController BurningEffectController { get; private set; } //TODO Сделать через одинт контроллер визуальных эффектов
+    public EnemyVisualEffectsController EnemyVisualEffectsController { get; private set; }
     public IconEffectsController IconEffectsController { get; private set; }
     public SummonTrigger SummonTrigger { get; private set; }
 
@@ -140,10 +140,10 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         RagdollController = GetComponent<RagdollController>();
         WeaponController = GetComponent<EnemyWeaponController>();
         AudioController = GetComponent<EnemyAudioController>();
+        EnemyVisualEffectsController = GetComponent<EnemyVisualEffectsController>();
 
         IconEffectsController = GetComponentInChildren<IconEffectsController>();
 
-        BurningEffectController = GetComponentInChildren<BurningEffectController>();
         DieEffectController = GetComponentInChildren<DieEffectController>();
         HealthBarController = GetComponentInChildren<HealthBarController>();
         PopupDamageController = GetComponentInChildren<PopupDamageController>();
@@ -159,9 +159,6 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
         // Делаем компонент неактивным, чтобы не началась анимация
         if (DieEffectController)
             DieEffectController.enabled = false;
-
-        if (BurningEffectController)
-            BurningEffectController.enabled = false;
 
         if(NavMeshAgent)
         {

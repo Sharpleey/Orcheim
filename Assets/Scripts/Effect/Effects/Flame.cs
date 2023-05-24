@@ -59,8 +59,7 @@ public class Flame : Effect
             enemyUnit?.IconEffectsController?.EnableIcon<Flame>(true);
 
             // Включаем визульный эффект горения
-            if (enemyUnit.BurningEffectController)
-                enemyUnit.BurningEffectController.enabled = true;
+            enemyUnit?.EnemyVisualEffectsController?.EnableEffect<Flame>(true);
         }
 
         if(player)
@@ -87,8 +86,7 @@ public class Flame : Effect
             enemyUnit?.IconEffectsController?.EnableIcon<Flame>(false);
 
             // Выключаем визульный эффект горения
-            if (enemyUnit.BurningEffectController)
-                enemyUnit.BurningEffectController.enabled = false;
+            enemyUnit?.EnemyVisualEffectsController?.EnableEffect<Flame>(false);
         }
 
         if (player)
