@@ -5,6 +5,6 @@ public class StartupInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Debug.Log("fdsf");
+        Debug.Log("StartupInstaller");
     }
 }
