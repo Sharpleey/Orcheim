@@ -99,13 +99,13 @@ public class LightBow : MonoBehaviour
         if (!_isLockControl)
         {
             // Быстрый выстрел (Нажать ЛКМ)
-            if (!IsReloading && !IsFastShooting && !Player.FirstPersonController.IsSprinting && !IsAiming && Input.GetMouseButtonDown(0))
+            if (!IsReloading && !IsFastShooting && !IsAiming && Input.GetMouseButtonDown(0))
             {
                 Animator.SetTrigger(HashAnimStringWeapon.IsFastShot);
             }
 
             // Прицеливаемся (Нажать ПКМ)
-            if (!IsReloading && !IsFastShooting && !Player.FirstPersonController.IsSprinting && Input.GetMouseButtonDown(1))
+            if (!IsReloading && !IsFastShooting && Input.GetMouseButtonDown(1))
             {
                 Animator.SetBool(HashAnimStringWeapon.IsAimingLoad, true);
 
@@ -129,8 +129,7 @@ public class LightBow : MonoBehaviour
                 Animator.SetTrigger(HashAnimStringWeapon.IsAimingShot);
             }
 
-            Animator.SetFloat(HashAnimStringWeapon.PlayerSpeed, Player.Rigidbody.velocity.magnitude / (Player.MovementSpeed.Max/100f));
-            Animator.SetBool(HashAnimStringWeapon.IsSprint, Player.FirstPersonController.IsSprinting);
+            Animator.SetFloat(HashAnimStringWeapon.PlayerSpeed, Player.KinematicCharacterMotor.Velocity.magnitude / (Player.MovementSpeed.Max/100f));
 
             AimingZoom();
         }
@@ -146,7 +145,7 @@ public class LightBow : MonoBehaviour
         {
             Player.Camera.fieldOfView = Mathf.Lerp(Player.Camera.fieldOfView, _zoomFOV, _zoomStepTime * Time.deltaTime);
         }
-        else if (!_isZoomed && !Player.FirstPersonController.IsSprinting)
+        else if (!_isZoomed)
         {
             Player.Camera.fieldOfView = Mathf.Lerp(Player.Camera.fieldOfView, _originalFOV, _zoomStepTime * Time.deltaTime);
         }
@@ -175,10 +174,7 @@ public class LightBow : MonoBehaviour
             {
                 // Замедляем скорость бега игрока при прицеливании
                 Player.MovementSpeed.Actual = Player.MovementSpeed.Max * _multiplyAimingMovementSpeed;
-                Player.FirstPersonController.walkSpeed = Player.MovementSpeed.Actual/100f;
-
-                // Блокируем игроку возможность спринтовать
-                Player.FirstPersonController.IsBlockSprint = true;
+                Player.PlayerCharacterController.maxStableMoveSpeed = Player.MovementSpeed.Actual/100f;
 
                 // Блокируем возможность сменить оружие
                 Player.WeaponController.IsBlockChangeWeapon = true;
@@ -196,11 +192,7 @@ public class LightBow : MonoBehaviour
             {
                 // Возращаем скорость бега игрока в исходное состояние
                 Player.MovementSpeed.Actual = Player.MovementSpeed.Max;
-                Player.FirstPersonController.walkSpeed = Player.MovementSpeed.Actual/100f;
-
-
-                // Разбокируем игроку возможность спринтовать
-                Player.FirstPersonController.IsBlockSprint = false;
+                Player.PlayerCharacterController.maxStableMoveSpeed = Player.MovementSpeed.Actual/100f;
 
                 // Разбокируем возможность сменить оружие
                 Player.WeaponController.IsBlockChangeWeapon = false;
@@ -235,9 +227,6 @@ public class LightBow : MonoBehaviour
         {
             if (Player)
             {
-                // Блокируем игроку возможность спринтовать
-                Player.FirstPersonController.IsBlockSprint = true;
-
                 // Блокируем возможность сменить оружие
                 Player.WeaponController.IsBlockChangeWeapon = true;
             }
@@ -252,9 +241,6 @@ public class LightBow : MonoBehaviour
         {
             if (Player)
             {
-                // Разблокируем игроку возможность спринтовать
-                Player.FirstPersonController.IsBlockSprint = false;
-
                 // Разблокируем игроку возможность сменить оружие
                 Player.WeaponController.IsBlockChangeWeapon = false;
             }
@@ -281,10 +267,7 @@ public class LightBow : MonoBehaviour
             {
                 // Замедляем скорость бега игрока при стрельбе
                 Player.MovementSpeed.Actual = Player.MovementSpeed.Max * _multiplyAimingMovementSpeed;
-                Player.FirstPersonController.walkSpeed = Player.MovementSpeed.Actual / 100f;
-
-                // Блокируем игроку возможность спринтовать
-                Player.FirstPersonController.IsBlockSprint = true;
+                Player.PlayerCharacterController.maxStableMoveSpeed = Player.MovementSpeed.Actual / 100f;
 
                 // Блокируем возможность сменить оружие
                 Player.WeaponController.IsBlockChangeWeapon = true;
@@ -302,10 +285,7 @@ public class LightBow : MonoBehaviour
             {
                 // Возращаем скорость бега игрока в исходное состояние
                 Player.MovementSpeed.Actual = Player.MovementSpeed.Max;
-                Player.FirstPersonController.walkSpeed = Player.MovementSpeed.Actual / 100f;
-
-                // Разблокируем игроку возможность спринтовать
-                Player.FirstPersonController.IsBlockSprint = false;
+                Player.PlayerCharacterController.maxStableMoveSpeed = Player.MovementSpeed.Actual / 100f;
 
                 // Разблокируем игроку возможность сменить оружие
                 Player.WeaponController.IsBlockChangeWeapon = false;

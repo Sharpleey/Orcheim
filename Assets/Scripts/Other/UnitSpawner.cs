@@ -1,3 +1,4 @@
+using KinematicCharacterController;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -74,7 +75,7 @@ public class UnitSpawner : MonoBehaviour
     private float _timer = 0;
     private bool _isSpawningEnemy;
 
-    private PlayerUnit _playerUnit;
+    private Player _player;
 
     /// <summary>
     /// Фабрика врагов
@@ -130,10 +131,10 @@ public class UnitSpawner : MonoBehaviour
     #region Private methods
 
     [Inject]
-    private void Construct(EnemyUnitFactory enemyUnitFactory, PlayerUnit playerUnit)
+    private void Construct(EnemyUnitFactory enemyUnitFactory, Player player)
     {
         _enemyUnitFactory = enemyUnitFactory;
-        _playerUnit = playerUnit;
+        _player = player;
     }
     
     private void AddListeners()
@@ -183,7 +184,7 @@ public class UnitSpawner : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        _playerUnit.gameObject.transform.SetPositionAndRotation(_playerSpawnPoint.transform.position, _playerSpawnPoint.transform.rotation);
+        _player.KinematicCharacterMotor.SetPositionAndRotation(_playerSpawnPoint.transform.position, _playerSpawnPoint.transform.rotation, false);
     }
 
     private void StartSpawnEnemies()

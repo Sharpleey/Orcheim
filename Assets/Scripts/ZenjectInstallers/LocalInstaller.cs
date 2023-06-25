@@ -20,11 +20,16 @@ public class LocalInstaller : MonoInstaller
     private void BindPlayer()
     {
         var prefab = Resources.Load<PlayerUnit>(HashResourcesPath.PLAYER_PATH);
-        PlayerUnit playerUnit = Container.InstantiatePrefabForComponent<PlayerUnit>(prefab, Vector3.zero, Quaternion.identity, null);
+        Player player = Container.InstantiatePrefabForComponent<Player>(prefab, Vector3.zero, Quaternion.identity, null);
+
+        Container
+            .Bind<Player>()
+            .FromInstance(player)
+            .AsSingle();
 
         Container
             .Bind<PlayerUnit>()
-            .FromInstance(playerUnit)
+            .FromInstance(player)
             .AsSingle();
     }
 }

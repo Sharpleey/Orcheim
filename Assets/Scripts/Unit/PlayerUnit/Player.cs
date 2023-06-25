@@ -1,17 +1,15 @@
+using KinematicCharacterController;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(FirstPersonController))]
-[RequireComponent(typeof(PlayerWeaponController))]
 public class Player : PlayerUnit
 {
     #region Properties
 
     public Camera Camera { get; private set; }
-    public Rigidbody Rigidbody { get; private set; }
-
-    public FirstPersonController FirstPersonController { get; private set; }
     public PlayerWeaponController WeaponController { get; private set; }
+    public PlayerCharacterController PlayerCharacterController { get; private set; }
+    public KinematicCharacterMotor  KinematicCharacterMotor { get; private set; }
+
 
     #endregion Properties
 
@@ -26,17 +24,17 @@ public class Player : PlayerUnit
 
     protected override void InitControllers()
     {
-        Rigidbody = GetComponent<Rigidbody>();
         Camera = GetComponentInChildren<Camera>();
-
         WeaponController = GetComponent<PlayerWeaponController>();
-        FirstPersonController = GetComponent<FirstPersonController>();
+        PlayerCharacterController = GetComponent<PlayerCharacterController>();
+        KinematicCharacterMotor = GetComponent<KinematicCharacterMotor>();
     }
 
     protected override void InitControllersParameters()
     {
-        FirstPersonController.walkSpeed = MovementSpeed.Max / 100f;
-        FirstPersonController.sprintSpeed = MovementSpeed.Max * (1f + 0.25f) / 100f; //TODO спринт сделать как способность
+        PlayerCharacterController.maxStableMoveSpeed = MovementSpeed.Max / 100f;
+        PlayerCharacterController.maxAirMoveSpeed = MovementSpeed.Max / 100f;
+        PlayerCharacterController.jumpSpeed = 2 * (MovementSpeed.Max / 100f);
     }
 
     #endregion Private methods
@@ -45,8 +43,7 @@ public class Player : PlayerUnit
 
     private void EventHandler_PlayerMovementSpeedChanged()
     {
-        FirstPersonController.walkSpeed = MovementSpeed.Max / 100f;
-        FirstPersonController.sprintSpeed = MovementSpeed.Max * (1f + 0.25f) / 100f;
+        PlayerCharacterController.maxStableMoveSpeed = MovementSpeed.Max / 100f;
     }
 
     #endregion
