@@ -11,36 +11,21 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 	public static GameSceneManager Instance { get; private set; }
 
 	#region Serialize fields
-
 	[SerializeField] private Scene[] _scenes;
-
 	[SerializeField] private LoadingScreenController _loadingScreen;
-
-	#endregion Serialize fields
+	#endregion
 
 	#region Properties
-
 	public ManagerStatus Status { get; private set; }
-
-	/// <summary>
-	/// Свойство используется в LoadingScreenController для отображения значения прогресса
-	/// </summary>
-	public AsyncOperation AsyncOperationLoadingScene => _asyncOperationLoadingScene;
-
-	#endregion Properties
+	#endregion
 
 	#region Private fields
-
 	private AsyncOperation _asyncOperationLoadingScene;
-
 	private Scene _currentScene;
-
 	private bool _isGamePaused;
-
-    #endregion Private fields
+    #endregion
 
     #region Mono
-
     private void Awake()
 	{
 		if (Instance == null)
@@ -54,11 +39,9 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 
 		AddListeners();
 	}
-
 	#endregion Mono
 
 	#region Private methods
-
 	private void AddListeners()
 	{
 		GlobalGameEventManager.OnPauseGame.AddListener(PauseGame);
@@ -89,7 +72,7 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		GameSceneEventManager.SceneLoadingStarted();
 
 		// Останавливаем дальнейшее выполнение кода пока не окончена анимация показа экрана загрузки
-		while (_loadingScreen.IsShow)
+		while (_loadingScreen.IsShowing)
 		{
 			yield return null;
 		}
@@ -100,6 +83,8 @@ public class GameSceneManager : MonoBehaviour, IGameManager
 		// Останавливаем дальнейшее выполнение кода, пока идет загрузка сцены
 		while (!_asyncOperationLoadingScene.isDone)
 		{
+			_loadingScreen.SetValueProgressBar(_asyncOperationLoadingScene.progress);
+
 			yield return null;
 		}
 

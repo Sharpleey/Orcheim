@@ -1,42 +1,43 @@
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
 /// Класс контроллер экрана загрузки между сценами. Отвечает за плавный переход между сценами
 /// </summary>
-[RequireComponent(typeof(Animator))]
 public class LoadingScreenController : MonoBehaviour
 {
     #region SerializeFields
-
     [SerializeField] private GameObject _canvas;
+
+    [Space(10)]
+    [SerializeField] private CanvasGroup _canvasGroupLoading;
+    [SerializeField] private CanvasGroup _canvasGameName;
+    [SerializeField] private Image _imageBackground;
     [SerializeField] private Image _imageProgressBar;
-    [SerializeField] private Animator _animator;
-     
-    #endregion SerializeFields
+    [SerializeField] private Transform _transformLoadingIcon;
+
+    [Space(10)]
+    [Header("Время плавного показа экрана загрузки")]
+    [SerializeField] private float _showTime = 1.5f;
+    [Header("Время плавного скрытия экрана загрузки")]
+    [SerializeField] private float _hideTime = 1.5f;
+    #endregion
 
     #region Properties
-
-    /// <summary>
-    /// Изображение полоски прогресса
-    /// </summary>
-    public Image ProgressBar => _imageProgressBar;
-
-    /// <summary>
-    /// Проигрывается ли анимация показа загрузочного экрана или нет
-    /// </summary>
-    public bool IsShow => _isShow;
-
-    #endregion Properties
+    public bool IsShowing => _isShowing;
+    public bool IsHiding => _isHiding;
+    #endregion
 
     #region Private fields
+    private bool _isShowing;
+    private bool _isHiding;
 
-    private bool _isShow;
+    private Sequence _sequence;
+    private Tween _tweenLoadingIcon;
+    #endregion
 
-    #endregion Private fields
-    
     #region Mono
-
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -44,39 +45,13 @@ public class LoadingScreenController : MonoBehaviour
 
     private void Start()
     {
-        // Отключаем аниматор
-        _animator.enabled = false;
-        _isShow = false;
+        _isShowing = false;
+        _canvas.SetActive(false);
+        _imageBackground.DOFade(0, 0);
+        _canvasGroupLoading.alpha = 0;
+        _canvasGameName.alpha = 0;
     }
-
-    private void Update()
-    {
-        // Заполянем полосу прогресса
-        if (_animator.enabled && GameSceneManager.Instance.AsyncOperationLoadingScene != null)
-            _imageProgressBar.fillAmount = GameSceneManager.Instance.AsyncOperationLoadingScene.progress;
-    }
-
     #endregion Mono
-
-    #region Private methods
-
-    /// <summary>
-    /// Метод события окончания анимации показа экрана загрузки
-    /// </summary>
-    private void OnAnimationShowOver()
-    {
-        _isShow = false;
-    }
-
-    /// <summary>
-    /// Метод события при окончании анимации сокрытия экрана загрузки
-    /// </summary>
-    private void OnAnimationHideOver()
-    {
-        _animator.enabled = false;
-    }
-
-    #endregion Private methods
 
     #region Public methods
     /// <summary>
@@ -84,17 +59,49 @@ public class LoadingScreenController : MonoBehaviour
     /// </summary>
     public void Show()
     {
+        _canvas.SetActive(true);
+
+        _isShowing = true;
+
         _imageProgressBar.fillAmount = 0;
-        _isShow = true;
-        _animator.enabled = true;
-        _animator.SetTrigger("IsShow");
+
+        _sequence = DOTween.Sequence().SetEase(Ease.Linear).SetUpdate(true);
+        _sequence.Append(_imageBackground.DOFade(1f, _showTime / 3))
+            .Append(_canvasGameName.DOFade(1f, _showTime / 3))
+            .Append(_canvasGroupLoading.DOFade(1f, _showTime / 3))
+            .AppendCallback(() =>
+            {
+                _isShowing = false;
+            });
+
+        _tweenLoadingIcon = _transformLoadingIcon.DOLocalRotate(new Vector3(0, 0, -360), 0.5f, RotateMode.LocalAxisAdd).SetLoops(-1).SetEase(Ease.Linear).SetUpdate(true);
     }
+
     /// <summary>
     /// Метод скрытия экрана загрузки
     /// </summary>
     public void Hide()
     {
-        _animator.SetTrigger("IsHide");
+        _isHiding = true;
+
+        _sequence = DOTween.Sequence().SetEase(Ease.Linear).SetUpdate(true);
+        _sequence.Append(_canvasGroupLoading.DOFade(0f, _hideTime / 3))
+            .Append(_canvasGameName.DOFade(0f, _hideTime / 3))
+            .Append(_imageBackground.DOFade(0f, _hideTime / 3))
+            .AppendCallback(() =>
+            {
+                _sequence.Kill();
+                _tweenLoadingIcon.Kill();
+
+                _isHiding = false;
+
+                _canvas.SetActive(false);
+            });
+    }
+
+    public void SetValueProgressBar(float progress)
+    {
+        _imageProgressBar.fillAmount = progress;
     }
     #endregion Public methods
 }
