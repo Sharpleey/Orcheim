@@ -1,4 +1,3 @@
-using KinematicCharacterController;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -9,7 +8,7 @@ public class UnitSpawner : MonoBehaviour
     #region Serialize fields
 
     [Header("Конфиг файл с настройками спавнера")]
-    [SerializeField] private EnemyManagerConfig _managerConfig;
+    [SerializeField] private UnitSpawnerConfig _config;
     
     [Header("Точки появления начальных врагов на сцене")]
     [SerializeField] private EnemySpawnMarker[] _enemySpawnMarkers;
@@ -109,7 +108,7 @@ public class UnitSpawner : MonoBehaviour
             _timer += Time.deltaTime;
 
             // Спавним врагов с задержкой
-            if (_timer > _managerConfig.DelayBetweenSpawnEnemies)
+            if (_timer > _config.DelayBetweenSpawnEnemies)
             {
                 // Спавним противника, если (кол-во врагов на сцене меньше лимита) и если (пулл врагов не пустой)
                 if (CountEnemyOnScene < CurrentMaximumEnemiesOnScene && CountEnemyOnWavePool != 0)
@@ -200,12 +199,12 @@ public class UnitSpawner : MonoBehaviour
     /// <returns>Значение максимального кол-ва врагов на сцене</returns>
     private void UpdateCurrentMaximumEnemiesOnScene(int wave)
     {
-        CurrentMaximumEnemiesOnScene = _managerConfig.DefaultMaximumEnemiesOnScene + (wave / _managerConfig.IncrementWaveMaximumEnemiesOnScene) * _managerConfig.IncrementMaximumEnemiesOnScene;
+        CurrentMaximumEnemiesOnScene = _config.DefaultMaximumEnemiesOnScene + (wave / _config.IncrementWaveMaximumEnemiesOnScene) * _config.IncrementMaximumEnemiesOnScene;
     }
     
     private void UpdateCurrentMaximumEnemiesOnWave(int wave)
     {
-        CurrentMaximumEnemiesOnWave = _managerConfig.DefaultMaximumEnemiesOnWave + (wave / _managerConfig.IncrementWaveMaximumEnemiesOnWave) * _managerConfig.IncrementMaximumEnemiesOnWave;
+        CurrentMaximumEnemiesOnWave = _config.DefaultMaximumEnemiesOnWave + (wave / _config.IncrementWaveMaximumEnemiesOnWave) * _config.IncrementMaximumEnemiesOnWave;
     }
 
     /// <summary>
@@ -218,7 +217,7 @@ public class UnitSpawner : MonoBehaviour
         // Кол-во особых противников в пуле на данной волне
         int countSpecialUnits = 0;
 
-        foreach (EnemySpawnConfig enemySpawnConfig in _managerConfig.EnemySpawnConfigs)
+        foreach (EnemySpawnConfig enemySpawnConfig in _config.EnemySpawnConfigs)
         {
             // Если данная волна, это первая волна появления данного типа врага
             if(wave >= enemySpawnConfig.SpawnWave)
@@ -238,7 +237,7 @@ public class UnitSpawner : MonoBehaviour
 
         // Дозаполяем пул обычным типов врага
         for (int i = 0; i < CurrentMaximumEnemiesOnWave - countSpecialUnits; i++)
-            _wavePoolEnemies.Add(_enemyUnitFactory.GetNewInstance(_managerConfig.MainEnemyType, StartStateType.Chasing, Vector3.zero, Quaternion.identity, false));
+            _wavePoolEnemies.Add(_enemyUnitFactory.GetNewInstance(_config.MainEnemyType, StartStateType.Chasing, Vector3.zero, Quaternion.identity, false));
 
         Debug.Log("Fill pool enemies (DONE)");
     }

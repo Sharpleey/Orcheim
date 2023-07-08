@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -39.087048, y: 11.47568, z: 24.853302}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -43,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad09f2c05640a2e4d82bf9f03a34f074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _managerConfig: {fileID: 11400000, guid: 912a0453923229642b6c1f5b812fbe32, type: 2}
+  _config: {fileID: 11400000, guid: 912a0453923229642b6c1f5b812fbe32, type: 2}
   _enemySpawnMarkers: []
-  _enemySpawnZones: []
-  _playerSpawnPoint: {fileID: 0}
+  _enemyWaveSpawnZones: []

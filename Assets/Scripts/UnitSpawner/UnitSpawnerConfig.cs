@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 /// <summary>
-/// Конфиг файл для EnemyManager-a c настройками спавна юнитов и т.п.
+/// Конфиг файл для UnitSpawner-a c настройками спавна юнитов и т.п.
 /// </summary>
-[CreateAssetMenu(menuName = "ManagerConfig/EnemyManagerConfig", fileName = "EnemyManagerConfig", order = 0)]
-public class EnemyManagerConfig : ScriptableObject
+[CreateAssetMenu(menuName = "ManagerConfig/UnitSpawnerConfig", fileName = "UnitSpawnerConfig", order = 0)]
+public class UnitSpawnerConfig : ScriptableObject
 {
     #region Serialize fields
 
