@@ -8,6 +8,13 @@ public class GameSceneEventManager
 
     public static readonly UnityEvent OnGameMapStarded = new UnityEvent();
 
+    public static readonly UnityEvent<bool> OnGamePause = new UnityEvent<bool>();
+
+    public static void GamePause(bool isPause)
+    {
+        OnGamePause.Invoke(isPause);
+    }
+
     public static void SceneLoadingStarted()
     {
         OnSceneLoadingStarted.Invoke();

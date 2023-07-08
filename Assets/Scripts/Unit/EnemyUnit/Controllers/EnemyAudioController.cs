@@ -20,7 +20,7 @@ public class EnemyAudioController : MonoBehaviour
 
     private void Awake()
     {
-        GlobalGameEventManager.OnPauseGame.AddListener(Pause);
+        GameSceneEventManager.OnGamePause.AddListener(Pause);
     }
 
     /// <summary>

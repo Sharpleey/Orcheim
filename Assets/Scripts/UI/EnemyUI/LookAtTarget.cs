@@ -1,5 +1,4 @@
 using UnityEngine;
-using Zenject;
 
 public class LookAtTarget : MonoBehaviour
 {
@@ -17,15 +16,10 @@ public class LookAtTarget : MonoBehaviour
             transform.LookAt(transform.position - _target.forward);
     }
 
-    #endregion Mono
-
-    #region Private methods
-
-    [Inject]
-    private void Construct(PlayerUnit unitTarget)
+    private void Start()
     {
-        _target = unitTarget.transform;
+        _target = GetComponentInParent<EnemyUnit>().TargetUnit.transform;
     }
-   
-    #endregion Private methods
+
+    #endregion Mono
 }

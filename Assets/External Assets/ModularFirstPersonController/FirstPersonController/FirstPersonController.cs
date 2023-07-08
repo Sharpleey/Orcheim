@@ -153,7 +153,7 @@ public class FirstPersonController : MonoBehaviour
             sprintCooldownReset = sprintCooldown;
         }
 
-        GlobalGameEventManager.OnPauseGame.AddListener(LockControl);
+        GameSceneEventManager.OnGamePause.AddListener(LockControl);
     }
 
     void Start()

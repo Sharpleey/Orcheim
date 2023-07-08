@@ -41,6 +41,7 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
     private Vector3 _vector3ScalePointerEnter;
 
     private PlayerUnit _playerUnit;
+    private GameSceneManager _sceneManager;
 
     #endregion Private fields
 
@@ -68,9 +69,10 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
     }
     
     [Inject]
-    private void Construct(PlayerUnit playerUnit)
+    private void Construct(PlayerUnit playerUnit, GameSceneManager gameSceneManager)
     {
         _playerUnit = playerUnit;
+        _sceneManager = gameSceneManager;
     }
 
     #region Private methods
@@ -155,8 +157,7 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
                 PlayerEventManager.PlayerMovementSpeedChanged();
         }
 
-
-        GlobalGameEventManager.PauseGame(false);
+        _sceneManager?.PauseGame(false);
 
         _gameMenuCanvasController?.ShowCanvas(false);
     }

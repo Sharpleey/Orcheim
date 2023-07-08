@@ -47,10 +47,10 @@ public class AudioManager : MonoBehaviour, IGameManager
     private void AddListeners()
     {
         GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
+        GameSceneEventManager.OnGamePause.AddListener(PauseAllAudioSource);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PrepareForWave);
         WaveEventManager.OnWaveIsComing.AddListener(EventHandler_WaveIsComing);
         WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
-        GlobalGameEventManager.OnPauseGame.AddListener(PauseAllAudioSource);
         GlobalGameEventManager.OnGameOver.AddListener(StopAllSoundSource);
         GameSceneEventManager.OnSceneLoadingStarted.AddListener(StopAllSoundSource);
     }

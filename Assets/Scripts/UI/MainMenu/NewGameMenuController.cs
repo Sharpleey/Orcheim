@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class NewGameMenuController : MonoBehaviour
 {
@@ -10,10 +11,19 @@ public class NewGameMenuController : MonoBehaviour
 
     private GameObject _activeSubMenu;
 
+    private GameSceneManager _sceneManager;
+
     void Start()
     {
         _mainMenuCanvasController = GetComponentInParent<MainMenuCanvasController>();
     }
+
+    [Inject]
+    private void Construct(GameSceneManager sceneManager)
+    {
+        _sceneManager = sceneManager;
+    }
+
     private void OnEnable()
     {
         HideAll();
@@ -59,13 +69,13 @@ public class NewGameMenuController : MonoBehaviour
     {
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        GameSceneManager.Instance?.SwitchToScene(HashSceneNameString.TEST_MAP_1);
+        _sceneManager.SwitchToScene(HashSceneNameString.TEST_MAP_1);
     }
 
     public void OnClickTestMap2()
     {
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        GameSceneManager.Instance?.SwitchToScene(HashSceneNameString.TEST_MAP_2);
+        _sceneManager?.SwitchToScene(HashSceneNameString.TEST_MAP_2);
     }
 }

@@ -6,7 +6,7 @@ public class SceneAudioSourceController : MonoBehaviour
 
     private void Awake()
     {
-        GlobalGameEventManager.OnPauseGame.AddListener(Pause);
+        GameSceneEventManager.OnGamePause.AddListener(Pause);
     }
 
     private void Start()

@@ -6,10 +6,6 @@ using UnityEngine.Events;
 public class GlobalGameEventManager
 {
     #region Events
-    /// <summary>
-    /// Событие постановки игры на паузу
-    /// </summary>
-    public static readonly UnityEvent<bool> OnPauseGame = new UnityEvent<bool>();
 
     /// <summary>
     /// События окончания игры
@@ -26,14 +22,6 @@ public class GlobalGameEventManager
     #endregion
 
     #region Methods
-    /// <summary>
-    /// Метод отправки события OnPauseGame
-    /// </summary>
-    /// <param name="isPaused">Поставлена игра на паузу или нет</param>
-    public static void PauseGame(bool isPaused)
-    {
-        OnPauseGame.Invoke(isPaused);
-    }
 
     /// <summary>
     /// Метод отправки события OnGameOver

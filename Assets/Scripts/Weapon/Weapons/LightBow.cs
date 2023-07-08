@@ -78,7 +78,7 @@ public class LightBow : MonoBehaviour
     #region Mono
     private void Awake()
     {
-        GlobalGameEventManager.OnPauseGame.AddListener(SetLockControl);
+        GameSceneEventManager.OnGamePause.AddListener(SetLockControl);
     }
 
     private void Start()

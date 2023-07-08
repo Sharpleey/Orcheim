@@ -1,5 +1,5 @@
-
 using UnityEngine;
+using Zenject;
 
 public class GameMenuCanvasController : MonoBehaviour
 {
@@ -14,6 +14,8 @@ public class GameMenuCanvasController : MonoBehaviour
 
     private GameObject _activeMenu;
     private Canvas _canvas;
+
+    private GameSceneManager _sceneManager;
 
     private void Awake()
     {
@@ -30,6 +32,12 @@ public class GameMenuCanvasController : MonoBehaviour
         AllMenuDisable();
     }
 
+    [Inject]
+    private void Construct(GameSceneManager sceneManager)
+    {
+        _sceneManager = sceneManager;
+    }
+
     // Update is called once per frame
     private void Update()
     {
@@ -37,7 +45,7 @@ public class GameMenuCanvasController : MonoBehaviour
         {
             if(!_canvas.enabled)
             {
-                GlobalGameEventManager.PauseGame(true);
+                _sceneManager?.PauseGame(true);
 
                 ShowCanvas(true);
                 ShowMenu(_pauseMenu);
@@ -45,7 +53,7 @@ public class GameMenuCanvasController : MonoBehaviour
                 return;
             }
 
-            GlobalGameEventManager.PauseGame(false);
+            _sceneManager?.PauseGame(false);
 
             ShowCanvas(false);
         }
@@ -105,8 +113,7 @@ public class GameMenuCanvasController : MonoBehaviour
         GlobalGameEventManager.GameOver();
         GlobalGameEventManager.NewGame(GameMode.Orccheim);
 
-        if(GameSceneManager.Instance)
-            GameSceneManager.Instance.RestartScene();
+        _sceneManager?.RestartScene();
     }
 
     public void OnClickButtonExitMainMenu()
@@ -116,14 +123,13 @@ public class GameMenuCanvasController : MonoBehaviour
         ///
         GlobalGameEventManager.GameOver();
 
-        if (GameSceneManager.Instance)
-            GameSceneManager.Instance.SwitchToScene(HashSceneNameString.MAIN_MENU);
+        _sceneManager?.SwitchToScene(HashSceneNameString.MAIN_MENU);
     }
 
     #region Event handlers
     private void EventHandlerPlayerDead()
     {
-        GlobalGameEventManager.PauseGame(true);
+        _sceneManager?.PauseGame(true);
 
         ShowCanvas(true);
         ShowMenu(_gameOverMenu);
@@ -131,7 +137,7 @@ public class GameMenuCanvasController : MonoBehaviour
 
     private void EventHandlerPlayerLevelUp()
     {
-        GlobalGameEventManager.PauseGame(true);
+        _sceneManager?.PauseGame(true);
 
         ShowCanvas(true);
         ShowMenu(_awardsMenu);
