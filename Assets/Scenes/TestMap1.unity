@@ -13482,7 +13482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.471611
+      value: 14.945
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13490,11 +13490,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.2604275
+      value: -6.7509995
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.45480156
+      value: 0.8522606
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -13502,7 +13502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8905928
+      value: -0.52311754
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -13514,7 +13514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 125.896
+      value: -63.083
       objectReference: {fileID: 0}
     - target: {fileID: 1242658415541573968, guid: 627b745d86b37e14eb91bfa3de272a0c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -27415,6 +27415,7 @@ GameObject:
   - component: {fileID: 1773952322}
   - component: {fileID: 1773952321}
   - component: {fileID: 1773952323}
+  - component: {fileID: 1773952324}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -27436,6 +27437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
+  - {fileID: 1773952324}
   - {fileID: 1773952323}
   _installerPrefabs: []
   _autoRun: 1
@@ -27479,6 +27481,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68a1f816a421fac4a8f7f0bf39719f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerSpawnPoint: {fileID: 861861796}
+--- !u!114 &1773952324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773952320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46902616df4421748b56c1c391b4a527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1776126155
