@@ -4,10 +4,8 @@ using UnityEngine;
 /// <summary>
 /// Менеджер отвечает за воспроизведение фоновых звуков, музыки и звуковых эффектов игры
 /// </summary>
-public class AudioManager : MonoBehaviour, IGameManager
+public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance { get; private set; }
-
     #region Serialize fields
 
     [SerializeField] private Sound[] _sounds;
@@ -16,28 +14,11 @@ public class AudioManager : MonoBehaviour, IGameManager
 
     #endregion Serialize fields
 
-    #region Properties
-
-    public ManagerStatus Status { get; private set; }
-
-    #endregion Properties
-
     #region Mono
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
-
         AddListeners();
-
-      
     }
 
     #endregion Mono
@@ -155,14 +136,6 @@ public class AudioManager : MonoBehaviour, IGameManager
     #endregion Private methods
 
     #region Public methods
-
-    public void Startup()
-    {
-        Debug.Log("Audio manager starting...");
-
-        // any long-running startup tasks go here, and set status to 'Initializing' until those tasks are complete
-        Status = ManagerStatus.Started;
-    }
 
     /// <summary>
     /// Метод для остановки всех источников звука AudioManager-а

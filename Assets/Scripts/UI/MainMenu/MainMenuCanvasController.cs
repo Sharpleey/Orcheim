@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class MainMenuCanvasController : MonoBehaviour
 {
@@ -9,7 +10,15 @@ public class MainMenuCanvasController : MonoBehaviour
     [field: SerializeField] public GameObject ScenesMenu { get; private set; }
 
     private GameObject _activeMenu;
-    
+
+    private AudioManager _audioManager;
+
+    [Inject]
+    private void Construct(AudioManager audioManager)
+    {
+        _audioManager = audioManager;
+    }
+
     private void Start()
     {
         HideAll();
@@ -19,7 +28,7 @@ public class MainMenuCanvasController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        AudioManager.Instance?.PlayRandomSound(SoundType.MainMenuTheme);
+        _audioManager?.PlayRandomSound(SoundType.MainMenuTheme);
     }
     
     private void HideAll()

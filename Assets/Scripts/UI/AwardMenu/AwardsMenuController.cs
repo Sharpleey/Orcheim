@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Zenject;
 
 public class AwardsMenuController : MonoBehaviour
 {
@@ -9,9 +10,17 @@ public class AwardsMenuController : MonoBehaviour
 
     private List<Award> _awards = new List<Award>();
 
+    private AudioManager _audioManager;
+
+    [Inject]
+    private void Construct(AudioManager audioManager)
+    {
+        _audioManager = audioManager;
+    }
+
     private void OnEnable()
     {
-        AudioManager.Instance?.PlaySound(SoundType.Sfx, "level_up"); //TODO Вынести в константы
+        _audioManager?.PlaySound(SoundType.Sfx, "level_up"); //TODO Вынести в константы
 
         _awards = LootManager.Instance?.GetListRandomAwards(3);
 
