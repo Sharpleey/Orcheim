@@ -5,55 +5,47 @@ using UnityEngine;
 /// (P.S. In progress)
 /// Менеджер волн. Отвечает за основую логику, механику волн врагов. Контролирует номер волны и рассылает сообщения остальным менеджерам
 /// </summary>
-public class WaveManager : MonoBehaviour, IGameManager
+public class WaveManager : MonoBehaviour
 {
-    public static WaveManager Instance { get; private set; }
-
     #region Serialize fields
-
-    [SerializeField] private int _wave = 1;
-
-    [Space(10)]
-    [SerializeField] private int _delayToFirstBroadcastPreparingForWave = 30;
-    [SerializeField] private int _delayToBroadcastWaveIsComing = 10;
-    [SerializeField] private int _delayToBroadcastPreparingForWave = 5;
-
-    #endregion Serialize fields
+    [SerializeField] private WaveManagerConfig _config;
+    #endregion
 
     #region Properties
-
-    public ManagerStatus Status { get; private set; }
-
+    /// <summary>
+    /// Номер текущей волны
+    /// </summary>
+    public int Wave
+    {
+        get => _wave;
+        set
+        {
+            _wave = Mathf.Clamp(value, 1, int.MaxValue);
+        }
+    }
+    private int _wave;
     #endregion Properties
 
     #region Private fields
-
     private bool _isFirstTriggerGame = false;
 
     private IEnumerator _coroutineBroadcastPreparingForWave;
     private IEnumerator _coroutineBroadcastWaveIsComing;
-
-    #endregion Private fields
+    #endregion
 
     #region Mono
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
-
         AddListeners();
     }
 
+    private void Start()
+    {
+        SetDefaultParameters();
+    }
     #endregion Mono
 
     #region Private methods
-
     private void AddListeners()
     {
         GlobalGameEventManager.OnNewGame.AddListener(EventHandler_NewGame);
@@ -68,17 +60,8 @@ public class WaveManager : MonoBehaviour, IGameManager
     /// </summary>
     private void SetDefaultParameters()
     {
-        _wave = 1;
+        _wave = _config.StartWave;
         _isFirstTriggerGame = false;
-    }
-
-    /// <summary>
-    /// Метод устанавливает номер волны
-    /// </summary>
-    /// <param name="numWave">Номер волны</param>
-    private void SetNumWave(int numWave)
-    {
-        _wave = numWave;
     }
 
     /// <summary>
@@ -88,8 +71,9 @@ public class WaveManager : MonoBehaviour, IGameManager
     /// <returns></returns>
     private IEnumerator BroadcastPreparingForWave(int delay)
     {
+#if UNITY_EDITOR
         Debug.Log("Preparing for wave" + _wave.ToString() + " in " + delay.ToString() + " second...");
-
+#endif
         yield return new WaitForSeconds(delay);
 
         WaveEventManager.PreparingForWave(_wave);
@@ -102,26 +86,15 @@ public class WaveManager : MonoBehaviour, IGameManager
     /// <returns></returns>
     private IEnumerator BroadcastWaveIsComing(int delay)
     {
+#if UNITY_EDITOR
         Debug.Log("Wave" + _wave.ToString() + " is coming in " + delay.ToString() + " second...");
-
+#endif
         yield return new WaitForSeconds(delay);
 
         WaveEventManager.WaveIsComing(_wave);
     }
 
     #endregion Private methods
-
-    #region Public methods
-
-    public void Startup()
-    {
-        Debug.Log("Wave manager starting...");
-
-        Status = ManagerStatus.Started;
-    }
-
-
-    #endregion Public methods
 
     #region Event handlers
     private void EventHandler_NewGame(GameMode gameMode)
@@ -133,7 +106,7 @@ public class WaveManager : MonoBehaviour, IGameManager
     {
         if (!_isFirstTriggerGame)
         {
-            _coroutineBroadcastPreparingForWave = BroadcastPreparingForWave(_delayToFirstBroadcastPreparingForWave);
+            _coroutineBroadcastPreparingForWave = BroadcastPreparingForWave(_config.DelayToFirstBroadcastPreparingForWave);
             StartCoroutine(_coroutineBroadcastPreparingForWave);
 
             _isFirstTriggerGame = true; //TODO
@@ -142,7 +115,7 @@ public class WaveManager : MonoBehaviour, IGameManager
 
     private void EventHandler_PreparingForWave(int wave)
     {
-        _coroutineBroadcastWaveIsComing = BroadcastWaveIsComing(_delayToBroadcastWaveIsComing);
+        _coroutineBroadcastWaveIsComing = BroadcastWaveIsComing(_config.DelayToBroadcastWaveIsComing);
         StartCoroutine(_coroutineBroadcastWaveIsComing);
     }
 
@@ -150,8 +123,9 @@ public class WaveManager : MonoBehaviour, IGameManager
     {
         WaveEventManager.WaveIsOver(_wave);
 
-        SetNumWave(_wave + 1);
-        StartCoroutine(BroadcastPreparingForWave(_delayToBroadcastPreparingForWave));
+        Wave++;
+
+        StartCoroutine(BroadcastPreparingForWave(_config.DelayToBroadcastPreparingForWave));
     }
 
     private void EventHandler_GameOver()
