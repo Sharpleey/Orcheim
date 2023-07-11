@@ -8,9 +8,11 @@ public class AudioManager : MonoBehaviour
 {
     #region Serialize fields
 
-    [SerializeField] private Sound[] _sounds;
+    [SerializeField] private AudioManagerConfig _config;
 
-    [SerializeField] private AudioSource _ambientSource, _musicSource, _mainMenuMusicSource, _sfxSource;
+    [Header("Audio sources")]
+    [SerializeField] private AudioSource _ambientSource;
+    [SerializeField] private AudioSource _musicSource, _mainMenuMusicSource, _sfxSource;
 
     #endregion Serialize fields
 
@@ -155,7 +157,7 @@ public class AudioManager : MonoBehaviour
     public void PlayRandomSound(SoundType soundType, float delay = 0)
     {
         // Получаем массив звуков определенного типа
-        Sound[] sounds = Array.FindAll(_sounds, x => x.soundType == soundType);
+        Sound[] sounds = Array.FindAll(_config.Sounds, x => x.soundType == soundType);
 
         if (sounds == null)
         {
@@ -190,7 +192,7 @@ public class AudioManager : MonoBehaviour
     public void PlaySound(SoundType soundType, string nameSound, float delay = 0)
     {
         // Получаем звук из массива с определенным названием и типом
-        Sound sound = Array.Find(_sounds, x => x.soundType == soundType && x.name == nameSound);
+        Sound sound = Array.Find(_config.Sounds, x => x.soundType == soundType && x.name == nameSound);
 
         if (sound == null)
         {

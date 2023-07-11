@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8854712595768106573}
   m_RootOrder: 2
@@ -154,6 +155,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8854712596247221572}
   - {fileID: 8854712597085843120}
@@ -174,62 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6a3ce1404dd89241a78093f83e962aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sounds:
-  - name: main_menu1
-    soundType: 0
-    audioClip: {fileID: 8300000, guid: 159b91853b37591428cc56e8c5e2004e, type: 3}
-    isLoop: 1
-    volume: 0.6
-  - name: ambient_1
-    soundType: 1
-    audioClip: {fileID: 8300000, guid: 55dfc8c56b6b34647ad20c24e5dd8c51, type: 3}
-    isLoop: 1
-    volume: 1
-  - name: alarm_horn
-    soundType: 3
-    audioClip: {fileID: 8300000, guid: 3ab2e8eab185df749bb8630cedc4334f, type: 3}
-    isLoop: 0
-    volume: 1
-  - name: combat_1
-    soundType: 2
-    audioClip: {fileID: 8300000, guid: 12471e436da2017428643f50d5f48773, type: 3}
-    isLoop: 0
-    volume: 0.6
-  - name: combat_2
-    soundType: 2
-    audioClip: {fileID: 8300000, guid: fff4855c5cb03ff47b118d92865110e2, type: 3}
-    isLoop: 0
-    volume: 0.6
-  - name: combat_3
-    soundType: 2
-    audioClip: {fileID: 8300000, guid: 6bd1545caa553f34aa03b3f83de1e820, type: 3}
-    isLoop: 0
-    volume: 0.6
-  - name: combat_4
-    soundType: 2
-    audioClip: {fileID: 8300000, guid: f476790858eb6ca499ddc91641d8396a, type: 3}
-    isLoop: 1
-    volume: 0.6
-  - name: combat_5
-    soundType: 2
-    audioClip: {fileID: 8300000, guid: 3a86f22318e8496479fca35db8f026be, type: 3}
-    isLoop: 1
-    volume: 0.6
-  - name: new_message
-    soundType: 3
-    audioClip: {fileID: 8300000, guid: 4b7d22816b907f742a7798e561c5353d, type: 3}
-    isLoop: 0
-    volume: 0.6
-  - name: wave_is_over
-    soundType: 3
-    audioClip: {fileID: 8300000, guid: 81f8a7f863925bc4b82373db9c2355dd, type: 3}
-    isLoop: 0
-    volume: 0.6
-  - name: level_up
-    soundType: 3
-    audioClip: {fileID: 8300000, guid: 1933c899442406449914a917bc1d7b36, type: 3}
-    isLoop: 0
-    volume: 0.6
+  _config: {fileID: 11400000, guid: 54d5b6913a8407240baa48fc832f5aaf, type: 2}
   _ambientSource: {fileID: 8854712596247221573}
   _musicSource: {fileID: 8854712597085843121}
   _mainMenuMusicSource: {fileID: 2347060137451113328}
@@ -261,6 +208,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8854712595768106573}
   m_RootOrder: 0
@@ -388,6 +336,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8854712595768106573}
   m_RootOrder: 3
@@ -515,6 +464,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8854712595768106573}
   m_RootOrder: 1

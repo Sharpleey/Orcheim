@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca0f7dfa2401574ebc8d2f5cb45ef8f, type: 3}
+  m_Name: Main
+  m_EditorClassIdentifier: 
+  _sounds:
+  - name: new_message
+    soundType: 3
+    audioClip: {fileID: 8300000, guid: 4b7d22816b907f742a7798e561c5353d, type: 3}
+    isLoop: 0
+    volume: 1
+  - name: alarm_horn
+    soundType: 3
+    audioClip: {fileID: 8300000, guid: 3ab2e8eab185df749bb8630cedc4334f, type: 3}
+    isLoop: 0
+    volume: 1
+  - name: level_up
+    soundType: 3
+    audioClip: {fileID: 8300000, guid: 1933c899442406449914a917bc1d7b36, type: 3}
+    isLoop: 0
+    volume: 1
+  - name: wave_is_over
+    soundType: 3
+    audioClip: {fileID: 8300000, guid: 81f8a7f863925bc4b82373db9c2355dd, type: 3}
+    isLoop: 0
+    volume: 1
+  - name: main_menu_1
+    soundType: 0
+    audioClip: {fileID: 8300000, guid: 159b91853b37591428cc56e8c5e2004e, type: 3}
+    isLoop: 1
+    volume: 1
+  - name: combat_1
+    soundType: 2
+    audioClip: {fileID: 8300000, guid: 12471e436da2017428643f50d5f48773, type: 3}
+    isLoop: 1
+    volume: 1
+  - name: combat_2
+    soundType: 2
+    audioClip: {fileID: 8300000, guid: fff4855c5cb03ff47b118d92865110e2, type: 3}
+    isLoop: 1
+    volume: 1
+  - name: combat_3
+    soundType: 2
+    audioClip: {fileID: 8300000, guid: 6bd1545caa553f34aa03b3f83de1e820, type: 3}
+    isLoop: 1
+    volume: 1
+  - name: combat_4
+    soundType: 2
+    audioClip: {fileID: 8300000, guid: f476790858eb6ca499ddc91641d8396a, type: 3}
+    isLoop: 1
+    volume: 1
