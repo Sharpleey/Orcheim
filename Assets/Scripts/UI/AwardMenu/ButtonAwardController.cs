@@ -42,6 +42,7 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
 
     private PlayerUnit _playerUnit;
     private GameSceneManager _sceneManager;
+    private LootManager _lootManager;
 
     #endregion Private fields
 
@@ -69,10 +70,11 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
     }
     
     [Inject]
-    private void Construct(PlayerUnit playerUnit, GameSceneManager gameSceneManager)
+    private void Construct(PlayerUnit playerUnit, GameSceneManager gameSceneManager, LootManager lootManager)
     {
         _playerUnit = playerUnit;
         _sceneManager = gameSceneManager;
+        _lootManager = lootManager;
     }
 
     #region Private methods
@@ -139,7 +141,7 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
             _playerUnit.SetActiveAttackModifier(awardAttackModifaer.AttackModifier);
 
             // Удаляем модификатор атаки из пула наград
-            LootManager.Instance?.RemoveAwardAttackModifier(awardAttackModifaer);
+            _lootManager?.RemoveAwardAttackModifier(awardAttackModifaer);
         }
 
         if(_award is AwardParameterUpgrade awardParameterUpgrade)

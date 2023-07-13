@@ -11,18 +11,20 @@ public class AwardsMenuController : MonoBehaviour
     private List<Award> _awards = new List<Award>();
 
     private AudioManager _audioManager;
+    private LootManager _lootManager;
 
     [Inject]
-    private void Construct(AudioManager audioManager)
+    private void Construct(AudioManager audioManager, LootManager lootManager)
     {
         _audioManager = audioManager;
+        _lootManager = lootManager;
     }
 
     private void OnEnable()
     {
         _audioManager?.PlaySound(SoundType.Sfx, "level_up"); //TODO Вынести в константы
 
-        _awards = LootManager.Instance?.GetListRandomAwards(3);
+        _awards = _lootManager?.GetListRandomAwards(3);
 
         if (_awards != null && _buttonAwardControllers != null)
         {

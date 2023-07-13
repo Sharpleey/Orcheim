@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 {
@@ -16,6 +17,10 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 
     #endregion Properties
 
+    #region Private fields
+    private LootManager _lootManager;
+    #endregion
+
     #region Mono
 
     protected override void Awake()
@@ -29,6 +34,12 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         AddListeners();
     }
 
+    [Inject]
+    private void Construct(LootManager lootManager)
+    {
+        _lootManager = lootManager;
+    }
+
     #endregion Mono
 
     #region Private methods
@@ -40,26 +51,26 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
 
     private void AddParametersToPoolAwards()
     {
-        LootManager.Instance?.AddAwardPlayerStatUpgrade(Health.Name, Health);
-        LootManager.Instance?.AddAwardPlayerStatUpgrade(Armor.Name, Armor);
-        LootManager.Instance?.AddAwardPlayerStatUpgrade(Damage.Name, Damage);
-        LootManager.Instance?.AddAwardPlayerStatUpgrade(MovementSpeed.Name, MovementSpeed);
-        LootManager.Instance?.AddAwardPlayerStatUpgrade(AttackSpeed.Name, AttackSpeed);
+        _lootManager?.AddAwardPlayerStatUpgrade(Health.Name, Health);
+        _lootManager?.AddAwardPlayerStatUpgrade(Armor.Name, Armor);
+        _lootManager?.AddAwardPlayerStatUpgrade(Damage.Name, Damage);
+        _lootManager?.AddAwardPlayerStatUpgrade(MovementSpeed.Name, MovementSpeed);
+        _lootManager?.AddAwardPlayerStatUpgrade(AttackSpeed.Name, AttackSpeed);
     }
 
     private void AddAttackModifiersToPoolAwards()
     {
         if (!_unitConfig.OnCriticalAttack)
-            LootManager.Instance?.AddAwardAttackModifier(CriticalAttack);
+            _lootManager?.AddAwardAttackModifier(CriticalAttack);
 
         if (!_unitConfig.OnFlameAttack)
-            LootManager.Instance?.AddAwardAttackModifier(FlameAttack);
+            _lootManager?.AddAwardAttackModifier(FlameAttack);
 
         if (!_unitConfig.OnSlowAttack)
-            LootManager.Instance?.AddAwardAttackModifier(SlowAttack);
+            _lootManager?.AddAwardAttackModifier(SlowAttack);
 
         if (!_unitConfig.OnPenetrationProjectile)
-            LootManager.Instance?.AddAwardAttackModifier(PenetrationProjectile);
+            _lootManager?.AddAwardAttackModifier(PenetrationProjectile);
     }
 
     #endregion Private methods
@@ -112,36 +123,36 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         // TODO Переделать или перенести куда-то
         if (attackModifier is CriticalAttack criticalAttack)
         {
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(criticalAttack.Name, criticalAttack.Chance);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(criticalAttack.Name, criticalAttack.DamageMultiplier);
+            _lootManager?.AddAwardAttackModifierUpgrade(criticalAttack.Name, criticalAttack.Chance);
+            _lootManager?.AddAwardAttackModifierUpgrade(criticalAttack.Name, criticalAttack.DamageMultiplier);
 
             return;
         }
 
         if (attackModifier is FlameAttack flameAttack)
         {
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Chance);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.DamagePerSecond);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.Duration);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.ArmorDecrease);
+            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Chance);
+            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.DamagePerSecond);
+            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.Duration);
+            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.ArmorDecrease);
 
             return;
         }
 
         if (attackModifier is SlowAttack slowAttack)
         {
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Chance);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.MovementSpeedPercentageDecrease);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.AttackSpeedPercentageDecrease);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.Duration);
+            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Chance);
+            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.MovementSpeedPercentageDecrease);
+            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.AttackSpeedPercentageDecrease);
+            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.Duration);
 
             return;
         }
 
         if (attackModifier is PenetrationProjectile penetrationProjectile)
         {
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(penetrationProjectile.Name, penetrationProjectile.MaxPenetrationCount);
-            LootManager.Instance?.AddAwardAttackModifierUpgrade(penetrationProjectile.Name, penetrationProjectile.PenetrationDamageDecrease);
+            _lootManager?.AddAwardAttackModifierUpgrade(penetrationProjectile.Name, penetrationProjectile.MaxPenetrationCount);
+            _lootManager?.AddAwardAttackModifierUpgrade(penetrationProjectile.Name, penetrationProjectile.PenetrationDamageDecrease);
 
             return;
         }
