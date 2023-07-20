@@ -16,7 +16,7 @@ public abstract class AttackModifier : IEntity
     /// </summary>
     public bool IsActive { get; set; }
 
-    public AttackModifier(bool isActive = false)
+    public AttackModifier(bool isActive = true)
     {
         IsActive = isActive;
     }

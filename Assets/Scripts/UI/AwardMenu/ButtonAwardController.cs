@@ -138,10 +138,7 @@ public class ButtonAwardController : MonoBehaviour, IPointerClickHandler, IPoint
         if(_award is AwardAttackModifier awardAttackModifaer)
         {
             // Добавляем модификатор атаки игроку
-            _playerUnit.SetActiveAttackModifier(awardAttackModifaer.AttackModifier);
-
-            // Удаляем модификатор атаки из пула наград
-            _lootManager?.RemoveAwardAttackModifier(awardAttackModifaer);
+            _playerUnit.SetAttackModifier(awardAttackModifaer.AttackModifier);
         }
 
         if(_award is AwardParameterUpgrade awardParameterUpgrade)

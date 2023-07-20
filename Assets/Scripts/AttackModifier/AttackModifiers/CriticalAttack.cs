@@ -12,7 +12,7 @@ public class CriticalAttack : ProcableAttackModifier
     /// </summary>
     public Parameter DamageMultiplier { get; protected set; }
 
-    public CriticalAttack(bool isActive = false,
+    public CriticalAttack(bool isActive = true,
         int procChance = 10, int increaseProcChancePerLevel = 5, int levelProcChance = 1, int maxLevelProcChance = 18,
         float defaultValueDamageMultiplier = 150f, float increaseDamageMultiplierPerLevel= 25f, int levelDamageMultiplier = 1): base(isActive, procChance, increaseProcChancePerLevel, levelProcChance, maxLevelProcChance)
     {

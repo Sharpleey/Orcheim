@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable, IUsesAttackModifiers, IUnitParameters, IInfluenceOfEffects, IUsesAbilities
+public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable, IUnitParameters, IInfluenceOfEffects, IUsesAbilities, IUsesAttackModifiers
 {
     #region Serialize fields
 
@@ -28,17 +28,9 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
     public AttackSpeed AttackSpeed { get; protected set; }
     #endregion
 
-    #region Attack modifaers
-    public CriticalAttack CriticalAttack { get; protected set; } //TODO запихнуть в словарь
-    public FlameAttack FlameAttack { get; protected set; } //TODO запихнуть в словарь
-    public SlowAttack SlowAttack { get; protected set; } //TODO запихнуть в словарь
-    public PenetrationProjectile PenetrationProjectile { get; protected set; } //TODO запихнуть в словарь
-
-    public Dictionary<Type, AttackModifier> AttackModifaers { get; protected set; }
-    #endregion
-
     public Dictionary<Type, Effect> ActiveEffects { get; protected set; }
     public Dictionary<Type, Ability> Abilities { get; protected set; }
+    public Dictionary<Type, AttackModifier> AttackModifiers { get; protected set; }
 
     #endregion Properties
 
@@ -86,10 +78,7 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
 
     public virtual void InitAttackModifiers()
     {
-        CriticalAttack = new CriticalAttack(increaseProcChancePerLevel: 10);
-        FlameAttack = new FlameAttack(increaseProcChancePerLevel: 10, increaseDamageFlamePerLevel: 4, increaseDurationEffectPerLevel: 2);
-        SlowAttack = new SlowAttack(increaseProcChancePerLevel: 10, increaseAttackSpeedPercentageDecrease: 10, increaseMovementSpeedPercentageDecrease: 10, increaseDurationEffectPerLevel: 3, durationEffect: 5);
-        PenetrationProjectile = new PenetrationProjectile(decreasePenetrationDamageDecreasePerLevel: -10, maxLevelPenetrationDamageDecrease: 5);
+        AttackModifiers = new Dictionary<Type, AttackModifier>();
 
         if (!_unitConfig)
         {
@@ -98,16 +87,16 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         }
 
         if (_unitConfig.OnCriticalAttack)
-            SetActiveAttackModifier(CriticalAttack);
+            SetAttackModifier(new CriticalAttack(increaseProcChancePerLevel: 10));
 
         if (_unitConfig.OnFlameAttack)
-            SetActiveAttackModifier(FlameAttack);
+            SetAttackModifier(new FlameAttack(increaseProcChancePerLevel: 10, increaseDamageFlamePerLevel: 4, increaseDurationEffectPerLevel: 2));
 
         if (_unitConfig.OnSlowAttack)
-            SetActiveAttackModifier(SlowAttack);
+            SetAttackModifier(new SlowAttack(increaseProcChancePerLevel: 10, increaseAttackSpeedPercentageDecrease: 10, increaseMovementSpeedPercentageDecrease: 10, increaseDurationEffectPerLevel: 3, durationEffect: 5));
 
         if (_unitConfig.OnPenetrationProjectile)
-            SetActiveAttackModifier(PenetrationProjectile);
+            SetAttackModifier(new PenetrationProjectile(decreasePenetrationDamageDecreasePerLevel: -10, maxLevelPenetrationDamageDecrease: 5));
     }
 
     public virtual void InitAbilities()
@@ -131,29 +120,59 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
         float damage = Damage.Actual;
         bool isCriticalHit = false;
 
-        if (PenetrationProjectile.IsActive && currentPenetration != 0)
+        if(AttackModifiers.TryGetValue(typeof(PenetrationProjectile), out AttackModifier modifierPenetrationProjectile))
         {
-            damage = PenetrationProjectile.GetValueDamage(damage, currentPenetration);
+            PenetrationProjectile penetrationProjectile = (PenetrationProjectile)modifierPenetrationProjectile;
+            if (penetrationProjectile.IsActive && currentPenetration != 0)
+            {
+                damage = penetrationProjectile.GetValueDamage(damage, currentPenetration);
+            }
         }
 
-        if (CriticalAttack.IsActive && CriticalAttack.IsProc)
+        if (AttackModifiers.TryGetValue(typeof(CriticalAttack), out AttackModifier modifierAttackModifier))
         {
-            isCriticalHit = true;
-            damage *= CriticalAttack.DamageMultiplier.Value / 100f;
+            CriticalAttack criticalAttack = (CriticalAttack)modifierAttackModifier;
+            if (criticalAttack.IsActive && criticalAttack.IsProc)
+            {
+                isCriticalHit = true;
+                damage *= criticalAttack.DamageMultiplier.Value / 100f;
+            }
         }
 
-        if (FlameAttack.IsActive && FlameAttack.IsProc)
+        if (AttackModifiers.TryGetValue(typeof(FlameAttack), out AttackModifier modifierFlameAttack))
         {
-            attackedUnit.SetEffect(FlameAttack.Effect);
+            FlameAttack flameAttack = (FlameAttack)modifierFlameAttack;
+            if (flameAttack.IsActive && flameAttack.IsProc)
+            {
+                attackedUnit.SetEffect(flameAttack.Effect);
+            }
         }
 
-        if (SlowAttack.IsActive && SlowAttack.IsProc)
+        if (AttackModifiers.TryGetValue(typeof(SlowAttack), out AttackModifier modifierSlowAttack))
         {
-            attackedUnit.SetEffect(SlowAttack.Effect);
+            SlowAttack slowAttack = (SlowAttack)modifierSlowAttack;
+            if (slowAttack.IsActive && slowAttack.IsProc)
+            {
+                attackedUnit.SetEffect(slowAttack.Effect);
+            }
         }
 
         // Наносим урон юниту
         attackedUnit.TakeDamage(Mathf.Clamp(damage, 0, int.MaxValue), Damage.Type, Damage.IsArmorIgnore, isCriticalHit, hitBox);
+    }
+
+    public virtual void SetAttackModifier(AttackModifier newAttackModifier)
+    {
+        if (AttackModifiers.ContainsKey(newAttackModifier.GetType()))
+            return;
+
+        AttackModifiers.Add(newAttackModifier.GetType(), newAttackModifier);
+    }
+
+    public void RemoveAttackModifier<T>() where T : AttackModifier
+    {
+        if (AttackModifiers.ContainsKey(typeof(T)))
+            AttackModifiers.Remove(typeof(T));
     }
 
     public virtual void SetEffect(Effect effect)
@@ -186,11 +205,6 @@ public abstract class Unit : MonoBehaviour, IUnitLevel, IAttacking, IDamageable,
             // Удаляем эффект из словаря
             ActiveEffects.Remove(effect.GetType());
         }
-    }
-
-    public virtual void SetActiveAttackModifier(AttackModifier attackModifier)
-    {
-        attackModifier.IsActive = true;
     }
 
     #endregion Public methods

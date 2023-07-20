@@ -27,7 +27,7 @@ public class FlameAttack : ProcableAttackModifier
     /// <param name="durationEffect"></param>
     /// <param name="increaseDurationEffectPerLevel"></param>
     /// <param name="levelDurationEffect"></param>
-    public FlameAttack(bool isActive = false,
+    public FlameAttack(bool isActive = true,
         int procChance = 10, int increaseProcChancePerLevel = 5, int levelProcChance = 1, int maxLevelProcChance = 18,
         int damageFlame = 10, int increaseDamageFlamePerLevel = 2, int levelDamageFlame = 1, 
         int armorDecrease = 1, int increaseArmorDecreasePerLevel = 1, int levelArmorDecrease = 1, 

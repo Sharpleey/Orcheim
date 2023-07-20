@@ -27,11 +27,14 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     {
         base.Awake();
 
-        AddParametersToPoolAwards();
-
-        AddAttackModifiersToPoolAwards();
-
         AddListeners();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        _lootManager?.PullingPlayerParametersOnPoolAwards(this);
     }
 
     [Inject]
@@ -47,30 +50,6 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
     {
         GlobalGameEventManager.OnEnemyKilled.AddListener(EventHandler_EnemyKilled);
         WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
-    }
-
-    private void AddParametersToPoolAwards()
-    {
-        _lootManager?.AddAwardPlayerStatUpgrade(Health.Name, Health);
-        _lootManager?.AddAwardPlayerStatUpgrade(Armor.Name, Armor);
-        _lootManager?.AddAwardPlayerStatUpgrade(Damage.Name, Damage);
-        _lootManager?.AddAwardPlayerStatUpgrade(MovementSpeed.Name, MovementSpeed);
-        _lootManager?.AddAwardPlayerStatUpgrade(AttackSpeed.Name, AttackSpeed);
-    }
-
-    private void AddAttackModifiersToPoolAwards()
-    {
-        if (!_unitConfig.OnCriticalAttack)
-            _lootManager?.AddAwardAttackModifier(CriticalAttack);
-
-        if (!_unitConfig.OnFlameAttack)
-            _lootManager?.AddAwardAttackModifier(FlameAttack);
-
-        if (!_unitConfig.OnSlowAttack)
-            _lootManager?.AddAwardAttackModifier(SlowAttack);
-
-        if (!_unitConfig.OnPenetrationProjectile)
-            _lootManager?.AddAwardAttackModifier(PenetrationProjectile);
     }
 
     #endregion Private methods
@@ -114,55 +93,19 @@ public abstract class PlayerUnit : Unit, IPlayerUnitParameters
         }
     }
 
-    public override void SetActiveAttackModifier(AttackModifier attackModifier)
-    {
-        base.SetActiveAttackModifier(attackModifier);
-
-        // Добавление параметров модификатора в пул наград
-
-        // TODO Переделать или перенести куда-то
-        if (attackModifier is CriticalAttack criticalAttack)
-        {
-            _lootManager?.AddAwardAttackModifierUpgrade(criticalAttack.Name, criticalAttack.Chance);
-            _lootManager?.AddAwardAttackModifierUpgrade(criticalAttack.Name, criticalAttack.DamageMultiplier);
-
-            return;
-        }
-
-        if (attackModifier is FlameAttack flameAttack)
-        {
-            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Chance);
-            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.DamagePerSecond);
-            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.Duration);
-            _lootManager?.AddAwardAttackModifierUpgrade(flameAttack.Name, flameAttack.Effect.ArmorDecrease);
-
-            return;
-        }
-
-        if (attackModifier is SlowAttack slowAttack)
-        {
-            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Chance);
-            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.MovementSpeedPercentageDecrease);
-            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.AttackSpeedPercentageDecrease);
-            _lootManager?.AddAwardAttackModifierUpgrade(slowAttack.Name, slowAttack.Effect.Duration);
-
-            return;
-        }
-
-        if (attackModifier is PenetrationProjectile penetrationProjectile)
-        {
-            _lootManager?.AddAwardAttackModifierUpgrade(penetrationProjectile.Name, penetrationProjectile.MaxPenetrationCount);
-            _lootManager?.AddAwardAttackModifierUpgrade(penetrationProjectile.Name, penetrationProjectile.PenetrationDamageDecrease);
-
-            return;
-        }
-    }
-
     public override void LevelUp(int levelUp = 1)
     {
         base.LevelUp(levelUp);
 
         PlayerEventManager.PlayerLevelUp();
+    }
+
+    public override void SetAttackModifier(AttackModifier newAttackModifier)
+    {
+        base.SetAttackModifier(newAttackModifier);
+
+        _lootManager?.PullingAttackModifierParametersOnPoolAwards(newAttackModifier);
+        _lootManager?.RemoveAttackModifierFromPoolAwards(newAttackModifier);
     }
 
     public void AddExperience(int newExp)

@@ -83,19 +83,29 @@ public class ProjectileArrow : MonoBehaviour
 					ShowHitEffect();
 				}
 
-				if (_playerUnit.PenetrationProjectile.IsActive)
+				if (_playerUnit.AttackModifiers.TryGetValue(typeof(PenetrationProjectile), out AttackModifier modifierPenetrationProjectile))
 				{
-					_currentPenetration++;
+					PenetrationProjectile penetrationProjectile = (PenetrationProjectile)modifierPenetrationProjectile;
 
-					// Если число пробитий подошло к пределу, то удаляем стрелу
-					if (_currentPenetration == _playerUnit.PenetrationProjectile.MaxPenetrationCount.Value)
+					if (penetrationProjectile.IsActive)
+					{
+						_currentPenetration++;
+
+						// Если число пробитий подошло к пределу, то удаляем стрелу
+						if (_currentPenetration == penetrationProjectile.MaxPenetrationCount.Value)
+						{
+							_isBlockDamage = true;
+							DeleteProjectile();
+						}
+					}
+					else
 					{
 						_isBlockDamage = true;
 						DeleteProjectile();
 					}
 				}
 				else
-				{
+                {
 					_isBlockDamage = true;
 					DeleteProjectile();
 				}
