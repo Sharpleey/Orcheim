@@ -7,21 +7,16 @@ using Zenject;
 /// <summary>
 /// Менеджер отвечает за переключение сцен, перезагрузку сцен, паузу игры
 /// </summary>
-public class GameSceneManager
+public class GameSceneManager : MonoBehaviour
 {
+	[SerializeField] private GameSceneManagerConfig _config;
+	[SerializeField] private LoadingScreenController _loadingScreen;
+
 	#region Private fields
-	private GameSceneManagerConfig _config;
-	private LoadingScreenController _loadingScreen;
 	private AsyncOperation _asyncOperationLoadingScene;
 	private Scene _currentScene;
 	private bool _isGamePaused;
     #endregion
-
-	public GameSceneManager(GameSceneManagerConfig config, LoadingScreenController loadingScreenController)
-    {
-		_config = config;
-		_loadingScreen = loadingScreenController;
-	}
 
 	#region Private methods
 
