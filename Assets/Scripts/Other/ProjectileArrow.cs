@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
@@ -24,9 +25,21 @@ public class ProjectileArrow : MonoBehaviour
 	private EnemyUnit _currentHitUnit;
 	private PlayerUnit _playerUnit;
 
+	private Pool<HitEffect> _hitEffectPool;
+	private Pool<TracerEffect> _tracerEffectPool;
+	private Pool<ProjectileArrow> _projectileArrowPool;
+
 	#endregion Private fields
 
 	#region Mono
+
+	[Inject]
+	private void Construct(Pool<HitEffect> hitEffectPool, Pool<TracerEffect> tracerEffectPool, Pool<ProjectileArrow> projectileArrowPool)
+    {
+		_hitEffectPool = hitEffectPool;
+		_tracerEffectPool = tracerEffectPool;
+		_projectileArrowPool = projectileArrowPool;
+	}
 
 	private void Awake()
 	{
@@ -55,16 +68,12 @@ public class ProjectileArrow : MonoBehaviour
 		}
 	}
 
-	#endregion Mono
-
-	#region Private methods
-
 	/// <summary>
 	/// Метод срабатывает при касании стрелы с другими объектами на которых есть коллайдер
 	/// </summary>
 	/// <param name="hitCollider">Коллайдер, с которым соприкоснулась стрела</param>
 	private void OnTriggerEnter(Collider hitCollider)
-    {
+	{
 		EnemyUnit unit = hitCollider.GetComponentInParent<EnemyUnit>();
 
 		// Если мы попали в противника
@@ -105,7 +114,7 @@ public class ProjectileArrow : MonoBehaviour
 					}
 				}
 				else
-                {
+				{
 					_isBlockDamage = true;
 					DeleteProjectile();
 				}
@@ -118,9 +127,13 @@ public class ProjectileArrow : MonoBehaviour
 			DeleteProjectile();
 	}
 
+	#endregion Mono
+
+	#region Private methods
+
 	private void ShowHitEffect()
     {
-		_hitEffect = PoolManager.Instance?.HitEffectPool.GetFreeElement();
+		_hitEffect = _hitEffectPool?.GetFreeElement();
 
 		_hitEffect?.gameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
 	}
@@ -146,12 +159,12 @@ public class ProjectileArrow : MonoBehaviour
 		_tracerEffect?.StartCountdownToDelete();
 
 		// Возвращаем объект в пул
-		PoolManager.Instance?.ProjectileArrowPool.ReturnToContainerPool(this);
+		_projectileArrowPool?.ReturnToContainerPool(this);
 	}
 
 	private void EnableTracerEffect()
     {
-		_tracerEffect = PoolManager.Instance?.TracerEffectPool.GetFreeElement();
+		_tracerEffect = _tracerEffectPool?.GetFreeElement();
 
 		_tracerEffect.gameObject.transform.SetParent(transform);
 		_tracerEffect.gameObject.transform.SetPositionAndRotation(transform.position, Quaternion.identity);

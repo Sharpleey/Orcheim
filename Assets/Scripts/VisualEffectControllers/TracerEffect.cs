@@ -1,15 +1,24 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class TracerEffect : MonoBehaviour
 {
     #region Properties
-
     public TrailRenderer TrailRenderer { get; private set; }
+    #endregion
 
-    #endregion Properties
+    #region Private fields
+    private Pool<TracerEffect> _tracerEffectPool;
+    #endregion
 
     #region Mono
+
+    [Inject]
+    private void Construct(Pool<TracerEffect> pool)
+    {
+        _tracerEffectPool = pool;
+    }
 
     private void Awake()
     {
@@ -26,7 +35,7 @@ public class TracerEffect : MonoBehaviour
 
         TrailRenderer.enabled = false;
 
-        PoolManager.Instance?.TracerEffectPool.ReturnToContainerPool(this);
+        _tracerEffectPool?.ReturnToContainerPool(this);
     }
     #endregion Private methods
 

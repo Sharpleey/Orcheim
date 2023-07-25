@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class HitEffect : MonoBehaviour
 {
@@ -10,7 +11,17 @@ public class HitEffect : MonoBehaviour
 
     #endregion Serialize fields
 
+    #region Private fields
+    private Pool<HitEffect> _hitEffectPool;
+    #endregion
+
     #region Mono
+
+    [Inject]
+    private void Construct(Pool<HitEffect> pool)
+    {
+        _hitEffectPool = pool;
+    }
 
     private void OnEnable()
     {
@@ -24,7 +35,7 @@ public class HitEffect : MonoBehaviour
     {
         yield return new WaitForSeconds(secondsBeforeDeletion);
 
-        PoolManager.Instance?.HitEffectPool.ReturnToContainerPool(this);
+        _hitEffectPool?.ReturnToContainerPool(this);
     }
     #endregion Private methods
 }

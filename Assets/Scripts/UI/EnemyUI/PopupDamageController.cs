@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 /// <summary>
 /// Класс контроллер отвечает за вывод всплывающих цифр получаемого урона над противником
@@ -32,6 +33,18 @@ public class PopupDamageController : MonoBehaviour
 
     #endregion Public fields
 
+    #region Private fields
+    private Pool<PopupDamage> _popupDamagePool;
+    #endregion
+
+    #region Mono
+    [Inject]
+    private void Construct(Pool<PopupDamage> pool)
+    {
+        _popupDamagePool = pool;
+    }
+    #endregion
+
     #region Public methods
 
     /// <summary>
@@ -42,7 +55,7 @@ public class PopupDamageController : MonoBehaviour
     /// <param name="typeDamage">Тип получаемого урона (Необходимо для определения цвета текста урона)</param>
     public void ShowPopupDamage(float damage, bool isCriticalHit, DamageType typeDamage)
     {
-        PopupDamage popupDamage = PoolManager.Instance?.PopupDamagePool.GetFreeElement();
+        PopupDamage popupDamage = _popupDamagePool?.GetFreeElement();
 
         popupDamage?.transform.SetParent(transform, false);
 

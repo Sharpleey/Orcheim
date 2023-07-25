@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 /// <summary>
 /// Класс пул объектов
@@ -7,10 +8,10 @@ using UnityEngine;
 /// <typeparam name="T">Тип объектов пула</typeparam>
 public class Pool<T> where T : MonoBehaviour
 {
-    /// <summary>
-    /// Префаб объектов пула
-    /// </summary>
-    private T _prefab;
+    ///// <summary>
+    ///// Префаб объектов пула
+    ///// </summary>
+    //private T _prefab;
 
     /// <summary>
     /// Контейнер, объект на сцене куда будут складыватся объекты пула
@@ -25,7 +26,9 @@ public class Pool<T> where T : MonoBehaviour
     /// <summary>
     /// Список (Пул) объектов
     /// </summary>
-    private List<T> _pool;
+    private List<T> _pool = new List<T>();
+
+    private BaseFactory<T> _factory;
 
     /// <summary>
     /// 
@@ -33,42 +36,43 @@ public class Pool<T> where T : MonoBehaviour
     /// <param name="prefab">Префаб объекта, для которого хотим создать пул</param>
     /// <param name="startSizePool">Начальный размер пула</param>
     /// <param name="container">Контейнер, объект, в которому будут присоеденены все объекты пула на сцене в иерархии</param>
-    public Pool(T prefab, int startSizePool, Transform container)
+    public Pool(BaseFactory<T> factory, int startSizePool = 0)
     {
-        _prefab = prefab;
-        _container = container;
         _startSize = startSizePool;
+        _factory = factory;
 
-        CreatePool();
+        CreateContainer();
+        FillPool();
     }
 
     /// <summary>
     /// Метод создания пула
     /// </summary>
-    private void CreatePool()
+    private void FillPool()
     {
-        _pool = new List<T>();
-
         for(int i=0; i<_startSize; i++)
         {
-            T obj = GetInstance();
-
-            obj.gameObject.SetActive(false);
-            obj.transform.SetParent(_container);
+            T obj = _factory.GetNewInstance(Vector3.zero, Quaternion.identity, false, _container);
 
             _pool.Add(obj);
         }
+    }
+
+    private void CreateContainer()
+    {
+        _container = new GameObject(name: $"{typeof(T)}_PoolContainer").transform;
     }
 
     /// <summary>
     /// Метод создает и возвращает новый объект типа T
     /// </summary>
     /// <returns>Объект типа Т</returns>
-    private T GetInstance()
-    {
-        T newInstance = Object.Instantiate(_prefab, _container);
-        return newInstance;
-    }
+    //private T GetInstance()
+    //{
+    //    T newInstance = Object.Instantiate(_prefab, _container);
+
+    //    return newInstance;
+    //}
 
     /// <summary>
     /// Метод проверяет есть ли свободный объект в пуле и возвращает его в виде out и состояние bool если есть
@@ -105,7 +109,7 @@ public class Pool<T> where T : MonoBehaviour
             _pool.Remove(element);
         }
         else
-            freeElement = GetInstance();
+            freeElement = _factory.GetNewInstance(Vector3.zero, Quaternion.identity, false, _container);
 
         freeElement?.gameObject.SetActive(true);
 
@@ -119,10 +123,7 @@ public class Pool<T> where T : MonoBehaviour
     {
         for (int i = _pool.Count; i < size; i++)
         {
-            T element = GetInstance();
-
-            element.gameObject.SetActive(false);
-            element.transform.SetParent(_container);
+            T element = _factory.GetNewInstance(Vector3.zero, Quaternion.identity, false, _container);
 
             _pool.Add(element);
         }

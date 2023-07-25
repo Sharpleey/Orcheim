@@ -8,7 +8,6 @@ public class EnemyUnitFactory : BaseFactory<EnemyUnit>
 
     public EnemyUnitFactory(DiContainer diContainer) : base(diContainer)
     {
-        LoadResources();
     }
     
     public EnemyUnit GetNewInstance(EnemyUnit prefab, StartStateType startStateType, Vector3 position, Quaternion rotation, bool isActive = true, Transform parent = null)
@@ -29,8 +28,8 @@ public class EnemyUnitFactory : BaseFactory<EnemyUnit>
     {
         _enemyPrefabs = new Dictionary<EnemyType, EnemyUnit>();
         
-        _enemyPrefabs[EnemyType.Warrior] = Resources.Load<EnemyUnit>(HashResourcesPath.WARRIOR_PATH);
-        _enemyPrefabs[EnemyType.Goon] = Resources.Load<EnemyUnit>(HashResourcesPath.GOON_PATH);
-        _enemyPrefabs[EnemyType.Commander] = Resources.Load<EnemyUnit>(HashResourcesPath.COMMANDER_PATH);
+        _enemyPrefabs[EnemyType.Warrior] = Resources.Load<EnemyUnit>(HashResourcesPath.ENEMY_WARRIOR);
+        _enemyPrefabs[EnemyType.Goon] = Resources.Load<EnemyUnit>(HashResourcesPath.ENEMY_GOON);
+        _enemyPrefabs[EnemyType.Commander] = Resources.Load<EnemyUnit>(HashResourcesPath.ENEMY_COMMANDER);
     }
 }

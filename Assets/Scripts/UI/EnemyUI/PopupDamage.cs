@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Zenject;
 
 public class PopupDamage : MonoBehaviour
 {
@@ -21,9 +22,17 @@ public class PopupDamage : MonoBehaviour
     private float _rateHide = 2.5f;
     private float _durationShown = 1f;
 
+    private Pool<PopupDamage> _popupDamagePool;
     #endregion Private fields
 
     #region Mono
+
+    [Inject]
+    private void Construct(Pool<PopupDamage> pool)
+    {
+        _popupDamagePool = pool;
+    }
+
     private void OnEnable()
     {
         transform.localPosition = new Vector3(0, 25f, 0);
@@ -88,7 +97,7 @@ public class PopupDamage : MonoBehaviour
                 _currentAlpha = 0f;
                 _isHide = false;
 
-                PoolManager.Instance?.PopupDamagePool.ReturnToContainerPool(this);
+                _popupDamagePool?.ReturnToContainerPool(this);
             }
 
         }

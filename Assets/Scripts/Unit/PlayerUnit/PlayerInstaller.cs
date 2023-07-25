@@ -8,7 +8,7 @@ public class PlayerInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        var prefab = Resources.Load<PlayerUnit>(HashResourcesPath.PLAYER_PATH);
+        var prefab = Resources.Load<PlayerUnit>(HashResourcesPath.PLAYER_CHARACTER);
         Player player = Container.InstantiatePrefabForComponent<Player>(prefab, _playerSpawnPoint.position, _playerSpawnPoint.rotation, null);
 
         Container

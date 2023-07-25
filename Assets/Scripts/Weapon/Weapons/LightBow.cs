@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 /// <summary>
 /// In Progress
@@ -73,9 +74,18 @@ public class LightBow : MonoBehaviour
 
     private ProjectileArrow _projectile;
 
+    private Pool<ProjectileArrow> _projectileArrowPool;
+
     #endregion Private fields
 
     #region Mono
+
+    [Inject]
+    private void Construct(Pool<ProjectileArrow> pool)
+    {
+        _projectileArrowPool = pool;
+    }
+
     private void Awake()
     {
         GameSceneEventManager.OnGamePause.AddListener(SetLockControl);
@@ -313,7 +323,7 @@ public class LightBow : MonoBehaviour
     /// </summary>
     private void RespawnProjectile()
     {
-        _projectile = PoolManager.Instance?.ProjectileArrowPool.GetFreeElement();
+        _projectile = _projectileArrowPool?.GetFreeElement();
 
         _projectile.transform.SetParent(_arrowSpawn.transform);
         _projectile.transform.SetPositionAndRotation(_arrowSpawn.position, _arrowSpawn.rotation);
