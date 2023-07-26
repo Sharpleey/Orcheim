@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// Контроллер отвечает за отображения иконок (статусов) над противником
@@ -30,6 +31,8 @@ public class IconEffectsController : MonoBehaviour
     private List<GameObject> _activeIcons = new List<GameObject>();
 
     private Dictionary<Type, GameObject> _effectIcons = new Dictionary<Type, GameObject>();
+
+    private Tween _tweenIcon;
 
     #endregion Private fields
 
@@ -89,19 +92,29 @@ public class IconEffectsController : MonoBehaviour
     /// Метод активации/деактивации иконки соответсвующего эффекта
     /// </summary>
     /// <typeparam name="T">Эффект, иконку которого хотим активировать</typeparam>
-    /// <param name="active">Флаг активации иконки</param>
-    public void EnableIcon<T>(bool active) where T : Effect
+    /// <param name="isEnable">Флаг активации иконки</param>
+    public void EnableIcon<T>(bool isEnable) where T : Effect
     {
         GameObject icon;
 
         if (_effectIcons.TryGetValue(typeof(T), out icon))
         {
-            icon.SetActive(active);
+            if (isEnable)
+            {
+                icon.transform.localScale = Vector3.zero;
+                _tweenIcon = icon.transform.DOScale(new Vector3(0.5f, 0.5f, 1), 0.25f).SetEase(Ease.OutElastic).SetAutoKill();
 
-            if (active)
                 _activeIcons.Add(icon);
+            }
             else
+            {
+                icon.transform.localScale = new Vector3(0.5f, 0.5f, 1);
+                _tweenIcon = icon.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.OutElastic).SetAutoKill();
+
                 _activeIcons.Remove(icon);
+            }
+
+            icon.SetActive(isEnable);
 
             RecalculationLocationIcons();
         }
