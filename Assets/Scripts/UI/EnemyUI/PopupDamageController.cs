@@ -7,17 +7,6 @@ using Zenject;
 /// </summary>
 public class PopupDamageController : MonoBehaviour
 {
-    #region Serialize fields
-
-    /// <summary>
-    /// —корость плавного показа/скрыти€ текста урона
-    /// </summary>
-    [SerializeField] [Range (0.1f, 10f)] private float _rateShowing = 2.5f;
-    [SerializeField] [Range(0.1f, 10f)] private float _rateHide = 2.5f;
-    [SerializeField] [Range (0.0f, 10f)] private float _durationShow = 1f;
-
-    #endregion Serialize fields
-
     #region Public fields
 
     /// <summary>
@@ -59,7 +48,7 @@ public class PopupDamageController : MonoBehaviour
 
         popupDamage?.transform.SetParent(transform, false);
 
-        popupDamage?.StartShowing(Mathf.Round(damage), isCriticalHit, TYPE_DAMAGE_COLOR[typeDamage], _rateShowing, _rateHide, _durationShow);
+        popupDamage?.SetDataAndStartAnimation(Mathf.Round(damage), isCriticalHit, TYPE_DAMAGE_COLOR[typeDamage]);
     }
 
     #endregion Public methods

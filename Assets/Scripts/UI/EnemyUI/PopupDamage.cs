@@ -2,28 +2,25 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Zenject;
+using DG.Tweening;
 
 public class PopupDamage : MonoBehaviour
 {
+    [SerializeField] private CanvasGroup _canvasGroupPopupDamage;
     [SerializeField] private Image _criticalHitIcon;
     [SerializeField] private TextMeshProUGUI _textMeshPro;
 
     #region Private fields
-    private bool _isShown = false;
-    private bool _isShowing = false;
-    private bool _isHide = false;
-
-    private float _currentAlpha = 0f;
-    private float _timer = 0f;
+    private float _defaultFontSize;
 
     private Vector3 targetPosition;
 
-    private float _rateShowing = 2.5f;
-    private float _rateHide = 2.5f;
-    private float _durationShown = 1f;
-
     private Pool<PopupDamage> _popupDamagePool;
-    #endregion Private fields
+
+    private Sequence _sequenceShowing;
+    private Tween _tweenScale;
+    private Tween _tweenMove;
+    #endregion 
 
     #region Mono
 
@@ -33,102 +30,83 @@ public class PopupDamage : MonoBehaviour
         _popupDamagePool = pool;
     }
 
+    private void Awake()
+    {
+        _defaultFontSize = _textMeshPro.fontSize;
+    }
+
     private void OnEnable()
+    {
+        SetDefaultParameters();
+    }
+
+    #endregion Mono
+
+    #region Private methods
+    private void SetDefaultParameters()
     {
         transform.localPosition = new Vector3(0, 25f, 0);
         transform.eulerAngles = new Vector3(0, 180, 0);
-        transform.localScale = Vector3.one;
-
+        transform.localScale = Vector3.zero;
 
         targetPosition = new Vector3(Random.Range(-30f, 30f), Random.Range(35f, 45f), 0);
 
-        _textMeshPro.alpha = 0;
-        _textMeshPro.fontSize = 30;
+        _canvasGroupPopupDamage.alpha = 0;
+        _textMeshPro.fontSize = _defaultFontSize;
 
         _criticalHitIcon.enabled = false;
     }
 
-    private void Update()
-    {
-        if (_isShowing)
-        {
-            // —мещение текста
-            // ------------------------------------------------
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _rateShowing * Time.deltaTime);
-            // ------------------------------------------------
-
-            _textMeshPro.alpha = _currentAlpha;
-
-            if (_currentAlpha < 1.0f)
-            {
-                _currentAlpha += _rateShowing * Time.deltaTime;
-            }
-            else
-            {
-                _currentAlpha = 1.0f;
-                _isShowing = false;
-                _isShown = true;
-            }
-        }
-
-        if (_isShown)
-        {
-            if (_timer < _durationShown)
-            {
-                _timer += Time.deltaTime;
-            }
-            else
-            {
-                _timer = 0;
-                _isShown = false;
-                _isHide = true;
-            }
-        }
-
-        if (_isHide)
-        {
-            _textMeshPro.alpha = _currentAlpha;
-            if (_currentAlpha > 0f)
-            {
-                _currentAlpha -= _rateHide * Time.deltaTime;
-            }
-            else
-            {
-                _currentAlpha = 0f;
-                _isHide = false;
-
-                _popupDamagePool?.ReturnToContainerPool(this);
-            }
-
-        }
-    }
-    #endregion Mono
+    #endregion
 
     #region Public methods
 
     /// <summary>
-    /// ћетод задает параметры отображени€ текста: значение урона, цвет урона, скорость по€влени€/сокрыти€ урона, длительность показа
+    /// ”станавливает данные и параметры дл€ текста и запускает анимацию всплывающего урона
     /// </summary>
     /// <param name="damage">«начение урона</param>
+    /// <param name="isCriticalHit">явл€етс€ ли урон критическим</param>
     /// <param name="colorText">÷вет текста урона</param>
-    /// <param name="rateShowing">—корость по€влени€/сокрыти€ урона</param>
-    /// <param name="durationShow">ƒлительность показа текста с уроном</param>
-    public void StartShowing(float damage, bool isCriticalHit, Color colorText, float rateShowing, float rateHide, float durationShow)
+    public void SetDataAndStartAnimation(float damage, bool isCriticalHit, Color colorText)
+    {
+        SetData(damage, isCriticalHit, colorText);
+        StartAnimation();
+    }
+
+    /// <summary>
+    /// ћетод задает параметры отображени€ текста: значение урона, цвет урона
+    /// </summary>
+    /// <param name="damage">«начение урона</param>
+    /// <param name="isCriticalHit">явл€етс€ ли урон критическим</param>
+    /// <param name="colorText">÷вет текста урона</param>
+    public void SetData(float damage, bool isCriticalHit, Color colorText)
     {
         _textMeshPro.text = $"-{damage}";
         _textMeshPro.color = colorText;
-
-        _rateShowing = rateShowing;
-        _rateHide = rateHide;
-        _durationShown = durationShow;
 
         if (isCriticalHit)
         {
             _criticalHitIcon.enabled = true;
             _textMeshPro.fontSize = 42;
         }
+    }
 
-        _isShowing = true;
+    /// <summary>
+    /// ћетод запускает анимацию всплывающего урона
+    /// </summary>
+    public void StartAnimation()
+    {
+        _tweenMove = transform.DOLocalMove(targetPosition, 0.15f).SetEase(Ease.InOutQuad);
+        _tweenScale = transform.DOScale(1f, 0.15f).SetEase(Ease.OutElastic);
+
+        _sequenceShowing = DOTween.Sequence().SetEase(Ease.Linear);
+        _sequenceShowing.Append(_canvasGroupPopupDamage.DOFade(1f, 0.15f))
+            .AppendInterval(0.4f)
+            .Append(_canvasGroupPopupDamage.DOFade(0f, 0.25f))
+            .AppendCallback(() =>
+            {
+                _popupDamagePool?.ReturnToContainerPool(this);
+            });
     }
     #endregion Public methods
 }
