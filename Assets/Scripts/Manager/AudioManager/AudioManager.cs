@@ -34,7 +34,6 @@ public class AudioManager : MonoBehaviour
         WaveEventManager.OnWaveIsComing.AddListener(EventHandler_WaveIsComing);
         WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
         GlobalGameEventManager.OnGameOver.AddListener(StopAllSoundSource);
-        //GameSceneEventManager.OnSceneLoadingStarted.AddListener(StopAllSoundSource);
     }
 
     /// <summary>
