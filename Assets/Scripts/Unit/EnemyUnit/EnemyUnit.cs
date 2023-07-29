@@ -237,16 +237,11 @@ public abstract class EnemyUnit : Unit, IEnemyUnitParameters, IStateMachine
 
             // Полоса здоровья
             if (HealthBarController != null)
-            {
-                HealthBarController.SetHealth(Health.Actual, true);
-                HealthBarController.ShowHealthBar();
-            }
+                HealthBarController?.SetHealth(Health.Actual, true, true);
 
             // Звук
             if (AudioController)
-            {
-                AudioController.PlayRandomSoundWithProbability(EnemySoundType.Hit);
-            }
+                AudioController?.PlayRandomSoundWithProbability(EnemySoundType.Hit);
         }
 
         if (Health.Actual <= 0)

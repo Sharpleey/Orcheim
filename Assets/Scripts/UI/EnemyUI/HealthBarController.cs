@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
 
 /// <summary>
 /// Контроллер отвечает за полосу здоровья над противником
@@ -8,138 +9,94 @@ using DG.Tweening;
 public class HealthBarController : MonoBehaviour
 {
     #region Serialize fields
+    [SerializeField] private CanvasGroup _canvasGroupHPBar;
+    [SerializeField, Min(0)] private float _appearanceDuration = 0.4f;
+    [SerializeField, Min(0)] private float _shownDuration = 1f;
+    [SerializeField, Min(0)] private float _fadeDuration = 0.4f;
 
+    [Space(5)]
     [SerializeField] private Slider _hpSlider;
-    [SerializeField] private float _rateShowing = 1.5f;
-    [SerializeField] private float _durationShown = 2f;
 
     [Space(5)]
     [SerializeField] private Slider _hpDamageEffectSlider;
     [SerializeField] private float _durationEffect = 0.2f;
-
-    #endregion Serialize fields
+    #endregion
 
     #region Private fields
-    /// <summary>
-    /// Состояние плавного появления
-    /// </summary>
-    private bool _isShown = false;
-    /// <summary>
-    /// Состояние, когда полоса здровья полностью показана
-    /// </summary>
-    private bool _isShowing = false;
-    /// <summary>
-    /// Состояние плавного сокрытия полосы хп
-    /// </summary>
-    private bool _isHide = false;
-
-    private float _currentAlpha = 0f;
-
-    private float _timer = 0;
-
-    private Image[] _images;
-    #endregion Private fields
+    private bool _isShow = false;
+    private float _timerDelayBeforeFade;
+    #endregion
 
     #region Mono
     private void Start()
     {
-        _images = GetComponentsInChildren<Image>();
-
-        SetAlphaHealthBar(_currentAlpha);
+        _canvasGroupHPBar.alpha = 0;
     }
+
+    private void Update()
+    {
+        // Если hp bar виден, включаем таймер до исчезновения
+        if (_isShow)
+        {
+            _timerDelayBeforeFade -= Time.deltaTime;
+
+            // Если таймер истек, запускаем анимацию плавного исчезноваения hp bar-а
+            if (_timerDelayBeforeFade <= 0)
+                ShowHealthBarFadeAnimation();
+        }
+    }
+
     #endregion Mono
 
     #region Private methods
-    private void Update()
-    {
-        // Плавно показываем
-        if (_isShowing)
-        {
-            SetAlphaHealthBar(_currentAlpha);
-
-            if (_currentAlpha < 1.0f)
-            {
-                _currentAlpha += _rateShowing * Time.deltaTime;
-            }
-            else
-            {
-                _currentAlpha = 1.0f;
-                _isShowing = false;
-                _isShown = true;
-            }
-        }
-
-        // Задержка до сокрытия
-        if (_isShown)
-        {
-            if (_timer < _durationShown)
-            {
-                _timer += Time.deltaTime;
-            }
-            else
-            {
-                _timer = 0;
-                _isShown = false;
-                _isHide = true;
-            }
-        }
-
-        // Плавно скрываем
-        if (_isHide)
-        {
-            SetAlphaHealthBar(_currentAlpha);
-
-            if (_currentAlpha > 0f)
-            {
-                _currentAlpha -= _rateShowing * Time.deltaTime;
-            }
-            else
-            {
-                _currentAlpha = 0f;
-                _isHide = false;
-            }
-
-        }
-    }
 
     /// <summary>
-    /// Метод устанавливает прозрачность для всех элементов объекта HealthBar
+    /// Показать анимацию эффекта получения урона
     /// </summary>
-    /// <param name="curAlpha">Значение alpha</param>
-    private void SetAlphaHealthBar(float curAlpha)
-    {
-        foreach (Image image in _images)
-        {
-            image.canvasRenderer.SetAlpha(curAlpha);
-        }
-    }
-
-    private void DamageEffectAnimation(float health)
+    /// <param name="health">Актуальное значение здоровья</param>
+    private void ShowDamageEffectAnimation(float health)
     {
         _hpDamageEffectSlider.DOKill();
         _hpDamageEffectSlider.DOValue(health, _durationEffect);
     }
 
+    /// <summary>
+    /// Показать анимацию плавного появления полосы здоровья
+    /// </summary>
+    private void ShowHealthBarAppearAnimation()
+    {
+        // Если hp bar уже виден, то просто обновляем таймер до исчезновения
+        if (_isShow)
+        {
+            _timerDelayBeforeFade = _shownDuration;
+            return;
+        }
+
+        // Запускаем анимацию появления hp bar-а
+        _canvasGroupHPBar.DOKill();
+        _canvasGroupHPBar.DOFade(1f, _appearanceDuration);
+
+        // Устанавливаем время таймера до запуска анимации исчезновения
+        _timerDelayBeforeFade = _shownDuration + _appearanceDuration;
+
+        _isShow = true;
+    }
+
+    /// <summary>
+    /// Показать анимацию плавного исчезновения полосы здоровья
+    /// </summary>
+    private void ShowHealthBarFadeAnimation()
+    {
+        // Запускаем анимацию исчезноваения hp bar-а
+        _canvasGroupHPBar.DOKill();
+        _canvasGroupHPBar.DOFade(0f, _fadeDuration);
+
+        _isShow = false;
+    }
 
     #endregion Private methods
 
     #region Public methods
-
-    /// <summary>
-    /// Плавно показываем и плавно скрываем полосу хп
-    /// </summary>
-    public void ShowHealthBar()
-    {
-        if (!_isShowing && !_isShown)
-        {
-            _isShowing = true;
-            _isHide = false;
-        }
-        if (_isShown)
-        {
-            _timer = 0;
-        }
-    }
 
     /// <summary>
     /// Устанавливаем начальные значения для полосы здоровья
@@ -166,15 +123,20 @@ public class HealthBarController : MonoBehaviour
     }
 
     /// <summary>
-    /// Устанавливаем текущее значение здоровья для полосы хп
+    /// Устанавливаем текущее значение здоровья для полосы здоровья
     /// </summary>
-    /// <param name="health">Текущее значение здоровья</param>
-    public void SetHealth(float health, bool onEffectDamage = false)
+    /// <param name="health">Актульное значение здоровья</param>
+    /// <param name="onShowHpBar">Показать полосу здоровья при изменении</param>
+    /// <param name="onEffectDamage">Показать эффект получения урона при изменении</param>
+    public void SetHealth(float health, bool onShowHpBar = false, bool onEffectDamage = false)
     {
         _hpSlider.value = health;
 
+        if (onShowHpBar)
+            ShowHealthBarAppearAnimation();
+
         if (onEffectDamage)
-            DamageEffectAnimation(health);
+            ShowDamageEffectAnimation(health);
     }
 
     /// <summary>
