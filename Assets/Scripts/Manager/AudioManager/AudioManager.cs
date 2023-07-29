@@ -29,13 +29,12 @@ public class AudioManager : MonoBehaviour
 
     private void AddListeners()
     {
-        GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_GameMapStarted);
         GameSceneEventManager.OnGamePause.AddListener(PauseAllAudioSource);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PrepareForWave);
         WaveEventManager.OnWaveIsComing.AddListener(EventHandler_WaveIsComing);
         WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
         GlobalGameEventManager.OnGameOver.AddListener(StopAllSoundSource);
-        GameSceneEventManager.OnSceneLoadingStarted.AddListener(StopAllSoundSource);
+        //GameSceneEventManager.OnSceneLoadingStarted.AddListener(StopAllSoundSource);
     }
 
     /// <summary>
@@ -219,25 +218,20 @@ public class AudioManager : MonoBehaviour
     #endregion Public methods
 
     #region Event handlers
-    private void EventHandler_GameMapStarted()
-    {
-        PlaySound(SoundType.Sfx, "new_message", 5);
-    }
-
     private void EventHandler_PrepareForWave(int wave)
     {
-        PlaySound(SoundType.Sfx, "new_message", 0);
+        PlaySound(SoundType.Sfx, "new_message");
     }
 
     private void EventHandler_WaveIsComing(int wave)
     {
-        PlaySound(SoundType.Sfx, "alarm_horn", 0);
+        PlaySound(SoundType.Sfx, "alarm_horn");
         PlayRandomSound(SoundType.CombatMusic, 8);
     }
 
     private void EventHandler_WaveIsOver(int wave)
     {
-        PlaySound(SoundType.Sfx, "wave_is_over", 0);
+        PlaySound(SoundType.Sfx, "wave_is_over");
         StopSound(SoundType.CombatMusic);
     }
     #endregion

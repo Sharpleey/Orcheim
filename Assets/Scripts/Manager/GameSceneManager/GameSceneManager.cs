@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 /// <summary>
 /// Менеджер отвечает за переключение сцен, перезагрузку сцен, паузу игры
@@ -14,7 +13,7 @@ public class GameSceneManager : MonoBehaviour
 
 	#region Private fields
 	private AsyncOperation _asyncOperationLoadingScene;
-	private Scene _currentScene;
+	private string _currentScene;
 	private bool _isGamePaused;
     #endregion
 
@@ -25,13 +24,10 @@ public class GameSceneManager : MonoBehaviour
 	/// </summary>
 	/// <param name="sceneName">Название сцены, на которую необходимо перейти</param>
 	/// <returns></returns>
-	private async Task LoadAsyncScene(Scene scene)
+	private async Task LoadAsyncScene(string scene)
 	{
 		// Показываем анимацию появления экрана загрузки
 		_loadingScreen.Show();
-
-		// Отправляем событие о начале загрузки новой сцены
-		GameSceneEventManager.SceneLoadingStarted();
 
 		// Останавливаем дальнейшее выполнение кода пока не окончена анимация показа экрана загрузки
 		while (_loadingScreen.IsShowing)
@@ -40,7 +36,7 @@ public class GameSceneManager : MonoBehaviour
 		}
 
 		// Загружаем сцену в асинхронном режиме
-		_asyncOperationLoadingScene = SceneManager.LoadSceneAsync(scene.name);
+		_asyncOperationLoadingScene = SceneManager.LoadSceneAsync(scene);
 
 		// Останавливаем дальнейшее выполнение кода, пока идет загрузка сцены
 		while (!_asyncOperationLoadingScene.isDone)
@@ -53,17 +49,6 @@ public class GameSceneManager : MonoBehaviour
 		//
 		// После загрузки происходит автоматический переход на сцену
 		//
-
-		switch (scene.sceneType)
-		{
-			case SceneType.GameMap:
-				GameSceneEventManager.GameMapStarted();
-				break;
-			default:
-				GameSceneEventManager.SceneStarded();
-				break;
-
-		}
 
 		// Снимаем игру с паузы, если она была на паузе
 		if (_isGamePaused)
@@ -97,19 +82,11 @@ public class GameSceneManager : MonoBehaviour
 	/// Метод смены сцены
 	/// </summary>
 	/// <param name="sceneName">Название сцены, на которую необходимо перейти</param>
-	public async void SwitchToScene(string sceneName)
+	public async void SwitchToScene(string newScene)
     {
-		Scene scene = Array.Find(_config.Scenes, x => x.name == sceneName);
+		_currentScene = newScene;
 
-		if(scene == null)
-        {
-			Debug.Log("Scene " + sceneName + " not found!");
-			return;
-        }
-
-		_currentScene = scene;
-
-		await LoadAsyncScene(scene);
+		await LoadAsyncScene(newScene);
 	}
 
 	/// <summary>

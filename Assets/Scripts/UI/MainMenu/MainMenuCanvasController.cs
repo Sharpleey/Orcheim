@@ -30,7 +30,12 @@ public class MainMenuCanvasController : MonoBehaviour
 
         _audioManager?.PlayRandomSound(SoundType.MainMenuTheme);
     }
-    
+
+    private void OnDestroy()
+    {
+        _audioManager?.StopAllSoundSource();
+    }
+
     private void HideAll()
     {
         MainMenu?.SetActive(false);

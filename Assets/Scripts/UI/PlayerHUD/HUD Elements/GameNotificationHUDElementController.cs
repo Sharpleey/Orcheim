@@ -12,7 +12,6 @@ public class GameNotificationHUDElementController : MonoBehaviour
 
     private void Awake()
     {
-        GameSceneEventManager.OnGameMapStarded.AddListener(EventHandler_OnGameMapStarded);
         WaveEventManager.OnPreparingForWave.AddListener(EventHandler_PreparingForWave);
         WaveEventManager.OnWaveIsComing.AddListener(EventHandler_WaveIsComing);
         WaveEventManager.OnWaveIsOver.AddListener(EventHandler_WaveIsOver);
@@ -22,6 +21,8 @@ public class GameNotificationHUDElementController : MonoBehaviour
     {
         if (_gameNotificationText)
             _gameNotificationText.text = "";
+
+        StartCoroutine(SetTextGameNotificationWithDelay(HashGameNotificationString.CLEAR_VILLAGE, 5));
     }
 
     /// <summary>
@@ -39,11 +40,6 @@ public class GameNotificationHUDElementController : MonoBehaviour
     }
 
     #region Event handlers
-    private void EventHandler_OnGameMapStarded()
-    {
-        StartCoroutine(SetTextGameNotificationWithDelay(HashGameNotificationString.CLEAR_VILLAGE, 5));
-    }
-
     private void EventHandler_PreparingForWave(int wave)
     {
         StartCoroutine(SetTextGameNotificationWithDelay(HashGameNotificationString.PREPARING_FOR_WAVE, 0));
