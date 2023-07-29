@@ -16,10 +16,12 @@ public class UnitSpawner : MonoBehaviour
     [Header("Зоны спавна врагов во время волн")]
     [SerializeField] private EnemyWaveSpawnZone[] _enemyWaveSpawnZones;
 
+    [Header("Вкличение игровой логики волн (Выключить для тестовых сцен)")]
+    [SerializeField] bool _isActiveWaveLogic = true;
     #endregion Serialize fields
-    
+
     #region Properties
-    
+
     /// <summary>
     /// Кол-во оставшихся врагов на волне
     /// </summary>
@@ -92,7 +94,8 @@ public class UnitSpawner : MonoBehaviour
 
     private void Awake()
     {
-        AddListeners();
+        if(_isActiveWaveLogic)
+            AddListeners();
     }
 
     private void Start()
@@ -103,7 +106,7 @@ public class UnitSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (_isSpawningEnemy)
+        if (_isSpawningEnemy && _isActiveWaveLogic)
         {
             _timer += Time.deltaTime;
 
